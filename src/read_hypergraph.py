@@ -57,7 +57,6 @@ if __name__ == '__main__':
         tqdm = lambda x: x
 
     hgraphs = read_hypergraph('../data/bad_hypergraphs/bad_hallmark_hypergraphs.txt')
-    print(hgraphs[1][1])
     hgraph = hnx.Hypergraph(hgraphs[1][1])
 
     hnx.draw(hgraph, with_node_labels=False, with_edge_labels=False)
