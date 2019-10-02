@@ -56,8 +56,10 @@ if __name__ == '__main__':
     else:
         tqdm = lambda x: x
 
-    hgraphs = read_hypergraph('../data/bad_hypergraphs/bad_hallmark_hypergraphs.txt')
-    hgraph = hnx.Hypergraph(hgraphs[1][1])
+    # graph_file = '../data/bad_hypergraphs/bad_hallmark_hypergraphs.txt'
+    graph_file = '../data/somemorehypergraphs/DNS_hypergraph_samples.txt'
+    hgraphs = read_hypergraph(graph_file)
+    hgraph = hnx.Hypergraph(hgraphs[3][1])
 
     hnx.draw(hgraph, with_node_labels=False, with_edge_labels=False)
     plt.show()
