@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hypergraph Visualization</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+
+<body>
+<section class="outline">
+    <h1>
+        Hypergraph Visualization
+    </h1>
+</section>
+
+
+<section id="side-and-main" class="outline">
+    <div id="barcode-section" class="outline grid-item">
+        Barcode
+        <div id="barcode-viewer" class="outline" style="padding:10px;">
+            <svg id="barcode-svg"></svg>
+        </div>
+    </div>
+
+    <div id="vis-area" class="outline">
+        <div class="hypergraph-classic left grid-item">
+            Hypergraph
+            <svg id="hypergraph-svg"></svg>
+            <input type="checkbox" id="hgraph-labels">Show labels</input>
+        </div>
+
+        <div class="line-graph outline grid-item">
+            Line graph
+            <svg id="linegraph-svg"></svg>
+        </div>
+
+        <div class="hypergraph-simplified outline grid-item">
+<!--            Simplified hypergraph-->
+        </div>
+
+        <div class="enriched-line-graph outline grid-item">
+<!--            Enriched Line Graph-->
+        </div>
+
+    </div>
+</section>
+
+<script type="text/javascript" src="js/draw_barcode.js"></script>
+<script type="text/javascript" src="js/draw_hypergraph.js"></script>
+<script type="text/javascript" src="js/draw_linegraph.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        draw_barcode();
+        draw_hypergraph();
+        toggle_hgraph_labels();
+        draw_linegraph();
+    };
+</script>
+</body>
+</html>

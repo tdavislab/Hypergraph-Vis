@@ -1,0 +1,43 @@
+.outline {
+    border: 0force px dashed chocolate;
+}
+
+h1 {
+    font-size: 60px;
+    text-align: center;
+    /*padding-bottom: 50px;*/
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    background-color: #2b2b2b;
+    color: aliceblue;
+}
+
+#side-and-main {
+    display: grid;
+    /*grid-template-rows: auto;*/
+    grid-template-columns: 1.25fr 4fr;
+    height: 800px;
+}
+
+#vis-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.grid-item {
+    text-align: center;
+}
+
+input {
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    *overflow: hidden;
+}
+
+.barcode-axis {
+    font-size: 4px;
+}

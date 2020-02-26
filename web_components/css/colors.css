@@ -1,0 +1,27 @@
+.barcode-rect-dim0 {
+    fill: #7bc6d6;
+}
+
+.barcode-rect-dim1 {
+    fill: #8aa9c7;
+}
+
+.slider {
+    fill: azure;
+}
+
+.hover-darken {
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.hover-darken:hover {
+    opacity: 0.5;
+    /*transition: 0.3s ease all;*/
+}
+
+.node-label {
+    fill: #f0ffff;
+    opacity: 0.5;
+    background: #2b2b2b;
+}
