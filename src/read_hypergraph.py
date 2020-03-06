@@ -83,6 +83,7 @@ def write_d3_graph(graph, path):
     with open(path, 'w') as f:
         f.write(json.dumps(node_link_json, indent=4))
 
+
 def compute_barcode(graph_path):
     with open(graph_path) as json_file:
         data = json.load(json_file)
@@ -94,28 +95,28 @@ def compute_barcode(graph_path):
         components.append([node['id']])
     for link in links:
         link['intersection_size'] = int(link['intersection_size'])
-    links = sorted(links, key=lambda item: 1/item['intersection_size'])
+    links = sorted(links, key=lambda item: 1 / item['intersection_size'])
     for link in links:
         source_id = link['source']
         target_id = link['target']
-        weight = 1/link['intersection_size']
+        weight = 1 / link['intersection_size']
         source_cc_idx = find_cc_index(components, source_id)
         target_cc_idx = find_cc_index(components, target_id)
         if source_cc_idx != target_cc_idx:
             source_cc = components[source_cc_idx]
             target_cc = components[target_cc_idx]
             components = [components[i] for i in range(len(components)) if i not in [source_cc_idx, target_cc_idx]]
-            components.append(source_cc+target_cc)
-            barcode.append({'birth':0, 'death':weight, 'edge':link})
+            components.append(source_cc + target_cc)
+            barcode.append({'birth': 0, 'death': weight, 'edge': link})
     for cc in components:
-        barcode.append({'birth':0, 'death':-1, 'edge':'undefined'})
+        barcode.append({'birth': 0, 'death': -1, 'edge': 'undefined'})
     return barcode
+
 
 def find_cc_index(components, vertex_id):
     for i in range(len(components)):
         if vertex_id in components[i]:
             return i
-
 
 
 if __name__ == '__main__':
@@ -142,4 +143,4 @@ if __name__ == '__main__':
 
     barcode = compute_barcode('../web_components/data/linegraph.json')
     with open('../web_components/data/barcode.json', 'w') as f:
-        f.write(json.dumps({'barcode':barcode}, indent=4))
+        f.write(json.dumps({'barcode': barcode}, indent=4))

@@ -1,0 +1,27 @@
+.outline {
+    /*border: 0.1px dashed chocolate;*/
+}
+
+#hypergraph-svg {
+    /*border: 1px dashed chocolate;*/
+    border: 1px solid #d5d5d5;
+}
+
+#linegraph-svg {
+    /*border: 1px dashed cornflowerblue;*/
+    border: 1px solid #d5d5d5;
+
+}
+
+#barcode-svg {
+    /*border: 1px dashed slateblue;*/
+}
+
+/*Override some Bootstrap defaults*/
+.jumbotron {
+    padding: 1rem 1rem;
+}
+
+.slider {
+    fill: #000000;
+}
