@@ -14,8 +14,7 @@ function draw_hypergraph(data) {
         .attr("width", graphDimensions.width)
         .attr("height", graphDimensions.height)
         .call(responsivefy);
-    console.log(data);
-    let hypergraph_simulation = force_graph(svg, data);
+    let hypergraph_simulation = force_graph(svg, data, true);
 }
 
 function draw_linegraph(data) {
@@ -26,7 +25,7 @@ function draw_linegraph(data) {
         .attr("height", graphDimensions.height)
         .call(responsivefy);
 
-    let linegraph_simulation = force_graph(svg, data);
+    let linegraph_simulation = force_graph(svg, data, false);
 }
 
 function draw_barcode(data) {
@@ -112,16 +111,37 @@ function bar_chart(barcode_svg, data) {
     }
 }
 
-function force_graph(svg, graph_data) {
+function force_graph(svg, graph_data, hyperedges) {
     // Force directed graph
     const links = graph_data.links.map(d => Object.create(d));
     const nodes = graph_data.nodes.map(d => Object.create(d));
     const node_radius = 8;
     const color = d3.scaleOrdinal(d3.schemeCategory10);
+    let groups = [];
+    let groupsPath = [];
 
+    for (let i=0; i < links.length; i++) {
+        if (i % 2 === 0) {
+            links[i].distance = 100;
+        }
+        else {
+            links[i].distance = 10;
+        }
+    }
+
+    if (hyperedges) {
+        groups = d3.nest()
+            .key(d => d.source)
+            // .rollup(d => d.values.map(x => [x.target.x, x.target.y]))
+            .entries(links);
+
+        groupPath = function(vertices) {
+            return "M" + d3.geom.hull(vertices).attr("d", function(d) { return "M" + d.join("L") + "Z"; });
+        }
+    }
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id))
+        .force("link", d3.forceLink(links).distance(d => d.distance).strength().id(d => d.id))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(500 / 2, 400 / 2));
 
@@ -151,6 +171,9 @@ function force_graph(svg, graph_data) {
         .attr('stroke', d => d["bipartite"] === 1 ? "#fff" : "")
         .attr("stroke-width", d => d["bipartite"] === 1 ? 5 : 2)
         .attr("id", d => d.id);
+
+    node.append("title")
+        .text(d => d.id)
 
     node.append("text")
         .attr("dx", 12)
@@ -211,6 +234,10 @@ function force_graph(svg, graph_data) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
     });
+
+    // if (hyperedges) {
+    //     console.log(groups);
+    // }
 
     return simulation;
 }
