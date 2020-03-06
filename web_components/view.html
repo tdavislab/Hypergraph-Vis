@@ -15,41 +15,41 @@
 </head>
 
 <body>
-<section class="outline">
+<div class="outline">
     <h1>
         Hypergraph Visualization
     </h1>
-</section>
+</div>
 
 
-<div id="side-and-main" class="outline">
+<div id="side-and-main" class="container-fluid">
        
 
     <div class="row">
-        <div id="barcode-section" class="col-3" style="padding:0px 20px;">
+        <div id="barcode-section" class="col-sm-3" style="padding:0px 20px;">
             Barcode
             <div id="barcode-viewer" class="outline">
                 <svg id="barcode-svg"></svg>
             </div>
         </div>
-        <div id="vis-area" class="col-9">
+        <div id="vis-area" class="col-sm-9">
             <div class="row">
-                <div class="hypergraph-classic col-6">
+                <div class="col-md-6">
                     Hypergraph
                     <svg id="hypergraph-svg"></svg>
                     <input type="checkbox" id="hgraph-labels">Show labels</input>
                 </div>
                 
-                <div class="line-graph col-6">
+                <div class="col-md-6">
                     Line graph
                     <svg id="linegraph-svg"></svg>
                 </div>
             </div>
             <div class="row">
-                <div class="hypergraph-simplified col-6">
+                <div class="col-md-6">
                                <!-- Simplified hypergraph -->
                 </div>
-                <div class="enriched-line-graph col-6">
+                <div class="col-md-6">
                                <!-- Enriched Line Graph -->
                 </div>
                             
