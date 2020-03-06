@@ -141,7 +141,7 @@ function force_graph(svg, graph_data, hyperedges) {
     }
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).distance(d => d.distance).strength().id(d => d.id))
+        .force("link", d3.forceLink(links).distance(d => d.distance).id(d => d.id))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(500 / 2, 400 / 2));
 
