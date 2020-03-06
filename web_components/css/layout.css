@@ -1,9 +1,9 @@
 .outline {
-    border: 0force px dashed chocolate;
+    /* border: 0force px dashed chocolate; */
 }
 
 h1 {
-    font-size: 60px;
+    font-size: 40px;
     text-align: center;
     /*padding-bottom: 50px;*/
 }
@@ -15,20 +15,20 @@ body {
 }
 
 #side-and-main {
-    display: grid;
+    /* display: grid; */
     /*grid-template-rows: auto;*/
-    grid-template-columns: 1.25fr 4fr;
+    /* grid-template-columns: 1.25fr 4fr; */
     height: 800px;
 }
 
 #vis-area {
-    display: grid;
+    /* display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 1fr; */
 }
 
 .grid-item {
-    text-align: center;
+    /* text-align: center; */
 }
 
 input {

@@ -1,0 +1,108 @@
+{
+    "barcode": [
+        {
+            "birth": 0,
+            "death": 0.3333333333333333,
+            "edge": {
+                "intersection_size": 3,
+                "source": "2wzi79.com",
+                "target": "8sa5zz.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.3333333333333333,
+            "edge": {
+                "intersection_size": 3,
+                "source": "8sa5zz.com",
+                "target": "37b82p.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.3333333333333333,
+            "edge": {
+                "intersection_size": 3,
+                "source": "8sa5zz.com",
+                "target": "gs3fag.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.3333333333333333,
+            "edge": {
+                "intersection_size": 3,
+                "source": "dyewir.com",
+                "target": "sgbxhi.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.3333333333333333,
+            "edge": {
+                "intersection_size": 3,
+                "source": "kbeuu8.com",
+                "target": "sgbxhi.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.5,
+            "edge": {
+                "intersection_size": 2,
+                "source": "ue594m.com",
+                "target": "dyewir.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.5,
+            "edge": {
+                "intersection_size": 2,
+                "source": "ue594m.com",
+                "target": "5bewa2.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.5,
+            "edge": {
+                "intersection_size": 2,
+                "source": "ue594m.com",
+                "target": "37b82p.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.5,
+            "edge": {
+                "intersection_size": 2,
+                "source": "9mt5sd.com",
+                "target": "8zjcn3.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.5,
+            "edge": {
+                "intersection_size": 2,
+                "source": "9mt5sd.com",
+                "target": "kbeuu8.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.5,
+            "edge": {
+                "intersection_size": 2,
+                "source": "9mt5sd.com",
+                "target": "j4bpki.com"
+            }
+        },
+        {
+            "birth": 0,
+            "death": -1,
+            "edge": "undefined"
+        }
+    ]
+}

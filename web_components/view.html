@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Hypergraph Visualization</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/colors.css">
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/hypergraph.js"></script>
+    <script type="text/javascript" src="js/linegraph.js"></script>
+    <script type="text/javascript" src="js/barcode.js"></script>
 </head>
 
 <body>
@@ -17,37 +22,49 @@
 </section>
 
 
-<section id="side-and-main" class="outline">
-    <div id="barcode-section" class="outline grid-item">
-        Barcode
-        <div id="barcode-viewer" class="outline" style="padding:10px;">
-            <svg id="barcode-svg"></svg>
+<div id="side-and-main" class="outline">
+       
+
+    <div class="row">
+        <div id="barcode-section" class="col-3" style="padding:0px 20px;">
+            Barcode
+            <div id="barcode-viewer" class="outline">
+                <svg id="barcode-svg"></svg>
+            </div>
         </div>
+        <div id="vis-area" class="col-9">
+            <div class="row">
+                <div class="hypergraph-classic col-6">
+                    Hypergraph
+                    <svg id="hypergraph-svg"></svg>
+                    <input type="checkbox" id="hgraph-labels">Show labels</input>
+                </div>
+                
+                <div class="line-graph col-6">
+                    Line graph
+                    <svg id="linegraph-svg"></svg>
+                </div>
+            </div>
+            <div class="row">
+                <div class="hypergraph-simplified col-6">
+                               <!-- Simplified hypergraph -->
+                </div>
+                <div class="enriched-line-graph col-6">
+                               <!-- Enriched Line Graph -->
+                </div>
+                            
+            </div>
+                
+        
+                
+        </div>
+
     </div>
+    
 
-    <div id="vis-area" class="outline">
-        <div class="hypergraph-classic left grid-item">
-            Hypergraph
-            <svg id="hypergraph-svg"></svg>
-            <input type="checkbox" id="hgraph-labels">Show labels</input>
-        </div>
-
-        <div class="line-graph outline grid-item">
-            Line graph
-            <svg id="linegraph-svg"></svg>
-        </div>
-
-        <div class="hypergraph-simplified outline grid-item">
-<!--            Simplified hypergraph-->
-        </div>
-
-        <div class="enriched-line-graph outline grid-item">
-<!--            Enriched Line Graph-->
-        </div>
-
-    </div>
-</section>
-
+   
+</div>
+<!-- 
 <script type="text/javascript" src="js/draw_barcode.js"></script>
 <script type="text/javascript" src="js/draw_hypergraph.js"></script>
 <script type="text/javascript" src="js/draw_linegraph.js"></script>
@@ -58,6 +75,6 @@
         toggle_hgraph_labels();
         draw_linegraph();
     };
-</script>
+</script> -->
 </body>
 </html>
