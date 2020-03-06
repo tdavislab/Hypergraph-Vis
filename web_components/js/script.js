@@ -13,5 +13,5 @@ async function loadData() {
 loadData().then(data=>{
     let hypergraph = new Hypergraph(data.hyper_data); 
     let linegraph = new Linegraph(data.line_data);
-    let barcode = new Barcode(data.barcode_data);
+    let barcode = new Barcode(data.barcode_data, linegraph);
 })

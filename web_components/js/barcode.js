@@ -1,6 +1,7 @@
 class Barcode{
-    constructor(barcode_data){
+    constructor(barcode_data, linegraph){
         this.barcode = barcode_data.barcode;
+        this.linegraph = linegraph;
         console.log(this.barcode)
 
         this.svg = d3.select("#barcode-svg");
@@ -12,6 +13,10 @@ class Barcode{
 
         this.barcode_group = this.svg.append("g")
             .attr("id", "barcode_group");
+        this.xAxis_group = this.svg.append('g')
+            .attr('id','xAxis_group');
+        this.slider = this.svg.append('rect')
+            .attr('id', 'barcode_slider');
         
         this.draw_barcode();
     }
@@ -22,7 +27,7 @@ class Barcode{
             .domain([0, max_death*1.1])
             .range([this.svg_margin.left, this.svg_width-this.svg_margin.right]).nice();
         
-        let barcode_height = (this.svg_height-this.svg_margin.top-this.svg_margin.bottom)/this.barcode.length;
+        let barcode_height = Math.floor((this.svg_height-this.svg_margin.top-this.svg_margin.bottom)/this.barcode.length);
 
         let bg = this.barcode_group.selectAll('rect').data(this.barcode);
         bg.exit().remove();
@@ -39,7 +44,78 @@ class Barcode{
             .attr('y', (d, i)=>this.svg_margin.top + i*barcode_height)
             .attr("class", d => "barcode-rect-dim0")
             .classed("hover-darken", true);
+
+        let xAxis = d3.axisBottom(width_scale);
+        this.xAxis_group
+            .classed("axis", true)
+            .style("font-size","10px")
+            .style("color","dimgray")
+            .attr("transform", "translate(0, "+ (this.svg_height-this.svg_margin.bottom-this.svg_margin.top) + ")")
+            .call(xAxis);
+
+        this.slider
+            .attr("width", 10)
+            .attr("height", this.svg_height)
+            .attr("x",20)
+            .attr("y",5)
+            .attr("class", "slider hover-darken")
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        let that = this;
+        function dragstarted() {
+            d3.select(this).raise();
+        }
+        function dragged() {
+            d3.select(this).attr("x", clamp(d3.event.x, that.svg_margin.left, width_scale(max_death*1.1)));
+                // let destination_position = d3.event.x - d3.select(this).attr("width") / 2;
+                // d3.select(this).attr("x", clamp(destination_position, 5, 90));
+        }
+
+        function dragended() {
+            that.graph_contraction(width_scale.invert(d3.event.x));
+
+        }
+
+        function clamp(d, min, max) {
+            return Math.min(Math.max(d, min), max);
+        };
+        
+        
+
     }
 
+    graph_contraction(threshold){
+        console.log(threshold)
+        for(let i=0; i<this.barcode.length-1; i++){
+            let bar = this.barcode[i];
+            let link_id = "#line-edge-"+this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+            let source_id = "#linegraph-"+this.createId(bar.edge.source);
+            let target_id = "#linegraph-"+this.createId(bar.edge.target);
+            console.log(bar.death)
+            if(bar.death < threshold){
+                // d3.select(link_id)
+                    // .style("visibility", "visible");
+                // contraction
+                console.log(d3.select(source_id).node())
+                
+                // d3.select(source_id).data()[0].vx = d3.select(source_id).data()[0].vx * 3
+                // d3.select(source_id).data()[0].vy = d3.select(source_id).data()[0].vy * 3
+                d3.select(source_id)
+                    .attr("cx", d => d.x - d.vx*10)
+                    .attr("cy", d => d.y - d.vy*10)
+            } else {
+                // d3.select(link_id)
+                    // .style("visibility", "hidden");
+            }
+        }
+
+    }
+
+    createId(id){
+        return id.replace(/[^a-zA-Z0-9]/g, "")
+    }
     
 }

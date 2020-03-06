@@ -44,14 +44,15 @@ class Linegraph{
             .attr("stroke", "#fff")
             .attr("stroke-width", 4)
             .attr("fill", d => this.colorScale(d.id))
-            .attr("id", d => "linegraph-"+d.id);
+            .attr("id", d => "linegraph-"+this.createId(d.id));
         
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.5)
-            .attr("stroke-width", d => this.edge_scale(parseFloat(d.intersection_size)));
+            .attr("stroke-width", d => this.edge_scale(parseFloat(d.intersection_size)))
+            .attr("id", d => "line-edge-"+this.createId(d.source.id)+"-"+this.createId(d.target.id));
 
         // add drag capabilities
         const drag_handler = d3.drag()
@@ -105,5 +106,11 @@ class Linegraph{
                 });
         });
         
+    }
+
+    
+
+    createId(id){
+        return id.replace(/[^a-zA-Z0-9]/g, "")
     }
 }

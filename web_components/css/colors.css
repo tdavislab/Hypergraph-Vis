@@ -13,7 +13,7 @@
 
 .hover-darken {
     opacity: 1;
-    transition: all 0.3s ease;
+    /* transition: all 0.1s ease; */
 }
 
 .hover-darken:hover {
