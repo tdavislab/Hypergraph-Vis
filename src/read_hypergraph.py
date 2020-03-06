@@ -79,8 +79,43 @@ def convert_to_line_graph(hypergraph):
 def write_d3_graph(graph, path):
     # Write to d3 like graph format
     node_link_json = nx.readwrite.json_graph.node_link_data(graph)
+    print(node_link_json)
     with open(path, 'w') as f:
         f.write(json.dumps(node_link_json, indent=4))
+
+def compute_barcode(graph_path):
+    with open(graph_path) as json_file:
+        data = json.load(json_file)
+    nodes = data['nodes']
+    links = data['links']
+    components = []
+    barcode = []
+    for node in nodes:
+        components.append([node['id']])
+    for link in links:
+        link['intersection_size'] = int(link['intersection_size'])
+    links = sorted(links, key=lambda item: 1/item['intersection_size'])
+    for link in links:
+        source_id = link['source']
+        target_id = link['target']
+        weight = 1/link['intersection_size']
+        source_cc_idx = find_cc_index(components, source_id)
+        target_cc_idx = find_cc_index(components, target_id)
+        if source_cc_idx != target_cc_idx:
+            source_cc = components[source_cc_idx]
+            target_cc = components[target_cc_idx]
+            components = [components[i] for i in range(len(components)) if i not in [source_cc_idx, target_cc_idx]]
+            components.append(source_cc+target_cc)
+            barcode.append({'birth':0, 'death':weight, 'edge':link})
+    for cc in components:
+        barcode.append({'birth':0, 'death':-1, 'edge':'undefined'})
+    return barcode
+
+def find_cc_index(components, vertex_id):
+    for i in range(len(components)):
+        if vertex_id in components[i]:
+            return i
+
 
 
 if __name__ == '__main__':
@@ -104,3 +139,7 @@ if __name__ == '__main__':
     write_d3_graph(hgraph.bipartite(), '../web_components/data/hypergraph.json')
     write_d3_graph(convert_to_line_graph(hgraph), '../web_components/data/linegraph.json')
     plt.show()
+
+    barcode = compute_barcode('../web_components/data/linegraph.json')
+    with open('../web_components/data/barcode.json', 'w') as f:
+        f.write(json.dumps({'barcode':barcode}, indent=4))
