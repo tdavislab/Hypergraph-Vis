@@ -54,9 +54,9 @@ class Barcode{
             .call(xAxis);
 
         this.slider
-            .attr("width", 10)
+            .attr("width", 8)
             .attr("height", this.svg_height)
-            .attr("x",20)
+            .attr("x",this.svg_width-20)
             .attr("y",5)
             .attr("class", "slider hover-darken")
             .call(d3.drag()
@@ -91,26 +91,31 @@ class Barcode{
         console.log(threshold)
         for(let i=0; i<this.barcode.length-1; i++){
             let bar = this.barcode[i];
-            let link_id = "#line-edge-"+this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
-            let source_id = "#linegraph-"+this.createId(bar.edge.source);
-            let target_id = "#linegraph-"+this.createId(bar.edge.target);
-            console.log(bar.death)
-            if(bar.death < threshold){
+            let link_id = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+            // console.log(bar.death)
+            if(bar.death < threshold && bar.death > 0){
+                this.linegraph.links_dict[link_id].distance = 10;
+                console.log(link_id)
+
                 // d3.select(link_id)
-                    // .style("visibility", "visible");
-                // contraction
-                console.log(d3.select(source_id).node())
+                //     .style("visibility", "visible");
+                // // contraction
+                // console.log(d3.select(source_id).node())
                 
                 // d3.select(source_id).data()[0].vx = d3.select(source_id).data()[0].vx * 3
                 // d3.select(source_id).data()[0].vy = d3.select(source_id).data()[0].vy * 3
-                d3.select(source_id)
-                    .attr("cx", d => d.x - d.vx*10)
-                    .attr("cy", d => d.y - d.vy*10)
+                // d3.select(source_id)
+                //     .attr("cx", d => d.x - d.vx*10)
+                //     .attr("cy", d => d.y - d.vy*10)
             } else {
+                this.linegraph.links_dict[link_id].distance = 100;
                 // d3.select(link_id)
-                    // .style("visibility", "hidden");
+                //     .style("visibility", "hidden");
             }
         }
+        this.linegraph.simulation.force("link", d3.forceLink(this.linegraph.links).distance(d => d.distance).id(d => d.id))
+        this.linegraph.simulation.alpha(1).restart()
+
 
     }
 

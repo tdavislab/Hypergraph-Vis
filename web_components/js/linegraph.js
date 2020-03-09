@@ -24,6 +24,12 @@ class Linegraph{
             .domain(d3.extent(this.links.map(d => parseFloat(d.intersection_size))))
             .range([1, 10]);
 
+        this.links_dict = {};
+        this.links.forEach(l=> {
+            let link_id = this.createId(l.source)+"-"+this.createId(l.target);
+            this.links_dict[link_id] = l;
+        });
+
         this.draw_linegraph();
 
     }
@@ -31,8 +37,15 @@ class Linegraph{
     draw_linegraph(){
         let node_radius = 8;
 
-        let simulation = d3.forceSimulation(this.nodes)
-            .force("link", d3.forceLink(this.links).id(d => d.id))
+        for (let i=0; i < this.links.length; i++) {
+            this.links[i].distance = 100
+        }
+
+        console.log(this.links)
+        console.log(this.links_dict)
+
+        this.simulation = d3.forceSimulation(this.nodes)
+            .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2));
 
@@ -70,7 +83,7 @@ class Linegraph{
         // Drag functions
         // d is the node
         function drag_start(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            if (!d3.event.active) this.simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
@@ -82,7 +95,7 @@ class Linegraph{
         }
 
         function drag_end(d) {
-            if (!d3.event.active) simulation.alphaTarget(0);
+            if (!d3.event.active) this.simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
         }
@@ -93,7 +106,7 @@ class Linegraph{
             that.svg_g.attr("transform", d3.event.transform);
         }
 
-        simulation.on("tick", () => {
+        this.simulation.on("tick", () => {
             lg
                 .attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
