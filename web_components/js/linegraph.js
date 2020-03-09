@@ -24,11 +24,11 @@ class Linegraph{
             .domain(d3.extent(this.links.map(d => parseFloat(d.intersection_size))))
             .range([1, 10]);
 
-        this.links_dict = {};
-        this.links.forEach(l=> {
-            let link_id = this.createId(l.source)+"-"+this.createId(l.target);
-            this.links_dict[link_id] = l;
-        });
+        this.connected_components = [];
+        this.nodes.forEach(n=>{
+            this.connected_components.push([this.createId(n.id)]);
+        })
+        console.log(this.connected_components)
 
         this.draw_linegraph();
 
@@ -42,7 +42,6 @@ class Linegraph{
         }
 
         console.log(this.links)
-        console.log(this.links_dict)
 
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
@@ -121,7 +120,57 @@ class Linegraph{
         
     }
 
-    
+    graph_contraction(bars){
+        console.log(bars)
+        // initialize connected components
+        this.connected_components = [];
+        this.nodes.forEach(n=>{
+            this.connected_components.push([this.createId(n.id)]);
+        })
+        for(let i=0; i<bars.length; i++){
+            // combine two connected components
+            let source_cc_idx = this.find_cc_idx(bars[i].edge.source);
+            let target_cc_idx = this.find_cc_idx(bars[i].edge.target);
+            this.combine_two_cc(source_cc_idx, target_cc_idx);
+        }
+        console.log(this.connected_components)
+        // reduce the distances of edges within each connected component
+        this.links.forEach(link=>{
+            let source_cc_idx = this.find_cc_idx(link.source.id);
+            let target_cc_idx = this.find_cc_idx(link.target.id);
+            if(source_cc_idx === target_cc_idx){
+                link.distance = 10;
+            } else {
+                link.distance = 100;
+            }
+        })
+        this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
+        this.simulation.alpha(1).restart();
+    }
+
+    find_cc_idx(vertex_id){
+        // find the corresponding connected components of the given vertex
+        for(let i=0; i<this.connected_components.length; i++){
+            let cc = this.connected_components[i];
+            if(cc.indexOf(this.createId(vertex_id))!=-1){
+                return i;
+            }
+        }
+    }
+
+    combine_two_cc(cc_idx_1, cc_idx_2){
+        let cc_1 = this.connected_components[cc_idx_1].slice(0);
+        let cc_2 = this.connected_components[cc_idx_2].slice(0);
+        let cc_union = cc_1.concat(cc_2);
+        let connected_components_new = [];
+        for(let i=0; i<this.connected_components.length; i++){
+            if(i != cc_idx_1 && i != cc_idx_2){
+                connected_components_new.push(this.connected_components[i]);
+            }
+        }
+        connected_components_new.push(cc_union);
+        this.connected_components = connected_components_new;
+    }
 
     createId(id){
         return id.replace(/[^a-zA-Z0-9]/g, "")
