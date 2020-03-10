@@ -5,10 +5,16 @@ class Barcode{
         console.log(this.barcode)
 
         this.svg = d3.select("#barcode-svg");
-        this.svg_width = parseFloat(this.svg.style("width"));
-        this.svg_height = parseFloat(this.svg.style("height"));
-        this.svg_margin = {'left':10, 'right':10, 'top':10, 'bottom':10};
-        this.svg.attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
+        this.svg_width = parseFloat(d3.select("#vis-barcode").style("width"));
+        // this.svg_height = 100;
+        this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"));
+        this.svg_margin = {'left':12, 'right':20, 'top':10, 'bottom':10};
+        this.svg
+            // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
+            .attr("width", this.svg_width);
+            // .attr("height", this.svg_height)
+        d3.select("#vis-barcode")
+            .style("height", d3.select("#vis-hypergraph").style("height"));
 
 
         this.barcode_group = this.svg.append("g")
@@ -25,9 +31,17 @@ class Barcode{
         let max_death = d3.max(this.barcode.map(d => d.death));
         let width_scale = d3.scaleLinear()
             .domain([0, max_death*1.1])
-            .range([this.svg_margin.left, this.svg_width-this.svg_margin.right]).nice();
+            .range([0, this.svg_width-this.svg_margin.right-this.svg_margin.left]).nice();
+        console.log(width_scale(0), width_scale(max_death*1.1))
+        console.log(width_scale.range())
         
-        let barcode_height = Math.floor((this.svg_height-this.svg_margin.top-this.svg_margin.bottom)/this.barcode.length);
+        // let barcode_height = Math.floor((this.svg_height-this.svg_margin.top-this.svg_margin.bottom)/this.barcode.length);
+
+        let barcode_height = 10;
+        this.svg_height = barcode_height * (this.barcode.length+1) + this.svg_margin.top + this.svg_margin.bottom;
+        this.svg.attr("height", this.svg_height);
+
+        this.svg.attr("transform", "translate(0,"+(this.container_height-this.svg_height)/3+")");
 
         let bg = this.barcode_group.selectAll('rect').data(this.barcode);
         bg.exit().remove();
@@ -42,20 +56,20 @@ class Barcode{
             .attr('height', barcode_height)
             .attr('x', this.svg_margin.left)
             .attr('y', (d, i)=>this.svg_margin.top + i*barcode_height)
-            .attr("class", d => "barcode-rect-dim0")
+            .attr("class", "barcode-rect-dim0")
             .classed("hover-darken", true);
 
-        let xAxis = d3.axisBottom(width_scale);
+        let xAxis = d3.axisBottom(width_scale).ticks(5);
         this.xAxis_group
             .classed("axis", true)
             .style("font-size","10px")
             .style("color","dimgray")
-            .attr("transform", "translate(0, "+ (this.svg_height-this.svg_margin.bottom-this.svg_margin.top) + ")")
+            .attr("transform", "translate("+this.svg_margin.left+","+ (this.svg_height-this.svg_margin.bottom-this.svg_margin.top) + ")")
             .call(xAxis);
 
         this.slider
             .attr("width", 8)
-            .attr("height", this.svg_height)
+            .attr("height", this.svg_height-this.svg_margin.bottom*2.5)
             .attr("x",this.svg_margin.left+20)
             .attr("y",5)
             .attr("class", "slider hover-darken")

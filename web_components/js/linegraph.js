@@ -8,11 +8,15 @@ class Linegraph{
         this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
         this.colorScale.domain(this.nodes.map(d => d.id));
 
-        this.svg_width = 1000;
-        this.svg_height = 1000;
+        this.container_width = parseFloat(d3.select('#vis-linegraph').style('width'))
+
+        this.svg_width = this.container_width;
+        this.svg_height = this.container_width;
         
         this.svg = d3.select("#linegraph-svg")
-            .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
+            // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
+            .attr("width", this.svg_width)
+            .attr("height", this.svg_height);
         this.svg_g = this.svg.append("g");
 
         this.links_group = this.svg_g.append("g")

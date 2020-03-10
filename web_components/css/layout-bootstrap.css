@@ -1,15 +1,27 @@
+.container-fluid {
+    background-color: rgb(249,249,249);
+    border: 1px solid rgb(224,224,224);
+}
+
 .outline {
-    /*border: 0.1px dashed chocolate;*/
+    /* border: 0.1px dashed chocolate; */
+    border-right: 1px solid rgb(224,224,224);
+}
+
+.svg-container {
+    background-color: #FFF;
+    /* margin: 50px; */
+    border: 1px solid rgb(224,224,224);
 }
 
 #hypergraph-svg {
     /*border: 1px dashed chocolate;*/
-    border: 1px solid #d5d5d5;
+    /* border: 1px solid #d5d5d5; */
 }
 
 #linegraph-svg {
     /*border: 1px dashed cornflowerblue;*/
-    border: 1px solid #d5d5d5;
+    /* border: 1px solid #d5d5d5; */
 
 }
 
@@ -23,5 +35,10 @@
 }
 
 .slider {
-    fill: #000000;
+    /* fill: #000000; */
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    /* text-align: center; */
 }

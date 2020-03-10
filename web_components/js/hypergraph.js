@@ -8,10 +8,15 @@ class Hypergraph{
         this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
         this.colorScale.domain(hyper_data.nodes.map(d => d.id));
 
-        this.svg_width = 1000;
-        this.svg_height = 1000;
+        this.container_width = parseFloat(d3.select('#vis-hypergraph').style('width'))
+        console.log(this.container_width)
+
+        this.svg_width = this.container_width;
+        this.svg_height = this.container_width;
         this.svg = d3.select("#hypergraph-svg")
-            .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
+            // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
+            .attr("width", this.svg_width)
+            .attr("height", this.svg_height);
         this.svg_g = this.svg.append("g");
 
         this.links_group = this.svg_g.append("g")
@@ -38,7 +43,7 @@ class Hypergraph{
             .attr("r", node_radius)
             .attr("fill", d => d["bipartite"] === 1 ? this.colorScale(d.id) : "") // only color nodes that representing hyper-edges
             // .attr("stroke", d => d["bipartite"] === 1 ? "#fff" : "")
-            .attr("stroke", "#fff")
+            .attr("stroke", "lightgrey")
             .attr("stroke-width", d => d["bipartite"] === 1 ? 5 : 2)
             .attr("id", d => d.id);
         ng.append("text")
