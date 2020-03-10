@@ -13,6 +13,7 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
     <script type="text/javascript" src="js/hypergraph.js"></script>
+    <script type="text/javascript" src="js/simplified_hypergraph.js"></script>
     <script type="text/javascript" src="js/linegraph.js"></script>
     <script type="text/javascript" src="js/barcode.js"></script>
 </head>
@@ -43,7 +44,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-6 outline">
                     Line graph
                     <div id='vis-linegraph' class="svg-container">
                         <svg id="linegraph-svg"></svg>
@@ -51,13 +52,13 @@
                 </div>
             </div>
             <div class="row">
-                <!-- <div class="col-md-6">
+                <div class="col-md-6 outline">
                                Simplified hypergraph
                     <div id='vis-simplified-hypergraph' class="svg-container">
-                        <svg id="hypergraph-svg"></svg>
+                        <svg id="simplified-hypergraph-svg"></svg>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                                Enriched Line Graph
                     <div id='vis-enriched-linegraph' class="svg-container">
                         <svg id="hypergraph-svg"></svg>

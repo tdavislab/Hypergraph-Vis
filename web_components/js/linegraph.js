@@ -1,7 +1,8 @@
 class Linegraph{
-    constructor(line_data){
+    constructor(line_data, simplified_hypergraph){
         this.nodes = line_data.nodes;
         this.links = line_data.links;
+        this.simplified_hypergraph = simplified_hypergraph;
 
         console.log(this.links, this.nodes);
 
@@ -135,7 +136,7 @@ class Linegraph{
             // combine two connected components
             let source_cc_idx = this.find_cc_idx(bars[i].edge.source);
             let target_cc_idx = this.find_cc_idx(bars[i].edge.target);
-            this.combine_two_cc(source_cc_idx, target_cc_idx);
+            this.combine_two_cc(source_cc_idx, target_cc_idx);  
         }
         console.log(this.connected_components)
         // reduce the distances of edges within each connected component
@@ -150,6 +151,40 @@ class Linegraph{
         })
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
+
+        this.compute_simplified_hypergraph();
+    }
+
+    compute_simplified_hypergraph(){
+        let nodes_dict = {};
+        this.nodes.forEach(n=>{
+            nodes_dict[this.createId(n.id)] = n;
+        })
+        console.log(nodes_dict)
+
+        let nodes_new = [];
+
+        // merge nodes
+        for(let i=0; i<this.connected_components.length; i++){
+            let cc = this.connected_components[i];
+            // each connected component is corresponding to a new node (hyper-edge)
+            let node_new = {};
+            node_new.vertices = [];
+            node_new.id = ""; // **** TODO: might need a better way to assign id
+            node_new.index = i;
+            cc.forEach(nId =>{
+                let node = nodes_dict[nId];
+                node.vertices.forEach(v=>{ 
+                    if(node_new.vertices.indexOf(v)===-1){
+                        node_new.vertices.push(v);
+                    }
+                })
+                node_new.id += node.id;
+            })
+            nodes_new.push(node_new);
+        }
+
+        this.simplified_hypergraph.construnct_bipartite_graph(nodes_new);
     }
 
     find_cc_idx(vertex_id){

@@ -6,13 +6,12 @@ class Barcode{
 
         this.svg = d3.select("#barcode-svg");
         this.svg_width = parseFloat(d3.select("#vis-barcode").style("width"));
-        // this.svg_height = 100;
         this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"));
         this.svg_margin = {'left':12, 'right':20, 'top':10, 'bottom':10};
         this.svg
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width);
-            // .attr("height", this.svg_height)
+
         d3.select("#vis-barcode")
             .style("height", d3.select("#vis-hypergraph").style("height"));
 
@@ -25,6 +24,7 @@ class Barcode{
             .attr('id', 'barcode_slider');
         
         this.draw_barcode();
+        this.linegraph.graph_contraction([])
     }
 
     draw_barcode(){
@@ -32,8 +32,6 @@ class Barcode{
         let width_scale = d3.scaleLinear()
             .domain([0, max_death*1.1])
             .range([0, this.svg_width-this.svg_margin.right-this.svg_margin.left]).nice();
-        console.log(width_scale(0), width_scale(max_death*1.1))
-        console.log(width_scale.range())
         
         // let barcode_height = Math.floor((this.svg_height-this.svg_margin.top-this.svg_margin.bottom)/this.barcode.length);
 
