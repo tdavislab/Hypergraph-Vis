@@ -1,3 +1,12 @@
+function groupPath(vertices) {
+    if (vertices.length <= 2) {
+        let fake_point1 = vertices[0];
+        let fake_point2 = vertices[1];
+        vertices.push(fake_point1, fake_point2);
+    }
+    return "M" + d3.polygonHull(vertices).join("L") + "Z";
+}
+
 class Hypergraph{
     constructor(hyper_data){
         this.nodes = hyper_data.nodes;
@@ -108,6 +117,29 @@ class Hypergraph{
                 .attr("transform", function (d) {
                     return "translate(" + d.x + "," + d.y + ")";
                 });
+
+            let groups = d3.nest()
+                .key(d => d.source.id)
+                .rollup(d => d.map(node => [node.target.x, node.target.y]))
+                .entries(this.links);
+
+            d3.select("g#hull-group").remove();
+
+            let hulls = this.svg.select("g").insert("g", ":first-child")
+                .attr("id", "hull-group")
+                .selectAll("path")
+                .data(groups);
+
+            // hulls.exit().remove();
+
+            hulls.enter()
+                .insert("path")
+                .style("fill", d => this.colorScale(d.key))
+                .style("stroke", d => this.colorScale   (d.key))
+                .style("stroke-width", 40)
+                .style("stroke-linejoin", "round")
+                .style("opacity", 0.5)
+                .attr("d", d => groupPath(d.value))
         });
 
 

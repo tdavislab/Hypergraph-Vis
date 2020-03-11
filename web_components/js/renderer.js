@@ -1,11 +1,11 @@
-d3.json("data/hypergraph.json").then(draw_hypergraph);
-d3.json("data/linegraph.json").then(draw_linegraph);
-d3.json("data/barcode.json").then(draw_barcode);
+d3.json("data/hypergraph_lesmis.json").then(draw_hypergraph);
+d3.json("data/linegraph_lesmis.json").then(draw_linegraph);
+d3.json("data/barcode_lesmis.json").then(draw_barcode);
 
 const graphDimensions = {
     width: 600,
     height: 400
-}
+};
 
 function draw_hypergraph(data) {
     // Create a SVG in hypergraph div
