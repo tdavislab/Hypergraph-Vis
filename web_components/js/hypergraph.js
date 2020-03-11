@@ -11,7 +11,7 @@ class Hypergraph{
         this.container_width = parseFloat(d3.select('#vis-hypergraph').style('width'));
 
         this.svg_width = this.container_width;
-        this.svg_height = this.container_width;
+        this.svg_height = this.container_width*0.8;
         this.svg = d3.select("#hypergraph-svg")
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width)

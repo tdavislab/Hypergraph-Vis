@@ -12,7 +12,7 @@ class Linegraph{
         this.container_width = parseFloat(d3.select('#vis-linegraph').style('width'))
 
         this.svg_width = this.container_width;
-        this.svg_height = this.container_width;
+        this.svg_height = this.container_width*0.8;
         
         this.svg = d3.select("#linegraph-svg")
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);

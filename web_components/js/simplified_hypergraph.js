@@ -3,7 +3,7 @@ class Simplified_Hypergraph{
         this.container_width = parseFloat(d3.select('#vis-simplified-hypergraph').style('width'));
 
         this.svg_width = this.container_width;
-        this.svg_height = this.container_width;
+        this.svg_height = this.container_width*0.8;
         this.svg = d3.select("#simplified-hypergraph-svg")
             .attr("width", this.svg_width)
             .attr("height", this.svg_height);
