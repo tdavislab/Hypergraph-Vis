@@ -1,0 +1,45 @@
+{
+    "barcode": [
+        {
+            "birth": 0,
+            "death": 0.037037037037037035,
+            "edge": {
+                "intersection_size": 27,
+                "source": "3",
+                "target": "4"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.058823529411764705,
+            "edge": {
+                "intersection_size": 17,
+                "source": "4",
+                "target": "5"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.125,
+            "edge": {
+                "intersection_size": 8,
+                "source": "2",
+                "target": "3"
+            }
+        },
+        {
+            "birth": 0,
+            "death": 0.14285714285714285,
+            "edge": {
+                "intersection_size": 7,
+                "source": "1",
+                "target": "2"
+            }
+        },
+        {
+            "birth": 0,
+            "death": -1,
+            "edge": "undefined"
+        }
+    ]
+}

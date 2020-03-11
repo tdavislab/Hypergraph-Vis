@@ -127,7 +127,8 @@ if __name__ == '__main__':
         tqdm = lambda x: x
 
     # graph_file = '../data/bad_hypergraphs/bad_hallmark_hypergraphs.txt'
-    graph_file = '../data/somemorehypergraphs/DNS_hypergraph_samples.txt'
+    # graph_file = '../data/somemorehypergraphs/DNS_hypergraph_samples.txt'
+    graph_file = '../data/lesmis/lesmis.txt'
     hgraphs = read_hypergraph(graph_file)
     hgraph = hgraphs[0]
     lgraph = convert_to_line_graph(hgraph)
@@ -137,10 +138,10 @@ if __name__ == '__main__':
     plt.figure()
     nx.draw(lgraph)
 
-    write_d3_graph(hgraph.bipartite(), '../web_components/data/hypergraph.json')
-    write_d3_graph(convert_to_line_graph(hgraph), '../web_components/data/linegraph.json')
+    write_d3_graph(hgraph.bipartite(), '../web_components/data/hypergraph_lesmis.json')
+    write_d3_graph(convert_to_line_graph(hgraph), '../web_components/data/linegraph_lesmis.json')
     plt.show()
 
-    barcode = compute_barcode('../web_components/data/linegraph.json')
-    with open('../web_components/data/barcode.json', 'w') as f:
+    barcode = compute_barcode('../web_components/data/linegraph_lesmis.json')
+    with open('../web_components/data/barcode_lesmis.json', 'w') as f:
         f.write(json.dumps({'barcode': barcode}, indent=4))

@@ -1,0 +1,917 @@
+{
+    "directed": false,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+        {
+            "bipartite": 1,
+            "id": "1"
+        },
+        {
+            "bipartite": 1,
+            "id": "2"
+        },
+        {
+            "bipartite": 1,
+            "id": "3"
+        },
+        {
+            "bipartite": 1,
+            "id": "4"
+        },
+        {
+            "bipartite": 1,
+            "id": "5"
+        },
+        {
+            "bipartite": 0,
+            "id": "BL"
+        },
+        {
+            "bipartite": 0,
+            "id": "BM"
+        },
+        {
+            "bipartite": 0,
+            "id": "BR"
+        },
+        {
+            "bipartite": 0,
+            "id": "CC"
+        },
+        {
+            "bipartite": 0,
+            "id": "CH"
+        },
+        {
+            "bipartite": 0,
+            "id": "CL"
+        },
+        {
+            "bipartite": 0,
+            "id": "CN"
+        },
+        {
+            "bipartite": 0,
+            "id": "CO"
+        },
+        {
+            "bipartite": 0,
+            "id": "CV"
+        },
+        {
+            "bipartite": 0,
+            "id": "DA"
+        },
+        {
+            "bipartite": 0,
+            "id": "FA"
+        },
+        {
+            "bipartite": 0,
+            "id": "FF"
+        },
+        {
+            "bipartite": 0,
+            "id": "FN"
+        },
+        {
+            "bipartite": 0,
+            "id": "FT"
+        },
+        {
+            "bipartite": 0,
+            "id": "FV"
+        },
+        {
+            "bipartite": 0,
+            "id": "GE"
+        },
+        {
+            "bipartite": 0,
+            "id": "GG"
+        },
+        {
+            "bipartite": 0,
+            "id": "IS"
+        },
+        {
+            "bipartite": 0,
+            "id": "JA"
+        },
+        {
+            "bipartite": 0,
+            "id": "JL"
+        },
+        {
+            "bipartite": 0,
+            "id": "JU"
+        },
+        {
+            "bipartite": 0,
+            "id": "JV"
+        },
+        {
+            "bipartite": 0,
+            "id": "LI"
+        },
+        {
+            "bipartite": 0,
+            "id": "MB"
+        },
+        {
+            "bipartite": 0,
+            "id": "MC"
+        },
+        {
+            "bipartite": 0,
+            "id": "ME"
+        },
+        {
+            "bipartite": 0,
+            "id": "MR"
+        },
+        {
+            "bipartite": 0,
+            "id": "MT"
+        },
+        {
+            "bipartite": 0,
+            "id": "MY"
+        },
+        {
+            "bipartite": 0,
+            "id": "NP"
+        },
+        {
+            "bipartite": 0,
+            "id": "PG"
+        },
+        {
+            "bipartite": 0,
+            "id": "PO"
+        },
+        {
+            "bipartite": 0,
+            "id": "SC"
+        },
+        {
+            "bipartite": 0,
+            "id": "SN"
+        },
+        {
+            "bipartite": 0,
+            "id": "SP"
+        },
+        {
+            "bipartite": 0,
+            "id": "SS"
+        },
+        {
+            "bipartite": 0,
+            "id": "TH"
+        },
+        {
+            "bipartite": 0,
+            "id": "TM"
+        },
+        {
+            "bipartite": 0,
+            "id": "VI"
+        },
+        {
+            "bipartite": 0,
+            "id": "ZE"
+        },
+        {
+            "bipartite": 0,
+            "id": "AZ"
+        },
+        {
+            "bipartite": 0,
+            "id": "BZ"
+        },
+        {
+            "bipartite": 0,
+            "id": "EP"
+        },
+        {
+            "bipartite": 0,
+            "id": "GP"
+        },
+        {
+            "bipartite": 0,
+            "id": "GR"
+        },
+        {
+            "bipartite": 0,
+            "id": "LL"
+        },
+        {
+            "bipartite": 0,
+            "id": "MI"
+        },
+        {
+            "bipartite": 0,
+            "id": "BA"
+        },
+        {
+            "bipartite": 0,
+            "id": "BB"
+        },
+        {
+            "bipartite": 0,
+            "id": "BO"
+        },
+        {
+            "bipartite": 0,
+            "id": "BT"
+        },
+        {
+            "bipartite": 0,
+            "id": "BU"
+        },
+        {
+            "bipartite": 0,
+            "id": "CM"
+        },
+        {
+            "bipartite": 0,
+            "id": "CR"
+        },
+        {
+            "bipartite": 0,
+            "id": "EN"
+        },
+        {
+            "bipartite": 0,
+            "id": "FE"
+        },
+        {
+            "bipartite": 0,
+            "id": "GA"
+        },
+        {
+            "bipartite": 0,
+            "id": "GI"
+        },
+        {
+            "bipartite": 0,
+            "id": "GT"
+        },
+        {
+            "bipartite": 0,
+            "id": "GU"
+        },
+        {
+            "bipartite": 0,
+            "id": "JD"
+        },
+        {
+            "bipartite": 0,
+            "id": "JO"
+        },
+        {
+            "bipartite": 0,
+            "id": "JP"
+        },
+        {
+            "bipartite": 0,
+            "id": "MA"
+        },
+        {
+            "bipartite": 0,
+            "id": "MG"
+        },
+        {
+            "bipartite": 0,
+            "id": "MM"
+        },
+        {
+            "bipartite": 0,
+            "id": "MN"
+        },
+        {
+            "bipartite": 0,
+            "id": "MO"
+        },
+        {
+            "bipartite": 0,
+            "id": "MP"
+        },
+        {
+            "bipartite": 0,
+            "id": "MV"
+        },
+        {
+            "bipartite": 0,
+            "id": "PL"
+        },
+        {
+            "bipartite": 0,
+            "id": "QU"
+        },
+        {
+            "bipartite": 0,
+            "id": "TG"
+        },
+        {
+            "bipartite": 0,
+            "id": "BJ"
+        },
+        {
+            "bipartite": 0,
+            "id": "HL"
+        },
+        {
+            "bipartite": 0,
+            "id": "LP"
+        },
+        {
+            "bipartite": 0,
+            "id": "TS"
+        },
+        {
+            "bipartite": 0,
+            "id": "XA"
+        },
+        {
+            "bipartite": 0,
+            "id": "XB"
+        },
+        {
+            "bipartite": 0,
+            "id": "BS"
+        }
+    ],
+    "links": [
+        {
+            "source": "1",
+            "target": "BL"
+        },
+        {
+            "source": "1",
+            "target": "BM"
+        },
+        {
+            "source": "1",
+            "target": "BR"
+        },
+        {
+            "source": "1",
+            "target": "CC"
+        },
+        {
+            "source": "1",
+            "target": "CH"
+        },
+        {
+            "source": "1",
+            "target": "CL"
+        },
+        {
+            "source": "1",
+            "target": "CN"
+        },
+        {
+            "source": "1",
+            "target": "CO"
+        },
+        {
+            "source": "1",
+            "target": "CV"
+        },
+        {
+            "source": "1",
+            "target": "DA"
+        },
+        {
+            "source": "1",
+            "target": "FA"
+        },
+        {
+            "source": "1",
+            "target": "FF"
+        },
+        {
+            "source": "1",
+            "target": "FN"
+        },
+        {
+            "source": "1",
+            "target": "FT"
+        },
+        {
+            "source": "1",
+            "target": "FV"
+        },
+        {
+            "source": "1",
+            "target": "GE"
+        },
+        {
+            "source": "1",
+            "target": "GG"
+        },
+        {
+            "source": "1",
+            "target": "IS"
+        },
+        {
+            "source": "1",
+            "target": "JA"
+        },
+        {
+            "source": "1",
+            "target": "JL"
+        },
+        {
+            "source": "1",
+            "target": "JU"
+        },
+        {
+            "source": "1",
+            "target": "JV"
+        },
+        {
+            "source": "1",
+            "target": "LI"
+        },
+        {
+            "source": "1",
+            "target": "MB"
+        },
+        {
+            "source": "1",
+            "target": "MC"
+        },
+        {
+            "source": "1",
+            "target": "ME"
+        },
+        {
+            "source": "1",
+            "target": "MR"
+        },
+        {
+            "source": "1",
+            "target": "MT"
+        },
+        {
+            "source": "1",
+            "target": "MY"
+        },
+        {
+            "source": "1",
+            "target": "NP"
+        },
+        {
+            "source": "1",
+            "target": "PG"
+        },
+        {
+            "source": "1",
+            "target": "PO"
+        },
+        {
+            "source": "1",
+            "target": "SC"
+        },
+        {
+            "source": "1",
+            "target": "SN"
+        },
+        {
+            "source": "1",
+            "target": "SP"
+        },
+        {
+            "source": "1",
+            "target": "SS"
+        },
+        {
+            "source": "1",
+            "target": "TH"
+        },
+        {
+            "source": "1",
+            "target": "TM"
+        },
+        {
+            "source": "1",
+            "target": "VI"
+        },
+        {
+            "source": "1",
+            "target": "ZE"
+        },
+        {
+            "source": "2",
+            "target": "CO"
+        },
+        {
+            "source": "2",
+            "target": "FF"
+        },
+        {
+            "source": "2",
+            "target": "JA"
+        },
+        {
+            "source": "2",
+            "target": "JV"
+        },
+        {
+            "source": "2",
+            "target": "NP"
+        },
+        {
+            "source": "2",
+            "target": "TH"
+        },
+        {
+            "source": "2",
+            "target": "TM"
+        },
+        {
+            "source": "2",
+            "target": "AZ"
+        },
+        {
+            "source": "2",
+            "target": "BZ"
+        },
+        {
+            "source": "2",
+            "target": "EP"
+        },
+        {
+            "source": "2",
+            "target": "GP"
+        },
+        {
+            "source": "2",
+            "target": "GR"
+        },
+        {
+            "source": "2",
+            "target": "LL"
+        },
+        {
+            "source": "2",
+            "target": "MI"
+        },
+        {
+            "source": "3",
+            "target": "CO"
+        },
+        {
+            "source": "3",
+            "target": "FT"
+        },
+        {
+            "source": "3",
+            "target": "JA"
+        },
+        {
+            "source": "3",
+            "target": "JV"
+        },
+        {
+            "source": "3",
+            "target": "TH"
+        },
+        {
+            "source": "3",
+            "target": "TM"
+        },
+        {
+            "source": "3",
+            "target": "AZ"
+        },
+        {
+            "source": "3",
+            "target": "EP"
+        },
+        {
+            "source": "3",
+            "target": "GP"
+        },
+        {
+            "source": "3",
+            "target": "BA"
+        },
+        {
+            "source": "3",
+            "target": "BB"
+        },
+        {
+            "source": "3",
+            "target": "BO"
+        },
+        {
+            "source": "3",
+            "target": "BT"
+        },
+        {
+            "source": "3",
+            "target": "BU"
+        },
+        {
+            "source": "3",
+            "target": "CM"
+        },
+        {
+            "source": "3",
+            "target": "CR"
+        },
+        {
+            "source": "3",
+            "target": "EN"
+        },
+        {
+            "source": "3",
+            "target": "FE"
+        },
+        {
+            "source": "3",
+            "target": "GA"
+        },
+        {
+            "source": "3",
+            "target": "GI"
+        },
+        {
+            "source": "3",
+            "target": "GT"
+        },
+        {
+            "source": "3",
+            "target": "GU"
+        },
+        {
+            "source": "3",
+            "target": "JD"
+        },
+        {
+            "source": "3",
+            "target": "JO"
+        },
+        {
+            "source": "3",
+            "target": "JP"
+        },
+        {
+            "source": "3",
+            "target": "MA"
+        },
+        {
+            "source": "3",
+            "target": "MG"
+        },
+        {
+            "source": "3",
+            "target": "MM"
+        },
+        {
+            "source": "3",
+            "target": "MN"
+        },
+        {
+            "source": "3",
+            "target": "MO"
+        },
+        {
+            "source": "3",
+            "target": "MP"
+        },
+        {
+            "source": "3",
+            "target": "MV"
+        },
+        {
+            "source": "3",
+            "target": "PL"
+        },
+        {
+            "source": "3",
+            "target": "QU"
+        },
+        {
+            "source": "3",
+            "target": "TG"
+        },
+        {
+            "source": "4",
+            "target": "CO"
+        },
+        {
+            "source": "4",
+            "target": "JA"
+        },
+        {
+            "source": "4",
+            "target": "JV"
+        },
+        {
+            "source": "4",
+            "target": "TH"
+        },
+        {
+            "source": "4",
+            "target": "TM"
+        },
+        {
+            "source": "4",
+            "target": "EP"
+        },
+        {
+            "source": "4",
+            "target": "BA"
+        },
+        {
+            "source": "4",
+            "target": "BB"
+        },
+        {
+            "source": "4",
+            "target": "BO"
+        },
+        {
+            "source": "4",
+            "target": "CM"
+        },
+        {
+            "source": "4",
+            "target": "CR"
+        },
+        {
+            "source": "4",
+            "target": "EN"
+        },
+        {
+            "source": "4",
+            "target": "FE"
+        },
+        {
+            "source": "4",
+            "target": "GA"
+        },
+        {
+            "source": "4",
+            "target": "GI"
+        },
+        {
+            "source": "4",
+            "target": "GT"
+        },
+        {
+            "source": "4",
+            "target": "GU"
+        },
+        {
+            "source": "4",
+            "target": "JO"
+        },
+        {
+            "source": "4",
+            "target": "JP"
+        },
+        {
+            "source": "4",
+            "target": "MA"
+        },
+        {
+            "source": "4",
+            "target": "MG"
+        },
+        {
+            "source": "4",
+            "target": "MM"
+        },
+        {
+            "source": "4",
+            "target": "MN"
+        },
+        {
+            "source": "4",
+            "target": "MO"
+        },
+        {
+            "source": "4",
+            "target": "PL"
+        },
+        {
+            "source": "4",
+            "target": "QU"
+        },
+        {
+            "source": "4",
+            "target": "TG"
+        },
+        {
+            "source": "4",
+            "target": "BJ"
+        },
+        {
+            "source": "4",
+            "target": "HL"
+        },
+        {
+            "source": "4",
+            "target": "LP"
+        },
+        {
+            "source": "4",
+            "target": "TS"
+        },
+        {
+            "source": "4",
+            "target": "XA"
+        },
+        {
+            "source": "4",
+            "target": "XB"
+        },
+        {
+            "source": "5",
+            "target": "CO"
+        },
+        {
+            "source": "5",
+            "target": "JA"
+        },
+        {
+            "source": "5",
+            "target": "JV"
+        },
+        {
+            "source": "5",
+            "target": "TH"
+        },
+        {
+            "source": "5",
+            "target": "AZ"
+        },
+        {
+            "source": "5",
+            "target": "BZ"
+        },
+        {
+            "source": "5",
+            "target": "BO"
+        },
+        {
+            "source": "5",
+            "target": "CM"
+        },
+        {
+            "source": "5",
+            "target": "CR"
+        },
+        {
+            "source": "5",
+            "target": "EN"
+        },
+        {
+            "source": "5",
+            "target": "FE"
+        },
+        {
+            "source": "5",
+            "target": "GA"
+        },
+        {
+            "source": "5",
+            "target": "GI"
+        },
+        {
+            "source": "5",
+            "target": "GT"
+        },
+        {
+            "source": "5",
+            "target": "JO"
+        },
+        {
+            "source": "5",
+            "target": "MA"
+        },
+        {
+            "source": "5",
+            "target": "MG"
+        },
+        {
+            "source": "5",
+            "target": "XA"
+        },
+        {
+            "source": "5",
+            "target": "XB"
+        },
+        {
+            "source": "5",
+            "target": "BS"
+        }
+    ]
+}

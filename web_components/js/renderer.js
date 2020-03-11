@@ -132,14 +132,15 @@ function force_graph(svg, graph_data, hyperedges) {
 
     for (let i = 0; i < links.length; i++) {
         if (i % 2 === 0) {
-            links[i].distance = 100;
+            links[i].distance = 50;
         } else {
-            links[i].distance = 10;
+            links[i].distance = 50;
         }
     }
 
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).distance(d => d.distance).id(d => d.id))
+        // .force("link", d3.forceLink(links).id(d => d.id))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(500 / 2, 400 / 2));
 
@@ -148,7 +149,7 @@ function force_graph(svg, graph_data, hyperedges) {
     const link = svg_g.append("g")
         .attr("id", id_suffix + "links")
         .attr("stroke", "#000000")
-        .attr("stroke-opacity", 0.5)
+        .attr("stroke-opacity", 0.1)
         .selectAll("line")
         .data(links)
         .join("line")
@@ -237,26 +238,28 @@ function force_graph(svg, graph_data, hyperedges) {
             groups = d3.nest()
                 .key(d => d.source.id)
                 .rollup(d => d.map(node => [node.target.x, node.target.y]))
-                .entries(links)
-                .map(d => d.value);
+                .entries(links);
 
             d3.select("g#hull-group").remove();
-            svg.select("g").insert("g", ":first-child")
+
+            let hulls = svg.select("g").insert("g", ":first-child")
                 .attr("id", "hull-group")
                 .selectAll("path")
-                .data(groups)
-                // .attr("d", groupPath)
-                .enter().insert("path")
-                .style("fill", "#c9ff7e")
-                .style("stroke", "#89a8ff")
+                .data(groups);
+
+            // hulls.exit().remove();
+
+            hulls.enter()
+                .insert("path")
+                .style("fill", d => color(d.key))
+                .style("stroke", d => color(d.key))
                 .style("stroke-width", 40)
                 .style("stroke-linejoin", "round")
-                .style("opacity", .2)
-                .attr("ID", "group")
-                .attr("d", groupPath);
+                .style("opacity", 0.5)
+                .attr("d", d => groupPath(d.value))
+
         }
     });
-    console.log(svg);
     return simulation;
 }
 
