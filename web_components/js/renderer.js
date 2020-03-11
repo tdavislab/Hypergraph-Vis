@@ -111,32 +111,30 @@ function bar_chart(barcode_svg, data) {
     }
 }
 
+function groupPath(vertices) {
+    if (vertices.length <= 2) {
+        let fake_point1 = vertices[0];
+        let fake_point2 = vertices[1];
+        vertices.push(fake_point1, fake_point2);
+    }
+    return "M" + d3.polygonHull(vertices).join("L") + "Z";
+}
+
 function force_graph(svg, graph_data, hyperedges) {
+    let id_suffix = svg.attr("id") + "-";
+
     // Force directed graph
     const links = graph_data.links.map(d => Object.create(d));
     const nodes = graph_data.nodes.map(d => Object.create(d));
     const node_radius = 8;
     const color = d3.scaleOrdinal(d3.schemeCategory10);
     let groups = [];
-    let groupsPath = [];
 
-    for (let i=0; i < links.length; i++) {
+    for (let i = 0; i < links.length; i++) {
         if (i % 2 === 0) {
             links[i].distance = 100;
-        }
-        else {
+        } else {
             links[i].distance = 10;
-        }
-    }
-
-    if (hyperedges) {
-        groups = d3.nest()
-            .key(d => d.source)
-            // .rollup(d => d.values.map(x => [x.target.x, x.target.y]))
-            .entries(links);
-
-        groupPath = function(vertices) {
-            return "M" + d3.geom.hull(vertices).attr("d", function(d) { return "M" + d.join("L") + "Z"; });
         }
     }
 
@@ -148,6 +146,7 @@ function force_graph(svg, graph_data, hyperedges) {
     const svg_g = svg.append("g");
 
     const link = svg_g.append("g")
+        .attr("id", id_suffix + "links")
         .attr("stroke", "#000000")
         .attr("stroke-opacity", 0.5)
         .selectAll("line")
@@ -156,9 +155,9 @@ function force_graph(svg, graph_data, hyperedges) {
         .attr("stroke-width", d => Math.sqrt(d.value));
 
     const node = svg_g.append("g")
+        .attr("id", id_suffix + "nodes")
         .attr("stroke", "#000000")
         .attr("stroke-width", 0.5)
-        .attr("id", "hgraph-group")
         .selectAll("circle")
         .data(nodes)
         .enter()
@@ -173,7 +172,7 @@ function force_graph(svg, graph_data, hyperedges) {
         .attr("id", d => d.id);
 
     node.append("title")
-        .text(d => d.id)
+        .text(d => d.id);
 
     node.append("text")
         .attr("dx", 12)
@@ -233,12 +232,31 @@ function force_graph(svg, graph_data, hyperedges) {
             .attr("transform", function (d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
+
+        if (hyperedges) {
+            groups = d3.nest()
+                .key(d => d.source.id)
+                .rollup(d => d.map(node => [node.target.x, node.target.y]))
+                .entries(links)
+                .map(d => d.value);
+
+            d3.select("g#hull-group").remove();
+            svg.select("g").insert("g", ":first-child")
+                .attr("id", "hull-group")
+                .selectAll("path")
+                .data(groups)
+                // .attr("d", groupPath)
+                .enter().insert("path")
+                .style("fill", "#c9ff7e")
+                .style("stroke", "#89a8ff")
+                .style("stroke-width", 40)
+                .style("stroke-linejoin", "round")
+                .style("opacity", .2)
+                .attr("ID", "group")
+                .attr("d", groupPath);
+        }
     });
-
-    // if (hyperedges) {
-    //     console.log(groups);
-    // }
-
+    console.log(svg);
     return simulation;
 }
 
