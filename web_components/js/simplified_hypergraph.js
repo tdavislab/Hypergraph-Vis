@@ -56,6 +56,15 @@ class Simplified_Hypergraph{
         this.draw_hypergraph();
     }
 
+    groupPath(vertices) {
+        if (vertices.length <= 2) {
+            let fake_point1 = vertices[0];
+            let fake_point2 = vertices[1];
+            vertices.push(fake_point1, fake_point2);
+        }
+        return "M" + d3.polygonHull(vertices).join("L") + "Z";
+    }
+
     draw_hypergraph(){
         this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
         this.colorScale.domain(this.nodes.map(d => d.id));
@@ -140,6 +149,30 @@ class Simplified_Hypergraph{
                 .attr("transform", function (d) {
                     return "translate(" + d.x + "," + d.y + ")";
                 });
+
+            let groups = d3.nest()
+                .key(d => d.source.id)
+                .rollup(d => d.map(node => [node.target.x, node.target.y]))
+                .entries(this.links);
+
+            d3.select("g#simplified-hull-group").remove();
+
+            let hulls = this.svg.select("g").insert("g", ":first-child")
+                .attr("id", "simplified-hull-group")
+                .selectAll("path")
+                .data(groups);
+
+            // hulls.exit().remove();
+
+            hulls.enter()
+                .insert("path")
+                .style("fill", d => this.colorScale(d.key))
+                .style("stroke", d => this.colorScale   (d.key))
+                .style("stroke-width", 40)
+                .style("stroke-linejoin", "round")
+                .style("opacity", 0.5)
+                // .style("visibility","hidden")
+                .attr("d", d => this.groupPath(d.value))
         });
     
     }

@@ -1,12 +1,3 @@
-function groupPath(vertices) {
-    if (vertices.length <= 2) {
-        let fake_point1 = vertices[0];
-        let fake_point2 = vertices[1];
-        vertices.push(fake_point1, fake_point2);
-    }
-    return "M" + d3.polygonHull(vertices).join("L") + "Z";
-}
-
 class Hypergraph{
     constructor(hyper_data){
         this.nodes = hyper_data.nodes;
@@ -34,6 +25,15 @@ class Hypergraph{
 
         this.draw_hypergraph();
         this.toggle_hgraph_labels();
+    }
+
+    groupPath(vertices) {
+        if (vertices.length <= 2) {
+            let fake_point1 = vertices[0];
+            let fake_point2 = vertices[1];
+            vertices.push(fake_point1, fake_point2);
+        }
+        return "M" + d3.polygonHull(vertices).join("L") + "Z";
     }
 
     draw_hypergraph(){
@@ -139,7 +139,7 @@ class Hypergraph{
                 .style("stroke-width", 40)
                 .style("stroke-linejoin", "round")
                 .style("opacity", 0.5)
-                .attr("d", d => groupPath(d.value))
+                .attr("d", d => this.groupPath(d.value))
         });
 
 

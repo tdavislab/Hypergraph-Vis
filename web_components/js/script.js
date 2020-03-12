@@ -33,4 +33,16 @@ loadData().then(data=>{
     let linegraph = new Linegraph(data.line_data, hypergraph, "linegraph");
     let simplified_linegraph = new Linegraph({"nodes": line_nodes_new, "links": line_links_new}, simplified_hypergraph, "simplified-linegraph");
     let barcode = new Barcode(data.barcode_data, simplified_linegraph);
+
+    d3.select("#visual-encoding-form")
+        .on("change", ()=>{
+            let encoding_type = d3.select('input[name="visual-type"]:checked').node().value;
+            if(encoding_type === "bipartite"){
+                d3.select("#hull-group").style("visibility","hidden");
+                d3.select("#simplified-hull-group").style("visibility","hidden");
+            } else if(encoding_type === "convex"){
+                d3.select("#hull-group").style("visibility","visible");
+                d3.select("#simplified-hull-group").style("visibility","visible");
+            }
+        })
 })
