@@ -1,7 +1,7 @@
 class Linegraph{
-    constructor(line_data, simplified_hypergraph){
-        this.nodes = line_data.nodes;
-        this.links = line_data.links;
+    constructor(line_data, simplified_hypergraph, id){
+        this.nodes = [...line_data.nodes];
+        this.links = [...line_data.links];
         this.simplified_hypergraph = simplified_hypergraph;
 
         console.log(this.links, this.nodes);
@@ -9,12 +9,12 @@ class Linegraph{
         this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
         this.colorScale.domain(this.nodes.map(d => d.id));
 
-        this.container_width = parseFloat(d3.select('#vis-linegraph').style('width'))
+        this.container_width = parseFloat(d3.select('#vis-'+id).style('width'))
 
         this.svg_width = this.container_width;
         this.svg_height = this.container_width*0.8;
         
-        this.svg = d3.select("#linegraph-svg")
+        this.svg = d3.select("#"+id+"-svg")
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width)
             .attr("height", this.svg_height);
