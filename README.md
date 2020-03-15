@@ -13,3 +13,6 @@ python3 run.py
 ```
 
 You can view the page at http://0.0.0.0:6060/ (If possible, please use Chrome).
+
+## Live demo
+https://vis-hypergraph.herokuapp.com/
