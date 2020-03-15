@@ -5,17 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Hypergraph Visualization</title>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-    <!-- <link rel="stylesheet" href="css/layout.css"> -->
-    <link rel="stylesheet" href="css/colors.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/layout-bootstrap.css">
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-    <script type="text/javascript" src="js/hypergraph.js"></script>
-    <script type="text/javascript" src="js/simplified_hypergraph.js"></script>
-    <script type="text/javascript" src="js/linegraph.js"></script>
-    <script type="text/javascript" src="js/barcode.js"></script>
+
+    {% assets "js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
+    {% endassets %}
+    {% assets "css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
 </head>
 
 <body>
@@ -38,7 +34,6 @@
             <div class="row">
                 <div class="col-md-6 outline">
                     Hypergraph
-                    <input type="checkbox" id="hgraph-labels">Show labels</input>
                     <div id='vis-hypergraph' class="svg-container">
                         <svg id="hypergraph-svg"></svg>
                     </div>
@@ -72,9 +67,24 @@
                 
         </div>
         <div id="control-area" class="col-sm-2">
+            <h6>Control Panel</h6>
             <!-- <div>
                 Import a dataset
             </div> -->
+            <br>
+            <div id="files_group">
+                <div class="import-group">
+                    <form method="post" id="upload" enctype="multipart/form-data" action="" >
+                        <input type="file" style="display:none" id="files" name="files">
+                        <input type="button" class="btn btn-outline-primary" id="import" value="Import A Dataset">
+                    </form>
+                </div>
+            </div>
+            <br>
+            <div style="padding-bottom: 20px;">
+                    <input type="checkbox" id="hgraph-labels">Show labels</input>
+
+            </div>
             <div>
             Hypergraph Visual Encoding
             <div class="visual-encoding-group" style="padding-top:15px; padding-left:5px;">

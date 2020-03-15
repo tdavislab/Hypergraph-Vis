@@ -52,6 +52,8 @@ class Linegraph{
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2));
+            // .force("x", d3.forceX().strength(0.01))
+            // .force("y", d3.forceY().strength(0.01));
 
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();

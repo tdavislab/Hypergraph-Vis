@@ -1,6 +1,6 @@
 class Barcode{
     constructor(barcode_data, linegraph){
-        this.barcode = barcode_data.barcode;
+        this.barcode = barcode_data;
         this.linegraph = linegraph;
         console.log(this.barcode)
 
