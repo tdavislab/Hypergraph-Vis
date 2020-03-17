@@ -56,7 +56,12 @@ class Barcode{
             .attr('x', this.svg_margin.left)
             .attr('y', (d, i)=>this.svg_margin.top + i*barcode_height)
             .attr("class", "barcode-rect-dim0")
-            .classed("hover-darken", true);
+            .classed("hover-darken", true)
+            .on("click", d=>{
+                console.log(d)
+                let edge_id = this.createId(d.edge.source)+"-"+this.createId(d.edge.target);
+                this.linegraph.graph_expansion(edge_id);
+            });
 
         let xAxis = d3.axisBottom(width_scale).ticks(5);
         this.xAxis_group

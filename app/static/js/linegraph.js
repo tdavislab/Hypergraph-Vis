@@ -4,6 +4,17 @@ class Linegraph{
         this.links = [...line_data.links];
         this.simplified_hypergraph = simplified_hypergraph;
 
+        this.nodes_dict = {};
+        this.nodes.forEach(n=>{
+            this.nodes_dict[this.createId(n.id)] = n;
+        })
+
+        this.links_dict = {};
+        this.links.forEach(l=>{
+            this.links_dict[this.createId(l.source)+"-"+this.createId(l.target)] = l;
+        })
+        console.log(this.nodes_dict, this.links_dict)
+
         console.log(this.links, this.nodes);
 
         this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -157,15 +168,14 @@ class Linegraph{
         this.compute_simplified_hypergraph();
     }
 
+    graph_expansion(edge_id){
+        this.links_dict[edge_id].distance = 200;
+        this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
+        this.simulation.alpha(1).restart();
+    }
+
     compute_simplified_hypergraph(){
-        let nodes_dict = {};
-        this.nodes.forEach(n=>{
-            nodes_dict[this.createId(n.id)] = n;
-        })
-        console.log(nodes_dict)
-
         let nodes_new = [];
-
         // merge nodes
         for(let i=0; i<this.connected_components.length; i++){
             let cc = this.connected_components[i];
@@ -175,7 +185,7 @@ class Linegraph{
             node_new.id = ""; // **** TODO: might need a better way to assign id
             node_new.index = i;
             cc.forEach(nId =>{
-                let node = nodes_dict[nId];
+                let node = this.nodes_dict[nId];
                 node.vertices.forEach(v=>{ 
                     if(node_new.vertices.indexOf(v)===-1){
                         node_new.vertices.push(v);
