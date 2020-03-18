@@ -46,8 +46,9 @@ class Linegraph{
         })
         console.log(this.connected_components)
 
-        this.draw_linegraph();
+        this.threshold = 0;
 
+        this.draw_linegraph();
     }
 
     draw_linegraph(){
@@ -138,47 +139,94 @@ class Linegraph{
         
     }
 
-    graph_contraction(bars){
-        console.log(bars)
+    assign_nodes_sets(bars){
+        // This function assigns 1) a connected components list 2) the nodes subsets u, v to the edge corresponding to each bar in the barcode
+
         // initialize connected components
         this.connected_components = [];
         this.nodes.forEach(n=>{
             this.connected_components.push([this.createId(n.id)]);
         })
-        for(let i=0; i<bars.length; i++){
+
+        for(let i=0; i<bars.length-1; i++){
             // combine two connected components
-            let source_cc_idx = this.find_cc_idx(bars[i].edge.source);
-            let target_cc_idx = this.find_cc_idx(bars[i].edge.target);
-            this.combine_two_cc(source_cc_idx, target_cc_idx);  
+            let source_cc_idx = this.find_cc_idx(bars[i].edge.source, this.connected_components);
+            let target_cc_idx = this.find_cc_idx(bars[i].edge.target, this.connected_components);
+            let source_cc = this.connected_components[source_cc_idx].slice(0);
+            let target_cc = this.connected_components[target_cc_idx].slice(0);
+            this.combine_two_cc(source_cc_idx, target_cc_idx); 
+            let edge_id = this.createId(bars[i].edge.source)+"-"+this.createId(bars[i].edge.target);
+            this.links_dict[edge_id].nodes_subsets = {"source_cc":source_cc, "target_cc":target_cc};
+            this.links_dict[edge_id].cc_list = [];
+            this.connected_components.forEach(cc=>{
+                this.links_dict[edge_id].cc_list.push(cc.slice(0));
+            })
         }
-        console.log(this.connected_components)
-        // reduce the distances of edges within each connected component
-        this.links.forEach(link=>{
-            let source_cc_idx = this.find_cc_idx(link.source.id);
-            let target_cc_idx = this.find_cc_idx(link.target.id);
-            if(source_cc_idx === target_cc_idx){
-                link.distance = 10;
-            } else {
+        console.log(this.links)
+
+
+    }
+
+    graph_contraction(edgeid){
+        let cc_list;
+
+        if(edgeid){
+            console.log(this.links_dict[edgeid])
+            cc_list = this.links_dict[edgeid].cc_list;
+            console.log(cc_list)
+            this.links.forEach(link=>{
+                let source_cc_idx = this.find_cc_idx(link.source.id, cc_list);
+                let target_cc_idx = this.find_cc_idx(link.target.id, cc_list);
+                if(source_cc_idx === target_cc_idx){
+                    link.distance = 10;
+                } else {
+                    link.distance = 100;
+                }
+
+            })
+
+        } else {
+            cc_list = [];
+            this.nodes.forEach(n=>{
+                cc_list.push([this.createId(n.id)]);
+            })
+            this.links.forEach(link=>{
                 link.distance = 100;
-            }
-        })
+            })
+        }
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
+        this.compute_simplified_hypergraph(cc_list);
 
-        this.compute_simplified_hypergraph();
+
     }
 
     graph_expansion(edge_id){
-        this.links_dict[edge_id].distance = 200;
+;        let source_cc = this.links_dict[edge_id].nodes_subsets.source_cc;
+        let target_cc = this.links_dict[edge_id].nodes_subsets.target_cc;
+        source_cc.forEach(snode=>{
+            target_cc.forEach(tnode=>{
+                let eid1 = this.createId(snode)+"-"+this.createId(tnode);
+                if(Object.keys(this.links_dict).indexOf(eid1)!=-1){
+                    this.links_dict[eid1].distance = 150;
+                }
+                let eid2 = this.createId(tnode)+"-"+this.createId(snode);
+                if(Object.keys(this.links_dict).indexOf(eid2)!=-1){
+                    this.links_dict[eid2].distance = 150;
+                }
+            })
+        })
+
+
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
     }
 
-    compute_simplified_hypergraph(){
+    compute_simplified_hypergraph(cc_list){
         let nodes_new = [];
         // merge nodes
-        for(let i=0; i<this.connected_components.length; i++){
-            let cc = this.connected_components[i];
+        for(let i=0; i<cc_list.length; i++){
+            let cc = cc_list[i];
             // each connected component is corresponding to a new node (hyper-edge)
             let node_new = {};
             node_new.vertices = [];
@@ -199,10 +247,10 @@ class Linegraph{
         this.simplified_hypergraph.construnct_bipartite_graph(nodes_new);
     }
 
-    find_cc_idx(vertex_id){
+    find_cc_idx(vertex_id, connected_components){
         // find the corresponding connected components of the given vertex
-        for(let i=0; i<this.connected_components.length; i++){
-            let cc = this.connected_components[i];
+        for(let i=0; i<connected_components.length; i++){
+            let cc = connected_components[i];
             if(cc.indexOf(this.createId(vertex_id))!=-1){
                 return i;
             }

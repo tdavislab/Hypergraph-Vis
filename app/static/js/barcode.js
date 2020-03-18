@@ -25,7 +25,9 @@ class Barcode{
             .attr('id', 'barcode_slider');
         
         this.draw_barcode();
-        this.linegraph.graph_contraction([])
+        this.linegraph.compute_simplified_hypergraph(this.linegraph.connected_components);
+        this.linegraph.assign_nodes_sets(this.barcode);
+
     }
 
     draw_barcode(){
@@ -93,10 +95,10 @@ class Barcode{
         }
 
         function dragended() {
-            let bars = that.extract_bars(width_scale.invert(d3.event.x));
-            // if(bars.length > 0){
-                that.linegraph.graph_contraction(bars);
-            // }
+            let threshold = width_scale.invert(d3.event.x);
+            that.linegraph.threshold = threshold;
+            let edgeid = that.extract_edgeid(threshold);
+            that.linegraph.graph_contraction(edgeid);
 
         }
 
@@ -108,19 +110,22 @@ class Barcode{
 
     }
 
-    extract_bars(threshold){
-        // extract bars with persistence < threshold
-        console.log(threshold)
-        let bars = [];
+    extract_edgeid(threshold){
+        // find out the longest bar with length < threshold
+        let edgeid;
         for(let i=0; i<this.barcode.length-1; i++){
             let bar = this.barcode[i];
-            if(bar.death < threshold && bar.death > 0){
-                bars.push(bar);
-            } 
+            let next_bar = this.barcode[i+1];
+            let bar_length = bar.death - bar.birth;
+            let next_bar_length = next_bar.death - next_bar.birth;
+            if(bar_length <= threshold && next_bar_length > threshold){
+                edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+                break;
+            } else if(bar_length <= threshold && next_bar.death < 0){
+                edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+            }
         }
-        return bars;
-
-
+        return edgeid;
     }
 
     createId(id){
