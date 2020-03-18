@@ -201,9 +201,12 @@ class Linegraph{
 
     }
 
-    graph_expansion(edge_id){
-;        let source_cc = this.links_dict[edge_id].nodes_subsets.source_cc;
+    graph_expansion(bar){
+        let edge_id = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+        let persistence = bar.death - bar.birth;
+        let source_cc = this.links_dict[edge_id].nodes_subsets.source_cc;
         let target_cc = this.links_dict[edge_id].nodes_subsets.target_cc;
+        console.log(source_cc, target_cc)
         source_cc.forEach(snode=>{
             target_cc.forEach(tnode=>{
                 let eid1 = this.createId(snode)+"-"+this.createId(tnode);
@@ -216,10 +219,58 @@ class Linegraph{
                 }
             })
         })
-
-
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
+
+        // for hyper-graph: split the corresponding hyperedge into two subsets u and v
+        if(persistence<this.threshold){
+            for(let i=0; i<this.simplified_hypergraph.hyperedges.length; i++){
+                let hedge = this.simplified_hypergraph.hyperedges[i];
+                if(hedge.cc.indexOf(source_cc[0])!=-1){
+                    this.simplified_hypergraph.hyperedges.splice(i,1);
+                    let source_node = {};
+                    source_node.vertices = [];
+                    source_node.id = "";
+                    source_node.index = this.simplified_hypergraph.length;
+                    source_node.cc = source_cc;
+                    source_cc.forEach(nId=>{
+                        let node = this.nodes_dict[nId];
+                        node.vertices.forEach(v=>{
+                            if(source_node.vertices.indexOf(v)===-1){
+                                source_node.vertices.push(v);
+                            }
+                        })
+                        source_node.id += node.id;
+                    })
+                    this.simplified_hypergraph.hyperedges.push(source_node);
+
+                    let remaining_cc = [];
+                    hedge.cc.forEach(nId=>{
+                        if(source_cc.indexOf(nId)===-1){
+                            remaining_cc.push(nId);
+                        }
+                    })
+
+                    let target_node = {};
+                    target_node.vertices = [];
+                    target_node.id = "";
+                    target_node.index = this.simplified_hypergraph.length;
+                    target_node.cc = remaining_cc;
+                    remaining_cc.forEach(nId=>{
+                        let node = this.nodes_dict[nId];
+                        node.vertices.forEach(v=>{
+                            if(target_node.vertices.indexOf(v)===-1){
+                                target_node.vertices.push(v);
+                            }
+                        })
+                        target_node.id += node.id;
+                    })
+                    this.simplified_hypergraph.hyperedges.push(target_node);
+                    break;
+                }
+            }
+            this.simplified_hypergraph.construnct_bipartite_graph(this.simplified_hypergraph.hyperedges);
+        }
     }
 
     compute_simplified_hypergraph(cc_list){
@@ -232,6 +283,7 @@ class Linegraph{
             node_new.vertices = [];
             node_new.id = ""; // **** TODO: might need a better way to assign id
             node_new.index = i;
+            node_new.cc = cc;
             cc.forEach(nId =>{
                 let node = this.nodes_dict[nId];
                 node.vertices.forEach(v=>{ 
@@ -243,7 +295,7 @@ class Linegraph{
             })
             nodes_new.push(node_new);
         }
-
+        this.simplified_hypergraph.hyperedges = nodes_new;
         this.simplified_hypergraph.construnct_bipartite_graph(nodes_new);
     }
 

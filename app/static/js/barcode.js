@@ -61,8 +61,10 @@ class Barcode{
             .classed("hover-darken", true)
             .on("click", d=>{
                 console.log(d)
-                let edge_id = this.createId(d.edge.source)+"-"+this.createId(d.edge.target);
-                this.linegraph.graph_expansion(edge_id);
+                // let edge_id = this.createId(d.edge.source)+"-"+this.createId(d.edge.target);
+                if(d.death > 0){
+                    this.linegraph.graph_expansion(d);
+                }
             });
 
         let xAxis = d3.axisBottom(width_scale).ticks(5);
