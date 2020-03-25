@@ -29,7 +29,18 @@
     font-size: 9px;
 }
 
-/* Radion */
+.ui-form-button {
+    border-radius: 3px;
+    overflow: hidden;
+    height:30px;
+    line-height: 0px;
+    font-size:12px;
+  }
+
+/* Radio */
+.ui-form-range {
+    padding-top: 10px;
+}
 
 .form-radio
 {
@@ -66,3 +77,51 @@
 {
   background-color: #f1f1f1;
 }
+
+/* Slider */
+.ui-form-range__label{
+    display: inline-block;
+    float: left;
+    font-size: 14px;
+}
+
+.ui-form-range__value{
+    font-size: 12px;
+    display: inline-block;
+    float: right;
+    padding: 3px 5px;
+    background-color: #e1e1e1;
+    border-radius: 3px;
+    width: 3em;
+    text-align: center;
+}
+
+.ui-form-range__input {
+    -webkit-appearance: none;
+    width: 95%;
+    height: 6px;
+    border-radius: 5px;  
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .ui-form-range__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; 
+    background: #4CAF50;
+    cursor: pointer;
+  }
+  
+  .ui-form-range__input::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+  }

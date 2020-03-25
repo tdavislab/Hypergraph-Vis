@@ -48,65 +48,63 @@
             </div>
             <div class="row">
                 <div class="col-md-6 outline">
-                    Simplified Line graph
-                    <div id='vis-simplified-linegraph' class="svg-container">
-                        <svg id="simplified-linegraph-svg"></svg>
-                    </div>
-                </div>
-                <div class="col-md-6 outline">
                     Simplified hypergraph
                     <div id='vis-simplified-hypergraph' class="svg-container">
                         <svg id="simplified-hypergraph-svg"></svg>
                     </div>
                 </div>
-                
-                            
+                <div class="col-md-6 outline">
+                    Simplified Line graph
+                    <div id='vis-simplified-linegraph' class="svg-container">
+                        <svg id="simplified-linegraph-svg"></svg>
+                    </div>
+                </div>        
             </div>
-                
-        
-                
         </div>
-        <div id="control-area" class="col-sm-2">
-            <h6>Control Panel</h6>
-            <!-- <div>
-                Import a dataset
-            </div> -->
-            <br>
-            <div id="files_group">
+        <div id="control-area" class="col-sm-2 control-container">
+            <div style="padding: 5px 5px">
+                <h6>Control Panel</h6>
+            </div>
+            <div id="files_group" class="control-block">
                 <div class="import-group">
                     <form method="post" id="upload" enctype="multipart/form-data" action="" >
                         <input type="file" style="display:none" id="files" name="files">
-                        <input type="button" class="btn btn-outline-primary" id="import" value="Import A Dataset">
+                        <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import" value="Import A Dataset" style="line-height:0px;">
                     </form>
                 </div>
             </div>
-            <br>
-            <div style="padding-bottom: 20px;">
-                    <input type="checkbox" id="hgraph-labels">Show labels</input>
-
+            <div style="padding-bottom: 20px;" class="control-block">
+                <input type="checkbox" id="hgraph-labels">Show labels</input>
             </div>
-            <div>
-            Hypergraph Visual Encoding
-            <div class="visual-encoding-group" style="padding-top:15px; padding-left:5px;">
-                <form id="visual-encoding-form">
-                    <div style="padding-left:0px; padding-right:15px">
-                        <input type="radio" class="form-radio" name="visual-type" value="bipartite" id="bipartite">
-                        <label for="bipartite" class="radio_label">Bipartite Graph</label>
-                    </div>
-                    <div style="padding-left:0px; padding-right:0px;">
-                        <input type="radio" class="form-radio" name="visual-type" value="convex" id="convex" checked="checked">
-                        <label for="convex" class="radio_label">Convex Hulls</label>
-                    </div>
-                </form>
+            <div class="control-block">
+                Hypergraph Visual Encoding
+                <div class="visual-encoding-group" style="padding-top:10px; padding-left:5px;">
+                    <form id="visual-encoding-form">
+                        <div style="padding-left:0px; padding-right:15px">
+                            <input type="radio" class="form-radio" name="visual-type" value="bipartite" id="bipartite">
+                            <label for="bipartite" class="radio_label">Bipartite Graph</label>
+                        </div>
+                        <div style="padding-left:0px; padding-right:0px;">
+                            <input type="radio" class="form-radio" name="visual-type" value="convex" id="convex" checked="checked">
+                            <label for="convex" class="radio_label">Convex Hulls</label>
+                        </div>
+                    </form>
+                </div>
             </div>
+            <div class="control-block" style="border-bottom: 1px solid rgb(224,224,224);">
+                Select Intersection Size
+                <div class="ui-form-range">
+                    <label class="ui-form-range__label">s</label>
+                    <span class="ui-form-range__value" id="s-walk_label">1</span>
+                    <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range" value="1" max="10" min="1" step="1">
+                    
+                </div>
+                <br>
+                <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_line_graph" value="Compute Line Graph" style="line-height:0px;">
             </div>
 
         </div>
-
-    </div>
-    
-
-   
+    </div> 
 </div>
 <!-- 
 <script type="text/javascript" src="js/draw_barcode.js"></script>

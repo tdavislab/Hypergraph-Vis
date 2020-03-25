@@ -62,10 +62,10 @@ class Linegraph{
 
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
-            .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2));
-            // .force("x", d3.forceX().strength(0.01))
-            // .force("y", d3.forceY().strength(0.01));
+            .force("charge", d3.forceManyBody(-200))
+            .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2))
+            .force("x", d3.forceX().strength(0.02))
+            .force("y", d3.forceY().strength(0.02));
 
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();
@@ -148,19 +148,21 @@ class Linegraph{
             this.connected_components.push([this.createId(n.id)]);
         })
 
-        for(let i=0; i<bars.length-1; i++){
-            // combine two connected components
-            let source_cc_idx = this.find_cc_idx(bars[i].edge.source, this.connected_components);
-            let target_cc_idx = this.find_cc_idx(bars[i].edge.target, this.connected_components);
-            let source_cc = this.connected_components[source_cc_idx].slice(0);
-            let target_cc = this.connected_components[target_cc_idx].slice(0);
-            this.combine_two_cc(source_cc_idx, target_cc_idx); 
-            let edge_id = this.createId(bars[i].edge.source)+"-"+this.createId(bars[i].edge.target);
-            this.links_dict[edge_id].nodes_subsets = {"source_cc":source_cc, "target_cc":target_cc};
-            this.links_dict[edge_id].cc_list = [];
-            this.connected_components.forEach(cc=>{
-                this.links_dict[edge_id].cc_list.push(cc.slice(0));
-            })
+        for(let i=0; i<bars.length; i++){
+            if(bars[i].death!=-1){
+                // combine two connected components
+                let source_cc_idx = this.find_cc_idx(bars[i].edge.source, this.connected_components);
+                let target_cc_idx = this.find_cc_idx(bars[i].edge.target, this.connected_components);
+                let source_cc = this.connected_components[source_cc_idx].slice(0);
+                let target_cc = this.connected_components[target_cc_idx].slice(0);
+                this.combine_two_cc(source_cc_idx, target_cc_idx); 
+                let edge_id = this.createId(bars[i].edge.source)+"-"+this.createId(bars[i].edge.target);
+                this.links_dict[edge_id].nodes_subsets = {"source_cc":source_cc, "target_cc":target_cc};
+                this.links_dict[edge_id].cc_list = [];
+                this.connected_components.forEach(cc=>{
+                    this.links_dict[edge_id].cc_list.push(cc.slice(0));
+                })
+            }
         }
         console.log(this.links)
 
@@ -324,6 +326,8 @@ class Linegraph{
     }
 
     createId(id){
-        return id.replace(/[^a-zA-Z0-9]/g, "")
+        if(id){
+            return id.replace(/[^a-zA-Z0-9]/g, "")
+        }
     }
 }

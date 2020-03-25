@@ -8,16 +8,10 @@ d3.select("#files")
         let fileReader = new FileReader();
         fileReader.onload = function(fileLoadedEvent) {
             let textFromFileLoaded = fileLoadedEvent.target.result;
-            let form = $('#upload')[0];
-            let content = new FormData(form);
             $.ajax({
                 type: "POST",
-                // enctype: "application/x-www-form-urlencoded",
                 url: "/import",
                 data: textFromFileLoaded,
-                // processData: false, //prevent jQuery from automatically transforming the data into a query string
-                // contentType: false,
-                // cache: false,
                 dataType:'text',
                 success: function (response) {
                     // console.log(response)
@@ -39,11 +33,41 @@ d3.select("#files")
         // console.log(data)
     })
 
-async function loadData() {
-    // let hyper_data = await d3.json('data/hypergraph.json');
-    // let line_data = await d3.json('data/linegraph.json');
-    // let barcode_data = await d3.json('data/barcode.json');
+// get s value
+let s_value_slider = document.getElementById("s-walk_input");
+var s_value = 1;
+s_value_slider.oninput = function(){
+    s_value = this.value;
+    d3.select("#s-walk_label")
+        .html(this.value);
+}
 
+d3.select("#compute_line_graph")
+    .on("click", ()=>{
+        console.log(s_value)
+        $.ajax({
+            type: "POST",
+            url: "/recompute",
+            data: String(s_value),
+            dataType:'text',
+            success: function (response) {
+                console.log(response)
+                response = JSON.parse(response);
+                let hyper_data = response.hyper_data;
+                let line_data = response.line_data;
+                let barcode_data = response.barcode_data;
+                let data = {"hyper_data":hyper_data, "line_data":line_data, "barcode_data":barcode_data}
+                console.log(data)
+                initialize_data(data);
+            },
+            error: function (error) {
+                console.log("error",error);
+            }
+        });
+
+    })
+
+async function loadData() {
     let hyper_data = await d3.json('static/uploads/hypergraph.json');
     let line_data = await d3.json('static/uploads/linegraph.json');
     let barcode_data = await d3.json('static/uploads/barcode.json');
@@ -55,18 +79,9 @@ async function loadData() {
 }
 
 function initialize_data(data) {
-    $('#barcode-svg').remove();
-    $('#hypergraph-svg').remove();
-    $('#linegraph-svg').remove();
-    $('#simplified-hypergraph-svg').remove();
-    $('#simplified-linegraph-svg').remove();
-    $('#vis-barcode').append('<svg id="barcode-svg"></svg>');
-    $('#vis-hypergraph').append('<svg id="hypergraph-svg"></svg>');
-    $('#vis-linegraph').append('<svg id="linegraph-svg"></svg>');
-    $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-    $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-
     console.log(data)
+
+    clear_canvas();
 
     let line_nodes_new = [];
     let line_links_new = [];
@@ -102,6 +117,23 @@ function initialize_data(data) {
                 d3.select("#simplified-hull-group").style("visibility","visible");
             }
         })
+}
+
+function clear_canvas(){
+    $('#barcode-svg').remove();
+    $('#hypergraph-svg').remove();
+    $('#linegraph-svg').remove();
+    $('#simplified-hypergraph-svg').remove();
+    $('#simplified-linegraph-svg').remove();
+    $('#vis-barcode').append('<svg id="barcode-svg"></svg>');
+    $('#vis-hypergraph').append('<svg id="hypergraph-svg"></svg>');
+    $('#vis-linegraph').append('<svg id="linegraph-svg"></svg>');
+    $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+    $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
+}
+
+function createId(id){
+    return id.replace(/[^a-zA-Z0-9]/g, "")
 }
 
 loadData().then(data=>{

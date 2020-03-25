@@ -40,16 +40,14 @@ def process_hypergraph(hyper_data: str):
         # The name and graph are separated by '='
         graph_name, graph_dict = file_contents[i].split('=')
         graph_dict = process_graph_edges(graph_dict)
-        # print(graph_name)
-        # print(graph_dict)
         # hgraphs.append({'graph_dict':graph_dict, 'graph_name':graph_name})
         hgraphs.append(hnx.Hypergraph(graph_dict, name=graph_name))
     # print(hgraphs)
 
     return hgraphs
 
-def convert_to_line_graph(hypergraph):
-    print(hypergraph)
+def convert_to_line_graph(hypergraph, s=1):
+    # print(hypergraph)
     # Line-graph is a NetworkX graph
     line_graph = nx.Graph()
 
@@ -67,7 +65,8 @@ def convert_to_line_graph(hypergraph):
             vertices2 = hypergraph.edges[node2].elements
             # Compute the intersection size
             intersection_size = len(set(vertices1) & set(vertices2))
-            if intersection_size > 0:
+            if intersection_size >= s:
+                # print(intersection_size)
                 line_graph.add_edge(node1, node2, intersection_size=str(intersection_size))
     line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
     return line_graph
@@ -75,7 +74,6 @@ def convert_to_line_graph(hypergraph):
 def write_d3_graph(graph, path):
     # Write to d3 like graph format
     node_link_json = nx.readwrite.json_graph.node_link_data(graph)
-    # print(node_link_json)
     with open(path, 'w') as f:
         f.write(json.dumps(node_link_json, indent=4))
 
@@ -121,21 +119,39 @@ def index():
 @app.route('/import', methods=['POST','GET'])
 def import_file():
     jsdata = request.get_data().decode('utf-8')
+    with open(path.join(APP_STATIC,"uploads/current_hypergraph.txt"),'w') as f:
+        f.write(jsdata)
+    f.close()
     hgraphs = process_hypergraph(jsdata)
     hgraph = hgraphs[0]
-    # lgraph = convert_to_line_graph(hnx.Hypergraph(hgraph['graph_dict'], name=hgraph['graph_name']))
     lgraph = convert_to_line_graph(hgraph)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
-    # write_d3_graph(hgraph.bipartite(), path.join(APP_STATIC,"uploads/hypergraph.json"))
-    # write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/linegraph.json"))
     barcode = compute_barcode(lgraph)
+
+    # write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/linegraph.json"))
     # with open(path.join(APP_STATIC,"uploads/barcode.json"), 'w') as f:
         # f.write(json.dumps({'barcode': barcode}, indent=4))
     # filename = path.join(APP_STATIC,"assets/",jsdata.filename)
     # with open(filename) as f:
     #     data = json.load(f)
     # f.close()
-    print(barcode)
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+
+@app.route('/recompute', methods=['POST','GET'])
+def recompute():
+    """
+    Given an s value, recompute the line graph and the barcode.
+    """
+    s = request.get_data().decode('utf-8')
+    s = int(s)
+    with open(path.join(APP_STATIC,"uploads/current_hypergraph.txt"),'r') as f:
+        hgraph_data = f.read()
+    f.close()
+    hgraph = process_hypergraph(hgraph_data)[0]
+    lgraph = convert_to_line_graph(hgraph, s=s)
+    barcode = compute_barcode(lgraph)
+    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+
 
 
