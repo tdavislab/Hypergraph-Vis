@@ -29,7 +29,6 @@ def process_graph_edges(edge_str: str):
 
 
 def process_hypergraph(hyper_data: str):
-    print(hyper_data)
     hgraph = {}
     for line in hyper_data.split("\n"):
         line = line.rstrip().rsplit(',')
