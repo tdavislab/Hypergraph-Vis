@@ -1,4 +1,4 @@
-from flask import render_template,request, url_for, jsonify, redirect, Response, send_from_directory
+from flask import render_template, request, url_for, jsonify, redirect, Response, send_from_directory
 from app import app
 from app import APP_STATIC
 from app import APP_ROOT
@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from tqdm import tqdm
 from os import path
+
 
 def process_graph_edges(edge_str: str):
     """
@@ -26,8 +27,8 @@ def process_graph_edges(edge_str: str):
     converted_edge_str = edge_str[1:-1].replace('{', '[').replace('}', ']')
     return json.loads('{' + converted_edge_str + '}')
 
-def process_hypergraph(hyper_data: str):
 
+def process_hypergraph(hyper_data: str):
     hgraphs = []
 
     # Separate the hypergraphs based on this regex:
@@ -45,6 +46,23 @@ def process_hypergraph(hyper_data: str):
     # print(hgraphs)
 
     return hgraphs
+
+
+def process_hypergraph_from_csv(graph_file: str):
+    hgraph = {}
+
+    with open(graph_file, 'r') as gfile:
+        for line in gfile:
+            line = line.rstrip().rsplit(',')
+            hyperedge, vertices = line[0], line[1:]
+
+            if hyperedge not in hgraph.keys():
+                hgraph[hyperedge] = vertices
+            else:
+                hgraph[hyperedge] += vertices
+
+    return hgraph
+
 
 def convert_to_line_graph(hypergraph, s=1):
     # print(hypergraph)
@@ -71,20 +89,23 @@ def convert_to_line_graph(hypergraph, s=1):
     line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
     return line_graph
 
+
 def write_d3_graph(graph, path):
     # Write to d3 like graph format
     node_link_json = nx.readwrite.json_graph.node_link_data(graph)
     with open(path, 'w') as f:
         f.write(json.dumps(node_link_json, indent=4))
 
+
 def find_cc_index(components, vertex_id):
     for i in range(len(components)):
         if vertex_id in components[i]:
             return i
 
+
 def compute_barcode(graph_data):
     # with open(graph_path) as json_file:
-        # data = json.load(json_file)
+    # data = json.load(json_file)
     nodes = graph_data['nodes']
     links = graph_data['links']
     components = []
@@ -116,14 +137,15 @@ def compute_barcode(graph_data):
 def index():
     return render_template('HyperVis.html')
 
-@app.route('/import', methods=['POST','GET'])
+
+@app.route('/import', methods=['POST', 'GET'])
 def import_file():
     jsdata = request.get_data().decode('utf-8')
     if jsdata == "hypergraph_samples":
-        with open(path.join(APP_STATIC,"uploads/hypergraph_samples.txt"),'r') as f:
+        with open(path.join(APP_STATIC, "uploads/hypergraph_samples.txt"), 'r') as f:
             jsdata = f.read()
         f.close()
-    with open(path.join(APP_STATIC,"uploads/current_hypergraph.txt"),'w') as f:
+    with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'w') as f:
         f.write(jsdata)
     f.close()
     hgraph = process_hypergraph(jsdata)[0]
@@ -133,21 +155,22 @@ def import_file():
 
     # write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/linegraph.json"))
     # with open(path.join(APP_STATIC,"uploads/barcode.json"), 'w') as f:
-        # f.write(json.dumps({'barcode': barcode}, indent=4))
+    # f.write(json.dumps({'barcode': barcode}, indent=4))
     # filename = path.join(APP_STATIC,"assets/",jsdata.filename)
     # with open(filename) as f:
     #     data = json.load(f)
     # f.close()
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
 
-@app.route('/recompute', methods=['POST','GET'])
+
+@app.route('/recompute', methods=['POST', 'GET'])
 def recompute():
     """
     Given an s value, recompute the line graph and the barcode.
     """
     s = request.get_data().decode('utf-8')
     s = int(s)
-    with open(path.join(APP_STATIC,"uploads/current_hypergraph.txt"),'r') as f:
+    with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'r') as f:
         hgraph_data = f.read()
     f.close()
     hgraph = process_hypergraph(hgraph_data)[0]
@@ -155,6 +178,3 @@ def recompute():
     barcode = compute_barcode(lgraph)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
-
-
-
