@@ -29,23 +29,36 @@ def process_graph_edges(edge_str: str):
 
 
 def process_hypergraph(hyper_data: str):
-    hgraphs = []
+    print(hyper_data)
+    hgraph = {}
+    for line in hyper_data.split("\n"):
+        line = line.rstrip().rsplit(',')
+        hyperedge, vertices = line[0], line[1:]
 
-    # Separate the hypergraphs based on this regex:
-    # newline followed by one or more whitespace followed by newline
-    file_contents = re.split(r'\n\s+\n', hyper_data)
+        if hyperedge not in hgraph.keys():
+            hgraph[hyperedge] = vertices
+        else:
+            hgraph[hyperedge] += vertices
 
-    num_hgraphs = len(file_contents)
+    return hnx.Hypergraph(hgraph)
 
-    for i in tqdm(range(0, num_hgraphs)):
-        # The name and graph are separated by '='
-        graph_name, graph_dict = file_contents[i].split('=')
-        graph_dict = process_graph_edges(graph_dict)
-        # hgraphs.append({'graph_dict':graph_dict, 'graph_name':graph_name})
-        hgraphs.append(hnx.Hypergraph(graph_dict, name=graph_name))
-    # print(hgraphs)
-
-    return hgraphs
+    # hgraphs = []
+    #
+    # # Separate the hypergraphs based on this regex:
+    # # newline followed by one or more whitespace followed by newline
+    # file_contents = re.split(r'\n\s+\n', hyper_data)
+    #
+    # num_hgraphs = len(file_contents)
+    #
+    # for i in tqdm(range(0, num_hgraphs)):
+    #     # The name and graph are separated by '='
+    #     graph_name, graph_dict = file_contents[i].split('=')
+    #     graph_dict = process_graph_edges(graph_dict)
+    #     # hgraphs.append({'graph_dict':graph_dict, 'graph_name':graph_name})
+    #     hgraphs.append(hnx.Hypergraph(graph_dict, name=graph_name))
+    # # print(hgraphs)
+    #
+    # return hgraphs
 
 
 def process_hypergraph_from_csv(graph_file: str):
@@ -60,7 +73,6 @@ def process_hypergraph_from_csv(graph_file: str):
                 hgraph[hyperedge] = vertices
             else:
                 hgraph[hyperedge] += vertices
-
     return hgraph
 
 
@@ -148,7 +160,7 @@ def import_file():
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'w') as f:
         f.write(jsdata)
     f.close()
-    hgraph = process_hypergraph(jsdata)[0]
+    hgraph = process_hypergraph(jsdata)
     lgraph = convert_to_line_graph(hgraph)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     barcode = compute_barcode(lgraph)
@@ -173,7 +185,7 @@ def recompute():
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'r') as f:
         hgraph_data = f.read()
     f.close()
-    hgraph = process_hypergraph(hgraph_data)[0]
+    hgraph = process_hypergraph(hgraph_data)
     lgraph = convert_to_line_graph(hgraph, s=s)
     barcode = compute_barcode(lgraph)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())

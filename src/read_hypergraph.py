@@ -22,6 +22,22 @@ def process_graph_edges(edge_str: str):
     return json.loads('{' + converted_edge_str + '}')
 
 
+def process_hypergraph_from_csv(graph_file: str):
+    hgraph = {}
+
+    with open(graph_file, 'r') as gfile:
+        for line in gfile:
+            line = line.rstrip().rsplit(',')
+            hyperedge, vertices = line[0], line[1:]
+
+            if hyperedge not in hgraph.keys():
+                hgraph[hyperedge] = vertices
+            else:
+                hgraph[hyperedge] += vertices
+
+    return hnx.Hypergraph(hgraph)
+
+
 def read_hypergraph(filepath: str):
     """
     Read one or more hypergraphs from a txt file with a part-json like format
@@ -128,20 +144,24 @@ if __name__ == '__main__':
 
     # graph_file = '../data/bad_hypergraphs/bad_hallmark_hypergraphs.txt'
     # graph_file = '../data/somemorehypergraphs/DNS_hypergraph_samples.txt'
-    graph_file = '../data/lesmis/lesmis.txt'
-    hgraphs = read_hypergraph(graph_file)
-    hgraph = hgraphs[0]
+    # graph_file = '../data/lesmis/lesmis.txt'
+    # graph_file = '../data/csv_data/dummy.csv'
+    graph_file = '../app/static/uploads/hypergraph_samples.txt'
+    # hgraphs = read_hypergraph(graph_file)
+    hgraphs = process_hypergraph_from_csv(graph_file)
+    hgraph = hgraphs
     lgraph = convert_to_line_graph(hgraph)
+    print(hgraph)
 
     plt.figure()
     hnx.draw(hgraph, with_node_labels=False, with_edge_labels=False)
     plt.figure()
     nx.draw(lgraph)
-
-    write_d3_graph(hgraph.bipartite(), '../web_components/data/hypergraph_lesmis.json')
-    write_d3_graph(convert_to_line_graph(hgraph), '../web_components/data/linegraph_lesmis.json')
     plt.show()
-
-    barcode = compute_barcode('../web_components/data/linegraph_lesmis.json')
-    with open('../web_components/data/barcode_lesmis.json', 'w') as f:
-        f.write(json.dumps({'barcode': barcode}, indent=4))
+    # write_d3_graph(hgraph.bipartite(), '../web_components/data/hypergraph_lesmis.json')
+    # write_d3_graph(convert_to_line_graph(hgraph), '../web_components/data/linegraph_lesmis.json')
+    # plt.show()
+    #
+    # barcode = compute_barcode('../web_components/data/linegraph_lesmis.json')
+    # with open('../web_components/data/barcode_lesmis.json', 'w') as f:
+    #     f.write(json.dumps({'barcode': barcode}, indent=4))
