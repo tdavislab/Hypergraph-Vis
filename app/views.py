@@ -119,11 +119,14 @@ def index():
 @app.route('/import', methods=['POST','GET'])
 def import_file():
     jsdata = request.get_data().decode('utf-8')
+    if jsdata == "hypergraph_samples":
+        with open(path.join(APP_STATIC,"uploads/hypergraph_samples.txt"),'r') as f:
+            jsdata = f.read()
+        f.close()
     with open(path.join(APP_STATIC,"uploads/current_hypergraph.txt"),'w') as f:
         f.write(jsdata)
     f.close()
-    hgraphs = process_hypergraph(jsdata)
-    hgraph = hgraphs[0]
+    hgraph = process_hypergraph(jsdata)[0]
     lgraph = convert_to_line_graph(hgraph)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     barcode = compute_barcode(lgraph)

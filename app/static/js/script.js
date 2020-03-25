@@ -1,3 +1,6 @@
+// Initialization 
+read_hgraph_text("hypergraph_samples");
+
 $("#import").click(function(){
     $("#files").click();
 });
@@ -8,26 +11,7 @@ d3.select("#files")
         let fileReader = new FileReader();
         fileReader.onload = function(fileLoadedEvent) {
             let textFromFileLoaded = fileLoadedEvent.target.result;
-            $.ajax({
-                type: "POST",
-                url: "/import",
-                data: textFromFileLoaded,
-                dataType:'text',
-                success: function (response) {
-                    // console.log(response)
-                    response = JSON.parse(response);
-                    let hyper_data = response.hyper_data;
-                    let line_data = response.line_data;
-                    let barcode_data = response.barcode_data;
-                    let data = {"hyper_data":hyper_data, "line_data":line_data, "barcode_data":barcode_data}
-                    console.log(data)
-                    initialize_data(data);
-                },
-                error: function (error) {
-                    console.log("error",error);
-                }
-            });
-
+            read_hgraph_text(textFromFileLoaded);
         }
         fileReader.readAsText(files, "UTF-8");
         // console.log(data)
@@ -44,20 +28,17 @@ s_value_slider.oninput = function(){
 
 d3.select("#compute_line_graph")
     .on("click", ()=>{
-        console.log(s_value)
         $.ajax({
             type: "POST",
             url: "/recompute",
             data: String(s_value),
             dataType:'text',
             success: function (response) {
-                console.log(response)
                 response = JSON.parse(response);
                 let hyper_data = response.hyper_data;
                 let line_data = response.line_data;
                 let barcode_data = response.barcode_data;
                 let data = {"hyper_data":hyper_data, "line_data":line_data, "barcode_data":barcode_data}
-                console.log(data)
                 initialize_data(data);
             },
             error: function (error) {
@@ -67,15 +48,25 @@ d3.select("#compute_line_graph")
 
     })
 
-async function loadData() {
-    let hyper_data = await d3.json('static/uploads/hypergraph.json');
-    let line_data = await d3.json('static/uploads/linegraph.json');
-    let barcode_data = await d3.json('static/uploads/barcode.json');
-    return {
-        'hyper_data': hyper_data,
-        'line_data': line_data,
-        'barcode_data': barcode_data.barcode
-    };
+function read_hgraph_text(text_data){
+    $.ajax({
+        type: "POST",
+        url: "/import",
+        data: text_data,
+        dataType:'text',
+        success: function (response) {
+            // console.log(response)
+            response = JSON.parse(response);
+            let hyper_data = response.hyper_data;
+            let line_data = response.line_data;
+            let barcode_data = response.barcode_data;
+            let data = {"hyper_data":hyper_data, "line_data":line_data, "barcode_data":barcode_data}
+            initialize_data(data);
+        },
+        error: function (error) {
+            console.log("error",error);
+        }
+    });
 }
 
 function initialize_data(data) {
@@ -135,7 +126,3 @@ function clear_canvas(){
 function createId(id){
     return id.replace(/[^a-zA-Z0-9]/g, "")
 }
-
-loadData().then(data=>{
-    initialize_data(data);
-})
