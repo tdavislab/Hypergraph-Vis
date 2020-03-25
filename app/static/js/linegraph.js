@@ -17,9 +17,6 @@ class Linegraph{
 
         console.log(this.links, this.nodes);
 
-        this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-        this.colorScale.domain(this.nodes.map(d => d.id));
-
         this.container_width = parseFloat(d3.select('#vis-'+id).style('width'))
 
         this.svg_width = this.container_width;
@@ -74,7 +71,7 @@ class Linegraph{
             .attr("r", node_radius)
             .attr("stroke", "#fff")
             .attr("stroke-width", 4)
-            .attr("fill", d => this.colorScale(d.id))
+            .attr("fill", d => d.color)
             .attr("id", d => "linegraph-"+this.createId(d.id));
         
         let lg = this.links_group.selectAll("line").data(this.links);
@@ -100,8 +97,9 @@ class Linegraph{
 
         // Drag functions
         // d is the node
+        let that = this;
         function drag_start(d) {
-            if (!d3.event.active) this.simulation.alphaTarget(0.3).restart();
+            if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
@@ -113,12 +111,11 @@ class Linegraph{
         }
 
         function drag_end(d) {
-            if (!d3.event.active) this.simulation.alphaTarget(0);
+            if (!d3.event.active) that.simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
         }
 
-        let that = this;
         //Zoom functions
         function zoom_actions() {
             that.svg_g.attr("transform", d3.event.transform);
@@ -234,6 +231,7 @@ class Linegraph{
                     source_node.vertices = [];
                     source_node.id = "";
                     source_node.index = this.simplified_hypergraph.length;
+                    source_node.color = this.nodes_dict[source_cc[0]].color;
                     source_node.cc = source_cc;
                     source_cc.forEach(nId=>{
                         let node = this.nodes_dict[nId];
@@ -257,6 +255,7 @@ class Linegraph{
                     target_node.vertices = [];
                     target_node.id = "";
                     target_node.index = this.simplified_hypergraph.length;
+                    target_node.color = this.nodes_dict[target_cc[0]].color;
                     target_node.cc = remaining_cc;
                     remaining_cc.forEach(nId=>{
                         let node = this.nodes_dict[nId];
@@ -286,6 +285,7 @@ class Linegraph{
             node_new.id = ""; // **** TODO: might need a better way to assign id
             node_new.index = i;
             node_new.cc = cc;
+            node_new.color = this.nodes_dict[cc[0]].color;
             cc.forEach(nId =>{
                 let node = this.nodes_dict[nId];
                 node.vertices.forEach(v=>{ 

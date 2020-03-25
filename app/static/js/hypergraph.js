@@ -5,8 +5,8 @@ class Hypergraph{
 
         console.log(this.links, this.nodes)
 
-        this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-        this.colorScale.domain(hyper_data.nodes.map(d => d.id));
+        this.nodes_dict = {};
+        this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
 
         this.container_width = parseFloat(d3.select('#vis-hypergraph').style('width'));
 
@@ -54,7 +54,8 @@ class Hypergraph{
         ng = ng.enter().append("g").merge(ng);
         ng.append("circle")
             .attr("r", node_radius)
-            .attr("fill", d => d["bipartite"] === 1 ? this.colorScale(d.id) : "") // only color nodes that representing hyper-edges
+            // .attr("fill", d => d["bipartite"] === 1 ? this.colorScale(d.id) : "") // only color nodes that representing hyper-edges
+            .attr("fill", d => d["bipartite"] === 1 ? d.color : "")
             // .attr("stroke", d => d["bipartite"] === 1 ? "#fff" : "")
             .attr("stroke", "lightgrey")
             .attr("stroke-width", d => d["bipartite"] === 1 ? 5 : 2)
@@ -139,8 +140,8 @@ class Hypergraph{
 
             hulls.enter()
                 .insert("path")
-                .style("fill", d => this.colorScale(d.key))
-                .style("stroke", d => this.colorScale   (d.key))
+                .style("fill", d =>this.nodes_dict[d.key].color)
+                .style("stroke", d => this.nodes_dict[d.key].color)
                 .style("stroke-width", 40)
                 .style("stroke-linejoin", "round")
                 .style("opacity", 0.5)

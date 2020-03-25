@@ -14,5 +14,7 @@ python3 run.py
 
 You can view the page at http://0.0.0.0:6060/ (If possible, please use Chrome).
 
+If `python3 run.py` does not work, please try `python -m flask run`.
+
 ## Live demo
 https://vis-hypergraph.herokuapp.com/

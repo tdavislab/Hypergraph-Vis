@@ -27,6 +27,7 @@ class Simplified_Hypergraph{
             let node_hv = {};
             node_hv.bipartite = 1;
             node_hv.id = hv.id;
+            node_hv.color = hv.color;
             hyper_nodes.push(node_hv);
             hv.vertices.forEach(v=>{
                 let node_v = {};
@@ -53,6 +54,8 @@ class Simplified_Hypergraph{
         console.log(hyper_edges)
         this.nodes = hyper_nodes;
         this.links = hyper_edges;
+        this.nodes_dict = {};
+        this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
         this.draw_hypergraph();
     }
 
@@ -69,9 +72,6 @@ class Simplified_Hypergraph{
     }
 
     draw_hypergraph(){
-        this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-        this.colorScale.domain(this.nodes.map(d => d.id));
-
         let node_radius = 8;
 
         let simulation = d3.forceSimulation(this.nodes)
@@ -86,7 +86,7 @@ class Simplified_Hypergraph{
         ng = ng.enter().append("g").merge(ng);
         ng.append("circle")
             .attr("r", node_radius)
-            .attr("fill", d => d["bipartite"] === 1 ? this.colorScale(d.id) : "") // only color nodes that representing hyper-edges
+            .attr("fill", d => d["bipartite"] === 1 ? d.color : "") // only color nodes that representing hyper-edges
             // .attr("stroke", d => d["bipartite"] === 1 ? "#fff" : "")
             .attr("stroke", "lightgrey")
             .attr("stroke-width", d => d["bipartite"] === 1 ? 5 : 2)
@@ -171,8 +171,8 @@ class Simplified_Hypergraph{
 
             hulls.enter()
                 .insert("path")
-                .style("fill", d => this.colorScale(d.key))
-                .style("stroke", d => this.colorScale   (d.key))
+                .style("fill", d => this.nodes_dict[d.key].color)
+                .style("stroke", d => this.nodes_dict[d.key].color)
                 .style("stroke-width", 40)
                 .style("stroke-linejoin", "round")
                 .style("opacity", 0.5)

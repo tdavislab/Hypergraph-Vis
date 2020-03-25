@@ -42,7 +42,10 @@ class Barcode{
         this.svg_height = barcode_height * (this.barcode.length+1) + this.svg_margin.top + this.svg_margin.bottom;
         this.svg.attr("height", this.svg_height);
 
-        this.svg.attr("transform", "translate(0,"+(this.container_height-this.svg_height)/3+")");
+        if(this.svg_height < this.container_height){
+            this.svg.attr("transform", "translate(0,"+(this.container_height-this.svg_height)/3+")");
+        }
+        
 
         let bg = this.barcode_group.selectAll('rect').data(this.barcode);
         bg.exit().remove();
@@ -115,16 +118,18 @@ class Barcode{
     extract_edgeid(threshold){
         // find out the longest bar with length < threshold
         let edgeid;
-        for(let i=0; i<this.barcode.length-1; i++){
+        for(let i=0; i<this.barcode.length; i++){
             let bar = this.barcode[i];
-            let next_bar = this.barcode[i+1];
-            let bar_length = bar.death - bar.birth;
-            let next_bar_length = next_bar.death - next_bar.birth;
-            if(bar_length <= threshold && next_bar_length > threshold){
-                edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
-                break;
-            } else if(bar_length <= threshold && next_bar.death < 0){
-                edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+            if(bar.death > 0){
+                let next_bar = this.barcode[i+1];
+                let bar_length = bar.death - bar.birth;
+                let next_bar_length = next_bar.death - next_bar.birth;
+                if(bar_length <= threshold && next_bar_length > threshold){
+                    edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+                    break;
+                } else if(bar_length <= threshold && next_bar.death < 0){
+                    edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+                }
             }
         }
         return edgeid;

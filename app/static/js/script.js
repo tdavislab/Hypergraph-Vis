@@ -34,11 +34,7 @@ d3.select("#compute_line_graph")
             data: String(s_value),
             dataType:'text',
             success: function (response) {
-                response = JSON.parse(response);
-                let hyper_data = response.hyper_data;
-                let line_data = response.line_data;
-                let barcode_data = response.barcode_data;
-                let data = {"hyper_data":hyper_data, "line_data":line_data, "barcode_data":barcode_data}
+                let data = process_response(response);
                 initialize_data(data);
             },
             error: function (error) {
@@ -55,18 +51,51 @@ function read_hgraph_text(text_data){
         data: text_data,
         dataType:'text',
         success: function (response) {
-            // console.log(response)
-            response = JSON.parse(response);
-            let hyper_data = response.hyper_data;
-            let line_data = response.line_data;
-            let barcode_data = response.barcode_data;
-            let data = {"hyper_data":hyper_data, "line_data":line_data, "barcode_data":barcode_data}
+            let data = process_response(response);
             initialize_data(data);
         },
         error: function (error) {
             console.log("error",error);
         }
     });
+}
+
+function process_response(response){
+    response = JSON.parse(response);
+    let hyper_data = response.hyper_data;
+    let line_data = response.line_data;
+    let barcode_data = response.barcode_data;
+    let data = {"hyper_data":hyper_data, "line_data":line_data, "barcode_data":barcode_data};
+    // create_graph_id(data);
+    assign_hyperedge_colors(data);
+    return data;
+}
+
+// function create_graph_id(data){
+//     let id_dict = {};
+//     for(let i=0; i<data.hyper_data.nodes.length; i++){
+//         let node = data.hyper_data.nodes[i];
+//         if(node.bipartite === 1){
+//             node.graph_id = "he"+i;
+//             id_dict[createId(node.id)] = graph_id;
+//         }
+//     }
+// }
+
+function assign_hyperedge_colors(data){
+    let color_dict = {};
+    let colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(data.hyper_data.nodes.map(d => d.id));
+    data.hyper_data.nodes.forEach(node=>{
+        if(node.bipartite === 1){
+            let c = colorScale(node.id)
+            node.color = c;
+            color_dict[node.id] = c;
+        }
+    })
+    data.line_data.nodes.forEach(node=>{
+        let c = color_dict[node.id];
+        node.color = c;
+    })
 }
 
 function initialize_data(data) {
@@ -81,6 +110,7 @@ function initialize_data(data) {
         node_new.vertices = n.vertices.slice(0);
         node_new.id = n.id;
         node_new.index = n.index;
+        node_new.color = n.color;
         line_nodes_new.push(node_new);
     })
     data.line_data.links.forEach(l=>{
