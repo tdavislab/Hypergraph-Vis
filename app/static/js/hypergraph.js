@@ -28,12 +28,15 @@ class Hypergraph{
     }
 
     groupPath(vertices) {
-        if (vertices.length <= 2) {
-            let fake_point1 = vertices[0];
-            let fake_point2 = vertices[1];
-            vertices.push(fake_point1, fake_point2);
+        // not draw convex hull if vertices.length <= 1
+        if(vertices.length >= 2){
+            if (vertices.length == 2) {
+                let fake_point1 = vertices[0];
+                let fake_point2 = vertices[1];
+                vertices.push(fake_point1, fake_point2);
+            }
+            return "M" + d3.polygonHull(vertices).join("L") + "Z";
         }
-        return "M" + d3.polygonHull(vertices).join("L") + "Z";
     }
 
     draw_hypergraph(){
