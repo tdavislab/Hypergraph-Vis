@@ -146,10 +146,12 @@ function clear_canvas(){
     $('#linegraph-svg').remove();
     $('#simplified-hypergraph-svg').remove();
     $('#simplified-linegraph-svg').remove();
+    // $('#help-tip').remove();
     $('#vis-barcode').append('<svg id="barcode-svg"></svg>');
     $('#vis-hypergraph').append('<svg id="hypergraph-svg"></svg>');
     $('#vis-linegraph').append('<svg id="linegraph-svg"></svg>');
     $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+    // $('#vis-simplified-hypergraph').append('<div class="help-tip" style="opacity: 0;" id="help-tip"></div>');
     $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
 }
 

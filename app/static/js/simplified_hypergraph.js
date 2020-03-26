@@ -54,8 +54,13 @@ class Simplified_Hypergraph{
         console.log(hyper_edges)
         this.nodes = hyper_nodes;
         this.links = hyper_edges;
+        this.hyperedges = hyperedges;
         this.nodes_dict = {};
         this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
+        this.hyperedges_dict = {};
+        this.hyperedges.forEach(he=>{
+            this.hyperedges_dict[he.id] = he;
+        })
         this.draw_hypergraph();
     }
 
@@ -177,7 +182,38 @@ class Simplified_Hypergraph{
                 .style("stroke-linejoin", "round")
                 .style("opacity", 0.5)
                 // .style("visibility","hidden")
+                .attr("id", d=> "simplified-hull"+this.createId(d.key))
                 .attr("d", d => this.groupPath(d.value))
+                .on("mouseover", d=>{
+                    let cc = that.hyperedges_dict[d.key].cc;
+                    let div_text = '';
+                    cc.forEach(nId=>{
+                        d3.select("#hull"+that.createId(nId)).style("opacity", 0.8);
+                        div_text += nId+"<br> "
+                    })
+                    d3.select("#simplified-hull"+that.createId(d.key)).style("opacity", 0.8)
+                    let div = d3.select("#help-tip")
+                    // let current_element = d3.select("#simplified-hull"+that.createId(d.key))
+                    // console.log(current_element)
+                    div.transition()		
+                        .duration(200)		
+                        .style("opacity", .9);		
+                    div	.html("<h6>Selected Hyperedges</h6>"+div_text)
+                        // .attr("transform", "translate("+d3.event.pageX+","+(d3.event.pageY - 28)+")")	
+                        // .style("left", d3.mouse(this)[0])		
+                        // .style("top", d3.mouse(this)[1]);	
+                })
+                .on("mouseout", d=>{
+                    let cc = that.hyperedges_dict[d.key].cc;
+                    cc.forEach(nId=>{
+                        d3.select("#hull"+that.createId(nId)).style("opacity", 0.5);
+                    })
+                    d3.select("#simplified-hull"+that.createId(d.key)).style("opacity", 0.5)
+                    let div = d3.select("#help-tip")
+                    div.transition()		
+                        .duration(200)		
+                        .style("opacity", .0);	
+                })
         });
     
     }
