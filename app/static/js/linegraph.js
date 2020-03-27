@@ -46,6 +46,14 @@ class Linegraph{
         this.threshold = 0;
 
         this.draw_linegraph();
+        this.change_linegraph_variant();
+    }
+
+    change_linegraph_variant(){
+        let variant_dropdown = document.getElementById("line_graph_variants");
+        variant_dropdown.onchange = function(){
+            console.log(variant_dropdown.options[variant_dropdown.selectedIndex].text)
+        }
     }
 
     draw_linegraph(){

@@ -1,3 +1,15 @@
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+h4 {
+    color:rgb(51,54,57);
+    font-size:18px;
+    text-align:center;
+    font-weight: bold;
+}
+
 .barcode-rect-dim0 {
     fill: #7bc6d6;
     stroke: grey;
@@ -32,9 +44,11 @@
 .ui-form-button {
     border-radius: 3px;
     overflow: hidden;
-    height:30px;
+    height:25px;
     line-height: 0px;
     font-size:12px;
+    /* border: 1px solid rgb(110,123,196); */
+    /* color: rgb(110,123,196); */
   }
 
 /* Radio */
@@ -125,6 +139,23 @@
     background: #4CAF50;
     cursor: pointer;
   }
+
+/* Select Menu */
+/* The container must be positioned relative: */
+.custom-select {
+    position: relative;
+    width: 80%;
+    height: 30px;
+    /* font-family: Arial; */
+}
+  
+.custom-select select {
+    display: none; /*hide original SELECT element: */
+}
+  
+.select-selected {
+    background-color: #4CAF50;
+}
 
   /* Tooltip */
 div.help-tip {	

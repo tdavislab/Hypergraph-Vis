@@ -6,15 +6,15 @@ class Barcode{
 
         this.svg = d3.select("#barcode-svg");
         this.svg_width = parseFloat(d3.select("#vis-barcode").style("width"));
-        this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"));
+        this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"))*2;
         this.svg_margin = {'left':12, 'right':20, 'top':10, 'bottom':10};
         this.svg
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width);
 
         d3.select("#vis-barcode")
-            .style("height", d3.select("#vis-hypergraph").style("height"));
-            // .style("height", parseInt(this.container_height*2).toString()+"px");
+            // .style("height", d3.select("#vis-hypergraph").style("height"));
+            .style("height", parseInt(this.container_height)+"px");
 
 
         this.barcode_group = this.svg.append("g")
