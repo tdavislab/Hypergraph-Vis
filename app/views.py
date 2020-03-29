@@ -27,28 +27,52 @@ def process_graph_edges(edge_str: str):
     converted_edge_str = edge_str[1:-1].replace('{', '[').replace('}', ']')
     return json.loads('{' + converted_edge_str + '}')
 
+# def remove_special_char(id):
+#     return re.sub('[^A-Za-z0-9]+', '', id)
 
 def process_hypergraph(hyper_data: str):
     hgraph = {}
+    label2id = {}
+    he_id = 0
+    v_id = 0
     for line in hyper_data.split("\n"):
         line = line.rstrip().rsplit(',')
+
         hyperedge, vertices = line[0], line[1:]
+        if hyperedge not in label2id.keys():
+            hyperedge_label = re.sub('[\'\s]+', '', hyperedge)
+            new_id = 'he'+str(he_id)
+            he_id += 1
+            label2id[hyperedge_label] = new_id
+            hyperedge = new_id
+        vertices_new = []
+        for v in vertices:
+            v_label = re.sub('[\'\s]+', '', v)
+            if v_label not in label2id.keys():
+                new_id = 'v'+str(v_id)
+                v_id += 1
+                label2id[v_label] = new_id
+                vertices_new.append(new_id)
+            else:
+                vertices_new.append(label2id[v_label])
+        vertices = vertices_new
 
         if hyperedge not in hgraph.keys():
             hgraph[hyperedge] = vertices
         else:
             hgraph[hyperedge] += vertices
+    id2label = {ID:label for label, ID in label2id.items()}
 
-    return hnx.Hypergraph(hgraph)
+    return hnx.Hypergraph(hgraph), id2label
 
     # hgraphs = []
-    #
+    
     # # Separate the hypergraphs based on this regex:
     # # newline followed by one or more whitespace followed by newline
     # file_contents = re.split(r'\n\s+\n', hyper_data)
-    #
+    
     # num_hgraphs = len(file_contents)
-    #
+    
     # for i in tqdm(range(0, num_hgraphs)):
     #     # The name and graph are separated by '='
     #     graph_name, graph_dict = file_contents[i].split('=')
@@ -56,8 +80,8 @@ def process_hypergraph(hyper_data: str):
     #     # hgraphs.append({'graph_dict':graph_dict, 'graph_name':graph_name})
     #     hgraphs.append(hnx.Hypergraph(graph_dict, name=graph_name))
     # # print(hgraphs)
-    #
-    # return hgraphs
+    
+    # return hgraphs[0]
 
 
 def process_hypergraph_from_csv(graph_file: str):
@@ -76,7 +100,6 @@ def process_hypergraph_from_csv(graph_file: str):
 
 
 def convert_to_line_graph(hypergraph, s=1):
-    # print(hypergraph)
     # Line-graph is a NetworkX graph
     line_graph = nx.Graph()
 
@@ -100,6 +123,10 @@ def convert_to_line_graph(hypergraph, s=1):
     line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
     return line_graph
 
+def compute_dual_line_graph(hypergraph, s=1):
+    dual_hgraph = hypergraph.dual()
+    dual_line_graph = convert_to_line_graph(dual_hgraph, s)
+    return dual_line_graph
 
 def write_d3_graph(graph, path):
     # Write to d3 like graph format
@@ -142,7 +169,6 @@ def compute_barcode(graph_data):
         barcode.append({'birth': 0, 'death': -1, 'edge': 'undefined'})
     return barcode
 
-
 @app.route('/')
 @app.route('/Hypergraph-Vis-app')
 def index():
@@ -153,16 +179,20 @@ def index():
 def import_file():
     jsdata = request.get_data().decode('utf-8')
     if jsdata == "hypergraph_samples":
-        with open(path.join(APP_STATIC, "uploads/hypergraph_samples.txt"), 'r') as f:
+        with open(path.join(APP_STATIC, "uploads/DNS_hypergraph_samples_new.txt"), 'r') as f:
             jsdata = f.read()
         f.close()
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'w') as f:
         f.write(jsdata)
     f.close()
-    hgraph = process_hypergraph(jsdata)
+    hgraph, id2label = process_hypergraph(jsdata)
     lgraph = convert_to_line_graph(hgraph)
+    dual_lgraph = compute_dual_line_graph(hgraph)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    hgraph['labels'] = id2label
     barcode = compute_barcode(lgraph)
+    dual_barcode = compute_barcode(dual_lgraph)
+    # print(barcode)
 
     # write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/linegraph.json"))
     # with open(path.join(APP_STATIC,"uploads/barcode.json"), 'w') as f:
@@ -171,7 +201,9 @@ def import_file():
     # with open(filename) as f:
     #     data = json.load(f)
     # f.close()
+    # return jsonify(hyper_data=hgraph, line_data=dual_lgraph, barcode_data=dual_barcode)
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+
 
 
 @app.route('/recompute', methods=['POST', 'GET'])
@@ -186,6 +218,6 @@ def recompute():
     f.close()
     hgraph = process_hypergraph(hgraph_data)
     lgraph = convert_to_line_graph(hgraph, s=s)
-    barcode = compute_barcode(lgraph)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    barcode = compute_barcode(lgraph)
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)

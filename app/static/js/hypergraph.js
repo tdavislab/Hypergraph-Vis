@@ -2,6 +2,7 @@ class Hypergraph{
     constructor(hyper_data){
         this.nodes = hyper_data.nodes;
         this.links = hyper_data.links;
+        this.labels = hyper_data.labels;
 
         console.log(this.links, this.nodes)
 
@@ -64,7 +65,7 @@ class Hypergraph{
             .attr("dx", 12)
             .attr("dy", "0.35em")
             .attr("class", "node-label")
-            .text(d => d.id);
+            .text(d => this.labels[d.id]);
 
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
