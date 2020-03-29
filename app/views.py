@@ -130,10 +130,12 @@ def compute_dual_line_graph(hypergraph, s=1):
 
 def write_d3_graph(graph, path):
     # Write to d3 like graph format
-    node_link_json = nx.readwrite.json_graph.node_link_data(graph)
     with open(path, 'w') as f:
-        f.write(json.dumps(node_link_json, indent=4))
+        f.write(json.dumps(graph, indent=4))
 
+def write_barcode(barcode, path):
+    with open(path, 'w') as f:
+        f.write(json.dumps(barcode, indent=4))
 
 def find_cc_index(components, vertex_id):
     for i in range(len(components)):
@@ -194,17 +196,27 @@ def import_file():
     dual_barcode = compute_barcode(dual_lgraph)
     # print(barcode)
 
-    # write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/linegraph.json"))
-    # with open(path.join(APP_STATIC,"uploads/barcode.json"), 'w') as f:
-    # f.write(json.dumps({'barcode': barcode}, indent=4))
-    # filename = path.join(APP_STATIC,"assets/",jsdata.filename)
-    # with open(filename) as f:
-    #     data = json.load(f)
-    # f.close()
-    # return jsonify(hyper_data=hgraph, line_data=dual_lgraph, barcode_data=dual_barcode)
+    write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
+    write_d3_graph(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
+    write_barcode(barcode, path.join(APP_STATIC,"uploads/current_barcode.json"))
+    write_barcode(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode.json"))
+
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
 
-
+@app.route('/switch_line_variant', methods=['POST', 'GET'])
+def switch_line_variant():
+    variant = request.get_data().decode('utf-8')
+    if variant == "Original Line Graph":
+        filename = ""
+    elif variant == "Dual Line Graph":
+        filename = "_dual"
+    print(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph.json"))
+    with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph.json")) as f:
+        lgraph = json.load(f)
+    with open(path.join(APP_STATIC,"uploads/current"+filename+"_barcode.json")) as f:
+        barcode = json.load(f)
+    return jsonify(line_data=lgraph, barcode_data=barcode)
+    
 
 @app.route('/recompute', methods=['POST', 'GET'])
 def recompute():

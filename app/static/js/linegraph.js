@@ -13,9 +13,9 @@ class Linegraph{
         this.links.forEach(l=>{
             this.links_dict[this.createId(l.source)+"-"+this.createId(l.target)] = l;
         })
-        console.log(this.nodes_dict, this.links_dict)
+        // console.log(this.nodes_dict, this.links_dict)
 
-        console.log(this.links, this.nodes);
+        // console.log(this.links, this.nodes);
 
         this.container_width = parseFloat(d3.select('#vis-'+id).style('width'))
 
@@ -46,14 +46,6 @@ class Linegraph{
         this.threshold = 0;
 
         this.draw_linegraph();
-        this.change_linegraph_variant();
-    }
-
-    change_linegraph_variant(){
-        let variant_dropdown = document.getElementById("line_graph_variants");
-        variant_dropdown.onchange = function(){
-            console.log(variant_dropdown.options[variant_dropdown.selectedIndex].text)
-        }
     }
 
     draw_linegraph(){
@@ -62,8 +54,6 @@ class Linegraph{
         for (let i=0; i < this.links.length; i++) {
             this.links[i].distance = 100
         }
-
-        console.log(this.links)
 
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
