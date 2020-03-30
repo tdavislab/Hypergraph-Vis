@@ -6,15 +6,15 @@ class Barcode{
 
         this.svg = d3.select("#barcode-svg");
         this.svg_width = parseFloat(d3.select("#vis-barcode").style("width"));
-        this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"));
+        this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"))*2;
         this.svg_margin = {'left':12, 'right':20, 'top':10, 'bottom':10};
         this.svg
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width);
 
         d3.select("#vis-barcode")
-            .style("height", d3.select("#vis-hypergraph").style("height"));
-            // .style("height", parseInt(this.container_height*2).toString()+"px");
+            // .style("height", d3.select("#vis-hypergraph").style("height"));
+            .style("height", parseInt(this.container_height)+"px");
 
 
         this.barcode_group = this.svg.append("g")
@@ -26,8 +26,6 @@ class Barcode{
         
         this.draw_barcode();
         this.linegraph.compute_simplified_hypergraph(this.linegraph.connected_components);
-        this.linegraph.assign_nodes_sets(this.barcode);
-
     }
 
     draw_barcode(){
@@ -64,7 +62,7 @@ class Barcode{
             .classed("hover-darken", true)
             .on("click", d=>{
                 console.log(d)
-                // let edge_id = this.createId(d.edge.source)+"-"+this.createId(d.edge.target);
+                // let edge_id = d.edge.source+"-"+d.edge.target;
                 if(d.death > 0){
                     this.linegraph.graph_expansion(d);
                 }
@@ -103,6 +101,7 @@ class Barcode{
             let threshold = width_scale.invert(d3.event.x);
             that.linegraph.threshold = threshold;
             let edgeid = that.extract_edgeid(threshold);
+            console.log(edgeid)
             that.linegraph.graph_contraction(edgeid);
 
         }
@@ -125,18 +124,14 @@ class Barcode{
                 let bar_length = bar.death - bar.birth;
                 let next_bar_length = next_bar.death - next_bar.birth;
                 if(bar_length <= threshold && next_bar_length > threshold){
-                    edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+                    edgeid = bar.edge.source+"-"+bar.edge.target;
                     break;
                 } else if(bar_length <= threshold && next_bar.death < 0){
-                    edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+                    edgeid = bar.edge.source+"-"+bar.edge.target;
                 }
             }
         }
         return edgeid;
-    }
-
-    createId(id){
-        return id.replace(/[^a-zA-Z0-9]/g, "")
     }
     
 }

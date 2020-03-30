@@ -16,9 +16,10 @@ bundles = {
         ),
 
         'css': Bundle(
-        'css/colors.css',
         'css/bootstrap.css',
         'css/layout-bootstrap.css',
+        'css/colors.css',
+
         output='gen/styles.css'
         )
 }

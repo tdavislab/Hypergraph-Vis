@@ -1,3 +1,30 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+#main_title {
+    width:20%;
+    margin:0px;
+    border:0px;
+    /* background-color: rgb(241,241,241);; */
+    padding-top: 6px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 5px;
+    display:inline-block;
+    border-right: 1px solid rgb(224,224,224);
+
+}
+
+#files_group {
+    background-color: #FFF;
+    display:inline-block;
+    padding-left: 20px;
+}
+
+
 .container-fluid {
     background-color: rgb(249,249,249);
     border: 1px solid rgb(224,224,224);
@@ -20,23 +47,12 @@
     border-top: 1px solid rgb(224,224,224);
 }
 
-.control-container{
+.control-container {
     padding: 0;
 }
 
-#hypergraph-svg {
-    /*border: 1px dashed chocolate;*/
-    /* border: 1px solid #d5d5d5; */
-}
-
-#linegraph-svg {
-    /*border: 1px dashed cornflowerblue;*/
-    /* border: 1px solid #d5d5d5; */
-
-}
-
-#barcode-svg {
-    /*border: 1px dashed slateblue;*/
+.dropdown-container {
+    padding-top: 10px;
 }
 
 /*Override some Bootstrap defaults*/
@@ -44,11 +60,4 @@
     padding: 1rem 1rem;
 }
 
-.slider {
-    /* fill: #000000; */
-}
 
-body {
-    font-family: Roboto, sans-serif;
-    /* text-align: center; */
-}

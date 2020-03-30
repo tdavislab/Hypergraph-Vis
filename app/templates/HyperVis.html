@@ -15,10 +15,18 @@
 </head>
 
 <body>
-<div class="outline">
-    <h4>
-        Hypergraph Visualization
-    </h4>
+<div class="header-group">
+    <div id="main_title">
+        <h4>Hypergraph Visualization</h4>
+    </div>
+    <div id="files_group">
+        <div class="import-group">
+            <form method="post" id="upload" enctype="multipart/form-data" action="" >
+                <input type="file" style="display:none" id="files" name="files">
+                <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import" value="Import A Dataset">
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -29,6 +37,14 @@
             <div id="vis-barcode" class="svg-container" style="overflow: scroll">
                 <svg id="barcode-svg"></svg>
             </div>
+            <br>
+            <br>
+            <!-- <div class="help-tip" style="opacity: 0;" id="help-tip"> -->
+                <!-- <h6>Selected Hyperedges</h6> -->
+                <!-- <p>
+                    
+                </p> -->
+            <!-- </div> -->
         </div>
         <div id="vis-area" class="col-sm-8">
             <div class="row">
@@ -49,9 +65,12 @@
             <div class="row">
                 <div class="col-md-6 outline">
                     Simplified hypergraph
+                    
                     <div id='vis-simplified-hypergraph' class="svg-container">
                         <svg id="simplified-hypergraph-svg"></svg>
+                        
                     </div>
+                    
                 </div>
                 <div class="col-md-6 outline">
                     Simplified Line graph
@@ -65,14 +84,7 @@
             <div style="padding: 5px 5px">
                 <h6>Control Panel</h6>
             </div>
-            <div id="files_group" class="control-block">
-                <div class="import-group">
-                    <form method="post" id="upload" enctype="multipart/form-data" action="" >
-                        <input type="file" style="display:none" id="files" name="files">
-                        <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import" value="Import A Dataset" style="line-height:0px;">
-                    </form>
-                </div>
-            </div>
+            
             <div style="padding-bottom: 20px;" class="control-block">
                 <input type="checkbox" id="hgraph-labels">Show labels</input>
             </div>
@@ -101,6 +113,16 @@
                 </div>
                 <br>
                 <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_line_graph" value="Compute Line Graph" style="line-height:0px;">
+            </div>
+
+            <div class="control-block" style="border-bottom: 1px solid rgb(224,224,224);">
+                Select Line Graph Variant
+                <div class="dropdown-container">
+                    <select name="line_graph_variants" class="custom-select" id="line_graph_variants">
+                        <option>Original Line Graph</option>
+                        <option>Dual Line Graph</option>
+                    </select>
+                </div>
             </div>
 
         </div>
