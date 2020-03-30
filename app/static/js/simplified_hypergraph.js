@@ -33,8 +33,8 @@ class Simplified_Hypergraph{
                 let node_v = {};
                 node_v.bipartite = 0;
                 node_v.id = v;
-                if(Object.keys(vertices_dict).indexOf(this.createId(v))===-1){
-                    vertices_dict[this.createId(v)] = node_v;
+                if(Object.keys(vertices_dict).indexOf(v)===-1){
+                    vertices_dict[v] = node_v;
                 }
                 hyper_edges.push({"source": node_hv.id, "target": v});
             })
@@ -182,18 +182,18 @@ class Simplified_Hypergraph{
                 .style("stroke-linejoin", "round")
                 .style("opacity", 0.5)
                 // .style("visibility","hidden")
-                .attr("id", d=> "simplified-hull"+this.createId(d.key))
+                .attr("id", d=> "simplified-hull"+d.key)
                 .attr("d", d => this.groupPath(d.value))
                 .on("mouseover", d=>{
                     let cc = that.hyperedges_dict[d.key].cc;
                     let div_text = '';
                     cc.forEach(nId=>{
-                        d3.select("#hull"+that.createId(nId)).style("opacity", 0.8);
+                        d3.select("#hull"+nId).style("opacity", 0.8);
                         div_text += nId+"<br> "
                     })
-                    d3.select("#simplified-hull"+that.createId(d.key)).style("opacity", 0.8)
+                    d3.select("#simplified-hull"+d.key).style("opacity", 0.8)
                     let div = d3.select("#help-tip")
-                    // let current_element = d3.select("#simplified-hull"+that.createId(d.key))
+                    // let current_element = d3.select("#simplified-hull"+d.key)
                     // console.log(current_element)
                     div.transition()		
                         .duration(200)		
@@ -206,9 +206,9 @@ class Simplified_Hypergraph{
                 .on("mouseout", d=>{
                     let cc = that.hyperedges_dict[d.key].cc;
                     cc.forEach(nId=>{
-                        d3.select("#hull"+that.createId(nId)).style("opacity", 0.5);
+                        d3.select("#hull"+nId).style("opacity", 0.5);
                     })
-                    d3.select("#simplified-hull"+that.createId(d.key)).style("opacity", 0.5)
+                    d3.select("#simplified-hull"+d.key).style("opacity", 0.5)
                     let div = d3.select("#help-tip")
                     div.transition()		
                         .duration(200)		
@@ -217,10 +217,4 @@ class Simplified_Hypergraph{
         });
     
     }
-
-    createId(id){
-        return id.replace(/[^a-zA-Z0-9]/g, "")
-    }
-
-
 }

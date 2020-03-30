@@ -26,8 +26,6 @@ class Barcode{
         
         this.draw_barcode();
         this.linegraph.compute_simplified_hypergraph(this.linegraph.connected_components);
-        this.linegraph.assign_nodes_sets(this.barcode);
-
     }
 
     draw_barcode(){
@@ -64,7 +62,7 @@ class Barcode{
             .classed("hover-darken", true)
             .on("click", d=>{
                 console.log(d)
-                // let edge_id = this.createId(d.edge.source)+"-"+this.createId(d.edge.target);
+                // let edge_id = d.edge.source+"-"+d.edge.target;
                 if(d.death > 0){
                     this.linegraph.graph_expansion(d);
                 }
@@ -103,6 +101,7 @@ class Barcode{
             let threshold = width_scale.invert(d3.event.x);
             that.linegraph.threshold = threshold;
             let edgeid = that.extract_edgeid(threshold);
+            console.log(edgeid)
             that.linegraph.graph_contraction(edgeid);
 
         }
@@ -125,18 +124,14 @@ class Barcode{
                 let bar_length = bar.death - bar.birth;
                 let next_bar_length = next_bar.death - next_bar.birth;
                 if(bar_length <= threshold && next_bar_length > threshold){
-                    edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+                    edgeid = bar.edge.source+"-"+bar.edge.target;
                     break;
                 } else if(bar_length <= threshold && next_bar.death < 0){
-                    edgeid = this.createId(bar.edge.source)+"-"+this.createId(bar.edge.target);
+                    edgeid = bar.edge.source+"-"+bar.edge.target;
                 }
             }
         }
         return edgeid;
-    }
-
-    createId(id){
-        return id.replace(/[^a-zA-Z0-9]/g, "")
     }
     
 }

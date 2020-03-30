@@ -166,6 +166,8 @@ def compute_barcode(graph_data):
             target_cc = components[target_cc_idx]
             components = [components[i] for i in range(len(components)) if i not in [source_cc_idx, target_cc_idx]]
             components.append(source_cc + target_cc)
+            link['nodes_subsets'] = {"source_cc": source_cc, "target_cc": target_cc}
+            link['cc_list'] = components.copy()
             barcode.append({'birth': 0, 'death': weight, 'edge': link})
     for cc in components:
         barcode.append({'birth': 0, 'death': -1, 'edge': 'undefined'})

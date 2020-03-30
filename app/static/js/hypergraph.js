@@ -147,7 +147,7 @@ class Hypergraph{
                 .style("stroke-linejoin", "round")
                 .style("opacity", 0.5)
                 .attr("d", d => this.groupPath(d.value))
-                .attr("id", d=> "hull"+that.createId(d.key));
+                .attr("id", d=> "hull"+d.key);
         });
 
 
@@ -170,9 +170,5 @@ class Hypergraph{
         } catch (e) {
             console.log(e);
         }                       
-    }
-
-    createId(id){
-        return id.replace(/[^a-zA-Z0-9]/g, "")
     }
 }

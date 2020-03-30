@@ -168,6 +168,11 @@ function copy_line_data(line_data){
         link_new.intersection_size = l.intersection_size;
         link_new.source = l.source;
         link_new.target = l.target;
+        if(l.cc_list){
+            link_new.cc_list = [];
+            l.cc_list.forEach(cc=>{ link_new.cc_list.push(cc.slice(0)); }) // deep copy
+            link_new.nodes_subsets = {"source_cc":l.nodes_subsets.source_cc.slice(0), "target_cc":l.nodes_subsets.target_cc.slice(0)};
+        }
         line_links_new.push(link_new);
     })
     return {"nodes": line_nodes_new, "links": line_links_new};
