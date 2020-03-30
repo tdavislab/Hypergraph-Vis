@@ -1,0 +1,3272 @@
+*Vertices 976
+1 "Liva Ralaivola" 15
+2 "John B. Hampshire II" 4
+3 "Lorenza Saitta" 68
+4 "Amos J. Storkey" 15
+5 "Francis R. Bach" 8
+6 "Peter L. Bartlett" 53
+7 "Csaba Szepesvari" 33
+8 "Alexander J. Smola" 46
+9 "Joydeep Ghosh" 108
+10 "Max Welling" 39
+11 "Candace A. Kamm" 8
+12 "Edda Leopold" 19
+13 "Christopher G. Atkeson" 58
+14 "Diana F. Gordon" 13
+15 "Gregory J. Zelinsky" 9
+16 "Joseph Sill" 9
+17 "Jason Weston" 57
+18 "Laurent El Ghaoui" 36
+19 "Padhraic Smyth" 89
+20 "Liadan O'Callaghan" 15
+21 "Ray Bareiss" 20
+22 "David R. Pierce" 5
+23 "Dan Ventura" 20
+24 "J. Ross Quinlan" 8
+25 "Don R. Hush" 17
+26 "Demetri Psaltis" 14
+27 "Ashutosh Garg" 25
+28 "Garrison W. Cottrell" 49
+29 "Rich Caruana" 44
+30 "Takeshi Shinohara" 40
+31 "David E. Rumelhart" 16
+32 "Christino Tamon" 12
+33 "Ran El-Yaniv" 48
+34 "Francesco Bergadano" 36
+35 "Dean P. Foster" 16
+36 "Olivier Chapelle" 39
+37 "Igor Kononenko" 32
+38 "Te-Won Lee" 52
+39 "Thomas Ragg" 12
+40 "Jeffrey L. Elman" 8
+41 "Benjamin Taskar" 20
+42 "Hilbert J. Kappen" 27
+43 "Dan Roth" 84
+44 "Shan-Hwei Nienhuys-Cheng" 10
+45 "Ivan Bratko" 69
+46 "John Langford" 53
+47 "Mark B. Ring" 2
+48 "Hendrik Blockeel" 83
+49 "Daniil Ryabko" 5
+50 "Davide Roverso" 6
+51 "Alex J. Smola" 84
+52 "Daniel Oblinger" 13
+53 "Kenji Fukumizu" 14
+54 "Yoram Singer" 60
+55 "Alvis Brazma" 35
+56 "Hsuan-Tien Lin" 6
+57 "Christopher M. Bishop" 38
+58 "Pedro Domingos" 53
+59 "Paul E. Utgoff" 29
+60 "Haym Hirsh" 51
+61 "Kent A. Spackman" 10
+62 "Oliver Ray" 7
+63 "Sethu Vijayakumar" 29
+64 "Irene Weber" 6
+65 "David Guijarro" 20
+66 "Thomas R. Hancock" 11
+67 "Michael W. Mahoney" 13
+68 "David J. Burr" 5
+69 "Eduardo D. Sontag" 75
+70 "Elad Hazan" 14
+71 "Russell Greiner" 97
+72 "Ricardo Bezerra de Andrade e Silva" 4
+73 "Rusins Freivalds" 57
+74 "Stefan Schaal" 59
+75 "Hiroshi Motoda" 81
+76 "Gyuri Dorko" 7
+77 "Klaus Brinker" 9
+78 "Peter A. Flach" 46
+79 "Gilles Venturini" 46
+80 "Timothy X. Brown" 14
+81 "Amy McGovern" 14
+82 "Michael Mozer" 31
+83 "David Wolpert" 25
+84 "Yishay Mansour" 138
+85 "Hans-Ulrich Simon" 56
+86 "Shaojun Wang" 27
+87 "Kouzou Ohara" 16
+88 "Leemon C. Baird III" 12
+89 "Daniel Borrajo" 66
+90 "Huan Liu" 92
+91 "Peter Geibel" 17
+92 "Charles X. Ling" 66
+93 "Alan L. Yuille" 83
+94 "Nada Lavrac" 86
+95 "Tong Zhang" 100
+96 "Rocco A. Servedio" 40
+97 "Jason V. Davis" 5
+98 "Ali Rahimi" 14
+99 "Kevin Thompson" 8
+100 "In Jae Myung" 5
+101 "Ross D. King" 54
+102 "Clint Scovel" 12
+103 "Ramon P. Otero" 23
+104 "Remco R. Bouckaert" 11
+105 "Christopher Meek" 48
+106 "Xiang Xuan" 2
+107 "Gheorghe Tecuci" 35
+108 "Shumeet Baluja" 30
+109 "Matthew Brand" 25
+110 "Kenji Yamanishi" 13
+111 "Tapani Raiko" 15
+112 "Clay Spence" 24
+113 "Magnus Rattray" 23
+114 "S. Sathiya Keerthi" 58
+115 "Sukree Sinthupinyo" 5
+116 "Joab Winkler" 2
+117 "Georgios Paliouras" 44
+118 "John Burge" 5
+119 "Stephen Muggleton" 69
+120 "Pascal Poupart" 22
+121 "David P. Helmbold" 35
+122 "Martin Eineborg" 8
+123 "Thomas Hofmann" 46
+124 "Yacine Oussar" 5
+125 "Birgit Tausend" 6
+126 "Remi Munos" 11
+127 "Takafumi Kanamori" 8
+128 "Barak A. Pearlmutter" 43
+129 "Gregory Shakhnarovich" 20
+130 "Tatsuto Murayama" 5
+131 "Richard M. Golden" 3
+132 "Shai Ben-David" 62
+133 "Pavel Laskov" 28
+134 "Andreas Maurer" 3
+135 "Nikolas List" 3
+136 "Andrea Vedaldi" 6
+137 "Jose L. Balcazar" 44
+138 "Dragos D. Margineantu" 3
+139 "Luis E. Ortiz" 12
+140 "Nader H. Bshouty" 53
+141 "Hisashi Kashima" 17
+142 "Santosh Vempala" 66
+143 "Pieter Abbeel" 12
+144 "Marco Wiering" 23
+145 "Constantin F. Aliferis" 20
+146 "John Loch" 4
+147 "Simon Osindero" 7
+148 "Nuno Vasconcelos" 24
+149 "Richard Nock" 37
+150 "Stefan Wrobel" 49
+151 "Ronny Meir" 9
+152 "Jesse Davis" 15
+153 "Michael V. Vyugin" 11
+154 "R. A. Pearson" 2
+155 "Justin A. Boyan" 9
+156 "Nando de Freitas" 25
+157 "Ole Winther" 26
+158 "Daniel Fredouille" 7
+159 "William T. Freeman" 74
+160 "Yuri Kalnishkan" 10
+161 "Harald Steck" 4
+162 "Jennifer G. Dy" 14
+163 "Michael L. Littman" 117
+164 "Dayne Freitag" 21
+165 "Carla E. Brodley" 47
+166 "Ramon Lopez de Mantaras" 47
+167 "Dan Pelleg" 13
+168 "Stephen Moyle" 2
+169 "Xiaojin Zhu" 31
+170 "Hideto Kazawa" 8
+171 "Artur S. d'Avila Garcez" 18
+172 "Takashi Yokomori" 25
+173 "S. V. N. Vishwanathan" 33
+174 "David Page" 54
+175 "Dimitrios Mavroeidis" 5
+176 "Irene Stahl" 4
+177 "Christopher J. C. Burges" 23
+178 "Masako Sato" 11
+179 "Peter Tino" 40
+180 "Nuno Fonseca" 10
+181 "Malcolm R. K. Ryan" 7
+182 "Andre Elisseeff" 21
+183 "Anthony J. Bell" 13
+184 "Pieter W. Adriaans" 22
+185 "Mark Herbster" 7
+186 "Reza Shadmehr" 11
+187 "Christopher H. Bryant" 12
+188 "Ralf Herbrich" 49
+189 "Alexandre B. Tsybakov" 6
+190 "Wolfgang Maass" 71
+191 "Renato Vicente" 4
+192 "Peter Dayan" 65
+193 "Stefano Monti" 11
+194 "Ken Sadohara" 2
+195 "Vladimir Vapnik" 53
+196 "Wray L. Buntine" 23
+197 "Jorg-Uwe Kietz" 9
+198 "Antoine Cornuejols" 6
+199 "Kai Ming Ting" 23
+200 "Jude W. Shavlik" 69
+201 "Stefan Schrodl" 7
+202 "Jeffrey Jackson" 7
+203 "Saso Dzeroski" 86
+204 "Eero P. Simoncelli" 49
+205 "David Haussler" 98
+206 "Eric Gaussier" 32
+207 "Mary Elaine Califf" 9
+208 "Sharad Saxena" 8
+209 "Alan Stocker" 5
+210 "Akihiro Yamamoto" 28
+211 "Stephen Kwek" 19
+212 "Scott B. Huffman" 14
+213 "Jean-Christophe Janodet" 12
+214 "Koji Tsuda" 45
+215 "Charles Elkan" 33
+216 "Francois Denis" 22
+217 "Sally A. Goldman" 42
+218 "Krishnan Pillaipakkamnatt" 8
+219 "Volker Tresp" 78
+220 "Ah Chung Tsoi" 62
+221 "Yves Kodratoff" 60
+222 "Vladimir Koltchinskii" 12
+223 "Dana Pe'er" 8
+224 "John C. Platt" 43
+225 "Sylvain Calinon" 5
+226 "Wee Sun Lee" 25
+227 "Shai Fine" 22
+228 "Peter Clark" 51
+229 "Rob Powers" 10
+230 "Jeffrey C. Schlimmer" 11
+231 "Roni Khardon" 25
+232 "Eyal Even-Dar" 21
+233 "Jieping Ye" 40
+234 "Jean-Philippe Vert" 30
+235 "Janis Barzdins" 16
+236 "Nello Cristianini" 62
+237 "David A. McAllester" 57
+238 "Claude-Nicolas Fiechter" 4
+239 "Frank Balbach" 9
+240 "Richard S. Sutton" 40
+241 "Carl Edward Rasmussen" 32
+242 "Robert C. Holte" 45
+243 "Glenn Fung" 40
+244 "Liam Paninski" 11
+245 "Katharina Morik" 57
+246 "Lorenzo Torresani" 10
+247 "Nitesh V. Chawla" 29
+248 "Martin Anthony" 29
+249 "Phil Watson" 6
+250 "Carl Myers Kadie" 8
+251 "Michael D. Lee" 14
+252 "Ronald Ortner" 5
+253 "Gal Chechik" 16
+254 "Lucas C. Parra" 23
+255 "Steven J. Bradtke" 7
+256 "Johannes Furnkranz" 26
+257 "Michael E. Tipping" 12
+258 "Shivakumar Vaithyanathan" 21
+259 "Franck Thollard" 17
+260 "Carl H. Smith" 47
+261 "Philip M. Long" 44
+262 "Emanuel Kitzelmann" 6
+263 "Karl Tuyls" 40
+264 "Anton Schwartz" 2
+265 "Yee Whye Teh" 25
+266 "Michael C. Mozer" 26
+267 "Christopher D. Rosin" 4
+268 "Tobias Jung" 5
+269 "Steve R. Gunn" 26
+270 "Gunnar Ratsch" 40
+271 "Edgar Sommer" 9
+272 "Michael G. Dyer" 28
+273 "Ruby C. Weng" 9
+274 "Kenneth Kreutz-Delgado" 15
+275 "Sylvain Gelly" 16
+276 "Wyeth Bair" 9
+277 "Somak Raychaudhury" 12
+278 "Gabor Lugosi" 36
+279 "Stephen Roberts" 40
+280 "Thomas R. Shultz" 12
+281 "William Bialek" 37
+282 "Sam T. Roweis" 34
+283 "Mohammed Waleed Kadous" 5
+284 "Alessandro Sperduti" 49
+285 "Claire Nedellec" 10
+286 "Igor V. Cadez" 13
+287 "Marc Sebban" 32
+288 "Volker Roth" 42
+289 "Ronald Parr" 24
+290 "Christopher D. Manning" 41
+291 "Hiroki Arimura" 49
+292 "John S. Bridle" 8
+293 "Naoki Abe" 37
+294 "Dean Pomerleau" 21
+295 "Alex Waibel" 146
+296 "Christina S. Leslie" 19
+297 "Pat Langley" 113
+298 "Claudio Ferretti" 16
+299 "Robert P. Daley" 5
+300 "Setsuo Arikawa" 68
+301 "Dmitry Gavinsky" 11
+302 "Michael Finke" 18
+303 "Manfred Jaeger" 8
+304 "Marcus Hutter" 24
+305 "Charles A. Micchelli" 29
+306 "Stephen Scott" 22
+307 "David J. C. MacKay" 16
+308 "N. V. Vinodchandran" 26
+309 "Irina Tchoumatchenko" 2
+310 "Ira Cohen" 37
+311 "Ron Meir" 29
+312 "Nicholas Kushmerick" 48
+313 "Jeremy L. Wyatt" 6
+314 "Sandra Panizza" 5
+315 "M. Alicia Perez" 6
+316 "Mostefa Golea" 11
+317 "Tom Bylander" 21
+318 "Ralf Schoknecht" 8
+319 "Lyle H. Ungar" 40
+320 "Mehran Sahami" 23
+321 "Celine Rouveirol" 16
+322 "Andreas Krause" 32
+323 "Amir Globerson" 12
+324 "Daniel J. Navarro" 8
+325 "Thore Graepel" 42
+326 "Rui Kuang" 6
+327 "Irene M. Ong" 8
+328 "Mark D. Reid" 4
+329 "Mario Bleich" 1
+330 "Mark A. Gluck" 12
+331 "Anthony C. C. Coolen" 16
+332 "Corinna Cortes" 25
+333 "Charles Lee Isbell Jr." 10
+334 "Dennis DeCoste" 15
+335 "Ian Sinclair" 2
+336 "Theodore J. Perkins" 7
+337 "Aaron Hertzmann" 30
+338 "S. E. Posner" 8
+339 "Zhihua Zhang" 27
+340 "Matthias Hein" 11
+341 "Masayuki Numao" 47
+342 "John Case" 50
+343 "Lawrence Carin" 40
+344 "Chris Mesterharm" 3
+345 "Brendan J. Frey" 72
+346 "Marina Meila" 17
+347 "Lars Asker" 27
+348 "Guo-Zheng Sun" 10
+349 "Douglas Aberdeen" 13
+350 "Marcus A. Maloof" 13
+351 "Paul O'Rorke" 13
+352 "Sanmay Das" 5
+353 "Gregory F. Cooper" 36
+354 "Maria-Florina Balcan" 15
+355 "Manfred K. Warmuth" 82
+356 "Yiming Yang" 61
+357 "Vladimir V. V'yugin" 5
+358 "Nicolas Usunier" 12
+359 "Tom Heskes" 31
+360 "Leon Personnaz" 7
+361 "Randolph M. Jones" 19
+362 "Leonard Pitt" 30
+363 "Dennis F. Kibler" 25
+364 "Kevin J. Lang" 14
+365 "Balazs Kegl" 14
+366 "Joel Ratsaby" 9
+367 "Andrea Pohoreckyj Danyluk" 10
+368 "Joachim Utans" 5
+369 "Ulf Brefeld" 13
+370 "Dietrich Wettschereck" 16
+371 "Yasubumi Sakakibara" 30
+372 "Foster J. Provost" 37
+373 "Robert H. Dodier" 8
+374 "Saharon Rosset" 30
+375 "Malcolm J. A. Strens" 8
+376 "Makoto Haraguchi" 31
+377 "Di-Rong Chen" 6
+378 "Sepp Hochreiter" 22
+379 "Jason D. Rennie" 3
+380 "Yu-Han Chang" 10
+381 "Genevieve B. Orr" 8
+382 "Moshe Koppel" 22
+383 "Xuejun Liao" 11
+384 "Nachimuthu Karunanithi" 7
+385 "Jurgen Schmidhuber" 54
+386 "James Theiler" 46
+387 "David Maxwell Chickering" 28
+388 "Guntis Barzdins" 6
+389 "Jorge Castro" 20
+390 "Benjamin Van Roy" 17
+391 "Masashi Sugiyama" 33
+392 "Oliver G. Selfridge" 4
+393 "Nick Littlestone" 12
+394 "Mikio L. Braun" 8
+395 "Yoshiyuki Kabashima" 15
+396 "Brian S. Blais" 8
+397 "Fritz Wysotzki" 41
+398 "Michele Sebag" 52
+399 "Zijian Zheng" 19
+400 "Chee Wee Phua" 2
+401 "Jerome Maloberti" 3
+402 "Geoffrey Gordon" 8
+403 "Ivor W. Tsang" 11
+404 "Sanjiv Kumar" 10
+405 "Nikos A. Vlassis" 49
+406 "Foued Ameur" 5
+407 "Mahesan Niranjan" 22
+408 "Douglas H. Fisher" 24
+409 "Yves Grandvalet" 27
+410 "Eric Mjolsness" 42
+411 "Christophe Andrieu" 22
+412 "Filippo Neri" 13
+413 "Stephen Boyd" 58
+414 "Zoran Obradovic" 58
+415 "Michael Duff" 3
+416 "Alan Fern" 25
+417 "Michael P. Perrone" 13
+418 "David M. J. Tax" 27
+419 "Richard F. Lyon" 4
+420 "Louis Wehenkel" 26
+421 "Shyam Kapur" 9
+422 "Tetsuji Kuboyama" 9
+423 "Francois Fleuret" 16
+424 "Pierre Dupont" 43
+425 "Christine Decaestecker" 12
+426 "Steven Lemm" 10
+427 "Darren Mutz" 24
+428 "Gang Wu" 78
+429 "John J. Grefenstette" 33
+430 "Sridhar Mahadevan" 42
+431 "Atsuyoshi Nakamura" 22
+432 "Stephen M. Omohundro" 13
+433 "Santosh S. Venkatesh" 19
+434 "John Shawe-Taylor" 90
+435 "Jyrki Kivinen" 12
+436 "Lawrence K. Saul" 36
+437 "Philip D. Laird" 5
+438 "Scott Benson" 3
+439 "John E. Moody" 13
+440 "Leon Bottou" 37
+441 "Dharmendra S. Modha" 22
+442 "Boonserm Kijsirikul" 31
+443 "Giorgos Charissis" 6
+444 "A. Kowalczyk" 10
+445 "Andrew McCallum" 62
+446 "Xiaoli Li" 38
+447 "Tom M. Mitchell" 64
+448 "Dmitry Pechyony" 7
+449 "Stefan Kramer" 53
+450 "Federico Girosi" 24
+451 "Dunja Mladenic" 31
+452 "Nicholas R. Howe" 6
+453 "Oliver B. Downs" 3
+454 "Sriharsha Veeramachaneni" 13
+455 "Leslie Pack Kaelbling" 55
+456 "Jeff G. Schneider" 23
+457 "Olvi L. Mangasarian" 19
+458 "Michael S. Lewicki" 14
+459 "Peter Grunwald" 14
+460 "Hinrich Schutze" 22
+461 "Daniel B. Schwartz" 4
+462 "Usama M. Fayyad" 46
+463 "Sven Koenig" 55
+464 "John N. Tsitsiklis" 55
+465 "Carlos Domingo" 14
+466 "Chamy Allenberg" 3
+467 "Hans Peter Graf" 36
+468 "Laurent Zwald" 5
+469 "Kurt Driessens" 21
+470 "Steven Morris" 5
+471 "Gary Bradshaw" 3
+472 "Manfred Opper" 28
+473 "Guy Lebanon" 13
+474 "Robert H. Sloan" 49
+475 "Adam R. Klivans" 11
+476 "Arun Sharma" 31
+477 "Rebecca Hutchinson" 5
+478 "Eric Wiewiora" 6
+479 "Huajie Zhang" 10
+480 "Tim Niblett" 3
+481 "Alekh Agarwal" 4
+482 "Eric B. Baum" 12
+483 "Hiroki Ishizaka" 10
+484 "Christian R. Shelton" 23
+485 "Mario Marchand" 23
+486 "Michael I. Jordan" 131
+487 "Stephane Canu" 19
+488 "Samuel Kaski" 67
+489 "Irina Rish" 33
+490 "Trevor Darrell" 109
+491 "Nicolas Vayatis" 8
+492 "Yoshua Bengio" 102
+493 "Zoltan Alexin" 10
+494 "Yoav Freund" 40
+495 "Sharon Goldwater" 12
+496 "Alexander Clark" 16
+497 "David S. Touretzky" 35
+498 "Ingo Steinwart" 11
+499 "Chuanyi Ji" 23
+500 "William M. Campbell" 9
+501 "Kristian Kersting" 35
+502 "Gregory Z. Grudic" 15
+503 "Donnie Henderson" 7
+504 "Avrim Blum" 90
+505 "Justus H. Piater" 25
+506 "Paul Smolensky" 23
+507 "Thorsten Joachims" 49
+508 "C. Lee Giles" 215
+509 "Chris Drummond" 8
+510 "David Jensen" 52
+511 "Ron Kohavi" 40
+512 "Sati S. Sian" 3
+513 "Yaser S. Abu-Mostafa" 23
+514 "Michael Collins" 40
+515 "Bernhard Scholkopf" 109
+516 "Terrence J. Sejnowski" 132
+517 "John J. Hopfield" 6
+518 "Sayan Mukherjee" 28
+519 "Richard S. Zemel" 39
+520 "Anitha Kannan" 11
+521 "Peter Brockhausen" 12
+522 "Benjamin Marlin" 4
+523 "K. Y. Michael Wong" 21
+524 "Hagai Attias" 14
+525 "Sandra Zilles" 10
+526 "Greg Hamerly" 14
+527 "Keshu Zhang" 11
+528 "Jean-Gabriel Ganascia" 41
+529 "Stephen Jose Hanson" 18
+530 "Roberto Esposito" 10
+531 "Yuan (Alan) Qi" 7
+532 "Gerald DeJong" 33
+533 "Ali Taylan Cemgil" 15
+534 "Richard K. Belew" 37
+535 "Zhenyue Zhang" 11
+536 "Steven Salzberg" 37
+537 "Sumio Watanabe" 18
+538 "Dimitar Kazakov" 20
+539 "Jan Poland" 9
+540 "Luc Dehaspe" 14
+541 "Samuel P. M. Choi" 9
+542 "Samy Bengio" 104
+543 "Satinder P. Singh" 76
+544 "John Lazzaro" 11
+545 "Gerald Tesauro" 31
+546 "Brian Sallans" 5
+547 "Ryszard S. Michalski" 66
+548 "Kazuho Watanabe" 3
+549 "Geoffrey G. Towell" 13
+550 "W. Thomas Miller III" 5
+551 "Doina Precup" 43
+552 "Colin de la Higuera" 25
+553 "Andrew W. Moore" 75
+554 "Erick Alphonse" 8
+555 "Ajay N. Jain" 11
+556 "Martin Lauer" 9
+557 "Jure Leskovec" 21
+558 "Ashwin Ram" 66
+559 "Martin Zinkevich" 16
+560 "Simon Tong" 3
+561 "Joao Gama" 42
+562 "Uros Pompe" 5
+563 "Eiji Takimoto" 20
+564 "David A. Cohn" 11
+565 "Alexander T. Ihler" 15
+566 "Gary M. Weiss" 9
+567 "Janusz Wnek" 10
+568 "Jurgen Forster" 7
+569 "Steven Gold" 8
+570 "George Forman" 14
+571 "Arnaud Doucet" 58
+572 "Thomas Gartner" 16
+573 "Thomas G. Dietterich" 70
+574 "Sanjay Jain" 89
+575 "Mahendran Velauthapillai" 16
+576 "Patrick Haffner" 27
+577 "Sham Kakade" 18
+578 "Shie Mannor" 41
+579 "Paul Fischer" 33
+580 "Olivier Bousquet" 44
+581 "David W. Opitz" 11
+582 "Alessandro Magnani" 7
+583 "Pavel Brazdil" 36
+584 "Claudio Gentile" 31
+585 "Kouichi Hirata" 27
+586 "Michael J. Pazzani" 64
+587 "Andras Antos" 7
+588 "Michael S. Kearns" 10
+589 "Marko Robnik-Sikonja" 7
+590 "Michael Bain" 14
+591 "Klaus-Robert Muller" 77
+592 "Yair Weiss" 37
+593 "David D. Lewis" 36
+594 "Nicholas S. Flann" 9
+595 "Bill Baird" 8
+596 "Adam Kowalczyk" 23
+597 "Terence D. Sanger" 3
+598 "Siwei Lyu" 5
+599 "Efim B. Kinber" 25
+600 "Srikantan S. Nagarajan" 9
+601 "Ata Kaban" 19
+602 "Geoffrey I. Webb" 42
+603 "John C. Pearson" 10
+604 "Shai Shalev-Shwartz" 16
+605 "Paul W. Goldberg" 31
+606 "Peter Sykacek" 13
+607 "Kevin P. Murphy" 23
+608 "Richard Lippmann" 21
+609 "Yasuhito Mukouchi" 8
+610 "Risto Miikkulainen" 99
+611 "Jean-Yves Audibert" 12
+612 "Tomoyuki Uchida" 38
+613 "Leonid Gurvits" 16
+614 "Arik Azran" 3
+615 "Lionel Martin" 18
+616 "Ashwin Srinivasan" 45
+617 "Peter Edwards" 20
+618 "Marwan A. Jabri" 30
+619 "Yves Chauvin" 14
+620 "Jaakko Sarela" 5
+621 "Daphne Koller" 133
+622 "Bernhard Pfahringer" 47
+623 "Sebastian Thrun" 179
+624 "Subutai Ahmad" 11
+625 "Bianca Zadrozny" 23
+626 "David P. Wipf" 5
+627 "Peter Auer" 37
+628 "Leonard E. Trigg" 3
+629 "Vitaly Feldman" 8
+630 "Eric Eaton" 5
+631 "David Cohn" 18
+632 "Luc De Raedt" 100
+633 "Jean Sallantin" 39
+634 "Raymond J. Mooney" 69
+635 "Nathan Intrator" 40
+636 "Laura Firoiu" 5
+637 "Mohak Shah" 7
+638 "Jonathan L. Shapiro" 14
+639 "Yann LeCun" 52
+640 "Vasant Honavar" 111
+641 "Vladimir Vovk" 19
+642 "Christel Vrain" 31
+643 "Christopher K. I. Williams" 51
+644 "Dirk Ormoneit" 14
+645 "Peter Idestam-Almquist" 6
+646 "David W. Aha" 79
+647 "Mark D. Pendrith" 7
+648 "Daniela Pucci de Farias" 3
+649 "Oded Maron" 10
+650 "Eric McCreath" 8
+651 "Jason Catlett" 6
+652 "Robert C. Williamson" 52
+653 "Jan Ramon" 40
+654 "Matthias Seeger" 11
+655 "Volodya Vovk" 15
+656 "James D. Keeler" 5
+657 "Luis Torgo" 12
+658 "Bhaskara Marthi" 10
+659 "Nir Friedman" 79
+660 "Sean P. Engelson" 9
+661 "Thomas Petsche" 7
+662 "Gary William Flake" 28
+663 "Pavel Kisilev" 4
+664 "Kazumi Saito" 35
+665 "Ljupco Todorovski" 30
+666 "Kamal M. Ali" 5
+667 "Trevor Hastie" 51
+668 "Massimiliano Pontil" 45
+669 "James M. Coughlan" 22
+670 "Yusuke Suzuki" 21
+671 "Paul Bourgine" 15
+672 "Rodney M. Goodman" 24
+673 "Vladimir V'yugin" 2
+674 "Bill G. Horne" 28
+675 "Katya Scheinberg" 7
+676 "Jerome Callut" 2
+677 "Radford M. Neal" 17
+678 "Harri Valpola" 27
+679 "Robert Fitch" 9
+680 "Brandyn J. Webb" 2
+681 "Ji Zhu" 21
+682 "Kenji Doya" 40
+683 "Chih-Jen Lin" 26
+684 "Nina Mishra" 25
+685 "Ronald Cole" 21
+686 "Andreas Birkendorf" 9
+687 "Geoffrey E. Hinton" 76
+688 "Thierry Van de Merckt" 2
+689 "Eric A. Wan" 19
+690 "Abhijit Gosavi" 4
+691 "Esther Levin" 13
+692 "Steve Hanneke" 4
+693 "Nathan Srebro" 24
+694 "Le Lu" 13
+695 "Kukjin Kang" 5
+696 "Geoffrey J. Gordon" 33
+697 "Peter Sollich" 11
+698 "Patricia J. Riddle" 8
+699 "Adam Tauman Kalai" 14
+700 "Janez Demsar" 23
+701 "Nicolo Cesa-Bianchi" 37
+702 "Terran Lane" 24
+703 "Klaus P. Jantke" 41
+704 "Tim Oates" 60
+705 "Tobias Scheffer" 40
+706 "Le Song" 17
+707 "Miguel A. Carreira-Perpinan" 10
+708 "Tomer Hertz" 13
+709 "Hiroshi Sakamoto" 18
+710 "Satoshi Kobayashi" 25
+711 "Shawn R. Lockery" 9
+712 "David Saad" 33
+713 "Mikhail Belkin" 13
+714 "Michael Schmitt" 30
+715 "Frank H. Eeckman" 11
+716 "Alain Rakotomamonjy" 14
+717 "Tommi Jaakkola" 52
+718 "Felix A. Wichmann" 11
+719 "Jennifer Neville" 13
+720 "Pieter Jan't Hoen" 20
+721 "Gerson Zaverucha" 37
+722 "Michael Bowling" 17
+723 "Francois Coste" 6
+724 "Ming Tan" 15
+725 "Blai Bonet" 17
+726 "Sanjoy Dasgupta" 20
+727 "Chiranjib Bhattacharyya" 22
+728 "Daniel D. Lee" 23
+729 "Mark Steyvers" 18
+730 "Nelson Morgan" 75
+731 "Rolf Wiehagen" 30
+732 "Amnon Shashua" 44
+733 "Francesca A. Lisi" 16
+734 "Kalvis Apsitis" 14
+735 "Joaquin Quinonero Candela" 8
+736 "Massih-Reza Amini" 21
+737 "Ding-Xuan Zhou" 14
+738 "H. David Mathias" 6
+739 "Bernhard Hengst" 9
+740 "Erik G. Learned-Miller" 17
+741 "Ralph Linsker" 2
+742 "Derek H. Sleeman" 53
+743 "Kohei Hatano" 9
+744 "Aharon Bar-Hillel" 8
+745 "Dana Ron" 51
+746 "Dragan Gamberger" 24
+747 "Michael Bonnell Harries" 3
+748 "Liviu Badea" 7
+749 "Jiang Su" 6
+750 "Koichi Niijima" 34
+751 "Ilia Nouretdinov" 12
+752 "Scott E. Decatur" 11
+753 "Andrew G. Barto" 64
+754 "James T. Kwok" 51
+755 "Tal Grossman" 10
+756 "Ayumi Shinohara" 73
+757 "Frank Stephan" 89
+758 "John D. Lafferty" 49
+759 "Gilles Blanchard" 22
+760 "Yuji Takada" 11
+761 "Inderjit S. Dhillon" 42
+762 "Adam Kalai" 22
+763 "D. M. Titterington" 40
+764 "Inna Stainvas" 7
+765 "Jong-Hoon Oh" 24
+766 "Joe Tebelskis" 5
+767 "Jose Hernandez-Orallo" 13
+768 "Shotaro Akaho" 17
+769 "Eibe Frank" 46
+770 "Asela Gunawardana" 7
+771 "Tolga Konik" 7
+772 "Tapio Elomaa" 23
+773 "David G. Stork" 27
+774 "Martin J. Wainwright" 38
+775 "Jonathan Baxter" 20
+776 "Lars Kai Hansen" 82
+777 "Matthias Ott" 5
+778 "H. Sebastian Seung" 27
+779 "Eli Shamir" 28
+780 "Paolo Frasconi" 52
+781 "Pascal Jappy" 7
+782 "Paul W. Munro" 10
+783 "Kristin P. Bennett" 34
+784 "Juris Smotrovs" 8
+785 "Nicolas Lachiche" 14
+786 "Claire Cardie" 43
+787 "Yaakov Engel" 8
+788 "Joshua B. Tenenbaum" 39
+789 "Eduard Sackinger" 5
+790 "Odelia Schwartz" 10
+791 "Pascal Vincent" 17
+792 "Michael J. Kearns" 64
+793 "Rong Jin" 77
+794 "David B. Skalak" 6
+795 "Cheng Soon Ong" 12
+796 "Christopher J. Merz" 7
+797 "Sean Slattery" 10
+798 "Hermann Hild" 7
+799 "Jonathan J. Oliver" 15
+800 "Eric Saund" 15
+801 "Lisa Hellerstein" 32
+802 "John M. Aronis" 10
+803 "Satoshi Matsumoto" 15
+804 "J. Stephen Judd" 6
+805 "David Barber" 26
+806 "Steve R. Waterhouse" 7
+807 "Nadav Eiron" 19
+808 "Daniel N. Osherson" 12
+809 "Sebastien Jodogne" 6
+810 "Omid Madani" 18
+811 "Malcolm Slaney" 19
+812 "Rui Camacho" 29
+813 "Eduardo F. Morales" 33
+814 "Ronan Collobert" 11
+815 "Patrice Simard" 40
+816 "Jochen Nessel" 7
+817 "C. David Page Jr." 7
+818 "Jiarong Hong" 5
+819 "Bartlett W. Mel" 11
+820 "Jeffrey C. Jackson" 14
+821 "Alexandre Pouget" 21
+822 "Ralph Neuneier" 18
+823 "Balaji Krishnapuram" 23
+824 "Lluis Marquez" 22
+825 "Nitin Indurkhya" 6
+826 "Takayoshi Shoudai" 40
+827 "Jaakko Peltonen" 9
+828 "Su-In Lee" 5
+829 "Jean-Francois Cardoso" 8
+830 "Andrew Y. Ng" 76
+831 "Wei Luo" 22
+832 "Andrew R. Mitchell" 3
+833 "Stuart J. Russell" 62
+834 "Isabelle Guyon" 38
+835 "Stan Matwin" 105
+836 "Yong Ma" 15
+837 "Duncan Potts" 3
+838 "Zhixiang Chen" 43
+839 "Tibor Hegedus" 5
+840 "J. Andrew Bagnell" 18
+841 "Jun Zhu" 34
+842 "Rajesh P. N. Rao" 37
+843 "David Kauchak" 6
+844 "Floriana Esposito" 102
+845 "Javier R. Movellan" 39
+846 "Koby Crammer" 20
+847 "Thomas L. Griffiths" 22
+848 "Rayid Ghani" 20
+849 "Sameer Agarwal" 19
+850 "Hilan Bensusan" 9
+851 "Leonid Kontorovich" 4
+852 "Juris Viksna" 11
+853 "Gilles Bisson" 12
+854 "Anthony J. Robinson" 8
+855 "Harris Drucker" 12
+856 "Steven J. Nowlan" 8
+857 "Gyorgy Turan" 29
+858 "Akito Sakurai" 11
+859 "Pierre Baldi" 90
+860 "Todd K. Leen" 21
+861 "Steffen Lange" 43
+862 "Neil D. Lawrence" 40
+863 "Klaus-Uwe Hoffgen" 10
+864 "Jianping Zhang" 39
+865 "Zoubin Ghahramani" 82
+866 "Gunter Grieser" 17
+867 "Nathalie Japkowicz" 49
+868 "Barbara Schulmeister" 2
+869 "Masami Hagiya" 52
+870 "Romer Rosales" 13
+871 "Jun-ichi Takeuchi" 13
+872 "Diego Sona" 15
+873 "Michael H. Bowling" 36
+874 "Liwei Wang" 14
+875 "Les E. Atlas" 14
+876 "Claude Sammut" 43
+877 "Andrew Moore" 38
+878 "Sophie Deneve" 9
+879 "Dominic Mazzoni" 13
+880 "Bernard Manderick" 44
+881 "Lev Reyzin" 7
+882 "Anke D. Rieger" 2
+883 "Jean-Daniel Zucker" 46
+884 "Victor Lavin" 5
+885 "Aleksandar Milosavljevic" 11
+886 "Richard Scheines" 14
+887 "Guy Shani" 11
+888 "Ronen I. Brafman" 45
+889 "Laura Martignon" 7
+890 "Michael A. Goodrich" 36
+891 "Ofer Zeitouni" 44
+892 "Lorien Y. Pratt" 8
+893 "Stephen D. Scott" 14
+894 "Melanie Hilario" 28
+895 "W. Nick Street" 22
+896 "Kalanit Grill Spector" 2
+897 "Suvrit Sra" 10
+898 "Shahar Mendelson" 14
+899 "Milos Hauskrecht" 22
+900 "Dale Schuurmans" 69
+901 "Patrik O. Hoyer" 29
+902 "Martin Riedmiller" 31
+903 "William W. Cohen" 63
+904 "Hussein Almuallim" 6
+905 "Henrik Bostrom" 18
+906 "Dit-Yan Yeung" 48
+907 "Partha Niyogi" 30
+908 "Gert R. G. Lanckriet" 17
+909 "Enric Plaza" 61
+910 "Prasad Tadepalli" 29
+911 "Thorsteinn S. Rognvaldsson" 7
+912 "Lise Getoor" 60
+913 "Richard Dearden" 19
+914 "John S. Denker" 33
+915 "Kari Torkkola" 31
+916 "Joseph Bockhorst" 7
+917 "Shimon Edelman" 48
+918 "Donato Malerba" 99
+919 "Sean B. Holden" 10
+920 "Vijay Raghavan" 39
+921 "Filip Zelezny" 25
+922 "Lynn Burroughs" 1
+923 "Naftali Tishby" 75
+924 "Johannes Mohr" 3
+925 "Gregory Kuhlmann" 11
+926 "Mark A. Hall" 9
+927 "Gareth James" 2
+928 "Fernando C. N. Pereira" 49
+929 "Haim Sompolinsky" 20
+930 "Petri Kontkanen" 25
+931 "Vladimir Pavlovic" 36
+932 "Wei Chu" 21
+933 "Stephan Pareigis" 2
+934 "Wolf Kienzle" 7
+935 "Fernando Fernandez" 14
+936 "Gerhard Widmer" 59
+937 "Christopher Raphael" 5
+938 "James Cussens" 16
+939 "Taku Kudo" 13
+940 "Robert E. Schapire" 79
+941 "Tilman Lange" 11
+942 "Yasemin Altun" 15
+943 "Erik B. Sudderth" 9
+944 "David Wingate" 9
+945 "Mark Craven" 31
+946 "Toshiyuki Tanaka" 23
+947 "Alan S. Lapedes" 10
+948 "John G. Harris" 45
+949 "David DeMers" 3
+950 "Akira Maruoka" 29
+951 "Michael O. Duff" 4
+952 "Dana Angluin" 39
+953 "Marcos Salganicoff" 15
+954 "Jette Randlov" 3
+955 "Eric P. Xing" 44
+956 "Thomas Zeugmann" 43
+957 "Christian Kuhlmann" 4
+958 "Mathieu Latourrette" 4
+959 "Wolfgang Lindner" 31
+960 "Steffen Bickel" 9
+961 "Matti Kaariainen" 8
+962 "Keith Wright" 2
+963 "Paul A. Viola" 43
+964 "Miroslav Kubat" 35
+965 "Bruno A. Olshausen" 15
+966 "Joshua Alspector" 11
+967 "Nicol N. Schraudolph" 34
+968 "Marco Saerens" 25
+969 "Tony Jebara" 32
+970 "Howard Hua Yang" 10
+971 "Wim Wiegerinck" 21
+972 "John Lafferty" 29
+973 "Charles R. Rosenberg" 13
+974 "Fletcher Lu" 6
+975 "Ying Zhao" 38
+976 "Mark A. Fulk" 5
+*Edges
+1 859 4
+1 216 2
+2 295 1
+3 530 1
+3 398 2
+3 844 2
+3 412 9
+3 883 9
+3 34 5
+3 642 1
+3 50 3
+3 547 1
+4 76 1
+4 57 1
+4 643 4
+4 434 1
+4 36 1
+4 391 1
+4 865 1
+5 908 1
+5 53 2
+5 486 4
+5 18 1
+6 596 1
+6 338 1
+6 18 1
+6 248 4
+6 577 1
+6 898 3
+6 863 1
+6 132 2
+6 226 2
+6 514 2
+6 434 3
+6 775 7
+6 579 2
+6 236 1
+6 908 1
+6 515 2
+6 486 3
+6 580 1
+6 51 4
+6 311 1
+6 261 2
+6 237 1
+6 652 12
+6 41 1
+6 316 2
+6 278 2
+7 240 1
+7 587 2
+7 627 1
+7 873 1
+7 578 1
+7 71 1
+7 126 3
+7 611 3
+7 543 1
+7 252 1
+7 525 1
+7 163 3
+7 717 1
+8 188 2
+8 795 6
+8 591 1
+8 706 4
+8 596 1
+8 580 2
+8 572 1
+8 173 7
+8 123 2
+8 942 5
+8 652 2
+8 515 7
+8 487 3
+8 270 2
+8 727 1
+8 177 1
+8 457 1
+9 897 2
+9 75 1
+9 414 1
+9 634 2
+9 761 5
+9 786 1
+9 441 2
+9 24 1
+10 147 3
+10 565 1
+10 19 3
+10 643 1
+10 519 1
+10 405 1
+10 265 9
+10 687 7
+11 892 1
+12 507 1
+13 553 4
+13 573 1
+13 74 9
+13 975 1
+13 370 1
+13 63 3
+14 429 1
+15 842 2
+16 83 1
+16 513 5
+17 655 1
+17 195 9
+17 440 6
+17 188 2
+17 296 9
+17 182 6
+17 518 1
+17 241 2
+17 515 11
+17 591 1
+17 834 2
+17 36 10
+17 814 6
+17 580 6
+17 51 3
+17 668 1
+17 326 1
+17 257 1
+17 332 1
+17 270 1
+18 908 5
+18 413 1
+18 486 7
+18 727 3
+18 236 1
+19 363 1
+19 729 6
+19 215 1
+19 83 1
+19 286 9
+19 859 2
+19 410 2
+19 847 2
+19 105 1
+19 486 1
+19 565 4
+19 780 1
+19 347 1
+19 297 1
+19 672 6
+19 586 3
+19 462 10
+20 684 5
+21 242 1
+22 786 3
+23 890 1
+24 75 1
+25 386 2
+25 674 3
+25 498 4
+25 135 1
+25 102 6
+26 433 5
+26 499 1
+27 43 3
+27 258 2
+27 310 6
+27 931 5
+28 674 1
+28 849 1
+28 478 1
+28 845 1
+28 508 1
+28 215 2
+28 949 1
+28 40 1
+28 534 2
+29 46 2
+29 105 1
+29 164 3
+29 631 3
+29 507 2
+29 508 1
+29 786 1
+29 108 2
+29 802 2
+29 504 1
+29 447 4
+29 353 2
+29 794 1
+29 145 2
+30 291 8
+30 483 7
+30 300 13
+30 210 1
+30 826 2
+30 703 1
+30 962 1
+30 956 2
+30 178 1
+30 760 1
+30 342 1
+30 525 1
+30 756 10
+30 612 2
+30 609 2
+31 656 2
+31 486 2
+31 730 1
+32 820 2
+32 140 7
+32 34 1
+33 923 8
+33 195 1
+33 129 1
+33 227 2
+33 448 4
+33 132 1
+33 445 1
+33 745 1
+33 311 4
+34 221 1
+34 196 1
+34 844 2
+34 864 1
+34 321 1
+34 150 2
+34 245 2
+34 835 2
+34 140 3
+34 547 2
+35 577 1
+35 654 1
+35 319 5
+35 900 1
+36 596 1
+36 440 1
+36 334 1
+36 195 11
+36 76 1
+36 182 2
+36 434 1
+36 518 2
+36 515 7
+36 114 4
+36 643 2
+36 340 1
+36 580 4
+36 668 1
+36 576 2
+36 57 2
+36 492 1
+37 45 4
+37 589 4
+37 94 3
+37 562 4
+38 516 16
+38 458 3
+38 829 1
+38 183 3
+38 274 1
+39 318 2
+39 556 1
+40 280 1
+41 486 3
+41 237 1
+41 514 1
+41 912 2
+41 621 12
+41 830 1
+41 659 3
+41 143 2
+42 768 1
+42 418 1
+42 971 3
+43 188 2
+43 96 1
+43 325 2
+43 231 7
+43 692 1
+43 71 2
+43 824 1
+43 504 2
+43 95 1
+43 362 2
+44 632 1
+44 653 1
+44 78 1
+44 748 1
+45 489 1
+45 203 1
+45 700 15
+45 101 1
+45 119 2
+45 451 1
+45 964 3
+45 876 1
+45 547 2
+46 95 1
+46 577 5
+46 478 1
+46 504 5
+46 434 1
+46 139 1
+46 623 3
+46 961 1
+46 625 6
+46 355 1
+46 792 2
+46 293 2
+46 726 1
+46 237 1
+46 354 2
+46 459 1
+46 559 1
+46 163 1
+46 762 1
+46 654 2
+47 240 1
+48 540 3
+48 174 1
+48 200 1
+48 398 1
+48 653 16
+48 665 2
+48 370 1
+48 632 9
+48 256 1
+48 616 3
+48 910 1
+48 203 15
+48 812 2
+48 746 1
+48 469 3
+48 449 3
+48 622 3
+48 510 1
+49 385 1
+49 304 1
+51 596 3
+51 967 1
+51 942 1
+51 195 6
+51 188 3
+51 795 1
+51 855 1
+51 572 3
+51 434 3
+51 224 4
+51 236 1
+51 815 2
+51 243 1
+51 727 1
+51 515 26
+51 591 9
+51 580 2
+51 177 1
+51 173 7
+51 706 2
+51 435 1
+51 444 1
+51 652 20
+51 123 1
+51 270 6
+51 78 2
+51 457 1
+52 532 1
+52 362 1
+52 328 1
+52 684 1
+52 451 1
+52 489 1
+53 515 1
+53 908 1
+53 768 1
+53 486 1
+53 537 1
+53 234 1
+54 494 4
+54 460 1
+54 745 2
+54 290 2
+54 593 1
+54 514 1
+54 851 1
+54 455 1
+54 693 1
+54 355 5
+54 923 5
+54 928 2
+54 846 6
+54 542 2
+54 726 1
+54 903 2
+54 940 14
+54 121 3
+54 261 1
+54 604 12
+54 830 1
+54 659 2
+54 621 1
+54 227 1
+54 492 1
+55 599 2
+56 683 2
+56 273 1
+56 513 1
+57 486 3
+57 805 1
+57 862 6
+57 257 2
+57 434 1
+57 605 1
+57 643 6
+57 76 1
+57 717 1
+58 586 1
+58 573 1
+58 119 1
+58 910 1
+58 704 1
+58 372 1
+58 912 1
+59 551 3
+59 505 1
+59 255 1
+59 165 4
+59 561 1
+59 753 1
+59 964 1
+59 447 2
+59 937 1
+59 208 1
+60 362 1
+60 684 1
+60 566 1
+60 344 1
+60 867 1
+60 372 1
+60 163 1
+60 903 6
+61 445 1
+62 187 1
+63 74 15
+63 391 1
+64 203 2
+64 125 1
+64 538 2
+64 94 2
+64 176 1
+65 389 13
+65 959 1
+65 85 4
+65 137 3
+65 920 3
+65 884 2
+66 485 2
+66 217 1
+66 804 2
+66 140 3
+66 84 1
+66 801 3
+66 316 2
+67 364 1
+67 557 1
+68 529 1
+69 613 1
+69 137 1
+69 190 5
+69 508 1
+70 940 1
+70 762 1
+71 297 1
+71 900 13
+71 810 3
+71 86 9
+71 705 1
+71 215 2
+71 831 1
+72 886 1
+73 574 1
+73 300 2
+73 784 3
+73 956 1
+73 731 5
+73 599 3
+73 852 1
+73 734 10
+73 235 2
+73 757 1
+73 575 1
+73 260 14
+74 553 2
+74 225 2
+74 515 1
+74 623 1
+75 297 1
+75 664 3
+75 300 2
+75 398 1
+75 184 1
+75 94 2
+75 90 7
+75 858 1
+75 341 1
+75 825 2
+75 87 10
+76 643 1
+76 434 1
+76 156 1
+77 256 3
+78 596 2
+78 572 4
+78 665 3
+78 256 1
+78 203 1
+78 94 10
+78 746 1
+78 785 4
+78 767 2
+78 150 4
+78 921 3
+78 583 1
+78 175 1
+79 149 2
+79 398 1
+79 221 1
+80 543 1
+81 551 1
+81 753 4
+81 510 2
+81 719 1
+81 240 3
+82 643 1
+82 506 2
+82 378 2
+82 373 3
+82 519 4
+82 687 1
+83 796 1
+83 511 1
+84 699 2
+84 240 2
+84 494 5
+84 577 1
+84 745 5
+84 202 1
+84 140 2
+84 504 7
+84 232 10
+84 132 3
+84 139 1
+84 701 1
+84 475 1
+84 578 1
+84 96 1
+84 588 1
+84 792 13
+84 940 5
+84 261 1
+84 354 2
+84 237 2
+84 830 3
+84 820 1
+84 543 4
+84 573 1
+84 227 3
+85 202 1
+85 504 1
+85 574 1
+85 863 2
+85 568 5
+85 957 2
+85 132 4
+85 701 3
+85 96 1
+85 579 10
+85 135 1
+85 137 1
+85 807 1
+85 686 6
+85 261 1
+85 779 3
+85 389 4
+85 714 1
+85 820 1
+85 278 1
+85 431 1
+86 173 2
+86 900 16
+87 398 1
+88 455 1
+88 553 2
+89 215 1
+89 315 1
+89 935 4
+90 233 4
+90 864 5
+90 162 1
+90 793 1
+90 915 4
+90 570 1
+91 369 2
+91 397 9
+92 835 5
+92 479 5
+92 749 1
+92 646 2
+93 669 10
+93 410 2
+93 486 1
+93 569 1
+94 921 10
+94 184 1
+94 451 4
+94 665 6
+94 632 3
+94 150 3
+94 256 1
+94 818 1
+94 547 1
+94 297 1
+94 341 1
+94 203 11
+94 746 16
+94 703 1
+94 538 2
+95 354 1
+95 825 1
+95 311 2
+95 783 1
+95 578 1
+96 774 2
+96 820 3
+96 231 4
+96 563 1
+96 699 2
+96 304 1
+96 261 3
+96 762 1
+96 475 3
+96 140 1
+96 801 1
+97 897 1
+97 761 2
+98 969 1
+98 490 10
+99 297 4
+100 324 2
+101 812 2
+101 540 3
+101 616 16
+101 174 3
+101 119 7
+101 590 1
+101 449 2
+101 187 2
+102 498 9
+102 135 1
+103 119 1
+104 769 2
+104 698 1
+105 387 13
+105 250 2
+105 770 1
+105 286 1
+105 886 2
+105 802 1
+105 447 1
+105 353 1
+105 345 1
+105 145 1
+105 887 1
+105 205 1
+106 607 1
+107 528 1
+107 547 2
+107 573 1
+107 221 4
+108 294 2
+108 320 2
+108 447 1
+109 337 1
+110 871 4
+111 449 1
+111 632 3
+111 501 4
+111 678 5
+112 603 7
+112 254 9
+112 591 1
+113 712 3
+113 638 1
+113 862 7
+114 683 5
+114 273 1
+114 727 2
+114 334 2
+114 932 9
+114 865 2
+115 341 1
+115 442 3
+116 862 1
+116 407 1
+117 371 1
+118 702 2
+119 174 4
+119 583 1
+119 196 1
+119 501 1
+119 632 3
+119 187 5
+119 616 10
+119 910 1
+119 833 1
+119 590 6
+119 203 3
+119 938 2
+119 912 3
+119 168 1
+119 573 3
+120 873 1
+120 887 1
+120 139 1
+120 900 4
+120 888 1
+120 405 2
+121 435 1
+121 314 4
+121 584 1
+121 393 1
+121 701 4
+121 494 5
+121 355 11
+121 211 1
+121 261 2
+121 474 1
+121 362 1
+121 940 8
+121 205 4
+122 905 1
+123 631 1
+123 507 2
+123 942 7
+123 486 2
+123 515 2
+123 623 1
+123 445 1
+123 593 1
+123 758 1
+123 564 1
+124 360 1
+125 176 3
+126 877 1
+126 553 1
+126 671 1
+126 587 1
+126 611 1
+127 492 1
+128 613 1
+128 364 3
+128 662 1
+128 254 2
+128 763 1
+128 815 2
+128 663 1
+128 639 1
+129 963 3
+129 693 2
+129 282 1
+129 490 11
+130 712 2
+130 395 2
+130 191 2
+131 619 1
+132 693 1
+132 701 3
+132 846 1
+132 956 1
+132 342 1
+132 311 1
+132 261 6
+132 140 1
+132 613 1
+132 205 4
+132 807 5
+133 369 1
+133 591 6
+134 668 2
+135 498 1
+136 478 1
+137 389 4
+137 959 1
+137 757 1
+137 261 1
+138 702 1
+138 573 1
+139 577 3
+139 237 1
+139 455 1
+139 792 6
+139 717 2
+139 899 1
+140 738 3
+140 584 1
+140 217 4
+140 922 1
+140 838 2
+140 752 1
+140 629 1
+140 807 2
+140 605 2
+140 301 1
+140 801 3
+140 820 2
+141 293 1
+141 214 1
+141 391 2
+141 422 1
+141 960 1
+142 354 1
+142 504 8
+142 699 1
+142 762 2
+143 253 1
+143 830 9
+143 621 4
+143 828 1
+143 623 2
+144 385 5
+145 408 1
+145 353 3
+145 447 2
+145 802 2
+146 543 1
+147 519 1
+147 265 2
+147 687 5
+148 908 1
+149 435 1
+149 633 1
+149 398 1
+149 772 1
+149 287 9
+149 781 5
+149 213 1
+149 835 1
+149 961 1
+150 271 3
+150 493 1
+150 572 4
+150 632 1
+150 203 2
+150 705 4
+150 844 2
+150 321 1
+150 245 1
+150 921 2
+150 369 1
+150 653 1
+150 370 2
+151 755 1
+151 966 2
+151 366 1
+152 327 2
+152 200 2
+152 174 9
+153 655 3
+153 751 1
+153 160 4
+153 357 1
+153 641 1
+154 220 1
+155 553 4
+155 456 2
+155 163 1
+156 689 1
+156 411 2
+156 486 2
+156 833 2
+156 571 7
+156 607 1
+157 735 1
+157 472 5
+157 776 7
+158 723 2
+158 552 1
+158 187 3
+159 592 3
+159 943 4
+159 452 1
+159 204 1
+159 963 5
+159 607 7
+159 490 4
+159 515 1
+159 565 2
+159 282 1
+159 931 1
+159 788 3
+159 337 1
+160 655 3
+160 641 3
+161 870 1
+161 717 1
+161 219 1
+161 243 1
+162 915 1
+162 570 1
+162 165 5
+162 823 1
+162 243 1
+163 240 1
+163 478 1
+163 289 3
+163 800 1
+163 455 7
+163 623 1
+163 717 1
+163 553 1
+163 792 3
+163 726 1
+163 344 1
+163 940 8
+163 237 8
+163 890 1
+163 559 2
+163 543 9
+164 945 2
+164 631 1
+164 507 5
+164 312 2
+164 445 3
+164 797 1
+164 447 4
+164 207 1
+164 928 2
+165 702 2
+165 399 1
+165 551 1
+165 511 2
+166 909 6
+166 573 2
+166 245 1
+166 221 1
+167 553 1
+167 877 2
+169 972 2
+169 758 4
+169 445 1
+169 295 3
+169 865 3
+170 768 1
+171 721 2
+172 710 9
+172 371 2
+172 298 1
+173 349 1
+173 795 2
+173 900 2
+173 572 1
+173 652 1
+173 607 1
+173 355 2
+173 967 6
+174 945 4
+174 200 11
+174 812 2
+174 916 3
+174 938 4
+174 616 7
+174 921 1
+174 327 5
+174 801 1
+177 591 1
+177 224 4
+177 195 1
+177 855 1
+177 639 4
+177 914 5
+177 815 1
+177 515 2
+177 492 1
+177 270 1
+178 300 1
+178 756 1
+178 609 4
+179 674 3
+179 601 3
+179 277 1
+179 508 2
+179 313 1
+180 812 4
+181 328 2
+181 647 2
+182 195 1
+182 580 2
+182 386 1
+182 859 1
+182 834 3
+182 236 1
+182 515 3
+182 434 1
+182 257 1
+182 296 2
+182 668 3
+183 516 8
+183 254 1
+184 297 1
+185 668 3
+185 627 1
+185 205 1
+185 355 2
+186 788 1
+187 616 3
+188 435 1
+188 224 1
+188 580 2
+188 325 25
+188 652 4
+188 705 3
+188 515 3
+188 862 1
+188 654 2
+188 571 1
+188 434 4
+188 397 1
+189 491 1
+190 242 1
+190 627 5
+190 632 1
+190 857 4
+190 838 1
+190 714 1
+190 355 2
+190 211 1
+190 261 1
+191 712 3
+191 395 3
+192 707 1
+192 687 5
+192 856 1
+192 821 1
+192 677 2
+192 577 4
+192 516 6
+192 543 2
+192 682 1
+192 967 1
+192 519 7
+192 345 2
+192 790 1
+193 353 2
+194 376 1
+195 655 1
+195 440 4
+195 855 5
+195 914 2
+195 691 1
+195 518 4
+195 448 1
+195 815 3
+195 639 1
+195 515 5
+195 591 1
+195 834 8
+195 814 1
+195 580 1
+195 668 1
+195 576 1
+195 270 1
+195 467 2
+195 332 5
+195 492 1
+196 799 1
+196 245 1
+196 480 1
+197 203 1
+197 245 2
+198 398 5
+199 602 7
+199 399 4
+200 532 1
+200 945 5
+200 910 1
+200 916 3
+200 634 3
+200 408 1
+200 243 2
+200 581 1
+200 721 2
+200 549 8
+200 457 2
+201 786 1
+201 297 1
+202 792 1
+202 504 2
+202 686 1
+202 779 1
+203 921 2
+203 665 13
+203 370 2
+203 632 7
+203 616 1
+203 297 4
+203 341 1
+203 833 1
+203 746 1
+203 938 2
+203 469 2
+203 449 2
+203 443 1
+203 538 2
+203 622 2
+204 774 5
+204 718 2
+204 209 1
+204 244 3
+204 598 1
+204 965 1
+204 515 1
+204 790 5
+205 494 6
+205 393 2
+205 482 1
+205 701 5
+205 717 3
+205 236 3
+205 355 9
+205 923 2
+205 371 3
+205 792 6
+205 435 1
+205 715 2
+205 940 6
+205 261 3
+205 778 2
+205 472 3
+205 885 1
+205 462 1
+206 460 1
+207 634 3
+207 312 1
+207 646 1
+208 753 1
+210 291 2
+210 300 1
+210 585 2
+211 867 1
+211 627 1
+211 579 1
+211 893 1
+211 355 1
+211 605 1
+211 217 3
+211 362 2
+212 361 1
+213 287 3
+213 552 5
+214 591 4
+214 939 4
+214 768 3
+214 515 1
+214 288 1
+214 355 2
+214 391 1
+214 270 4
+215 696 1
+215 849 1
+215 478 2
+215 526 1
+215 352 1
+215 237 1
+215 843 3
+215 625 1
+216 424 2
+217 684 1
+217 893 5
+217 738 5
+217 355 1
+217 792 2
+217 605 4
+217 504 2
+217 474 1
+217 362 1
+217 940 2
+218 801 1
+219 624 5
+219 644 1
+219 932 1
+219 241 1
+219 822 4
+220 689 1
+220 674 2
+220 508 9
+220 284 5
+221 398 2
+221 573 1
+221 909 2
+221 853 1
+221 528 2
+221 245 3
+221 642 1
+221 547 1
+222 580 1
+223 717 1
+223 621 2
+223 659 5
+224 435 1
+224 856 1
+224 320 1
+224 486 1
+224 652 4
+224 236 3
+224 815 1
+224 515 2
+224 862 2
+224 434 3
+224 524 1
+226 652 1
+226 494 2
+226 455 1
+226 726 1
+226 316 1
+226 261 2
+226 940 2
+226 265 1
+226 446 3
+227 675 1
+227 898 1
+227 923 7
+227 779 4
+228 835 2
+228 242 1
+228 876 1
+228 480 1
+228 583 1
+229 310 2
+230 724 1
+230 408 2
+230 447 1
+231 632 1
+231 956 1
+231 293 2
+231 362 2
+231 504 2
+232 792 4
+232 504 1
+232 588 1
+232 578 1
+233 793 1
+235 260 1
+235 734 1
+235 388 3
+236 507 2
+236 486 3
+236 652 1
+236 783 3
+236 515 1
+236 434 16
+236 643 1
+236 606 2
+236 908 4
+237 240 1
+237 942 1
+237 903 1
+237 514 2
+237 726 1
+237 543 2
+237 621 1
+237 940 7
+237 713 1
+238 297 1
+239 956 1
+240 597 1
+240 753 5
+240 392 1
+240 336 1
+240 726 1
+240 551 7
+240 873 4
+240 925 1
+240 558 1
+240 550 1
+240 559 1
+240 543 9
+241 515 3
+241 580 2
+241 735 5
+241 643 1
+241 776 2
+241 865 4
+242 509 4
+242 900 1
+242 627 1
+242 873 1
+242 964 1
+242 835 1
+242 463 1
+243 870 6
+243 953 2
+243 457 5
+243 823 6
+245 271 2
+245 507 4
+245 909 2
+245 882 1
+245 521 6
+245 443 1
+246 337 2
+247 414 1
+247 867 1
+248 919 2
+248 652 2
+248 434 8
+249 861 1
+250 387 1
+251 324 4
+252 627 3
+253 542 1
+253 621 2
+253 592 1
+253 923 6
+253 846 1
+253 323 5
+254 591 1
+255 543 1
+255 951 1
+255 753 3
+256 325 1
+256 622 3
+256 936 2
+256 746 1
+256 722 1
+256 449 1
+257 515 1
+257 862 2
+258 667 1
+259 287 2
+259 424 2
+259 496 2
+259 552 3
+260 574 2
+260 300 1
+260 952 2
+260 956 5
+260 731 11
+260 599 6
+260 734 4
+260 757 1
+260 575 4
+260 362 1
+260 299 1
+261 393 3
+261 701 3
+261 627 3
+261 518 1
+261 355 3
+261 293 2
+261 726 2
+261 807 1
+261 757 3
+261 969 1
+261 652 1
+262 397 2
+263 653 2
+263 469 1
+263 720 4
+263 880 6
+264 623 1
+265 865 3
+265 687 5
+265 955 1
+265 486 2
+265 577 1
+265 282 2
+265 740 1
+266 506 1
+266 378 1
+266 373 3
+266 519 4
+267 534 3
+268 515 1
+269 335 1
+269 834 1
+270 795 1
+270 591 16
+270 783 1
+270 515 12
+270 426 1
+270 355 8
+270 311 1
+271 370 1
+272 586 2
+272 610 1
+273 683 6
+274 626 1
+274 516 1
+274 949 1
+275 398 2
+276 877 1
+276 948 1
+276 544 1
+277 601 3
+278 587 2
+278 580 3
+278 578 1
+278 701 2
+278 365 2
+278 759 1
+278 491 3
+278 433 1
+278 504 1
+279 606 2
+281 440 1
+281 923 5
+282 865 4
+282 436 3
+282 687 4
+282 405 1
+282 693 1
+282 577 1
+282 677 5
+282 517 1
+282 337 1
+282 323 1
+282 345 1
+283 876 4
+284 872 4
+284 780 5
+284 773 1
+285 554 1
+285 853 3
+287 781 1
+288 941 5
+288 394 3
+288 591 2
+289 343 2
+289 830 1
+289 833 2
+289 621 7
+289 383 1
+289 659 1
+290 830 3
+291 574 1
+291 750 1
+291 483 3
+291 300 18
+291 585 1
+291 756 1
+291 709 8
+292 307 1
+293 431 8
+293 871 5
+293 956 1
+293 625 9
+293 355 2
+294 497 1
+294 456 1
+295 687 1
+295 555 2
+295 766 3
+295 798 2
+295 576 1
+295 364 1
+295 302 13
+295 972 1
+296 515 1
+296 326 4
+296 494 3
+297 363 1
+297 504 1
+297 666 2
+297 408 2
+297 665 6
+297 350 6
+297 447 1
+297 664 5
+297 771 2
+297 320 1
+297 742 1
+297 547 1
+297 361 1
+298 710 1
+298 371 1
+299 362 1
+299 575 2
+300 750 1
+300 826 2
+300 376 1
+300 734 2
+300 756 32
+300 709 7
+300 612 2
+300 609 3
+303 501 1
+303 632 1
+303 780 1
+304 563 1
+304 385 3
+304 539 2
+305 668 4
+305 737 1
+306 308 2
+307 345 1
+307 325 1
+307 453 1
+307 728 1
+308 940 1
+308 893 1
+309 528 1
+310 345 1
+310 570 1
+311 898 1
+311 787 3
+311 578 6
+311 614 1
+311 366 2
+314 701 1
+314 355 1
+316 485 4
+316 371 1
+317 573 1
+318 902 1
+319 900 1
+319 945 1
+319 436 1
+319 508 2
+319 502 1
+319 662 1
+319 953 2
+319 445 1
+320 800 1
+320 621 1
+320 740 1
+320 511 2
+321 844 1
+321 398 3
+321 554 1
+322 557 2
+323 717 2
+323 592 2
+323 923 6
+323 514 1
+323 846 1
+324 847 1
+325 584 2
+325 652 1
+325 701 1
+325 515 1
+325 722 1
+325 434 5
+325 967 2
+326 494 1
+327 916 1
+329 868 1
+330 529 2
+330 867 2
+331 712 1
+331 697 1
+332 855 5
+332 639 1
+332 914 1
+332 851 2
+332 448 1
+332 576 1
+332 940 1
+333 484 1
+333 963 2
+333 792 3
+333 543 3
+334 515 1
+334 810 1
+334 502 1
+334 879 2
+336 551 1
+336 753 3
+336 647 1
+337 842 1
+339 486 1
+339 754 6
+339 906 6
+339 428 3
+340 515 2
+340 580 4
+340 611 2
+341 701 1
+341 664 2
+341 442 1
+342 574 25
+342 777 2
+342 956 5
+342 731 2
+342 599 2
+342 976 1
+342 525 1
+342 476 8
+342 757 13
+342 861 1
+343 383 8
+343 823 11
+344 393 1
+345 687 3
+345 520 7
+345 815 2
+345 931 1
+345 870 2
+345 519 1
+345 717 1
+346 969 1
+346 717 2
+346 486 1
+347 462 1
+347 905 5
+348 662 2
+348 508 4
+349 967 1
+349 775 2
+350 547 1
+350 666 2
+351 771 1
+351 470 2
+353 877 1
+353 553 2
+353 447 2
+353 802 2
+354 693 1
+354 504 8
+354 692 1
+355 362 1
+355 494 7
+355 584 1
+355 568 1
+355 393 4
+355 701 5
+355 627 5
+355 474 1
+355 591 1
+355 792 1
+355 580 1
+355 871 1
+355 435 5
+355 940 9
+355 563 1
+355 743 1
+355 426 2
+356 865 1
+356 945 1
+356 507 1
+356 955 1
+356 903 1
+356 553 1
+356 793 1
+356 456 1
+356 593 2
+356 848 3
+356 534 1
+356 797 2
+356 972 3
+357 751 1
+358 485 2
+358 440 1
+358 736 7
+359 805 1
+359 971 7
+360 834 1
+361 551 1
+361 648 1
+361 578 1
+362 504 2
+362 684 5
+362 575 2
+362 792 2
+362 839 1
+362 952 1
+362 801 2
+362 465 1
+363 859 2
+363 586 2
+363 646 4
+364 482 1
+364 557 1
+364 687 3
+365 587 1
+365 551 1
+366 433 1
+367 586 1
+367 796 1
+367 372 2
+368 439 1
+369 705 10
+369 397 2
+369 572 1
+369 960 2
+370 553 1
+370 573 2
+370 646 3
+371 703 2
+371 760 1
+371 710 4
+371 861 2
+372 374 1
+372 704 1
+372 510 1
+372 634 2
+372 566 1
+372 802 3
+372 511 3
+374 693 2
+374 681 5
+374 667 6
+374 625 2
+375 553 1
+377 737 1
+378 385 1
+378 924 1
+378 492 1
+379 380 1
+380 455 2
+381 440 2
+381 591 2
+381 860 2
+381 639 1
+382 660 1
+383 823 3
+384 966 1
+385 967 2
+385 610 1
+386 834 1
+387 887 1
+388 734 1
+389 959 1
+389 884 1
+390 648 1
+390 464 2
+391 591 8
+391 537 1
+391 960 1
+391 759 6
+392 753 1
+393 900 1
+393 584 1
+393 792 1
+393 504 1
+393 801 1
+394 941 4
+394 591 1
+395 712 7
+395 946 1
+396 417 1
+396 635 2
+397 705 1
+397 868 1
+398 401 1
+399 602 6
+399 511 5
+400 679 1
+402 623 2
+403 754 11
+404 931 1
+405 720 1
+405 696 2
+406 863 1
+406 838 1
+406 579 3
+407 862 2
+407 919 1
+407 571 3
+408 634 1
+408 549 1
+409 542 3
+409 487 4
+409 716 2
+409 492 2
+410 859 1
+410 569 5
+410 427 2
+411 486 1
+411 571 11
+413 582 3
+415 753 1
+416 573 1
+416 910 7
+418 591 2
+419 680 2
+419 811 1
+420 505 2
+421 956 3
+421 861 3
+422 826 1
+422 585 2
+422 612 3
+423 759 2
+424 676 2
+424 968 2
+424 552 2
+425 688 1
+425 968 4
+426 591 3
+429 967 2
+430 455 1
+430 910 2
+430 447 2
+430 690 1
+430 753 2
+431 871 2
+431 714 1
+432 624 1
+432 819 3
+432 811 1
+433 859 2
+433 804 1
+434 584 1
+434 485 3
+434 775 1
+434 701 1
+434 557 1
+434 515 3
+434 637 1
+434 643 3
+434 507 1
+434 606 1
+434 652 6
+434 867 1
+434 783 4
+434 763 1
+434 465 1
+434 936 1
+435 627 1
+435 652 2
+436 865 3
+436 687 2
+436 486 5
+436 639 1
+436 728 5
+436 543 1
+436 792 1
+436 717 3
+437 952 1
+438 511 1
+439 970 1
+439 911 1
+439 860 3
+440 591 1
+440 789 1
+440 814 2
+440 834 2
+440 639 12
+440 508 1
+440 467 1
+440 815 2
+440 791 1
+440 492 6
+440 576 8
+441 761 5
+444 652 1
+445 797 1
+445 631 1
+445 840 1
+445 945 1
+445 593 1
+445 623 1
+445 447 3
+445 740 2
+445 928 3
+445 963 2
+445 903 1
+445 758 2
+445 830 2
+445 508 1
+447 797 2
+447 477 3
+447 945 2
+447 504 1
+447 471 1
+447 623 5
+447 553 1
+447 742 1
+447 802 2
+447 547 1
+447 507 1
+447 910 1
+447 646 1
+447 903 3
+447 955 1
+447 830 2
+447 867 1
+447 912 1
+447 964 1
+449 769 3
+449 622 12
+449 632 7
+449 936 6
+449 501 2
+449 616 2
+449 510 1
+450 668 1
+450 518 2
+450 907 1
+451 848 2
+451 507 1
+451 557 1
+451 797 1
+453 728 2
+454 872 3
+455 660 1
+455 952 1
+455 704 2
+455 501 1
+455 553 2
+455 702 1
+455 899 2
+455 649 1
+456 696 1
+456 631 1
+456 577 1
+456 553 11
+456 840 2
+456 623 1
+456 830 1
+457 895 2
+458 516 4
+458 965 2
+459 930 3
+461 467 1
+461 914 1
+462 859 1
+462 783 1
+462 975 1
+463 725 1
+463 623 1
+464 578 3
+464 891 2
+465 684 1
+465 884 1
+466 627 2
+467 503 2
+467 834 2
+467 815 1
+467 789 1
+467 914 3
+468 580 2
+468 759 4
+469 501 1
+469 632 3
+469 653 8
+469 622 1
+469 572 2
+472 792 1
+472 929 2
+472 643 1
+472 940 1
+472 778 1
+472 494 1
+473 972 2
+473 758 2
+474 952 1
+474 857 11
+475 629 1
+475 699 2
+475 762 1
+476 574 10
+476 777 2
+476 705 1
+476 832 1
+476 599 1
+476 590 1
+476 650 1
+476 757 9
+476 575 1
+476 876 1
+481 774 1
+482 662 1
+483 585 1
+484 792 4
+484 543 4
+484 621 4
+485 637 5
+485 867 2
+486 774 3
+486 564 1
+486 908 9
+486 943 2
+486 865 7
+486 847 2
+486 833 3
+486 830 8
+486 543 4
+486 717 9
+486 592 2
+486 788 1
+486 607 1
+486 955 10
+486 753 1
+486 727 6
+486 516 1
+486 687 1
+486 862 4
+486 571 1
+487 795 1
+487 716 4
+488 827 8
+488 915 1
+489 545 1
+489 696 1
+489 741 1
+490 963 5
+490 862 1
+490 514 2
+491 759 1
+492 900 1
+492 815 3
+492 639 5
+492 503 2
+492 791 12
+492 542 10
+492 814 2
+492 780 3
+492 576 5
+492 969 1
+492 912 1
+493 905 1
+494 745 4
+494 701 4
+494 627 2
+494 923 1
+494 792 2
+494 726 1
+494 963 1
+494 940 20
+494 779 1
+494 778 1
+495 847 2
+497 696 1
+497 687 1
+500 915 4
+501 572 1
+501 573 1
+501 632 13
+501 910 1
+501 912 1
+503 834 3
+503 914 2
+503 639 2
+504 699 1
+504 702 1
+504 972 1
+504 693 1
+504 792 3
+504 758 1
+504 559 3
+504 801 1
+504 696 1
+504 820 3
+504 762 7
+505 809 2
+507 942 2
+507 705 1
+507 579 1
+507 521 4
+508 674 18
+508 810 1
+508 618 1
+508 662 11
+508 780 1
+508 535 1
+509 835 1
+510 557 1
+510 704 6
+510 719 8
+512 657 1
+512 583 2
+514 928 1
+514 940 2
+515 728 1
+515 934 4
+515 652 8
+515 580 9
+515 735 1
+515 706 3
+515 591 12
+515 862 1
+515 815 1
+515 718 4
+516 842 2
+516 967 4
+516 519 2
+516 856 3
+516 618 2
+516 545 1
+516 682 1
+516 790 2
+516 687 2
+516 963 3
+516 845 6
+516 821 5
+516 711 1
+517 778 1
+518 732 1
+518 580 1
+518 737 1
+518 668 3
+518 907 2
+519 707 2
+519 687 5
+519 856 1
+519 821 3
+519 677 1
+519 643 1
+519 522 2
+523 712 3
+524 600 4
+525 956 3
+525 861 5
+525 559 1
+525 574 1
+527 915 6
+528 883 3
+529 661 2
+529 892 1
+529 867 1
+531 717 1
+531 865 1
+532 634 2
+533 805 1
+534 967 3
+536 646 2
+537 548 3
+537 591 2
+539 956 1
+540 632 6
+540 653 2
+540 616 1
+541 754 2
+541 906 3
+542 805 2
+542 814 4
+542 836 1
+542 604 1
+543 631 1
+543 564 1
+543 753 6
+543 944 3
+543 800 1
+543 717 5
+543 588 1
+543 792 17
+543 551 4
+544 877 3
+544 608 1
+545 624 2
+545 564 1
+545 643 1
+545 687 1
+546 865 1
+546 687 2
+547 844 1
+547 583 1
+547 818 1
+547 558 2
+547 864 2
+547 567 5
+547 835 2
+547 964 2
+547 573 1
+549 945 1
+549 634 3
+549 661 1
+551 578 3
+551 648 1
+551 726 1
+552 723 1
+552 640 1
+552 781 1
+552 704 1
+553 631 2
+553 649 1
+553 830 1
+553 573 1
+554 835 1
+554 853 2
+555 573 3
+555 766 1
+556 902 3
+558 909 1
+559 873 5
+559 820 1
+559 577 1
+559 840 1
+559 861 1
+560 621 2
+561 657 2
+561 964 1
+561 894 1
+561 583 2
+563 743 1
+563 655 1
+563 950 13
+564 875 2
+564 865 2
+565 963 2
+565 943 2
+566 625 1
+570 915 1
+571 689 2
+571 833 2
+571 607 2
+572 596 1
+572 942 1
+572 705 1
+572 653 2
+573 798 1
+573 753 1
+573 594 5
+573 632 2
+573 792 1
+573 904 1
+573 910 4
+573 912 3
+574 777 1
+574 808 1
+574 816 3
+574 956 7
+574 731 7
+574 599 7
+574 976 2
+574 757 17
+574 575 1
+574 861 6
+575 731 1
+575 599 1
+575 757 1
+576 639 6
+576 815 5
+576 791 3
+576 940 1
+577 840 2
+577 792 4
+577 830 2
+578 898 1
+578 787 4
+578 648 1
+579 627 1
+579 701 5
+579 779 4
+579 863 5
+580 611 1
+580 898 1
+580 759 2
+580 735 1
+580 713 2
+580 640 2
+583 812 1
+583 665 1
+583 657 1
+584 701 7
+584 627 3
+585 756 2
+585 709 3
+586 918 1
+586 844 1
+586 602 2
+586 796 4
+586 666 2
+588 846 1
+590 616 4
+590 876 2
+591 970 1
+591 768 1
+591 759 5
+591 718 1
+591 639 1
+592 917 2
+592 923 1
+592 607 2
+592 708 1
+592 717 1
+592 830 1
+593 928 1
+593 758 1
+593 940 2
+593 651 1
+595 715 2
+596 652 3
+599 956 5
+599 731 8
+599 757 4
+599 861 1
+604 830 1
+604 693 2
+604 659 1
+604 846 2
+605 643 1
+605 893 1
+605 738 2
+607 833 4
+6
