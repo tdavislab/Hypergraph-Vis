@@ -1,0 +1,24 @@
+*Vertices 11
+1 "Tao Wu" 40
+2 "Siu Man Lui" 11
+3 "Xiao Fang" 6
+4 "Li Chen" 114
+5 "Nan Liu" 13
+6 "Christopher C. Yang" 54
+7 "Alessandro Vespignani" 20
+8 "Tak-Lam Wong" 8
+9 "Hong Su" 22
+10 "Filippo Menczer" 40
+11 "Fu Lee Wang" 10
+*Edges
+1 4 1
+2 6 1
+3 6 1
+4 9 3
+4 5 1
+5 6 3
+6 11 3
+6 10 1
+7 10 5
+8 11 2
+*Triangles

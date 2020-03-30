@@ -1,0 +1,31 @@
+*Vertices 9
+1 "Michal Kratky" 15
+2 "Tomas Skopal" 17
+3 "Pavel Moravec" 24
+4 "Jan Nemrava" 6
+5 "Josef Petrak" 3
+6 "Ales Keprt" 3
+7 "Vojtech Svatek" 38
+8 "Jan Martinovic" 14
+9 "Vaclav Snasel" 76
+*Edges
+1 2 5
+1 9 12
+1 7 2
+2 3 2
+2 9 8
+2 7 1
+3 9 10
+4 5 2
+4 7 4
+5 7 2
+6 9 1
+7 9 3
+8 9 7
+*Triangles
+4,5,7,2
+1,2,9,5
+1,2,7,1
+1,9,7,2
+3,2,9,1
+2,9,7,1

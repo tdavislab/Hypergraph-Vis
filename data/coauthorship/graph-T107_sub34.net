@@ -1,0 +1,18 @@
+*Vertices 7
+1 "Dirk Neumann" 36
+2 "Torsten Eymann" 40
+3 "Werner Streitberger" 9
+4 "Mengjie Yu" 6
+5 "Stefan Sackmann" 11
+6 "Juho Makio" 9
+7 "A. Taleb-Bendiab" 31
+*Edges
+1 2 1
+1 3 1
+1 6 1
+2 7 1
+2 3 8
+2 5 5
+4 7 4
+*Triangles
+1,2,3,1
