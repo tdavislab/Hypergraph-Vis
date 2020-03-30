@@ -27,9 +27,6 @@ def process_graph_edges(edge_str: str):
     converted_edge_str = edge_str[1:-1].replace('{', '[').replace('}', ']')
     return json.loads('{' + converted_edge_str + '}')
 
-# def remove_special_char(id):
-#     return re.sub('[^A-Za-z0-9]+', '', id)
-
 def process_hypergraph(hyper_data: str):
     hgraph = {}
     label2id = {}
@@ -142,10 +139,10 @@ def find_cc_index(components, vertex_id):
         if vertex_id in components[i]:
             return i
 
-
 def compute_barcode(graph_data):
-    # with open(graph_path) as json_file:
-    # data = json.load(json_file)
+    """
+    Get barcode of the input linegraph by computing its minimum spanning tree
+    """
     nodes = graph_data['nodes']
     links = graph_data['links']
     components = []
@@ -169,7 +166,8 @@ def compute_barcode(graph_data):
             link['nodes_subsets'] = {"source_cc": source_cc, "target_cc": target_cc}
             link['cc_list'] = components.copy()
             barcode.append({'birth': 0, 'death': weight, 'edge': link})
-    for cc in components:
+    # In the end, there might be more than one independent connected components with death=Infinite 
+    for cc in components: 
         barcode.append({'birth': 0, 'death': -1, 'edge': 'undefined'})
     return barcode
 
@@ -196,7 +194,6 @@ def import_file():
     hgraph['labels'] = id2label
     barcode = compute_barcode(lgraph)
     dual_barcode = compute_barcode(dual_lgraph)
-    # print(barcode)
 
     write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
     write_d3_graph(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
@@ -204,6 +201,20 @@ def import_file():
     write_barcode(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode.json"))
 
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+
+@app.route('/simplified_hgraph', methods=['POST', 'GET'])
+def compute_simplified_hgraph():
+    jsdata = json.loads(request.get_data())
+    variant = jsdata['variant']
+    hyper_data = jsdata['cc_dict']
+    print(hyper_data)
+
+    hgraph = hnx.Hypergraph(hyper_data)
+    if variant == "Dual Line Graph":
+        hgraph = hgraph.dual()
+
+    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    return jsonify(hyper_data=hgraph)
 
 @app.route('/switch_line_variant', methods=['POST', 'GET'])
 def switch_line_variant():

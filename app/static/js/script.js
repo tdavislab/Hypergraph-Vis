@@ -78,7 +78,7 @@ function initialize_data(data) {
     let color_dict = assign_hyperedge_colors(data);
 
     let line_data_copy = copy_line_data(data.line_data);
-    let hypergraph = new Hypergraph(data.hyper_data); 
+    let hypergraph = new Hypergraph(data.hyper_data, "hypergraph"); 
     let simplified_hypergraph = new Simplified_Hypergraph();
     let linegraph = new Linegraph(data.line_data, hypergraph, "linegraph");
     let simplified_linegraph = new Linegraph(line_data_copy, simplified_hypergraph, "simplified-linegraph");
@@ -97,8 +97,9 @@ function initialize_data(data) {
         })
 
     let line_variant_dropdown = document.getElementById("line_graph_variants");
+    let variant = "Original Line Graph"
     line_variant_dropdown.onchange = function(){
-    let variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
+        variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
         $.ajax({
             type: "POST",
             url: "/switch_line_variant",
@@ -106,35 +107,96 @@ function initialize_data(data) {
             dataType:'text',
             success: function (response) {
                 let data = JSON.parse(response);
-                switch_line_variant(color_dict, data.line_data, data.barcode_data, variant);
+                switch_line_variant(data.line_data, data.barcode_data, variant);
+                // switch_line_variant();
             },
             error: function (error) {
                 console.log("error",error);
             }
         });
     }
+
+    d3.select("#barcode-slider")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+    function switch_line_variant(line_data, barcode_data, variant){
+        clear_linegraph_canvas();
+        if(variant === "Original Line Graph"){
+            line_data.nodes.forEach(node=>{
+                let c = color_dict[node.id];
+                node.color = c;
+            })
+            line_data_copy = copy_line_data(line_data);
+            simplified_hypergraph = new Simplified_Hypergraph();
+            linegraph = new Linegraph(line_data, simplified_hypergraph, "linegraph");
+            simplified_linegraph = new Linegraph(line_data_copy, simplified_hypergraph, "simplified-linegraph");
+            barcode = new Barcode(barcode_data, simplified_linegraph);
+        } else if(variant === "Dual Line Graph"){
+            line_data_copy = copy_line_data(line_data);
+            simplified_hypergraph = new Simplified_Hypergraph();
+            linegraph = new Linegraph(line_data, simplified_hypergraph, "linegraph");
+            simplified_linegraph = new Linegraph(line_data_copy, simplified_hypergraph, "simplified-linegraph");
+            barcode = new Barcode(barcode_data, simplified_linegraph);
+            
+        }
+        d3.select("#barcode-slider")
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+    }
+
+    function dragstarted() {
+        d3.select(this).raise();
+    }
+    function dragged() {
+        d3.select(this).attr("x", clamp(d3.event.x, barcode.svg_margin.left, barcode.width_scale(barcode.max_death*1.1)));
+        // let destination_position = d3.event.x - d3.select(this).attr("width") / 2;
+        // d3.select(this).attr("x", clamp(destination_position, 5, 90));
+    }
+    
+    function dragended() {
+        console.log(variant)
+        let threshold = barcode.width_scale.invert(d3.event.x);
+        simplified_linegraph.threshold = threshold;
+        let edgeid = barcode.extract_edgeid(threshold);
+        console.log(edgeid)
+        let cc_dict = simplified_linegraph.graph_contraction(edgeid);
+        console.log(cc_dict)
+        $.ajax({
+            type: "POST",
+            url: "/simplified_hgraph",
+            data: JSON.stringify({'cc_dict':cc_dict, 'variant':variant}),
+            dataType:'text',
+            success: function (response) {
+                let hgraph = JSON.parse(response).hyper_data;
+                hgraph.labels = hypergraph.labels;
+                // assign colors
+                hgraph.nodes.forEach(n=>{
+                    if(n.bipartite === 1){
+                        n.color = color_dict[n.id.split("|")[0]]
+                    }
+                })
+                $('#simplified-hypergraph-svg').remove();
+                $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+                simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph"); 
+            },
+            error: function (error) {
+                console.log("error",error);
+            }
+        });
+    }
+    
+    function clamp(d, min, max) {
+        return Math.min(Math.max(d, min), max);
+    };
+
 }
 
-function switch_line_variant(color_dict, lgraph, barcode_data, variant){
-    clear_linegraph_canvas();
-    if(variant === "Original Line Graph"){
-        lgraph.nodes.forEach(node=>{
-            let c = color_dict[node.id];
-            node.color = c;
-        })
-        let line_data_copy = copy_line_data(lgraph);
-        let simplified_hypergraph = new Simplified_Hypergraph();
-        let linegraph = new Linegraph(lgraph, simplified_hypergraph, "linegraph");
-        let simplified_linegraph = new Linegraph(line_data_copy, simplified_hypergraph, "simplified-linegraph");
-        let barcode = new Barcode(barcode_data, simplified_linegraph);
-    } else if(variant === "Dual Line Graph"){
-        let line_data_copy = copy_line_data(lgraph);
-        let simplified_hypergraph = new Simplified_Hypergraph();
-        let linegraph = new Linegraph(lgraph, simplified_hypergraph, "linegraph");
-        let simplified_linegraph = new Linegraph(line_data_copy, simplified_hypergraph, "simplified-linegraph");
-        let barcode = new Barcode(barcode_data, simplified_linegraph);
-    }
-}
+
 
 function assign_hyperedge_colors(data){
     let color_dict = {};

@@ -1,5 +1,5 @@
 class Hypergraph{
-    constructor(hyper_data){
+    constructor(hyper_data, svg_id){
         this.nodes = hyper_data.nodes;
         this.links = hyper_data.links;
         this.labels = hyper_data.labels;
@@ -9,11 +9,11 @@ class Hypergraph{
         this.nodes_dict = {};
         this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
 
-        this.container_width = parseFloat(d3.select('#vis-hypergraph').style('width'));
+        this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'));
 
         this.svg_width = this.container_width;
         this.svg_height = this.container_width*0.8;
-        this.svg = d3.select("#hypergraph-svg")
+        this.svg = d3.select("#"+svg_id+"-svg")
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width)
             .attr("height", this.svg_height);
@@ -130,7 +130,7 @@ class Hypergraph{
                 .rollup(d => d.map(node => [node.target.x, node.target.y]))
                 .entries(this.links);
 
-            d3.select("g#hull-group").remove();
+            this.svg.select("g#hull-group").remove();
 
             let hulls = this.svg.select("g").insert("g", ":first-child")
                 .attr("id", "hull-group")

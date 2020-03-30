@@ -132,9 +132,7 @@ class Linegraph{
         let cc_list;
 
         if(edgeid){
-            console.log(this.links_dict[edgeid])
             cc_list = this.links_dict[edgeid].cc_list;
-            console.log(cc_list)
             this.links.forEach(link=>{
                 let source_cc_idx = this.find_cc_idx(link.source.id, cc_list);
                 let target_cc_idx = this.find_cc_idx(link.target.id, cc_list);
@@ -157,7 +155,19 @@ class Linegraph{
         }
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
-        this.compute_simplified_hypergraph(cc_list);
+        // this.compute_simplified_hypergraph(cc_list);
+        let cc_dict = {}
+        cc_list.forEach(cc=>{
+            let cc_id = "";
+            let vertices = [];
+            cc.forEach(nId=>{
+                cc_id += nId + "|";
+                vertices = vertices.concat(this.nodes_dict[nId].vertices)
+            })
+            vertices = [...new Set(vertices)];
+            cc_dict[cc_id] = vertices;
+        })
+        return cc_dict;
 
 
     }

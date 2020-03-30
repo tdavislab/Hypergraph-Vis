@@ -25,13 +25,19 @@ class Barcode{
             .attr('id', 'barcode_slider');
         
         this.draw_barcode();
-        this.linegraph.compute_simplified_hypergraph(this.linegraph.connected_components);
+        
+        let connected_components = [];
+        this.linegraph.nodes.forEach(n=>{
+            connected_components.push([n.id]);
+        })
+        // console.log(this.connected_components)
+        this.linegraph.compute_simplified_hypergraph(connected_components);
     }
 
     draw_barcode(){
-        let max_death = d3.max(this.barcode.map(d => d.death));
-        let width_scale = d3.scaleLinear()
-            .domain([0, max_death*1.1])
+        this.max_death = d3.max(this.barcode.map(d => d.death));
+        this.width_scale = d3.scaleLinear()
+            .domain([0, this.max_death*1.1])
             .range([0, this.svg_width-this.svg_margin.right-this.svg_margin.left]).nice();
         
         // let barcode_height = Math.floor((this.svg_height-this.svg_margin.top-this.svg_margin.bottom)/this.barcode.length);
@@ -50,9 +56,9 @@ class Barcode{
         bg = bg.enter().append('rect').merge(bg)
             .attr('width', d=>{
                 if(d.death > 0){
-                    return width_scale(d.death - d.birth);
+                    return this.width_scale(d.death - d.birth);
                 } else {
-                    return width_scale(max_death*1.1);
+                    return this.width_scale(this.max_death*1.1);
                 }
             })
             .attr('height', barcode_height)
@@ -68,7 +74,7 @@ class Barcode{
                 }
             });
 
-        let xAxis = d3.axisBottom(width_scale).ticks(5);
+        let xAxis = d3.axisBottom(this.width_scale).ticks(5);
         this.xAxis_group
             .classed("axis", true)
             .style("font-size","10px")
@@ -82,36 +88,7 @@ class Barcode{
             .attr("x",this.svg_margin.left+20)
             .attr("y",5)
             .attr("class", "slider hover-darken")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-
-        let that = this;
-        function dragstarted() {
-            d3.select(this).raise();
-        }
-        function dragged() {
-            d3.select(this).attr("x", clamp(d3.event.x, that.svg_margin.left, width_scale(max_death*1.1)));
-                // let destination_position = d3.event.x - d3.select(this).attr("width") / 2;
-                // d3.select(this).attr("x", clamp(destination_position, 5, 90));
-        }
-
-        function dragended() {
-            let threshold = width_scale.invert(d3.event.x);
-            that.linegraph.threshold = threshold;
-            let edgeid = that.extract_edgeid(threshold);
-            console.log(edgeid)
-            that.linegraph.graph_contraction(edgeid);
-
-        }
-
-        function clamp(d, min, max) {
-            return Math.min(Math.max(d, min), max);
-        };
-        
-        
-
+            .attr("id", "barcode-slider")
     }
 
     extract_edgeid(threshold){
