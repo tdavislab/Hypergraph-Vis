@@ -3,6 +3,7 @@ class Linegraph{
         this.nodes = [...line_data.nodes];
         this.links = [...line_data.links];
         this.simplified_hypergraph = simplified_hypergraph;
+        console.log(this.nodes, this.links)
 
         this.nodes_dict = {};
         this.nodes.forEach(n=>{
