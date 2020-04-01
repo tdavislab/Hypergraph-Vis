@@ -25,13 +25,16 @@ class Barcode{
             .attr('id', 'barcode_slider');
         
         this.draw_barcode();
-        
+
         let connected_components = [];
         this.linegraph.nodes.forEach(n=>{
             connected_components.push([n.id]);
         })
+
+        this.threshold = 0;
+        this.cc_dict = this.linegraph.graph_contraction(undefined)
         // console.log(this.connected_components)
-        this.linegraph.compute_simplified_hypergraph(connected_components);
+        // this.linegraph.compute_simplified_hypergraph(connected_components);
     }
 
     draw_barcode(){
@@ -66,13 +69,13 @@ class Barcode{
             .attr('y', (d, i)=>this.svg_margin.top + i*barcode_height)
             .attr("class", "barcode-rect-dim0")
             .classed("hover-darken", true)
-            .on("click", d=>{
-                console.log(d)
-                // let edge_id = d.edge.source+"-"+d.edge.target;
-                if(d.death > 0){
-                    this.linegraph.graph_expansion(d);
-                }
-            });
+            // .on("click", d=>{
+            //     console.log(d)
+            //     // let edge_id = d.edge.source+"-"+d.edge.target;
+            //     if(d.death > 0){
+            //         // this.linegraph.graph_expansion(d);
+            //     }
+            // });
 
         let xAxis = d3.axisBottom(this.width_scale).ticks(5);
         this.xAxis_group

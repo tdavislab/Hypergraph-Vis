@@ -65,7 +65,11 @@ class Hypergraph{
             .attr("dx", 12)
             .attr("dy", "0.35em")
             .attr("class", "node-label")
-            .text(d => this.labels[d.id]);
+            .text(d => {
+                    if(this.labels){
+                        return this.labels[d.id];
+                    }
+                });
 
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();

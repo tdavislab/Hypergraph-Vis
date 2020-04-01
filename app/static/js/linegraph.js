@@ -155,7 +155,6 @@ class Linegraph{
         }
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
-        // this.compute_simplified_hypergraph(cc_list);
         let cc_dict = {}
         cc_list.forEach(cc=>{
             let cc_id = "";
@@ -174,6 +173,7 @@ class Linegraph{
 
     graph_expansion(bar){
         let edge_id = bar.edge.source+"-"+bar.edge.target;
+        console.log(edge_id)
         let persistence = bar.death - bar.birth;
         let source_cc = this.links_dict[edge_id].nodes_subsets.source_cc;
         let target_cc = this.links_dict[edge_id].nodes_subsets.target_cc;
@@ -193,85 +193,85 @@ class Linegraph{
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
 
-        // for hyper-graph: split the corresponding hyperedge into two subsets u and v
-        if(persistence<this.threshold){
-            for(let i=0; i<this.simplified_hypergraph.hyperedges.length; i++){
-                let hedge = this.simplified_hypergraph.hyperedges[i];
-                if(hedge.cc.indexOf(source_cc[0])!=-1){
-                    this.simplified_hypergraph.hyperedges.splice(i,1);
-                    let source_node = {};
-                    source_node.vertices = [];
-                    source_node.id = "";
-                    source_node.index = this.simplified_hypergraph.length;
-                    source_node.color = this.nodes_dict[source_cc[0]].color;
-                    source_node.cc = source_cc;
-                    source_cc.forEach(nId=>{
-                        let node = this.nodes_dict[nId];
-                        node.vertices.forEach(v=>{
-                            if(source_node.vertices.indexOf(v)===-1){
-                                source_node.vertices.push(v);
-                            }
-                        })
-                        source_node.id += node.id;
-                    })
-                    this.simplified_hypergraph.hyperedges.push(source_node);
+        // // for hyper-graph: split the corresponding hyperedge into two subsets u and v
+        // if(persistence<this.threshold){
+        //     for(let i=0; i<this.simplified_hypergraph.hyperedges.length; i++){
+        //         let hedge = this.simplified_hypergraph.hyperedges[i];
+        //         if(hedge.cc.indexOf(source_cc[0])!=-1){
+        //             this.simplified_hypergraph.hyperedges.splice(i,1);
+        //             let source_node = {};
+        //             source_node.vertices = [];
+        //             source_node.id = "";
+        //             source_node.index = this.simplified_hypergraph.length;
+        //             source_node.color = this.nodes_dict[source_cc[0]].color;
+        //             source_node.cc = source_cc;
+        //             source_cc.forEach(nId=>{
+        //                 let node = this.nodes_dict[nId];
+        //                 node.vertices.forEach(v=>{
+        //                     if(source_node.vertices.indexOf(v)===-1){
+        //                         source_node.vertices.push(v);
+        //                     }
+        //                 })
+        //                 source_node.id += node.id;
+        //             })
+        //             this.simplified_hypergraph.hyperedges.push(source_node);
 
-                    let remaining_cc = [];
-                    hedge.cc.forEach(nId=>{
-                        if(source_cc.indexOf(nId)===-1){
-                            remaining_cc.push(nId);
-                        }
-                    })
+        //             let remaining_cc = [];
+        //             hedge.cc.forEach(nId=>{
+        //                 if(source_cc.indexOf(nId)===-1){
+        //                     remaining_cc.push(nId);
+        //                 }
+        //             })
 
-                    let target_node = {};
-                    target_node.vertices = [];
-                    target_node.id = "";
-                    target_node.index = this.simplified_hypergraph.length;
-                    target_node.color = this.nodes_dict[target_cc[0]].color;
-                    target_node.cc = remaining_cc;
-                    remaining_cc.forEach(nId=>{
-                        let node = this.nodes_dict[nId];
-                        node.vertices.forEach(v=>{
-                            if(target_node.vertices.indexOf(v)===-1){
-                                target_node.vertices.push(v);
-                            }
-                        })
-                        target_node.id += node.id;
-                    })
-                    this.simplified_hypergraph.hyperedges.push(target_node);
-                    break;
-                }
-            }
-            this.simplified_hypergraph.construnct_bipartite_graph(this.simplified_hypergraph.hyperedges);
-        }
+        //             let target_node = {};
+        //             target_node.vertices = [];
+        //             target_node.id = "";
+        //             target_node.index = this.simplified_hypergraph.length;
+        //             target_node.color = this.nodes_dict[target_cc[0]].color;
+        //             target_node.cc = remaining_cc;
+        //             remaining_cc.forEach(nId=>{
+        //                 let node = this.nodes_dict[nId];
+        //                 node.vertices.forEach(v=>{
+        //                     if(target_node.vertices.indexOf(v)===-1){
+        //                         target_node.vertices.push(v);
+        //                     }
+        //                 })
+        //                 target_node.id += node.id;
+        //             })
+        //             this.simplified_hypergraph.hyperedges.push(target_node);
+        //             break;
+        //         }
+        //     }
+        //     this.simplified_hypergraph.construnct_bipartite_graph(this.simplified_hypergraph.hyperedges);
+        // }
     }
 
-    compute_simplified_hypergraph(cc_list){
-        let nodes_new = [];
-        // merge nodes
-        for(let i=0; i<cc_list.length; i++){
-            let cc = cc_list[i];
-            // each connected component is corresponding to a new node (hyper-edge)
-            let node_new = {};
-            node_new.vertices = [];
-            node_new.id = ""; // **** TODO: might need a better way to assign id
-            node_new.index = i;
-            node_new.cc = cc;
-            node_new.color = this.nodes_dict[cc[0]].color;
-            cc.forEach(nId =>{
-                let node = this.nodes_dict[nId];
-                node.vertices.forEach(v=>{ 
-                    if(node_new.vertices.indexOf(v)===-1){
-                        node_new.vertices.push(v);
-                    }
-                })
-                node_new.id += node.id;
-            })
-            nodes_new.push(node_new);
-        }
-        this.simplified_hypergraph.hyperedges = nodes_new;
-        this.simplified_hypergraph.construnct_bipartite_graph(nodes_new);
-    }
+    // compute_simplified_hypergraph(cc_list){
+    //     let nodes_new = [];
+    //     // merge nodes
+    //     for(let i=0; i<cc_list.length; i++){
+    //         let cc = cc_list[i];
+    //         // each connected component is corresponding to a new node (hyper-edge)
+    //         let node_new = {};
+    //         node_new.vertices = [];
+    //         node_new.id = ""; // **** TODO: might need a better way to assign id
+    //         node_new.index = i;
+    //         node_new.cc = cc;
+    //         node_new.color = this.nodes_dict[cc[0]].color;
+    //         cc.forEach(nId =>{
+    //             let node = this.nodes_dict[nId];
+    //             node.vertices.forEach(v=>{ 
+    //                 if(node_new.vertices.indexOf(v)===-1){
+    //                     node_new.vertices.push(v);
+    //                 }
+    //             })
+    //             node_new.id += node.id;
+    //         })
+    //         nodes_new.push(node_new);
+    //     }
+    //     this.simplified_hypergraph.hyperedges = nodes_new;
+    //     this.simplified_hypergraph.construnct_bipartite_graph(nodes_new);
+    // }
 
     find_cc_idx(vertex_id, connected_components){
         // find the corresponding connected components of the given vertex

@@ -202,13 +202,50 @@ def import_file():
 
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
 
+
+@app.route('/expanded_hgraph', methods=['POST', 'GET'])
+def compute_expanded_hgraph():
+    jsdata = json.loads(request.get_data())
+    print(jsdata)
+    variant = jsdata['variant']
+    hyper_data = jsdata['cc_dict']
+    source_id = jsdata['edge']['source']
+    source_cc = jsdata['edge']['nodes_subsets']['source_cc']
+    target_id = jsdata['edge']['target']
+    target_cc = jsdata['edge']['nodes_subsets']['target_cc']
+    for cc_key in hyper_data:
+        hyperedge_keys = cc_key.split("|")
+        hyperedge_keys.pop()
+        if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
+            print(hyperedge_keys, source_cc, target_cc)
+            vertices = hyper_data[cc_key]
+            cc1 = source_cc
+            cc1_id = source_id
+            cc2 = [v for v in vertices if v not in cc1]
+            cc2_id_list = [he for he in hyperedge_keys if he != cc1_id]
+            cc2_id = ""
+            for he in cc2_id_list:
+                cc2_id += he + "|"
+            del hyper_data[cc_key]
+            hyper_data[cc1_id] = cc1
+            hyper_data[cc2_id] = cc2
+            break
+        # if all(c1 in hyper_data[cc_key] for c1 in source_cc) and all(c2 in hyper_data[cc_key] for c2 in target_cc): # if source_cc and target_cc are combined
+        #     # split the connected components into two
+        #     hyperedge_keys = cc_key.split("|")
+        #     print(cc_key)
+        #     print(hyperedge_keys)
+        #     # cc = hyper_data[cc_key]
+
+    print(hyper_data)
+
+    return "0"
+
 @app.route('/simplified_hgraph', methods=['POST', 'GET'])
 def compute_simplified_hgraph():
     jsdata = json.loads(request.get_data())
     variant = jsdata['variant']
     hyper_data = jsdata['cc_dict']
-    print(hyper_data)
-
     hgraph = hnx.Hypergraph(hyper_data)
     if variant == "Dual Line Graph":
         hgraph = hgraph.dual()
