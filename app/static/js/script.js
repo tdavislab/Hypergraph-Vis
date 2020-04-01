@@ -95,45 +95,44 @@ function init(data) {
 
     function click(d){
         console.log(d)
-            // let edge_id = d.edge.source+"-"+d.edge.target;
-            if(d.death > 0){
-                simplified_linegraph.graph_expansion(d);
-                if((d.death-d.birth)<=barcode.threshold){
-                    $.ajax({
-                        type: "POST",
-                        url: "/expanded_hgraph",
-                        data: JSON.stringify({'cc_dict':barcode.cc_dict, 'edge':d.edge, 'hyperedges2vertices':hyperedges2vertices, 'variant':variant}),
-                        dataType:'text',
-                        success: function (response) {
-                            response = JSON.parse(response);
-                            let hgraph = response.hyper_data;
-                            let hgraph_labels = {};
-                            // assign colors and labels
-                            hgraph.nodes.forEach(n=>{
-                                if(n.bipartite === 1){
-                                    n.color = color_dict[n.id.split("|")[0]]
-                                }
-                                if(labels[n.id]){
-                                    hgraph_labels[n.id] = labels[n.id];
-                                } else {
-                                    id_list = n.id.split("|");
-                                    id_list.pop();
-                                    hgraph_labels[n.id] = ""
-                                    id_list.forEach(id=>{ hgraph_labels[n.id] += labels[id]+"|"; })
-                                }
-                            })
-                            hgraph.labels = hgraph_labels;
-                            barcode.cc_dict = response.cc_dict;
-                            $('#simplified-hypergraph-svg').remove();
-                            $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-                            simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph"); 
-                        },
-                        error: function (error) {
-                            console.log("error",error);
-                        }
-                    });
-                }
+        if(d.death > 0){
+            simplified_linegraph.graph_expansion(d);
+            if((d.death-d.birth)<=barcode.threshold){
+                $.ajax({
+                    type: "POST",
+                    url: "/expanded_hgraph",
+                    data: JSON.stringify({'cc_dict':barcode.cc_dict, 'edge':d.edge, 'hyperedges2vertices':hyperedges2vertices, 'variant':variant}),
+                    dataType:'text',
+                    success: function (response) {
+                        response = JSON.parse(response);
+                        let hgraph = response.hyper_data;
+                        let hgraph_labels = {};
+                        // assign colors and labels
+                        hgraph.nodes.forEach(n=>{
+                            if(n.bipartite === 1){
+                                n.color = color_dict[n.id.split("|")[0]]
+                            }
+                            if(labels[n.id]){
+                                hgraph_labels[n.id] = labels[n.id];
+                            } else {
+                                id_list = n.id.split("|");
+                                id_list.pop();
+                                hgraph_labels[n.id] = ""
+                                id_list.forEach(id=>{ hgraph_labels[n.id] += labels[id]+"|"; })
+                            }
+                        })
+                        hgraph.labels = hgraph_labels;
+                        barcode.cc_dict = response.cc_dict;
+                        $('#simplified-hypergraph-svg').remove();
+                        $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+                        simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph"); 
+                    },
+                    error: function (error) {
+                        console.log("error",error);
+                    }
+                });
             }
+        }
     }
 
     d3.select("#barcode-slider")
@@ -209,12 +208,10 @@ function init(data) {
             simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph");
             barcode = new Barcode(barcode_data, simplified_linegraph);
         } else if(variant === "Dual Line Graph"){
-            line_data_copy = copy_line_data(line_data);
-            hyper_data_copy = copy_hyper_data(hyper_data);
             hyperedges2vertices = Object.assign({}, ...line_data_copy.nodes.map((x) => ({[x.id]: x.vertices})));
-            simplified_hypergraph = new Hypergraph(hyper_data_copy, "simplified-hypergraph");
-            linegraph = new Linegraph(line_data, simplified_hypergraph, "linegraph");
-            simplified_linegraph = new Linegraph(line_data_copy, simplified_hypergraph, "simplified-linegraph");
+            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph");
+            linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "linegraph");
+            simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph");
             barcode = new Barcode(barcode_data, simplified_linegraph);
             
         }

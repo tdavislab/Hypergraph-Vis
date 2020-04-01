@@ -283,8 +283,16 @@ def recompute():
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'r') as f:
         hgraph_data = f.read()
     f.close()
-    hgraph = process_hypergraph(hgraph_data)
+    hgraph, id2label = process_hypergraph(hgraph_data)
     lgraph = convert_to_line_graph(hgraph, s=s)
+    dual_lgraph = compute_dual_line_graph(hgraph, s=s)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    hgraph['labels'] = id2label
     barcode = compute_barcode(lgraph)
+    dual_barcode = compute_barcode(dual_lgraph)
+
+    write_d3_graph(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
+    write_d3_graph(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
+    write_barcode(barcode, path.join(APP_STATIC,"uploads/current_barcode.json"))
+    write_barcode(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode.json"))
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
