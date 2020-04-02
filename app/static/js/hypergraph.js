@@ -28,6 +28,7 @@ class Hypergraph{
 
         this.draw_hypergraph();
         this.toggle_hgraph_labels();
+        
     }
 
     groupPath(vertices) {
@@ -44,6 +45,7 @@ class Hypergraph{
 
     draw_hypergraph(){
         let node_radius = 8;
+        let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
 
         let simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).id(d => d.id))
@@ -58,10 +60,26 @@ class Hypergraph{
         ng.append("circle")
             .attr("r", node_radius)
             // .attr("fill", d => d["bipartite"] === 1 ? this.colorScale(d.id) : "") // only color nodes that representing hyper-edges
-            .attr("fill", d => d["bipartite"] === 1 ? d.color : "")
+            // .attr("fill", d => d["bipartite"] === 1 ? d.color : "")
+            .attr("fill", d=>{
+                if(singleton_type === "grey_out"){
+                    if(d.if_singleton){
+                        return "grey";
+                    } 
+                }
+                return d["bipartite"] === 1 ? d.color : "";
+            })
             // .attr("stroke", d => d["bipartite"] === 1 ? "#fff" : "")
             .attr("stroke", "lightgrey")
             .attr("stroke-width", d => d["bipartite"] === 1 ? 4 : 2)
+            .style("opacity", d=>{
+                if(singleton_type === "filtering"){
+                    if(d.if_singleton){
+                        return 0;
+                    } 
+                }
+                return 1;
+            })
             .attr("id", d => this.svg_id+'-node-'+d.id.replace(/[|]/g,""));
         ng.append("text")
             .attr("dx", 12)
@@ -71,6 +89,14 @@ class Hypergraph{
                     if(this.labels){
                         return this.labels[d.id];
                     }
+                })
+            .style("opacity", d=>{
+                    if(singleton_type === "filtering"){
+                        if(d.if_singleton){
+                            return 0;
+                        } 
+                    }
+                    // return 1;
                 });
 
         let lg = this.links_group.selectAll("line").data(this.links);
@@ -78,7 +104,16 @@ class Hypergraph{
         lg = lg.enter().append("line").merge(lg)
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.5)
-            .attr("stroke-width", d => Math.sqrt(d.value));
+            .attr("stroke-width", d => Math.sqrt(d.value))
+            .style("opacity", d=>{
+                if(singleton_type === "filtering"){
+                    if(d.source.if_singleton){
+                        return 0;
+                    } 
+                }
+                // return 1;
+            });
+            ;
 
         // add drag capabilities
         const drag_handler = d3.drag()
@@ -147,46 +182,92 @@ class Hypergraph{
 
             hulls.enter()
                 .insert("path")
-                .style("fill", d =>this.nodes_dict[d.key].color)
-                .style("stroke", d => this.nodes_dict[d.key].color)
+                // .style("fill", d =>this.nodes_dict[d.key].color)
+                .style("fill", d=>{
+                    if(singleton_type === "grey_out"){
+                        if(this.nodes_dict[d.key].if_singleton){
+                            return "lightgrey";
+                        } 
+                    }
+                    return this.nodes_dict[d.key].color;
+                })
+                // .style("stroke", d => this.nodes_dict[d.key].color)
+                .style("stroke", d=>{
+                    if(singleton_type === "grey_out"){
+                        if(this.nodes_dict[d.key].if_singleton){
+                            return "lightgrey";
+                        } 
+                    }
+                    return this.nodes_dict[d.key].color;
+                })
                 .style("stroke-width", 40)
                 .style("stroke-linejoin", "round")
-                .style("opacity", 0.5)
+                // .style("opacity", 0.5)
+                .style("opacity", d=>{
+                    if(singleton_type === "filtering"){
+                        if(this.nodes_dict[d.key].if_singleton){
+                            return 0;
+                        } 
+                    }
+                    return 0.5;
+                })
                 .attr("d", d => this.groupPath(d.value))
                 .attr("class", "convex_hull")
                 .attr("id", d => that.svg_id+"-hull-"+d.key.replace(/[|]/g,""))
                 .on("mouseover", d => {
-                    d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",1)
+                    if(!that.click_id && that.original_hgraph){
+                        d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",1);
+                    }
+                    
                 })
                 .on("mouseout",d => {
-                    d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.5)
+                    if(!that.click_id && that.original_hgraph){
+                        d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.5);
+                    } 
+                    // else if (that.click_id != d.key){
+                    //     d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.1)
+                    // }
+                    
                 })
                 .on("click", d => {
-                    if(that.original_hgraph){
-                        let he_list = d.key.split("|")
-                        if(he_list.length > 1){
-                            he_list.pop();
+                    if(that.original_hgraph ){
+                        if(that.click_id != d.key){
+                            that.click_id = d.key;
+                            let he_list = d.key.split("|")
+                            if(he_list.length > 1){
+                                he_list.pop();
+                            }
+                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+                            d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+                            d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+                            he_list.forEach(he=>{
+                                d3.select("#"+that.original_hgraph.svg_id+"-hull-"+he).style("opacity", 1);
+                                d3.select("#"+that.original_hgraph.svg_id+"-node-"+he).style("opacity", 1);
+                                that.original_hgraph.links.forEach(link=>{
+                                    if(link.source.id === he){
+                                        d3.select("#"+that.original_hgraph.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+                                    }
+                                })
+                                d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+                                d3.select("#"+that.svg_id+"-node-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+                                that.links.forEach(link=>{
+                                    if(link.source.id === d.key){
+                                        d3.select("#"+that.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+                                    }
+                                })
+                            })
+
+                        } else {
+                            that.click_id = undefined;
+                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.5);
+                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",1);
+                            d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.5);
+                            d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",1);
                         }
-                        d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.1);
-                        d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
-                        d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.1);
-                        d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
-                        he_list.forEach(he=>{
-                            d3.select("#"+that.original_hgraph.svg_id+"-hull-"+he).style("opacity", 1);
-                            d3.select("#"+that.original_hgraph.svg_id+"-node-"+he).style("opacity", 1);
-                            that.original_hgraph.links.forEach(link=>{
-                                if(link.source.id === he){
-                                    d3.select("#"+that.original_hgraph.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
-                                }
-                            })
-                            d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
-                            d3.select("#"+that.svg_id+"-node-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
-                            that.links.forEach(link=>{
-                                if(link.source.id === d.key){
-                                    d3.select("#"+that.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
-                                }
-                            })
-                        })
+                        
+                        
+                            
                     }
                 });
         });

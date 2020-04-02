@@ -52,11 +52,67 @@ function init(data) {
     let labels = data.hyper_data.labels;
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
+    // **** find out singletons ****
+    let hyperedges_list = Object.keys(hyperedges2vertices);
+    let non_singletons = [];
+    let singletons = [];
+    data.line_data.links.forEach(link=>{
+        if(non_singletons.indexOf(link.source) === -1){
+            non_singletons.push(link.source);
+        }
+        if(non_singletons.indexOf(link.target) === -1){
+            non_singletons.push(link.target);
+        }
+    })
+    data.line_data.nodes.forEach(node=>{
+        node.vertices.forEach(v=>{
+            if(non_singletons.indexOf(node.id)!=-1 && non_singletons.indexOf(v)===-1){
+                non_singletons.push(v);
+            }
+        })
+    })
+    hyperedges_list.forEach(he=>{
+        if(non_singletons.indexOf(he)===-1 && singletons.indexOf(he)===-1){
+            singletons.push(he);
+        }
+    })
+    data.hyper_data.nodes.forEach(node=>{
+        if(node.bipartite === 1){
+            if(singletons.indexOf(node.id)!=-1){
+                node.if_singleton = true;
+            } else {
+                node.if_singleton = false;
+            }
+        } else {
+            if(non_singletons.indexOf(node.id)!=-1){
+                node.if_singleton = false;
+            } else {
+                node.if_singleton = true;
+            }
+        }
+        
+    })
+    console.log(singletons)
+
     let hypergraph = new Hypergraph(copy_hyper_data(data.hyper_data), "hypergraph"); 
     let linegraph = new Linegraph(copy_line_data(data.line_data), hypergraph, "linegraph");
-    let simplified_hypergraph = new Hypergraph(copy_hyper_data(data.hyper_data), "simplified-hypergraph", hypergraph, linegraph);
+    let simplified_hypergraph = new Hypergraph(copy_hyper_data(data.hyper_data), "simplified-hypergraph", hypergraph);
     let simplified_linegraph = new Linegraph(copy_line_data(data.line_data), simplified_hypergraph, "simplified-linegraph");
     let barcode = new Barcode(data.barcode_data, simplified_linegraph);
+
+    // d3.select("#singleton-type-form")
+    //         .on("change", ()=>{
+    //             // hypergraph.draw_hypergraph();
+    //             // simplified_hypergraph.draw_hypergraph();
+    //             // let singleton_type = d3.select('input[name="visual-type"]:checked').node().value;
+    //             // if(singleton_type === "bipartite"){
+    //             //     d3.select("#hull-group").style("visibility","hidden");
+    //             //     d3.select("#simplified-hull-group").style("visibility","hidden");
+    //             // } else if(encoding_type === "convex"){
+    //             //     d3.select("#hull-group").style("visibility","visible");
+    //             //     d3.select("#simplified-hull-group").style("visibility","visible");
+    //             // }
+    //         })
 
     d3.select("#visual-encoding-form")
         .on("change", ()=>{
@@ -125,7 +181,7 @@ function init(data) {
                         barcode.cc_dict = response.cc_dict;
                         $('#simplified-hypergraph-svg').remove();
                         $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-                        simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph, linegraph); 
+                        simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph); 
                     },
                     error: function (error) {
                         console.log("error",error);
@@ -158,6 +214,7 @@ function init(data) {
         console.log(edgeid)
         let cc_dict = simplified_linegraph.graph_contraction(edgeid);
         barcode.cc_dict = cc_dict
+        hypergraph.draw_hypergraph();
         console.log(cc_dict)
         $.ajax({
             type: "POST",
@@ -184,7 +241,7 @@ function init(data) {
                 hgraph.labels = hgraph_labels;
                 $('#simplified-hypergraph-svg').remove();
                 $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-                simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph, linegraph); 
+                simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph); 
             },
             error: function (error) {
                 console.log("error",error);
@@ -204,13 +261,13 @@ function init(data) {
             })
             hyperedges2vertices = Object.assign({}, ...line_data_copy.nodes.map((x) => ({[x.id]: x.vertices})));
             linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph");
-            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", hypergraph, linegraph);
+            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", hypergraph);
             simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph");
             barcode = new Barcode(barcode_data, simplified_linegraph);
         } else if(variant === "Dual Line Graph"){
             hyperedges2vertices = Object.assign({}, ...line_data.nodes.map((x) => ({[x.id]: x.vertices})));
             linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph");
-            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", hypergraph, linegraph);
+            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", hypergraph);
             simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph");
             barcode = new Barcode(barcode_data, simplified_linegraph);
             
@@ -223,20 +280,6 @@ function init(data) {
         d3.selectAll(".barcode-rect-dim0")
             .on("click", d=>click_bar(d));
     }
-
-    // console.log(d3.selectAll("path"))
-
-    // d3.select("#simplified-hypergraph-svg").selectAll(".convex_hull")
-    //     .on("click", (d)=>{
-    //         console.log(d)
-    //     })
-    //     // .on("mouseover", (d)=>{
-    //     //     console.log(d)
-    //     //     d3.select("#simplified-hypergraph-hull-"+d.id).style("opacity",1)
-    //     // })
-    //     // .on("mouseout",(d)=>{
-    //     //     d3.select("#simplified-hypergraph-hull-"+d.id).style("opacity",0.5)
-    //     // })
 
 }
 
@@ -290,6 +333,7 @@ function copy_hyper_data(hyper_data){
         node_new.bipartite = n.bipartite;
         node_new.id = n.id;
         node_new.color = n.color;
+        node_new.if_singleton = n.if_singleton;
         hyper_nodes_new.push(node_new);
     })
     hyper_data.links.forEach(l=>{
