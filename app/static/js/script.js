@@ -53,8 +53,8 @@ function init(data) {
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
     let hypergraph = new Hypergraph(copy_hyper_data(data.hyper_data), "hypergraph"); 
-    let simplified_hypergraph = new Hypergraph(copy_hyper_data(data.hyper_data), "simplified-hypergraph");
     let linegraph = new Linegraph(copy_line_data(data.line_data), hypergraph, "linegraph");
+    let simplified_hypergraph = new Hypergraph(copy_hyper_data(data.hyper_data), "simplified-hypergraph", hypergraph, linegraph);
     let simplified_linegraph = new Linegraph(copy_line_data(data.line_data), simplified_hypergraph, "simplified-linegraph");
     let barcode = new Barcode(data.barcode_data, simplified_linegraph);
 
@@ -91,9 +91,9 @@ function init(data) {
     }
 
     d3.selectAll(".barcode-rect-dim0")
-        .on("click", d=>click(d));
+        .on("click", d=>click_bar(d));
 
-    function click(d){
+    function click_bar(d){
         console.log(d)
         if(d.death > 0){
             simplified_linegraph.graph_expansion(d);
@@ -125,7 +125,7 @@ function init(data) {
                         barcode.cc_dict = response.cc_dict;
                         $('#simplified-hypergraph-svg').remove();
                         $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-                        simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph"); 
+                        simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph, linegraph); 
                     },
                     error: function (error) {
                         console.log("error",error);
@@ -184,7 +184,7 @@ function init(data) {
                 hgraph.labels = hgraph_labels;
                 $('#simplified-hypergraph-svg').remove();
                 $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-                simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph"); 
+                simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph, linegraph); 
             },
             error: function (error) {
                 console.log("error",error);
@@ -203,14 +203,14 @@ function init(data) {
                 node.color = c;
             })
             hyperedges2vertices = Object.assign({}, ...line_data_copy.nodes.map((x) => ({[x.id]: x.vertices})));
-            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph");
-            linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "linegraph");
+            linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph");
+            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", hypergraph, linegraph);
             simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph");
             barcode = new Barcode(barcode_data, simplified_linegraph);
         } else if(variant === "Dual Line Graph"){
-            hyperedges2vertices = Object.assign({}, ...line_data_copy.nodes.map((x) => ({[x.id]: x.vertices})));
-            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph");
-            linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "linegraph");
+            hyperedges2vertices = Object.assign({}, ...line_data.nodes.map((x) => ({[x.id]: x.vertices})));
+            linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph");
+            simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", hypergraph, linegraph);
             simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph");
             barcode = new Barcode(barcode_data, simplified_linegraph);
             
@@ -221,8 +221,22 @@ function init(data) {
                 .on("drag", dragged)
                 .on("end", dragended));
         d3.selectAll(".barcode-rect-dim0")
-            .on("click", d=>click(d));
+            .on("click", d=>click_bar(d));
     }
+
+    // console.log(d3.selectAll("path"))
+
+    // d3.select("#simplified-hypergraph-svg").selectAll(".convex_hull")
+    //     .on("click", (d)=>{
+    //         console.log(d)
+    //     })
+    //     // .on("mouseover", (d)=>{
+    //     //     console.log(d)
+    //     //     d3.select("#simplified-hypergraph-hull-"+d.id).style("opacity",1)
+    //     // })
+    //     // .on("mouseout",(d)=>{
+    //     //     d3.select("#simplified-hypergraph-hull-"+d.id).style("opacity",0.5)
+    //     // })
 
 }
 

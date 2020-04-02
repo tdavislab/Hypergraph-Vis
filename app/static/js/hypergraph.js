@@ -1,8 +1,10 @@
 class Hypergraph{
-    constructor(hyper_data, svg_id){
+    constructor(hyper_data, svg_id, original_hgraph=undefined){
         this.nodes = hyper_data.nodes;
         this.links = hyper_data.links;
         this.labels = hyper_data.labels;
+        this.svg_id = svg_id;
+        this.original_hgraph = original_hgraph;
 
         console.log(this.links, this.nodes)
 
@@ -59,8 +61,8 @@ class Hypergraph{
             .attr("fill", d => d["bipartite"] === 1 ? d.color : "")
             // .attr("stroke", d => d["bipartite"] === 1 ? "#fff" : "")
             .attr("stroke", "lightgrey")
-            .attr("stroke-width", d => d["bipartite"] === 1 ? 5 : 2)
-            .attr("id", d => 'hyper-node-'+d.id);
+            .attr("stroke-width", d => d["bipartite"] === 1 ? 4 : 2)
+            .attr("id", d => this.svg_id+'-node-'+d.id.replace(/[|]/g,""));
         ng.append("text")
             .attr("dx", 12)
             .attr("dy", "0.35em")
@@ -151,7 +153,42 @@ class Hypergraph{
                 .style("stroke-linejoin", "round")
                 .style("opacity", 0.5)
                 .attr("d", d => this.groupPath(d.value))
-                .attr("id", d=> "hull"+d.key);
+                .attr("class", "convex_hull")
+                .attr("id", d => that.svg_id+"-hull-"+d.key.replace(/[|]/g,""))
+                .on("mouseover", d => {
+                    d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",1)
+                })
+                .on("mouseout",d => {
+                    d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.5)
+                })
+                .on("click", d => {
+                    if(that.original_hgraph){
+                        let he_list = d.key.split("|")
+                        if(he_list.length > 1){
+                            he_list.pop();
+                        }
+                        d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+                        d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+                        d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+                        d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+                        he_list.forEach(he=>{
+                            d3.select("#"+that.original_hgraph.svg_id+"-hull-"+he).style("opacity", 1);
+                            d3.select("#"+that.original_hgraph.svg_id+"-node-"+he).style("opacity", 1);
+                            that.original_hgraph.links.forEach(link=>{
+                                if(link.source.id === he){
+                                    d3.select("#"+that.original_hgraph.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+                                }
+                            })
+                            d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+                            d3.select("#"+that.svg_id+"-node-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+                            that.links.forEach(link=>{
+                                if(link.source.id === d.key){
+                                    d3.select("#"+that.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+                                }
+                            })
+                        })
+                    }
+                });
         });
 
 
