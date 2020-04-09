@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hypergraph Visualizations</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/base.css">
+</head>
+
+<body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark text-light">
+    <a class="navbar-brand" href="#">Hypergraph Visualization</a>
+</nav>
+<div class="container-fluid wrapper h-100">
+    <div class="row h-100">
+        <div id="toolbar" class="col-md-2 bg-light sidebar overflow-auto pt-3">
+            <div>Nodes</div>
+            <hr/>
+            <button id="node-input" type="button" class="btn btn-dark m-1">Input</button>
+            <button id="node-linegraph" type="button" class="btn btn-dark m-1">Line-Graph</button>
+            <button id="node-dualgraph" type="button" class="btn btn-dark m-1">Dual-Graph</button>
+            <div class="pt-3">Operations</div>
+            <hr/>
+            <button type="button" class="btn btn-dark m-1">Barcode</button>
+        </div>
+        <div id="interface" class="col-md-10 p-0 bg-grid"></div>
+        <!--<div id="params" class="col-md-2 bg-light"></div>-->
+    </div>
+</div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="../static/js/ui-builder.js"></script>
+</html>

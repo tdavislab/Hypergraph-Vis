@@ -1,0 +1,305 @@
+{
+    "directed": false,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+        {
+            "bipartite": 1,
+            "id": "2wzi79.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "ue594m.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "9mt5sd.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "8zjcn3.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "8sa5zz.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "dyewir.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "5bewa2.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "37b82p.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "gs3fag.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "kbeuu8.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "j4bpki.com"
+        },
+        {
+            "bipartite": 1,
+            "id": "sgbxhi.com"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.152"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.173"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.181"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.225"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.148"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.149"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.160"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.222"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.154"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.195"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.223"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.192"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.130"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.169"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.220"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.242"
+        },
+        {
+            "bipartite": 0,
+            "id": "103.86.122.238"
+        }
+    ],
+    "links": [
+        {
+            "source": "2wzi79.com",
+            "target": "103.86.122.152"
+        },
+        {
+            "source": "2wzi79.com",
+            "target": "103.86.122.173"
+        },
+        {
+            "source": "2wzi79.com",
+            "target": "103.86.122.181"
+        },
+        {
+            "source": "2wzi79.com",
+            "target": "103.86.122.225"
+        },
+        {
+            "source": "ue594m.com",
+            "target": "103.86.122.148"
+        },
+        {
+            "source": "ue594m.com",
+            "target": "103.86.122.149"
+        },
+        {
+            "source": "ue594m.com",
+            "target": "103.86.122.160"
+        },
+        {
+            "source": "ue594m.com",
+            "target": "103.86.122.222"
+        },
+        {
+            "source": "9mt5sd.com",
+            "target": "103.86.122.154"
+        },
+        {
+            "source": "9mt5sd.com",
+            "target": "103.86.122.195"
+        },
+        {
+            "source": "9mt5sd.com",
+            "target": "103.86.122.223"
+        },
+        {
+            "source": "8zjcn3.com",
+            "target": "103.86.122.154"
+        },
+        {
+            "source": "8zjcn3.com",
+            "target": "103.86.122.223"
+        },
+        {
+            "source": "8zjcn3.com",
+            "target": "103.86.122.192"
+        },
+        {
+            "source": "8sa5zz.com",
+            "target": "103.86.122.152"
+        },
+        {
+            "source": "8sa5zz.com",
+            "target": "103.86.122.181"
+        },
+        {
+            "source": "8sa5zz.com",
+            "target": "103.86.122.225"
+        },
+        {
+            "source": "8sa5zz.com",
+            "target": "103.86.122.148"
+        },
+        {
+            "source": "dyewir.com",
+            "target": "103.86.122.160"
+        },
+        {
+            "source": "dyewir.com",
+            "target": "103.86.122.222"
+        },
+        {
+            "source": "dyewir.com",
+            "target": "103.86.122.154"
+        },
+        {
+            "source": "dyewir.com",
+            "target": "103.86.122.130"
+        },
+        {
+            "source": "5bewa2.com",
+            "target": "103.86.122.148"
+        },
+        {
+            "source": "5bewa2.com",
+            "target": "103.86.122.149"
+        },
+        {
+            "source": "5bewa2.com",
+            "target": "103.86.122.169"
+        },
+        {
+            "source": "5bewa2.com",
+            "target": "103.86.122.220"
+        },
+        {
+            "source": "37b82p.com",
+            "target": "103.86.122.152"
+        },
+        {
+            "source": "37b82p.com",
+            "target": "103.86.122.225"
+        },
+        {
+            "source": "37b82p.com",
+            "target": "103.86.122.148"
+        },
+        {
+            "source": "37b82p.com",
+            "target": "103.86.122.222"
+        },
+        {
+            "source": "gs3fag.com",
+            "target": "103.86.122.181"
+        },
+        {
+            "source": "gs3fag.com",
+            "target": "103.86.122.225"
+        },
+        {
+            "source": "gs3fag.com",
+            "target": "103.86.122.148"
+        },
+        {
+            "source": "gs3fag.com",
+            "target": "103.86.122.149"
+        },
+        {
+            "source": "kbeuu8.com",
+            "target": "103.86.122.154"
+        },
+        {
+            "source": "kbeuu8.com",
+            "target": "103.86.122.223"
+        },
+        {
+            "source": "kbeuu8.com",
+            "target": "103.86.122.130"
+        },
+        {
+            "source": "kbeuu8.com",
+            "target": "103.86.122.242"
+        },
+        {
+            "source": "j4bpki.com",
+            "target": "103.86.122.195"
+        },
+        {
+            "source": "j4bpki.com",
+            "target": "103.86.122.223"
+        },
+        {
+            "source": "j4bpki.com",
+            "target": "103.86.122.238"
+        },
+        {
+            "source": "sgbxhi.com",
+            "target": "103.86.122.160"
+        },
+        {
+            "source": "sgbxhi.com",
+            "target": "103.86.122.154"
+        },
+        {
+            "source": "sgbxhi.com",
+            "target": "103.86.122.223"
+        },
+        {
+            "source": "sgbxhi.com",
+            "target": "103.86.122.130"
+        }
+    ]
+}
