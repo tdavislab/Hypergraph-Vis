@@ -55,7 +55,9 @@ class Linegraph{
             .force("charge", d3.forceManyBody(-200))
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2))
             .force("x", d3.forceX().strength(0.02))
-            .force("y", d3.forceY().strength(0.02));
+            .force("y", d3.forceY().strength(0.02))
+            .stop();
+        this.simulation.tick(300);
 
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();
@@ -65,7 +67,9 @@ class Linegraph{
             .attr("stroke", "#fff")
             .attr("stroke-width", 4)
             .attr("fill", d => d.color)
-            .attr("id", d => "linegraph-"+d.id);
+            .attr("id", d => "linegraph-"+d.id)
+            .attr("cx", d=>d.x)
+            .attr("cy",d=>d.y);
         
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
@@ -73,7 +77,11 @@ class Linegraph{
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.5)
             .attr("stroke-width", d => this.edge_scale(parseFloat(d.intersection_size)))
-            .attr("id", d => "line-edge-"+d.source.id+"-"+d.target.id);
+            .attr("id", d => "line-edge-"+d.source.id+"-"+d.target.id)
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
 
         // add drag capabilities
         const drag_handler = d3.drag()
@@ -114,18 +122,18 @@ class Linegraph{
             that.svg_g.attr("transform", d3.event.transform);
         }
 
-        this.simulation.on("tick", () => {
-            lg
-                .attr("x1", d => d.source.x)
-                .attr("y1", d => d.source.y)
-                .attr("x2", d => d.target.x)
-                .attr("y2", d => d.target.y);
+        // this.simulation.on("tick", () => {
+        //     lg
+        //         .attr("x1", d => d.source.x)
+        //         .attr("y1", d => d.source.y)
+        //         .attr("x2", d => d.target.x)
+        //         .attr("y2", d => d.target.y);
 
-            ng
-                .attr("transform", function (d) {
-                    return "translate(" + d.x + "," + d.y + ")";
-                });
-        });
+        //     ng
+        //         .attr("transform", function (d) {
+        //             return "translate(" + d.x + "," + d.y + ")";
+        //         });
+        // });
         
     }
 

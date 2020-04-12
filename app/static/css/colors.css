@@ -161,9 +161,10 @@ h4 {
 div.help-tip {	
     position: absolute;			
     text-align: center;			
-    width: 100px;					
-    height: 100px;					
-    padding: 2px;				
+    width: 200px;					
+    height: 150px;					
+    padding: 2px;
+    padding-top: 10px;				
     font: 14px sans-serif;		
     /* background: lightsteelblue;	 */
     border: 0px;		

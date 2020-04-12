@@ -7,6 +7,7 @@ class Hypergraph{
         this.original_hgraph = original_hgraph;
 
         console.log(this.links, this.nodes)
+        console.log("labels", this.labels)
 
         this.nodes_dict = {};
         this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
@@ -52,7 +53,9 @@ class Hypergraph{
             .force("charge", d3.forceManyBody(-200))
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2))
             .force("x", d3.forceX().strength(0.02))
-            .force("y", d3.forceY().strength(0.02));
+            .force("y", d3.forceY().strength(0.02))
+            .stop();
+        simulation.tick(300);
 
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();
@@ -80,11 +83,17 @@ class Hypergraph{
                 }
                 return 1;
             })
-            .attr("id", d => this.svg_id+'-node-'+d.id.replace(/[|]/g,""));
+            .attr("id", d => this.svg_id+'-node-'+d.id.replace(/[|]/g,""))
+            .attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
         ng.append("text")
             .attr("dx", 12)
             .attr("dy", "0.35em")
             .attr("class", "node-label")
+            .attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            })
             .text(d => {
                     if(this.labels){
                         return this.labels[d.id];
@@ -105,6 +114,10 @@ class Hypergraph{
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.5)
             .attr("stroke-width", d => Math.sqrt(d.value))
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y)
             .style("opacity", d=>{
                 if(singleton_type === "filtering"){
                     if(d.source.if_singleton){
@@ -113,7 +126,127 @@ class Hypergraph{
                 }
                 // return 1;
             });
-            ;
+            
+        let groups = d3.nest()
+            .key(d => d.source.id)
+            .rollup(d => d.map(node => [node.target.x, node.target.y]))
+            .entries(this.links);
+
+        let hulls = this.svg.select("g").insert("g", ":first-child")
+            .attr("id", "hull-group")
+            .selectAll("path")
+            .data(groups);
+
+        hulls.enter()
+            .insert("path")
+            // .style("fill", d =>this.nodes_dict[d.key].color)
+            .style("fill", d=>{
+                if(singleton_type === "grey_out"){
+                    if(this.nodes_dict[d.key].if_singleton){
+                        return "lightgrey";
+                    } 
+                }
+                return this.nodes_dict[d.key].color;
+            })
+            // .style("stroke", d => this.nodes_dict[d.key].color)
+            .style("stroke", d=>{
+                if(singleton_type === "grey_out"){
+                    if(this.nodes_dict[d.key].if_singleton){
+                        return "lightgrey";
+                    } 
+                }
+                return this.nodes_dict[d.key].color;
+            })
+            .style("stroke-width", 40)
+            .style("stroke-linejoin", "round")
+            // .style("opacity", 0.5)
+            .style("opacity", d=>{
+                if(singleton_type === "filtering"){
+                    if(this.nodes_dict[d.key].if_singleton){
+                        return 0;
+                    } 
+                }
+                return 0.5;
+            })
+            .attr("d", d => this.groupPath(d.value))
+            .attr("class", "convex_hull")
+            .attr("id", d => this.svg_id+"-hull-"+d.key.replace(/[|]/g,""))
+        //         .on("mouseover", d => {
+        //             if(!that.click_id && that.original_hgraph){
+        //                 d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",1);
+        //                 let cc = that.labels[d.key].split("|")
+        //                 if(cc.length > 1){
+        //                     cc.pop();
+        //                 }
+        //                 console.log(cc)
+        //                 let div_text = '';
+        //                 cc.forEach(nId=>{
+        //                     div_text += nId+"<br> "
+        //                 })
+        //                 let div = d3.select("#help-tip")
+        //                 div.transition()		
+        //                 .duration(200)		
+        //                 .style("opacity", .9);		
+        //                 div	.html("<h6>Selected Hyperedges</h6>"+div_text)
+        //             }
+                    
+                    
+        //         })
+        //         .on("mouseout",d => {
+        //             if(!that.click_id && that.original_hgraph){
+        //                 d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.5);
+        //                 let div = d3.select("#help-tip")
+        //                 div.transition()		
+        //                     .duration(200)		
+        //                     .style("opacity", .0);
+        //             } 
+        //             // else if (that.click_id != d.key){
+        //             //     d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.1)
+        //             // }
+                    
+        //         })
+        //         .on("click", d => {
+        //             if(that.original_hgraph ){
+        //                 if(that.click_id != d.key){
+        //                     that.click_id = d.key;
+        //                     let he_list = d.key.split("|")
+        //                     if(he_list.length > 1){
+        //                         he_list.pop();
+        //                     }
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+        //                     he_list.forEach(he=>{
+        //                         d3.select("#"+that.original_hgraph.svg_id+"-hull-"+he).style("opacity", 1);
+        //                         d3.select("#"+that.original_hgraph.svg_id+"-node-"+he).style("opacity", 1);
+        //                         that.original_hgraph.links.forEach(link=>{
+        //                             if(link.source.id === he){
+        //                                 d3.select("#"+that.original_hgraph.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+        //                             }
+        //                         })
+        //                         d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+        //                         d3.select("#"+that.svg_id+"-node-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+        //                         that.links.forEach(link=>{
+        //                             if(link.source.id === d.key){
+        //                                 d3.select("#"+that.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+        //                             }
+        //                         })
+        //                     })
+
+        //                 } else {
+        //                     that.click_id = undefined;
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.5);
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",1);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.5);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",1);
+        //                 }
+                        
+                        
+                            
+        //             }
+        //         });
+            
 
         // add drag capabilities
         const drag_handler = d3.drag()
@@ -154,123 +287,142 @@ class Hypergraph{
             that.svg_g.attr("transform", d3.event.transform);
         }
 
-        simulation.on("tick", () => {
-            lg
-                .attr("x1", d => d.source.x)
-                .attr("y1", d => d.source.y)
-                .attr("x2", d => d.target.x)
-                .attr("y2", d => d.target.y);
+        // simulation.on("tick", () => {
+        //     lg
+        //         .attr("x1", d => d.source.x)
+        //         .attr("y1", d => d.source.y)
+        //         .attr("x2", d => d.target.x)
+        //         .attr("y2", d => d.target.y);
 
-            ng
-                .attr("transform", function (d) {
-                    return "translate(" + d.x + "," + d.y + ")";
-                });
+        //     ng
+        //         .attr("transform", function (d) {
+        //             return "translate(" + d.x + "," + d.y + ")";
+        //         });
 
-            let groups = d3.nest()
-                .key(d => d.source.id)
-                .rollup(d => d.map(node => [node.target.x, node.target.y]))
-                .entries(this.links);
+        //     let groups = d3.nest()
+        //         .key(d => d.source.id)
+        //         .rollup(d => d.map(node => [node.target.x, node.target.y]))
+        //         .entries(this.links);
 
-            this.svg.select("g#hull-group").remove();
+        //     this.svg.select("g#hull-group").remove();
 
-            let hulls = this.svg.select("g").insert("g", ":first-child")
-                .attr("id", "hull-group")
-                .selectAll("path")
-                .data(groups);
+        //     let hulls = this.svg.select("g").insert("g", ":first-child")
+        //         .attr("id", "hull-group")
+        //         .selectAll("path")
+        //         .data(groups);
 
-            // hulls.exit().remove();
+        //     // hulls.exit().remove();
 
-            hulls.enter()
-                .insert("path")
-                // .style("fill", d =>this.nodes_dict[d.key].color)
-                .style("fill", d=>{
-                    if(singleton_type === "grey_out"){
-                        if(this.nodes_dict[d.key].if_singleton){
-                            return "lightgrey";
-                        } 
-                    }
-                    return this.nodes_dict[d.key].color;
-                })
-                // .style("stroke", d => this.nodes_dict[d.key].color)
-                .style("stroke", d=>{
-                    if(singleton_type === "grey_out"){
-                        if(this.nodes_dict[d.key].if_singleton){
-                            return "lightgrey";
-                        } 
-                    }
-                    return this.nodes_dict[d.key].color;
-                })
-                .style("stroke-width", 40)
-                .style("stroke-linejoin", "round")
-                // .style("opacity", 0.5)
-                .style("opacity", d=>{
-                    if(singleton_type === "filtering"){
-                        if(this.nodes_dict[d.key].if_singleton){
-                            return 0;
-                        } 
-                    }
-                    return 0.5;
-                })
-                .attr("d", d => this.groupPath(d.value))
-                .attr("class", "convex_hull")
-                .attr("id", d => that.svg_id+"-hull-"+d.key.replace(/[|]/g,""))
-                .on("mouseover", d => {
-                    if(!that.click_id && that.original_hgraph){
-                        d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",1);
-                    }
+        //     hulls.enter()
+        //         .insert("path")
+        //         // .style("fill", d =>this.nodes_dict[d.key].color)
+        //         .style("fill", d=>{
+        //             if(singleton_type === "grey_out"){
+        //                 if(this.nodes_dict[d.key].if_singleton){
+        //                     return "lightgrey";
+        //                 } 
+        //             }
+        //             return this.nodes_dict[d.key].color;
+        //         })
+        //         // .style("stroke", d => this.nodes_dict[d.key].color)
+        //         .style("stroke", d=>{
+        //             if(singleton_type === "grey_out"){
+        //                 if(this.nodes_dict[d.key].if_singleton){
+        //                     return "lightgrey";
+        //                 } 
+        //             }
+        //             return this.nodes_dict[d.key].color;
+        //         })
+        //         .style("stroke-width", 40)
+        //         .style("stroke-linejoin", "round")
+        //         // .style("opacity", 0.5)
+        //         .style("opacity", d=>{
+        //             if(singleton_type === "filtering"){
+        //                 if(this.nodes_dict[d.key].if_singleton){
+        //                     return 0;
+        //                 } 
+        //             }
+        //             return 0.5;
+        //         })
+        //         .attr("d", d => this.groupPath(d.value))
+        //         .attr("class", "convex_hull")
+        //         .attr("id", d => that.svg_id+"-hull-"+d.key.replace(/[|]/g,""))
+        //         .on("mouseover", d => {
+        //             if(!that.click_id && that.original_hgraph){
+        //                 d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",1);
+        //                 let cc = that.labels[d.key].split("|")
+        //                 if(cc.length > 1){
+        //                     cc.pop();
+        //                 }
+        //                 console.log(cc)
+        //                 let div_text = '';
+        //                 cc.forEach(nId=>{
+        //                     div_text += nId+"<br> "
+        //                 })
+        //                 let div = d3.select("#help-tip")
+        //                 div.transition()		
+        //                 .duration(200)		
+        //                 .style("opacity", .9);		
+        //                 div	.html("<h6>Selected Hyperedges</h6>"+div_text)
+        //             }
                     
-                })
-                .on("mouseout",d => {
-                    if(!that.click_id && that.original_hgraph){
-                        d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.5);
-                    } 
-                    // else if (that.click_id != d.key){
-                    //     d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.1)
-                    // }
                     
-                })
-                .on("click", d => {
-                    if(that.original_hgraph ){
-                        if(that.click_id != d.key){
-                            that.click_id = d.key;
-                            let he_list = d.key.split("|")
-                            if(he_list.length > 1){
-                                he_list.pop();
-                            }
-                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.1);
-                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
-                            d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.1);
-                            d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
-                            he_list.forEach(he=>{
-                                d3.select("#"+that.original_hgraph.svg_id+"-hull-"+he).style("opacity", 1);
-                                d3.select("#"+that.original_hgraph.svg_id+"-node-"+he).style("opacity", 1);
-                                that.original_hgraph.links.forEach(link=>{
-                                    if(link.source.id === he){
-                                        d3.select("#"+that.original_hgraph.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
-                                    }
-                                })
-                                d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
-                                d3.select("#"+that.svg_id+"-node-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
-                                that.links.forEach(link=>{
-                                    if(link.source.id === d.key){
-                                        d3.select("#"+that.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
-                                    }
-                                })
-                            })
+        //         })
+        //         .on("mouseout",d => {
+        //             if(!that.click_id && that.original_hgraph){
+        //                 d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.5);
+        //                 let div = d3.select("#help-tip")
+        //                 div.transition()		
+        //                     .duration(200)		
+        //                     .style("opacity", .0);
+        //             } 
+        //             // else if (that.click_id != d.key){
+        //             //     d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity",0.1)
+        //             // }
+                    
+        //         })
+        //         .on("click", d => {
+        //             if(that.original_hgraph ){
+        //                 if(that.click_id != d.key){
+        //                     that.click_id = d.key;
+        //                     let he_list = d.key.split("|")
+        //                     if(he_list.length > 1){
+        //                         he_list.pop();
+        //                     }
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.1);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",0.1);
+        //                     he_list.forEach(he=>{
+        //                         d3.select("#"+that.original_hgraph.svg_id+"-hull-"+he).style("opacity", 1);
+        //                         d3.select("#"+that.original_hgraph.svg_id+"-node-"+he).style("opacity", 1);
+        //                         that.original_hgraph.links.forEach(link=>{
+        //                             if(link.source.id === he){
+        //                                 d3.select("#"+that.original_hgraph.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+        //                             }
+        //                         })
+        //                         d3.select("#"+that.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+        //                         d3.select("#"+that.svg_id+"-node-"+d.key.replace(/[|]/g,"")).style("opacity", 1);
+        //                         that.links.forEach(link=>{
+        //                             if(link.source.id === d.key){
+        //                                 d3.select("#"+that.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).style("opacity", 1);
+        //                             }
+        //                         })
+        //                     })
 
-                        } else {
-                            that.click_id = undefined;
-                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.5);
-                            d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",1);
-                            d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.5);
-                            d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",1);
-                        }
+        //                 } else {
+        //                     that.click_id = undefined;
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("path").style("opacity",0.5);
+        //                     d3.select("#"+that.original_hgraph.svg_id+"-svg").selectAll("circle").style("opacity",1);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("path").style("opacity",0.5);
+        //                     d3.select("#"+that.svg_id+"-svg").selectAll("circle").style("opacity",1);
+        //                 }
                         
                         
                             
-                    }
-                });
-        });
+        //             }
+        //         });
+        // });
 
 
     }
