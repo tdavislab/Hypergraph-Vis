@@ -59,75 +59,48 @@ class Hypergraph{
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();
         ng = ng.enter().append("g").merge(ng);
-        // ng.selectAll("circle").remove();
-        // ng.selectAll("text").remove();
+        ng.attr("transform", function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        })
+        .classed("filtering", d=>{
+            if(singleton_type === "filtering" && d.if_singleton){
+                return true;
+            } else { return false; }
+        })
         ng.append("circle")
             .attr("r", node_radius)
-            // .attr("fill", d => d["bipartite"] === 1 ? this.colorScale(d.id) : "") // only color nodes that representing hyper-edges
-            // .attr("fill", d => d["bipartite"] === 1 ? d.color : "")
-            .attr("fill", d=>{
-                if(singleton_type === "grey_out"){
-                    if(d.if_singleton){
-                        return "grey";
-                    } 
-                }
-                return d["bipartite"] === 1 ? d.color : "";
-            })
-            // .attr("stroke", d => d["bipartite"] === 1 ? "#fff" : "")
-            // .attr("stroke", "lightgrey")
-            // .attr("stroke-width", d => d["bipartite"] === 1 ? 4 : 2)
-            // .style("opacity", d=>{
-            //     if(singleton_type === "filtering"){
-            //         if(d.if_singleton){
-            //             return 0;
-            //         } 
-            //     }
-            //     return 1;
-            // })
+            .attr("fill", d => d["bipartite"] === 1 ? d.color : "")
             .attr("id", d => this.svg_id+'-node-'+d.id.replace(/[|]/g,""))
             .attr("class", d => d["bipartite"] === 1 ? "hyper_node" : "vertex_node")
-            .attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            });
+            .classed("grey_out", d=>{
+                if(singleton_type === "grey_out" && d.if_singleton){
+                    return true;
+                } else { return false; }
+            })
         ng.append("text")
             .attr("dx", 12)
             .attr("dy", "0.35em")
             .attr("class", "node-label")
-            .attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            })
             .text(d => {
                     if(this.labels){
                         return this.labels[d.id];
                     }
                 })
-            .style("opacity", d=>{
-                    if(singleton_type === "filtering"){
-                        if(d.if_singleton){
-                            return 0;
-                        } 
-                    }
-                    // return 1;
-                });
 
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
-            .attr("stroke", "#999")
-            .attr("stroke-opacity", 0.5)
             .attr("stroke-width", d => Math.sqrt(d.value))
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y)
-            .style("opacity", d=>{
-                if(singleton_type === "filtering"){
-                    if(d.source.if_singleton){
-                        return 0;
-                    } 
-                }
-                // return 1;
-            });
+            .attr("class", "hyper-edge")
+            .classed("filtering", d=>{
+                if(singleton_type === "filtering" && d.source.if_singleton){
+                    return true;
+                } else { return false;}
+            })
             
         let groups = d3.nest()
             .key(d => d.source.id)
@@ -143,38 +116,21 @@ class Hypergraph{
         
         hulls.enter()
             .insert("path")
-            // .style("fill", d =>this.nodes_dict[d.key].color)
-            .style("fill", d=>{
-                if(singleton_type === "grey_out"){
-                    if(this.nodes_dict[d.key].if_singleton){
-                        return "lightgrey";
-                    } 
-                }
-                return this.nodes_dict[d.key].color;
-            })
-            // .style("stroke", d => this.nodes_dict[d.key].color)
-            .style("stroke", d=>{
-                if(singleton_type === "grey_out"){
-                    if(this.nodes_dict[d.key].if_singleton){
-                        return "lightgrey";
-                    } 
-                }
-                return this.nodes_dict[d.key].color;
-            })
-            .style("stroke-width", 40)
-            .style("stroke-linejoin", "round")
-            // .style("opacity", 0.5)
-            // .style("opacity", d=>{
-            //     if(singleton_type === "filtering"){
-            //         if(this.nodes_dict[d.key].if_singleton){
-            //             return 0;
-            //         } 
-            //     }
-            //     return 0.5;
-            // })
+            .attr("fill", d=> this.nodes_dict[d.key].color )
+            .attr("stroke", d => this.nodes_dict[d.key].color)
             .attr("d", d => this.groupPath(d.value))
-            .attr("class", "convex_hull")
             .attr("id", d => this.svg_id+"-hull-"+d.key.replace(/[|]/g,""))
+            .attr("class", "convex_hull")
+            .classed("grey_out", d=>{
+                if(singleton_type === "grey_out" && this.nodes_dict[d.key].if_singleton){
+                    return true;
+                } else { return false; }
+            })
+            .classed("filtering", d=>{
+                if(singleton_type === "filtering" && this.nodes_dict[d.key].if_singleton){
+                    return true;
+                } else { return false; }
+            })
             .on("mouseover", d => {
                 if(!this.click_id && this.original_hgraph){
                     d3.select("#"+this.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).classed("highlighted", true);

@@ -34,11 +34,20 @@ h4 {
     /*transition: 0.3s ease all;*/
 }
 
+.hyper-edge {
+    stroke: #999;
+    stroke-opacity: 0.5;
+}
+
 .hyper_node {
     stroke: lightgrey;
     stroke-width: 4px;
     opacity: 1;
 }
+
+/* line.filtering {
+    opacity: 0;
+} */
 
 .vertex_node {
     stroke: lightgrey;
@@ -50,8 +59,26 @@ circle.faded {
     opacity: 0.1;
 }
 
+circle.grey_out {
+    fill: grey;
+}
+
+/* circle.filtering {
+    opacity: 0;
+} */
+
+/* text.filtering {
+    opacity: 0;
+} */
+
+.filtering {
+    opacity: 0;
+}
+
 .convex_hull {
     opacity: 0.5;
+    stroke-width: 40;
+    stroke-linejoin: round;
 }
 
 path.faded {
@@ -60,6 +87,15 @@ path.faded {
 
 path.highlighted {
     opacity: 1;
+}
+
+path.grey_out {
+    stroke: lightgrey;
+    fill: lightgrey;
+}
+
+path.filtering {
+    opacity: 0;
 }
 
 .node-label {
