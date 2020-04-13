@@ -213,8 +213,10 @@ function init(data) {
         barcode.threshold = threshold;
         console.log(edgeid)
         let cc_dict = simplified_linegraph.graph_contraction(edgeid);
-        barcode.cc_dict = cc_dict
-        hypergraph.draw_hypergraph();
+        barcode.cc_dict = cc_dict;
+        // $('#hypergraph-svg').remove();
+        // $('#vis-hypergraph').append('<svg id="hypergraph-svg"></svg>');
+        hypergraph.cancel_faded();
         console.log(cc_dict)
         $.ajax({
             type: "POST",

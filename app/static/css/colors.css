@@ -34,6 +34,34 @@ h4 {
     /*transition: 0.3s ease all;*/
 }
 
+.hyper_node {
+    stroke: lightgrey;
+    stroke-width: 4px;
+    opacity: 1;
+}
+
+.vertex_node {
+    stroke: lightgrey;
+    stroke-width: 2px;
+    opacity: 1px;
+}
+
+circle.faded {
+    opacity: 0.1;
+}
+
+.convex_hull {
+    opacity: 0.5;
+}
+
+path.faded {
+    opacity: 0.1;
+}
+
+path.highlighted {
+    opacity: 1;
+}
+
 .node-label {
     fill: #2b2b2b;
     opacity: 0.5;
