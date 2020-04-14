@@ -191,10 +191,6 @@ def write_json_file(json_dict, path):
     with open(path, 'w') as f:
         f.write(json.dumps(json_dict, indent=4))
 
-# def write_barcode(barcode, path):
-#     with open(path, 'w') as f:
-#         f.write(json.dumps(barcode, indent=4))
-
 @app.route('/')
 @app.route('/Hypergraph-Vis-app')
 def index():

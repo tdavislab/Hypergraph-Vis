@@ -27,9 +27,6 @@ function init(data) {
 
     console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, labels);
-    console.log(linegraph)
-    // let res = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, labels);
-    // console.log(res)
 
     // d3.select("#singleton-type-form")
     //         .on("change", ()=>{
@@ -56,11 +53,6 @@ function init(data) {
                 d3.select("#simplified-hull-group").style("visibility","visible");
             }
         })
-
-    
-
-
-    
 
     d3.selectAll(".barcode-rect-dim0")
         .on("click", d=>click_bar(d));
@@ -120,6 +112,9 @@ function init(data) {
         d3.select(this).attr("x", clamp(d3.event.x, barcode.svg_margin.left, barcode.width_scale(barcode.max_death*1.1)));
         // let destination_position = d3.event.x - d3.select(this).attr("width") / 2;
         // d3.select(this).attr("x", clamp(destination_position, 5, 90));
+        function clamp(d, min, max) {
+            return Math.min(Math.max(d, min), max);
+        };
     }
     function dragended() {
         let threshold = barcode.width_scale.invert(d3.event.x);
@@ -161,9 +156,7 @@ function init(data) {
             }
         });
     }
-    function clamp(d, min, max) {
-        return Math.min(Math.max(d, min), max);
-    };
+    
 
     // change s value
     let s_value_slider = document.getElementById("s-walk_input");
@@ -209,7 +202,6 @@ function init(data) {
             }
         });
     }
-
 
     function switch_line_variant(line_data, hyper_data, barcode_data, variant){
         if(variant === "Original Line Graph"){

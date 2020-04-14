@@ -1,8 +1,9 @@
 class Linegraph{
-    constructor(line_data, simplified_hypergraph, id){
+    constructor(line_data, simplified_hypergraph, svg_id){
         this.nodes = [...line_data.nodes];
         this.links = [...line_data.links];
         this.simplified_hypergraph = simplified_hypergraph;
+        this.svg_id = svg_id
         console.log(this.nodes, this.links)
 
         this.nodes_dict = {};
@@ -18,12 +19,12 @@ class Linegraph{
 
         // console.log(this.links, this.nodes);
 
-        this.container_width = parseFloat(d3.select('#vis-'+id).style('width'))
+        this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'))
 
         this.svg_width = this.container_width;
         this.svg_height = this.container_width*0.8;
         
-        this.svg = d3.select("#"+id+"-svg")
+        this.svg = d3.select("#"+svg_id+"-svg")
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width)
             .attr("height", this.svg_height);
@@ -64,20 +65,19 @@ class Linegraph{
         ng = ng.enter().append("g").merge(ng);
         ng.append("circle")
             .attr("r", node_radius)
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 4)
             .attr("fill", d => d.color)
-            .attr("id", d => "linegraph-"+d.id)
+            .attr("id", d => this.svg_id+"-node-"+d.id)
+            .attr("class", "line_node")
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y);
         
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
-            .attr("stroke", "#999")
-            .attr("stroke-opacity", 0.5)
+
             .attr("stroke-width", d => this.edge_scale(parseFloat(d.intersection_size)))
-            .attr("id", d => "line-edge-"+d.source.id+"-"+d.target.id)
+            .attr("id", d => this.svg_id+"-edge-"+d.source.id+"-"+d.target.id)
+            .attr("class", "line_edge")
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
@@ -164,6 +164,17 @@ class Linegraph{
         }
         this.simulation.force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id));
         this.simulation.alpha(1).restart();
+        this.simulation.tick(300);
+        this.nodes_group.selectAll("circle")
+            .attr("cx", d=>d.x)
+            .attr("cy", d=>d.y)
+        this.links_group.selectAll("line")
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+
         let cc_dict = {}
         cc_list.forEach(cc=>{
             let cc_id = "";
