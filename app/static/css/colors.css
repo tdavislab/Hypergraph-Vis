@@ -45,10 +45,6 @@ h4 {
     opacity: 1;
 }
 
-/* line.filtering {
-    opacity: 0;
-} */
-
 .vertex_node {
     stroke: lightgrey;
     stroke-width: 2px;
@@ -61,15 +57,8 @@ circle.faded {
 
 circle.grey_out {
     fill: grey;
+    opacity: 0.2;
 }
-
-/* circle.filtering {
-    opacity: 0;
-} */
-
-/* text.filtering {
-    opacity: 0;
-} */
 
 .filtering {
     opacity: 0;
@@ -92,6 +81,7 @@ path.highlighted {
 path.grey_out {
     stroke: lightgrey;
     fill: lightgrey;
+    opacity: 0.2;
 }
 
 path.filtering {

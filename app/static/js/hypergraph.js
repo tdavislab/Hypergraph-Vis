@@ -1,10 +1,10 @@
 class Hypergraph{
-    constructor(hyper_data, svg_id, original_hgraph=undefined){
+    constructor(hyper_data, svg_id, labels, original_hgraph=undefined){
         this.nodes = hyper_data.nodes;
         this.links = hyper_data.links;
-        this.labels = hyper_data.labels;
         this.svg_id = svg_id;
         this.original_hgraph = original_hgraph;
+        this.labels = labels;
 
         console.log(this.links, this.nodes)
         console.log("labels", this.labels)
@@ -97,7 +97,7 @@ class Hypergraph{
             .attr("y2", d => d.target.y)
             .attr("class", "hyper-edge")
             .classed("filtering", d=>{
-                if(singleton_type === "filtering" && d.source.if_singleton){
+                if(singleton_type === "filtering" && (d.source.if_singleton || d.target.if_singleton)){
                     return true;
                 } else { return false;}
             })

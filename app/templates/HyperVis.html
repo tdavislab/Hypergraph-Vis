@@ -131,6 +131,21 @@
                     </select>
                 </div>
             </div>
+            <div class="control-block" style="border-bottom: 1px solid rgb(224,224,224);">
+                Select Weights
+                <form id="weight-type-form">
+                    <div style="padding-left:0px; padding-right:15px">
+                        <input type="radio" class="form-radio" name="weight-type" value="intersection_size" id="intersection_size" checked="checked">
+                        <label for="weight" class="radio_label">Intersection Size</label>
+                    </div>
+                    <div style="padding-left:0px; padding-right:0px;">
+                        <input type="radio" class="form-radio" name="weight-type" value="jaccard_index" id="jaccard_index">
+                        <label for="jaccard_index" class="radio_label">Jaccard Index</label>
+                    </div>
+                </form>
+                <br>
+                <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_weights" value="Compute Weights" style="line-height:0px;">
+            </div>
             <div class="help-tip" style="opacity: 0;" id="help-tip">
                 <h6>Selected Hyperedges</h6>
                 <p>
