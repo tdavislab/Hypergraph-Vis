@@ -79,6 +79,20 @@
             <div style="padding: 5px 5px">
                 <h6>Control Panel</h6>
             </div>
+
+            <div class="control-block" style="border-bottom: 1px solid rgb(224,224,224);">
+                Collapsing
+                <form id="hgraph-type-form">
+                    <div style="padding-left:0px; padding-right:15px">
+                        <input type="radio" class="form-radio" name="hgraph-type" value="collapsed_version" id="collapsed_version" checked="checked">
+                        <label for="collapsed_version" class="radio_label">Collapsed Version</label>
+                    </div>
+                    <div style="padding-left:0px; padding-right:0px;">
+                        <input type="radio" class="form-radio" name="hgraph-type" value="original_version" id="original_version">
+                        <label for="original_version" class="radio_label">Original Version</label>
+                    </div>
+                </form>
+            </div>
             
             <div style="padding-bottom: 20px;" class="control-block">
                 <input type="checkbox" id="hgraph-labels">Show labels</input>

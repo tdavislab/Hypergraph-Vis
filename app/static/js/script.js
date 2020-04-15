@@ -54,6 +54,27 @@ function init(data) {
             }
         })
 
+    d3.select("#hgraph-type-form")
+        .on("change", ()=>{
+            let hgraph_type = d3.select('input[name="hgraph-type"]:checked').node().value;
+            $.ajax({
+                type: "POST",
+                url: "/change_hgraph_type",
+                data: JSON.stringify({"hgraph_type":String(hgraph_type), "variant": String(variant)}),
+                dataType:'text',
+                success: function (response) {
+                    // console.log(response)
+                    // let data_new = JSON.parse(response);
+                    // switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, variant);
+                    init(JSON.parse(response));
+                },
+                error: function (error) {
+                    console.log("error",error);
+                }
+            });
+            
+        })
+
     d3.selectAll(".barcode-rect-dim0")
         .on("click", d=>click_bar(d));
 

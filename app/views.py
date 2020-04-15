@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from tqdm import tqdm
 from os import path
+import os
 
 
 def process_graph_edges(edge_str: str):
@@ -61,27 +62,42 @@ def process_hypergraph(hyper_data: str):
             hgraph[hyperedge] = vertices
         else:
             hgraph[hyperedge] += vertices
-    id2label = {ID:label for label, ID in label2id.items()}
+    label_map = {ID:label for label, ID in label2id.items()}
 
-    return hnx.Hypergraph(hgraph), id2label
+    return hnx.Hypergraph(hgraph), label_map
 
-    # hgraphs = []
-    
-    # # Separate the hypergraphs based on this regex:
-    # # newline followed by one or more whitespace followed by newline
-    # file_contents = re.split(r'\n\s+\n', hyper_data)
-    
-    # num_hgraphs = len(file_contents)
-    
-    # for i in tqdm(range(0, num_hgraphs)):
-    #     # The name and graph are separated by '='
-    #     graph_name, graph_dict = file_contents[i].split('=')
-    #     graph_dict = process_graph_edges(graph_dict)
-    #     # hgraphs.append({'graph_dict':graph_dict, 'graph_name':graph_name})
-    #     hgraphs.append(hnx.Hypergraph(graph_dict, name=graph_name))
-    # # print(hgraphs)
-    
-    # return hgraphs[0]
+def collapse_hypergraph(hgraph):
+    chgraph = hgraph.collapse_edges()
+    chgraph = chgraph.collapse_nodes()
+    chgraph = chgraph.incidence_dict
+    hedges_map = {}
+    vertices_map = {}
+    hedges_list = []
+    vertices_list = []
+    hedge_idx = 0
+    vertex_idx = 0
+    chgraph_new = {}
+    for hkey in chgraph:
+        hedges = list(hkey)
+        if hedges not in hedges_list:
+            hedges_list.append(hedges)
+            hkey_new = 'che'+str(hedge_idx)
+            hedges_map[hkey_new] = hedges
+            hedge_idx += 1
+        vertices = [list(v) for  v in chgraph[hkey]]
+        vertices_new = []
+        for v in vertices:
+            if v not in vertices_list:
+                vertices_list.append(v)
+                vkey_new = 'cv'+str(vertex_idx)
+                vertices_map[tuple(v)] = vkey_new
+                vertex_idx += 1
+            vertices_new.append(vertices_map[tuple(v)])
+        chgraph_new[hkey_new] = vertices_new
+    vertices_map = {vkey:list(vertices) for vertices, vkey in vertices_map.items()}
+    id_map = {'vertices':vertices_map, 'hedges':hedges_map}
+    return hnx.Hypergraph(chgraph_new), id_map
+
 
 
 def process_hypergraph_from_csv(graph_file: str):
@@ -199,6 +215,10 @@ def index():
 
 @app.route('/import', methods=['POST', 'GET'])
 def import_file():
+    # First, remove cache
+    for f in os.listdir(path.join(APP_STATIC, "uploads/")):
+        if f.startswith('current'):
+            os.remove(path.join(APP_STATIC, "uploads", f))
     jsdata = request.get_data().decode('utf-8')
     if jsdata == "hypergraph_samples":
         with open(path.join(APP_STATIC, "uploads/DNS_hypergraph_samples_new.txt"), 'r') as f:
@@ -207,25 +227,84 @@ def import_file():
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'w') as f:
         f.write(jsdata)
     f.close()
-    hgraph, id2label = process_hypergraph(jsdata)
-    lgraph = convert_to_line_graph(hgraph.incidence_dict)
-    dual_lgraph = compute_dual_line_graph(hgraph)
+    hgraph, label_map = process_hypergraph(jsdata)
+    chgraph, id_map = collapse_hypergraph(hgraph)
+
+    lgraph = convert_to_line_graph(chgraph.incidence_dict)
+    dual_lgraph = compute_dual_line_graph(chgraph)
     hgraph_dict = {hkey:list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
-    write_json_file(hgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph.json"))
+    chgraph_dict = {hkey:list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
+    write_json_file(hgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph_original.json"))
+    write_json_file(chgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph.json"))
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
     barcode = compute_barcode(lgraph)
     dual_barcode = compute_barcode(dual_lgraph)
 
-    assign_hgraph_singletons(hgraph, lgraph['singletons'])
+    assign_hgraph_singletons(chgraph, lgraph['singletons'])
 
     write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
     write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
     write_json_file(barcode, path.join(APP_STATIC,"uploads/current_barcode.json"))
     write_json_file(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode.json"))
-    write_json_file(id2label, path.join(APP_STATIC,"uploads/current_labels.json"))
+    write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
+    write_json_file(id_map, path.join(APP_STATIC,"uploads/current_id_map.json"))
 
-    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=id2label)
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id_map=id_map)
 
+@app.route('/change_hgraph_type', methods=['POST', 'GET'])
+def change_hgraph_type():
+    jsdata = json.loads(request.get_data())
+    hgraph_type = jsdata['hgraph_type']
+    variant = jsdata['variant']
+    if variant == "Original Line Graph":
+        filename = ""
+    elif variant == "Dual Line Graph":
+        filename = "_dual"
+    if hgraph_type == "collapsed_version":
+        # all data has been saved: hgraph, lgraph, dual_lgraph, barcode, dual_barcode
+        with open(path.join(APP_STATIC,"uploads/current_hypergraph.json")) as f:
+            hgraph = json.load(f)
+        with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph.json")) as f:
+            lgraph = json.load(f)
+        with open(path.join(APP_STATIC,"uploads/current"+filename+"_barcode.json")) as f:
+            barcode = json.load(f)
+        hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
+        assign_hgraph_singletons(hgraph, lgraph['singletons'])
+        return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+
+    elif hgraph_type == "original_version":
+        # check if lgraph, dual_lgraph, etc have been saved before
+        if path.exists(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph_original.json")):
+            with open(path.join(APP_STATIC,"uploads/current_hypergraph_original.json")) as f:
+                hgraph = json.load(f)
+            with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph_original.json")) as f:
+                lgraph = json.load(f)
+            with open(path.join(APP_STATIC,"uploads/current"+filename+"_barcode_original.json")) as f:
+                barcode = json.load(f)
+            hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
+            assign_hgraph_singletons(hgraph, lgraph['singletons'])
+            return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+        else:
+            with open(path.join(APP_STATIC,"uploads/current_hypergraph_original.json")) as f:
+                hgraph = json.load(f)
+            hgraph = hnx.Hypergraph(hgraph)
+            lgraph = convert_to_line_graph(hgraph.incidence_dict)
+            dual_lgraph = compute_dual_line_graph(hgraph)
+            hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+            barcode = compute_barcode(lgraph)
+            dual_barcode = compute_barcode(dual_lgraph)
+            write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph_original.json"))
+            write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph_original.json"))
+            write_json_file(barcode, path.join(APP_STATIC,"uploads/current_barcode_original.json"))
+            write_json_file(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode_original.json"))
+        
+            if variant == "Original Line Graph":
+                assign_hgraph_singletons(hgraph, lgraph['singletons'])
+                return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+            else:
+                assign_hgraph_singletons(hgraph, dual_lgraph['singletons'])
+                return jsonify(hyper_data=hgraph, line_data=dual_lgraph, barcode_data=dual_barcode)
 
 @app.route('/expanded_hgraph', methods=['POST', 'GET'])
 def compute_expanded_hgraph():
