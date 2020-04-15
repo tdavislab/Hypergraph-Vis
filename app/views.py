@@ -98,8 +98,6 @@ def collapse_hypergraph(hgraph):
     id_map = {'vertices':vertices_map, 'hedges':hedges_map}
     return hnx.Hypergraph(chgraph_new), id_map
 
-
-
 def process_hypergraph_from_csv(graph_file: str):
     hgraph = {}
 
@@ -113,7 +111,6 @@ def process_hypergraph_from_csv(graph_file: str):
             else:
                 hgraph[hyperedge] += vertices
     return hgraph
-
 
 def convert_to_line_graph(hgraph_dict, s=1):
     # Line-graph is a NetworkX graph
@@ -135,17 +132,18 @@ def convert_to_line_graph(hgraph_dict, s=1):
         for node_idx_2, node2 in enumerate(node_list[node_idx_1 + 1:]):
             vertices1 = hgraph_dict[node1]
             vertices2 = hgraph_dict[node2]
-            # print(vertices1)
-            vertices_list += (list(set(vertices1)) + list(set(vertices2)))
-            # Compute the intersection size
-            intersection_size = len(set(vertices1) & set(vertices2))
-            # union_size = len(set(vertices1))
-            if intersection_size >= s:
-                # print(intersection_size)
-                line_graph.add_edge(node1, node2, intersection_size=str(intersection_size))
-                non_singletons.append(node1)
-                non_singletons.append(node2)
-                non_singletons += (list(set(vertices1)) + list(set(vertices2)))
+            if len(vertices1) > 0 or len(vertices2) > 0:
+                # print(vertices1)
+                vertices_list += (list(set(vertices1)) + list(set(vertices2)))
+                # Compute the intersection size
+                intersection_size = len(set(vertices1) & set(vertices2))
+                union_size = len(set(vertices1) | set(vertices2))
+                jaccard_index = intersection_size / union_size
+                if intersection_size >= s:
+                    line_graph.add_edge(node1, node2, intersection_size=str(intersection_size), jaccard_index=str(jaccard_index))
+                    non_singletons.append(node1)
+                    non_singletons.append(node2)
+                    non_singletons += (list(set(vertices1)) + list(set(vertices2)))
     vertices_list = list(set(vertices_list))
     non_singletons = list(set(non_singletons))
     singletons = [v for v in (node_list + vertices_list) if v not in non_singletons]
@@ -170,7 +168,7 @@ def find_cc_index(components, vertex_id):
         if vertex_id in components[i]:
             return i
 
-def compute_barcode(graph_data):
+def compute_barcode(graph_data, weight_col='intersection_size'):
     """
     Get barcode of the input linegraph by computing its minimum spanning tree
     """
@@ -182,11 +180,15 @@ def compute_barcode(graph_data):
         components.append([node['id']])
     for link in links:
         link['intersection_size'] = int(link['intersection_size'])
-    links = sorted(links, key=lambda item: 1 / item['intersection_size'])
+        link['jaccard_index'] = float(link['jaccard_index'])
+    links = sorted(links, key=lambda item: 1 / item[weight_col])
     for link in links:
         source_id = link['source']
         target_id = link['target']
-        weight = 1 / link['intersection_size']
+        if link[weight_col] == 0:
+            weight = np.inf
+        else:
+            weight = 1 / link[weight_col]
         source_cc_idx = find_cc_index(components, source_id)
         target_cc_idx = find_cc_index(components, target_id)
         if source_cc_idx != target_cc_idx:
@@ -305,6 +307,24 @@ def change_hgraph_type():
             else:
                 assign_hgraph_singletons(hgraph, dual_lgraph['singletons'])
                 return jsonify(hyper_data=hgraph, line_data=dual_lgraph, barcode_data=dual_barcode)
+
+@app.route('/change_weight_type', methods=['POST', 'GET'])
+def change_weight_type():
+    jsdata = json.loads(request.get_data())
+    weight_type = jsdata['weight_type']
+    variant = jsdata['variant']
+    if variant == "Original Line Graph":
+        filename = ""
+    elif variant == "Dual Line Graph":
+        filename = "_dual"
+    with open(path.join(APP_STATIC,"uploads/current_hypergraph.json")) as f:
+        hgraph = json.load(f)
+    hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
+    with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph.json")) as f:
+        lgraph = json.load(f)
+    barcode = compute_barcode(lgraph, weight_col=weight_type)
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+    
 
 @app.route('/expanded_hgraph', methods=['POST', 'GET'])
 def compute_expanded_hgraph():

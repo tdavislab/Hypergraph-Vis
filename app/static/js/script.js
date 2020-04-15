@@ -63,10 +63,27 @@ function init(data) {
                 data: JSON.stringify({"hgraph_type":String(hgraph_type), "variant": String(variant)}),
                 dataType:'text',
                 success: function (response) {
-                    // console.log(response)
-                    // let data_new = JSON.parse(response);
-                    // switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, variant);
                     init(JSON.parse(response));
+                },
+                error: function (error) {
+                    console.log("error",error);
+                }
+            });
+            
+        })
+
+    d3.select("#weight-type-form")
+        .on("change", ()=>{
+            let weight_type = d3.select('input[name="weight-type"]:checked').node().value;
+            console.log(weight_type)
+            $.ajax({
+                type: "POST",
+                url: "/change_weight_type",
+                data: JSON.stringify({"weight_type":String(weight_type), "variant": String(variant)}),
+                dataType:'text',
+                success: function (response) {
+                    let data_new = JSON.parse(response);
+                    switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, variant);
                 },
                 error: function (error) {
                     console.log("error",error);
