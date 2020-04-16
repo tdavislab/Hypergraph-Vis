@@ -17,80 +17,113 @@ d3.select("#files")
         // console.log(data)
     })
 
+d3.select("#hgraph-type-form")
+    .on("change", ()=>{
+        // When change the graph type, reset all the configuration
+        let hgraph_type = d3.select('input[name="hgraph-type"]:checked').node().value;
+        reset_config();
+        $.ajax({
+            type: "POST",
+            url: "/change_hgraph_type",
+            data: String(hgraph_type),
+            dataType:'text',
+            success: function (response) {
+                init(JSON.parse(response), hgraph_type = "original_version");
+            },
+            error: function (error) {
+                console.log("error",error);
+            }
+        });
+        
+    });
 
-function init(data) {
+
+function init(data, hgraph_type = "collapsed_version") {
     console.log(data)
+    let config = {"hgraph_type":hgraph_type, "s":1, "variant":"Original Line Graph", "weight_type":"jaccard_index"};
 
     let color_dict = assign_hyperedge_colors(data);
     let labels = data.labels;
+    let id_map = data.id_map;
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
     console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, labels);
 
-    // d3.select("#singleton-type-form")
-    //         .on("change", ()=>{
-    //             // hypergraph.draw_hypergraph();
-    //             // simplified_hypergraph.draw_hypergraph();
-    //             // let singleton_type = d3.select('input[name="visual-type"]:checked').node().value;
-    //             // if(singleton_type === "bipartite"){
-    //             //     d3.select("#hull-group").style("visibility","hidden");
-    //             //     d3.select("#simplified-hull-group").style("visibility","hidden");
-    //             // } else if(encoding_type === "convex"){
-    //             //     d3.select("#hull-group").style("visibility","visible");
-    //             //     d3.select("#simplified-hull-group").style("visibility","visible");
-    //             // }
-    //         })
-
-    d3.select("#visual-encoding-form")
+    change_visual_encoding();
+    
+    // change weight type
+    d3.select("#weight-type-form")
         .on("change", ()=>{
-            let encoding_type = d3.select('input[name="visual-type"]:checked').node().value;
-            if(encoding_type === "bipartite"){
-                d3.select("#hull-group").style("visibility","hidden");
-                d3.select("#simplified-hull-group").style("visibility","hidden");
-            } else if(encoding_type === "convex"){
-                d3.select("#hull-group").style("visibility","visible");
-                d3.select("#simplified-hull-group").style("visibility","visible");
-            }
-        })
-
-    d3.select("#hgraph-type-form")
-        .on("change", ()=>{
-            let hgraph_type = d3.select('input[name="hgraph-type"]:checked').node().value;
-            $.ajax({
-                type: "POST",
-                url: "/change_hgraph_type",
-                data: JSON.stringify({"hgraph_type":String(hgraph_type), "variant": String(variant)}),
-                dataType:'text',
-                success: function (response) {
-                    init(JSON.parse(response));
-                },
-                error: function (error) {
-                    console.log("error",error);
-                }
-            });
+            config.weight_type = d3.select('input[name="weight-type"]:checked').node().value;
+            reload_graphs();
             
         })
 
-    d3.select("#weight-type-form")
-        .on("change", ()=>{
-            let weight_type = d3.select('input[name="weight-type"]:checked').node().value;
-            console.log(weight_type)
+    // change s value
+    let s_value_slider = document.getElementById("s-walk_input");
+    s_value_slider.oninput = function(){
+        config.s = this.value;
+        d3.select("#s-walk_label").html(this.value);
+    }
+
+    d3.select("#compute_line_graph")
+        .on("click", ()=>{
             $.ajax({
                 type: "POST",
-                url: "/change_weight_type",
-                data: JSON.stringify({"weight_type":String(weight_type), "variant": String(variant)}),
+                url: "/change_s_value",
+                data: JSON.stringify(config),
                 dataType:'text',
                 success: function (response) {
                     let data_new = JSON.parse(response);
-                    switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, variant);
+                    switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
                 },
                 error: function (error) {
                     console.log("error",error);
                 }
             });
-            
         })
+
+    // change line graph variant
+    let line_variant_dropdown = document.getElementById("line_graph_variants");
+    line_variant_dropdown.onchange = function(){
+        config.variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
+        reload_graphs();
+    }
+
+    function reload_graphs() {
+        $.ajax({
+            type: "POST",
+            url: "/reload_graphs",
+            data: JSON.stringify(config),
+            dataType:'text',
+            success: function (response) {
+                let data_new = JSON.parse(response);
+                if(config.variant === "Original Line Graph"){
+                    data_new.line_data.nodes.forEach(node=>{
+                        let c = color_dict[node.id];
+                        node.color = c;
+                    })
+                } 
+                data_new.hyper_data.nodes.forEach(node=>{
+                    let c = color_dict[node.id];
+                    node.color = c;
+                })
+                hyperedges2vertices = Object.assign({}, ...data_new.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
+                [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data_new.hyper_data, data_new.line_data, data_new.barcode_data, labels);
+                d3.select("#barcode-slider")
+                    .call(d3.drag()
+                            .on("start", dragstarted)
+                            .on("drag", dragged)
+                            .on("end", dragended));
+                d3.selectAll(".barcode-rect-dim0")
+                    .on("click", d=>click_bar(d));
+            },
+            error: function (error) {
+                console.log("error",error);
+            }
+        });
+    }
 
     d3.selectAll(".barcode-rect-dim0")
         .on("click", d=>click_bar(d));
@@ -194,74 +227,6 @@ function init(data) {
             }
         });
     }
-    
-
-    // change s value
-    let s_value_slider = document.getElementById("s-walk_input");
-    let s_value = 1;
-    s_value_slider.oninput = function(){
-        s_value = this.value;
-        d3.select("#s-walk_label").html(this.value);
-    }
-
-    d3.select("#compute_line_graph")
-        .on("click", ()=>{
-            $.ajax({
-                type: "POST",
-                url: "/change_s_value",
-                data: JSON.stringify({"s":String(s_value), "variant": String(variant)}),
-                dataType:'text',
-                success: function (response) {
-                    let data_new = JSON.parse(response);
-                    switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, variant);
-                },
-                error: function (error) {
-                    console.log("error",error);
-                }
-            });
-        })
-
-    // change line graph variant
-    let line_variant_dropdown = document.getElementById("line_graph_variants");
-    let variant = "Original Line Graph"
-    line_variant_dropdown.onchange = function(){
-        variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
-        $.ajax({
-            type: "POST",
-            url: "/switch_line_variant",
-            data: String(variant),
-            dataType:'text',
-            success: function (response) {
-                let data_new = JSON.parse(response);
-                switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, variant);
-            },
-            error: function (error) {
-                console.log("error",error);
-            }
-        });
-    }
-
-    function switch_line_variant(line_data, hyper_data, barcode_data, variant){
-        if(variant === "Original Line Graph"){
-            line_data.nodes.forEach(node=>{
-                let c = color_dict[node.id];
-                node.color = c;
-            })
-        } 
-        hyper_data.nodes.forEach(node=>{
-            let c = color_dict[node.id];
-            node.color = c;
-        })
-        hyperedges2vertices = Object.assign({}, ...line_data.nodes.map((x) => ({[x.id]: x.vertices})));
-        [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(hyper_data, line_data, barcode_data, labels);
-        d3.select("#barcode-slider")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-        d3.selectAll(".barcode-rect-dim0")
-            .on("click", d=>click_bar(d));
-    }
 
 }
 
@@ -353,6 +318,35 @@ function copy_line_data(line_data){
     return {"nodes": line_nodes_new, "links": line_links_new};
 }
 
+function change_visual_encoding(){
+    d3.select("#visual-encoding-form")
+        .on("change", ()=>{
+            let encoding_type = d3.select('input[name="visual-type"]:checked').node().value;
+            if(encoding_type === "bipartite"){
+                d3.select("#hull-group").style("visibility","hidden");
+                d3.select("#simplified-hull-group").style("visibility","hidden");
+            } else if(encoding_type === "convex"){
+                d3.select("#hull-group").style("visibility","visible");
+                d3.select("#simplified-hull-group").style("visibility","visible");
+            }
+        });
+}
+
+function reset_config() {
+    //  1. reset "show label"
+    d3.select("#hgraph-labels").property("checked", true);
+    //  2. reset hypergraph visual encoding
+    d3.select("#convex").property("checked", true);
+    //  3. reset s-value & how to turn off singletons
+    d3.select("#s-walk_input").property("value", 1);
+    d3.select("#s-walk_label").html("1");
+    d3.select("#grey_out").property("checked", true);
+    //  4. reset line graph variant
+    d3.select("#line_graph_variants").property("selectedIndex", 0);
+    //  5. reset weight type
+    d3.select("#intersection_size").property("checked", true);
+}
+
 function clear_canvas(){
     $('#barcode-svg').remove();
     $('#hypergraph-svg').remove();
@@ -367,3 +361,18 @@ function clear_canvas(){
     // $('#vis-simplified-hypergraph').append('<div class="help-tip" style="opacity: 0;" id="help-tip"></div>');
     $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
 }
+
+
+// d3.select("#singleton-type-form")
+    //         .on("change", ()=>{
+    //             // hypergraph.draw_hypergraph();
+    //             // simplified_hypergraph.draw_hypergraph();
+    //             // let singleton_type = d3.select('input[name="visual-type"]:checked').node().value;
+    //             // if(singleton_type === "bipartite"){
+    //             //     d3.select("#hull-group").style("visibility","hidden");
+    //             //     d3.select("#simplified-hull-group").style("visibility","hidden");
+    //             // } else if(encoding_type === "convex"){
+    //             //     d3.select("#hull-group").style("visibility","visible");
+    //             //     d3.select("#simplified-hull-group").style("visibility","visible");
+    //             // }
+    //         })

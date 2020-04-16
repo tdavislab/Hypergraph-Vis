@@ -97,6 +97,7 @@
             <div style="padding-bottom: 20px;" class="control-block">
                 <input type="checkbox" id="hgraph-labels">Show labels</input>
             </div>
+            
             <div class="control-block">
                 Hypergraph Visual Encoding
                 <div class="visual-encoding-group" style="padding-top:10px; padding-left:5px;">
@@ -112,6 +113,7 @@
                     </form>
                 </div>
             </div>
+
             <div class="control-block">
                 Select Intersection Size
                 <div class="ui-form-range">
@@ -145,17 +147,19 @@
                     </select>
                 </div>
             </div>
+            
             <div class="control-block" style="border-bottom: 1px solid rgb(224,224,224);">
-                Select Weights
+                Select Weight Type
                 <form id="weight-type-form">
-                    <div style="padding-left:0px; padding-right:15px">
-                        <input type="radio" class="form-radio" name="weight-type" value="intersection_size" id="intersection_size" checked="checked">
-                        <label for="weight" class="radio_label">Intersection Size</label>
-                    </div>
                     <div style="padding-left:0px; padding-right:0px;">
-                        <input type="radio" class="form-radio" name="weight-type" value="jaccard_index" id="jaccard_index">
+                        <input type="radio" class="form-radio" name="weight-type" value="jaccard_index" id="jaccard_index" checked="checked">
                         <label for="jaccard_index" class="radio_label">Jaccard Index</label>
                     </div>
+                    <div style="padding-left:0px; padding-right:15px">
+                        <input type="radio" class="form-radio" name="weight-type" value="intersection_size" id="intersection_size">
+                        <label for="weight" class="radio_label">Intersection Size</label>
+                    </div>
+                    
                 </form>
                 <br>
                 <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_weights" value="Compute Weights" style="line-height:0px;">

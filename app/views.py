@@ -209,6 +209,46 @@ def write_json_file(json_dict, path):
     with open(path, 'w') as f:
         f.write(json.dumps(json_dict, indent=4))
 
+def recompute_graphs(config):
+    hgraph_type = config['hgraph_type']
+    variant = config['variant']
+    weight_type = config['weight_type']
+    s = int(config['s'])
+    if hgraph_type == "collapsed_version":
+        f_hgraph = ""
+    elif hgraph_type == "original_version":
+        f_hgraph = "_original"
+    # 1. load hgraph
+    with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
+        hgraph = json.load(f)
+    hgraph = hnx.Hypergraph(hgraph)
+    lgraph = convert_to_line_graph(hgraph.incidence_dict, s=s)
+    dual_lgraph = compute_dual_line_graph(hgraph, s=s)
+    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+
+    barcode_is = compute_barcode(lgraph)
+    dual_barcode_is = compute_barcode(dual_lgraph)
+
+    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index") # ji: weight = 1/jaccard_index
+    dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
+
+    write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph"+f_hgraph+".json"))
+    write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph"+f_hgraph+".json"))
+
+    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is"+f_hgraph+".json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is"+f_hgraph+".json"))
+    write_json_file(barcode_ji, path.join(APP_STATIC,"uploads/current_barcode_ji"+f_hgraph+".json"))
+    write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji"+f_hgraph+".json"))
+    if variant == "Dual Line Graph":
+        lgraph = dual_lgraph
+    if weight_type == "intersection_size":
+        barcode = barcode_is
+    elif weight_type == "jaccard_index":
+        barcode = barcode_ji
+    assign_hgraph_singletons(hgraph, lgraph['singletons'])
+
+    return hgraph, lgraph, barcode
+
 @app.route('/')
 @app.route('/Hypergraph-Vis-app')
 def index():
@@ -221,6 +261,7 @@ def import_file():
     for f in os.listdir(path.join(APP_STATIC, "uploads/")):
         if f.startswith('current'):
             os.remove(path.join(APP_STATIC, "uploads", f))
+    
     jsdata = request.get_data().decode('utf-8')
     if jsdata == "hypergraph_samples":
         with open(path.join(APP_STATIC, "uploads/DNS_hypergraph_samples_new.txt"), 'r') as f:
@@ -234,98 +275,84 @@ def import_file():
 
     lgraph = convert_to_line_graph(chgraph.incidence_dict)
     dual_lgraph = compute_dual_line_graph(chgraph)
+
     hgraph_dict = {hkey:list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
     chgraph_dict = {hkey:list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
     write_json_file(hgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph_original.json"))
     write_json_file(chgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph.json"))
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
-    barcode = compute_barcode(lgraph)
-    dual_barcode = compute_barcode(dual_lgraph)
+    
+    barcode_is = compute_barcode(lgraph) # is: weight = 1/intersection_size
+    dual_barcode_is = compute_barcode(dual_lgraph)
+
+    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index") # ji: weight = 1/jaccard_index
+    dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
 
     assign_hgraph_singletons(chgraph, lgraph['singletons'])
 
     write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
     write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
-    write_json_file(barcode, path.join(APP_STATIC,"uploads/current_barcode.json"))
-    write_json_file(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode.json"))
+    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is.json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is.json"))
+    write_json_file(barcode_ji, path.join(APP_STATIC,"uploads/current_barcode_ji.json"))
+    write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji.json"))
     write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
     write_json_file(id_map, path.join(APP_STATIC,"uploads/current_id_map.json"))
 
-    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id_map=id_map)
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, id_map=id_map)
 
 @app.route('/change_hgraph_type', methods=['POST', 'GET'])
 def change_hgraph_type():
+    hgraph_type = request.get_data().decode('utf-8')
+    config = {'hgraph_type': hgraph_type, 'variant': 'Original Line Graph', 'weight_type':'intersection_size', 's':'1'}
+    hgraph, lgraph, barcode = recompute_graphs(config)
+    with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
+        label_map = json.load(f)
+    with open(path.join(APP_STATIC,"uploads/current_id_map.json")) as f:
+        id_map = json.load(f)
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id_map=id_map)
+
+@app.route('/change_s_value', methods=['POST', 'GET'])
+def recompute():
+    """
+    Given an s value, recompute the line graph and the barcode.
+    """
+    jsdata = json.loads(request.get_data())
+    hgraph, lgraph, barcode = recompute_graphs(jsdata)
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
+
+@app.route('/reload_graphs', methods=['POST', 'GET'])
+def reload_graphs():
+    """
+    Reload graphs and barcode according to the current configuration
+    """
     jsdata = json.loads(request.get_data())
     hgraph_type = jsdata['hgraph_type']
     variant = jsdata['variant']
-    if variant == "Original Line Graph":
-        filename = ""
-    elif variant == "Dual Line Graph":
-        filename = "_dual"
-    if hgraph_type == "collapsed_version":
-        # all data has been saved: hgraph, lgraph, dual_lgraph, barcode, dual_barcode
-        with open(path.join(APP_STATIC,"uploads/current_hypergraph.json")) as f:
-            hgraph = json.load(f)
-        with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph.json")) as f:
-            lgraph = json.load(f)
-        with open(path.join(APP_STATIC,"uploads/current"+filename+"_barcode.json")) as f:
-            barcode = json.load(f)
-        hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
-        assign_hgraph_singletons(hgraph, lgraph['singletons'])
-        return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
-
-    elif hgraph_type == "original_version":
-        # check if lgraph, dual_lgraph, etc have been saved before
-        if path.exists(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph_original.json")):
-            with open(path.join(APP_STATIC,"uploads/current_hypergraph_original.json")) as f:
-                hgraph = json.load(f)
-            with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph_original.json")) as f:
-                lgraph = json.load(f)
-            with open(path.join(APP_STATIC,"uploads/current"+filename+"_barcode_original.json")) as f:
-                barcode = json.load(f)
-            hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
-            assign_hgraph_singletons(hgraph, lgraph['singletons'])
-            return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
-        else:
-            with open(path.join(APP_STATIC,"uploads/current_hypergraph_original.json")) as f:
-                hgraph = json.load(f)
-            hgraph = hnx.Hypergraph(hgraph)
-            lgraph = convert_to_line_graph(hgraph.incidence_dict)
-            dual_lgraph = compute_dual_line_graph(hgraph)
-            hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
-            barcode = compute_barcode(lgraph)
-            dual_barcode = compute_barcode(dual_lgraph)
-            write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph_original.json"))
-            write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph_original.json"))
-            write_json_file(barcode, path.join(APP_STATIC,"uploads/current_barcode_original.json"))
-            write_json_file(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode_original.json"))
-        
-            if variant == "Original Line Graph":
-                assign_hgraph_singletons(hgraph, lgraph['singletons'])
-                return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
-            else:
-                assign_hgraph_singletons(hgraph, dual_lgraph['singletons'])
-                return jsonify(hyper_data=hgraph, line_data=dual_lgraph, barcode_data=dual_barcode)
-
-@app.route('/change_weight_type', methods=['POST', 'GET'])
-def change_weight_type():
-    jsdata = json.loads(request.get_data())
     weight_type = jsdata['weight_type']
-    variant = jsdata['variant']
+    if hgraph_type == "collapsed_version":
+        f_hgraph = ""
+    elif hgraph_type == "original_version":
+        f_hgraph = "_original"
     if variant == "Original Line Graph":
-        filename = ""
+        f_variant = ""
     elif variant == "Dual Line Graph":
-        filename = "_dual"
-    with open(path.join(APP_STATIC,"uploads/current_hypergraph.json")) as f:
+        f_variant = "_dual"
+    if weight_type == "intersection_size":
+        f_weight = "_is"
+    elif weight_type == "jaccard_index":
+        f_weight = "_ji"
+    with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
         hgraph = json.load(f)
-    hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
-    with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph.json")) as f:
+    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_linegraph"+f_hgraph+".json")) as f:
         lgraph = json.load(f)
-    barcode = compute_barcode(lgraph, weight_col=weight_type)
+    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_barcode"+f_weight+f_hgraph+".json")) as f:
+        barcode = json.load(f)
+    hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
+    assign_hgraph_singletons(hgraph, lgraph['singletons'])
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
     
-
 @app.route('/expanded_hgraph', methods=['POST', 'GET'])
 def compute_expanded_hgraph():
     jsdata = json.loads(request.get_data())
@@ -381,48 +408,5 @@ def compute_simplified_hgraph():
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     return jsonify(hyper_data=hgraph)
 
-@app.route('/switch_line_variant', methods=['POST', 'GET'])
-def switch_line_variant():
-    variant = request.get_data().decode('utf-8')
-    if variant == "Original Line Graph":
-        filename = ""
-    elif variant == "Dual Line Graph":
-        filename = "_dual"
-    with open(path.join(APP_STATIC,"uploads/current"+filename+"_linegraph.json")) as f:
-        lgraph = json.load(f)
-    with open(path.join(APP_STATIC,"uploads/current"+filename+"_barcode.json")) as f:
-        barcode = json.load(f)
-    with open(path.join(APP_STATIC,"uploads/current_hypergraph.json")) as f:
-        hgraph = json.load(f)
-    hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
-    assign_hgraph_singletons(hgraph, lgraph['singletons'])
-    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
 
-@app.route('/change_s_value', methods=['POST', 'GET'])
-def recompute():
-    """
-    Given an s value, recompute the line graph and the barcode.
-    """
-    jsdata = json.loads(request.get_data())
-    s = int(jsdata['s'])
-    variant = jsdata['variant']
-    with open(path.join(APP_STATIC, "uploads/current_hypergraph.json"), 'r') as f:
-        hgraph_dict = json.load(f)
-    hgraph = hnx.Hypergraph(hgraph_dict)
-    lgraph = convert_to_line_graph(hgraph.incidence_dict, s=s)
-    dual_lgraph = compute_dual_line_graph(hgraph, s=s)
-    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
-    barcode = compute_barcode(lgraph)
-    dual_barcode = compute_barcode(dual_lgraph)
-    # print(dual_lgraph['singletons'])
 
-    write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
-    write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
-    write_json_file(barcode, path.join(APP_STATIC,"uploads/current_barcode.json"))
-    write_json_file(dual_barcode, path.join(APP_STATIC,"uploads/current_dual_barcode.json"))
-    if variant == "Original Line Graph":
-        assign_hgraph_singletons(hgraph, lgraph['singletons'])
-        return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
-    else:
-        assign_hgraph_singletons(hgraph, dual_lgraph['singletons'])
-        return jsonify(hyper_data=hgraph, line_data=dual_lgraph, barcode_data=dual_barcode)
