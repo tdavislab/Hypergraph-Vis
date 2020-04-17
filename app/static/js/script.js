@@ -28,7 +28,7 @@ d3.select("#hgraph-type-form")
             data: String(hgraph_type),
             dataType:'text',
             success: function (response) {
-                init(JSON.parse(response), hgraph_type = "original_version");
+                init(JSON.parse(response), hgraph_type = hgraph_type);
             },
             error: function (error) {
                 console.log("error",error);
@@ -45,10 +45,13 @@ function init(data, hgraph_type = "collapsed_version") {
     let color_dict = assign_hyperedge_colors(data);
     let labels = data.labels;
     let id_map = data.id_map;
+    console.log("labels", labels)
+    console.log("id_map", id_map)
+    assign_hyperedge_labels(data.hyper_data, labels, id_map, config.hgraph_type);
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
     console.log(hyperedges2vertices)
-    let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, labels);
+    let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, labels, config.variant);
 
     change_visual_encoding();
     
@@ -56,7 +59,19 @@ function init(data, hgraph_type = "collapsed_version") {
     d3.select("#weight-type-form")
         .on("change", ()=>{
             config.weight_type = d3.select('input[name="weight-type"]:checked').node().value;
-            reload_graphs();
+            $.ajax({
+                type: "POST",
+                url: "/reload_graphs",
+                data: JSON.stringify(config),
+                dataType:'text',
+                success: function (response) {
+                    let data_new = JSON.parse(response);
+                    reload_graphs(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
+                },
+                error: function (error) {
+                    console.log("error",error);
+                }
+            });
             
         })
 
@@ -76,7 +91,7 @@ function init(data, hgraph_type = "collapsed_version") {
                 dataType:'text',
                 success: function (response) {
                     let data_new = JSON.parse(response);
-                    switch_line_variant(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
+                    reload_graphs(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
                 },
                 error: function (error) {
                     console.log("error",error);
@@ -88,10 +103,6 @@ function init(data, hgraph_type = "collapsed_version") {
     let line_variant_dropdown = document.getElementById("line_graph_variants");
     line_variant_dropdown.onchange = function(){
         config.variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
-        reload_graphs();
-    }
-
-    function reload_graphs() {
         $.ajax({
             type: "POST",
             url: "/reload_graphs",
@@ -99,31 +110,14 @@ function init(data, hgraph_type = "collapsed_version") {
             dataType:'text',
             success: function (response) {
                 let data_new = JSON.parse(response);
-                if(config.variant === "Original Line Graph"){
-                    data_new.line_data.nodes.forEach(node=>{
-                        let c = color_dict[node.id];
-                        node.color = c;
-                    })
-                } 
-                data_new.hyper_data.nodes.forEach(node=>{
-                    let c = color_dict[node.id];
-                    node.color = c;
-                })
-                hyperedges2vertices = Object.assign({}, ...data_new.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
-                [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data_new.hyper_data, data_new.line_data, data_new.barcode_data, labels);
-                d3.select("#barcode-slider")
-                    .call(d3.drag()
-                            .on("start", dragstarted)
-                            .on("drag", dragged)
-                            .on("end", dragended));
-                d3.selectAll(".barcode-rect-dim0")
-                    .on("click", d=>click_bar(d));
+                reload_graphs(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
             },
             error: function (error) {
                 console.log("error",error);
             }
         });
     }
+
 
     d3.selectAll(".barcode-rect-dim0")
         .on("click", d=>click_bar(d));
@@ -160,7 +154,7 @@ function init(data, hgraph_type = "collapsed_version") {
                         barcode.cc_dict = response.cc_dict;
                         $('#simplified-hypergraph-svg').remove();
                         $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-                        simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", labels, hypergraph); 
+                        simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph); 
                     },
                     error: function (error) {
                         console.log("error",error);
@@ -198,29 +192,20 @@ function init(data, hgraph_type = "collapsed_version") {
         $.ajax({
             type: "POST",
             url: "/simplified_hgraph",
-            data: JSON.stringify({'cc_dict':cc_dict, 'variant':variant}),
+            data: JSON.stringify({'cc_dict':cc_dict, 'variant':config.variant}),
             dataType:'text',
             success: function (response) {
                 let hgraph = JSON.parse(response).hyper_data;
-                let hgraph_labels = {};
-                // assign colors and labels
+                // assign colors
                 hgraph.nodes.forEach(n=>{
                     if(n.bipartite === 1){
                         n.color = color_dict[n.id.split("|")[0]]
                     }
-                    if(labels[n.id]){
-                        hgraph_labels[n.id] = labels[n.id];
-                    } else {
-                        id_list = n.id.split("|");
-                        id_list.pop();
-                        hgraph_labels[n.id] = ""
-                        id_list.forEach(id=>{ hgraph_labels[n.id] += labels[id]+"|"; })
-                    }
                 })
-                hgraph.labels = hgraph_labels;
+                assign_hyperedge_labels(hgraph, labels, id_map, config.hgraph_type);
                 $('#simplified-hypergraph-svg').remove();
                 $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
-                simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hgraph_labels, hypergraph); 
+                simplified_hypergraph = new Hypergraph(hgraph, "simplified-hypergraph", hypergraph); 
             },
             error: function (error) {
                 console.log("error",error);
@@ -228,15 +213,39 @@ function init(data, hgraph_type = "collapsed_version") {
         });
     }
 
+    function reload_graphs(line_data, hyper_data, barcode_data, variant){
+        // if(variant === "Original Line Graph"){
+            line_data.nodes.forEach(node=>{
+                let c = color_dict[node.id];
+                node.color = c;
+            })
+        // } 
+        console.log(color_dict)
+        hyper_data.nodes.forEach(node=>{
+            let c = color_dict[node.id];
+            console.log(node.id, c)
+            node.color = c;
+        })
+        hyperedges2vertices = Object.assign({}, ...line_data.nodes.map((x) => ({[x.id]: x.vertices})));
+        [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(hyper_data, line_data, barcode_data, labels, variant);
+        d3.select("#barcode-slider")
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+        d3.selectAll(".barcode-rect-dim0")
+            .on("click", d=>click_bar(d));
+    }
+
 }
 
-function initialize_graphs(hyper_data, line_data, barcode_data, labels) {
+function initialize_graphs(hyper_data, line_data, barcode_data, labels, variant) {
     clear_canvas();
 
-    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph", labels); 
-    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph");
-    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", labels, hypergraph);
-    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph");
+    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph"); 
+    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph", variant=variant);
+    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", hypergraph);
+    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", variant=variant);
     let barcode = new Barcode(barcode_data, simplified_linegraph);
     return [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode];
 }
@@ -260,17 +269,60 @@ function assign_hyperedge_colors(data){
     let color_dict = {};
     let colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(data.hyper_data.nodes.map(d => d.id));
     data.hyper_data.nodes.forEach(node=>{
-        if(node.bipartite === 1){
+        // if(node.bipartite === 1){
             let c = colorScale(node.id)
             node.color = c;
             color_dict[node.id] = c;
-        }
+        // }
     })
     data.line_data.nodes.forEach(node=>{
         let c = color_dict[node.id];
         node.color = c;
     })
     return color_dict;
+}
+
+function assign_hyperedge_labels(hyper_data, label_map, id_map, hgraph_type) {
+    console.log("assign labels")
+    console.log(hgraph_type)
+    if(hgraph_type === "collapsed_version") {
+        hyper_data.nodes.forEach(node=>{
+            //  **** need to assign id for both hyper-edges and vertices ****
+            let label = "";
+            let cn_list = node.id.split("|");
+            if(cn_list.length > 1){ cn_list.pop(); }
+            if(node.bipartite === 1){
+                cn_list.forEach(cn=>{
+                    let n_list = id_map.hedges[cn];
+                    n_list.forEach(n=>{
+                        label += label_map[n] + "|";
+                    })
+                })
+            } else{
+                cn_list.forEach(cn=>{
+                    let n_list = id_map.vertices[cn];
+                    n_list.forEach(n=>{
+                        label += label_map[n] + "|";
+                    })
+                })
+            }
+            label = label.substring(0, label.length - 1);
+            node.label = label;     
+            console.log(label)       
+        })
+    } else if(hgraph_type === "original_version") {
+        hyper_data.nodes.forEach(node=>{
+            let label = "";
+            let n_list = node.id.split("|");
+            if(n_list.length > 1){ n_list.pop(); }
+            n_list.forEach(n=>{
+                label += label_map[n] + "|";
+            })
+            label = label.substring(0, label.length - 1);
+            node.label = label;
+        })
+    }
+    
 }
 
 function copy_hyper_data(hyper_data){
@@ -281,6 +333,7 @@ function copy_hyper_data(hyper_data){
         node_new.bipartite = n.bipartite;
         node_new.id = n.id;
         node_new.color = n.color;
+        node_new.label = n.label;
         node_new.if_singleton = n.if_singleton;
         hyper_nodes_new.push(node_new);
     })

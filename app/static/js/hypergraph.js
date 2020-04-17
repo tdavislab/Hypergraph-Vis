@@ -1,13 +1,11 @@
 class Hypergraph{
-    constructor(hyper_data, svg_id, labels, original_hgraph=undefined){
+    constructor(hyper_data, svg_id, original_hgraph=undefined){
         this.nodes = hyper_data.nodes;
         this.links = hyper_data.links;
         this.svg_id = svg_id;
         this.original_hgraph = original_hgraph;
-        this.labels = labels;
 
         console.log(this.links, this.nodes)
-        console.log("labels", this.labels)
 
         this.nodes_dict = {};
         this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
@@ -81,11 +79,8 @@ class Hypergraph{
             .attr("dx", 12)
             .attr("dy", "0.35em")
             .attr("class", "node-label")
-            .text(d => {
-                    if(this.labels){
-                        return this.labels[d.id];
-                    }
-                })
+            .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
+            .text(d => d.label);
 
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
@@ -116,7 +111,7 @@ class Hypergraph{
         
         hulls.enter()
             .insert("path")
-            // .attr("fill", d=> this.nodes_dict[d.key].color )
+            .attr("fill", d=> this.nodes_dict[d.key].color )
             .attr("stroke", d => this.nodes_dict[d.key].color)
             .attr("d", d => this.groupPath(d.value))
             .attr("id", d => this.svg_id+"-hull-"+d.key.replace(/[|]/g,""))
@@ -134,10 +129,9 @@ class Hypergraph{
             .on("mouseover", d => {
                 if(!this.click_id && this.original_hgraph){
                     d3.select("#"+this.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).classed("highlighted", true);
-                    let cc = this.labels[d.key].split("|")
-                    if(cc.length > 1){ cc.pop(); }
+                    let label_list = this.nodes_dict[d.key].label.split("|")
                     let div_text = '';
-                    cc.forEach(nId=>{ div_text += nId+"<br> "; })
+                    label_list.forEach(label=>{ div_text += label+"<br> "; })
                     let div = d3.select("#help-tip")
                     div.transition().duration(200).style("opacity", 0.9);	
                     div.html("<h6>Selected Hyperedges</h6>"+div_text);
@@ -157,8 +151,10 @@ class Hypergraph{
                         if(he_list.length > 1){ he_list.pop(); }
                         d3.select("#"+this.original_hgraph.svg_id+"-svg").selectAll("path").classed("faded", true);
                         d3.select("#"+this.original_hgraph.svg_id+"-svg").selectAll("circle").classed("faded", true);
+                        d3.select("#"+this.original_hgraph.svg_id+"-svg").selectAll("text").classed("faded", true);
                         d3.select("#"+this.svg_id+"-svg").selectAll("path").classed("faded", true);
                         d3.select("#"+this.svg_id+"-svg").selectAll("circle").classed("faded", true);
+                        d3.select("#"+this.svg_id+"-svg").selectAll("text").classed("faded", true);
                         d3.select("#linegraph-svg").selectAll("circle").classed("faded", true);
                         d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", true);
                         d3.select("#linegraph-svg").selectAll("line").classed("faded", true);
@@ -166,6 +162,7 @@ class Hypergraph{
                         he_list.forEach(he=>{
                             d3.select("#"+this.original_hgraph.svg_id+"-hull-"+he).classed("faded", false);
                             d3.select("#"+this.original_hgraph.svg_id+"-node-"+he).classed("faded", false);
+                            d3.select("#"+this.original_hgraph.svg_id+"-text-"+he).classed("faded", false);
                             this.original_hgraph.links.forEach(link=>{
                                 if(link.source.id === he){
                                     d3.select("#"+this.original_hgraph.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).classed("faded", false);
@@ -185,6 +182,7 @@ class Hypergraph{
                         d3.select("#"+this.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).classed("faded", false);
                         d3.select("#"+this.svg_id+"-hull-"+d.key.replace(/[|]/g,"")).classed("highlighted", false);
                         d3.select("#"+this.svg_id+"-node-"+d.key.replace(/[|]/g,"")).classed("faded", false);
+                        d3.select("#"+this.svg_id+"-text-"+d.key.replace(/[|]/g,"")).classed("faded", false);
                         this.links.forEach(link=>{
                             if(link.source.id === d.key){
                                 d3.select("#"+this.svg_id+"-node-"+link.target.id.replace(/[|]/g,"")).classed("faded", false);
@@ -245,9 +243,11 @@ class Hypergraph{
         if(this.original_hgraph){
             d3.select("#"+this.original_hgraph.svg_id+"-svg").selectAll("path").classed("faded", false);
             d3.select("#"+this.original_hgraph.svg_id+"-svg").selectAll("circle").classed("faded", false);
+            d3.select("#"+this.original_hgraph.svg_id+"-svg").selectAll("text").classed("faded", false);
         }
         d3.select("#"+this.svg_id+"-svg").selectAll("path").classed("faded", false);
         d3.select("#"+this.svg_id+"-svg").selectAll("circle").classed("faded", false);
+        d3.select("#"+this.svg_id+"-svg").selectAll("text").classed("faded", false);
     }
 
     toggle_hgraph_labels(){

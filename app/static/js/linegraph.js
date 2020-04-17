@@ -1,9 +1,10 @@
 class Linegraph{
-    constructor(line_data, simplified_hypergraph, svg_id){
+    constructor(line_data, simplified_hypergraph, svg_id, variant="Original Line Graph"){
         this.nodes = [...line_data.nodes];
         this.links = [...line_data.links];
         this.simplified_hypergraph = simplified_hypergraph;
-        this.svg_id = svg_id
+        this.svg_id = svg_id;
+        this.variant = variant;
         console.log(this.nodes, this.links)
 
         this.nodes_dict = {};
@@ -65,7 +66,20 @@ class Linegraph{
         ng = ng.enter().append("g").merge(ng);
         ng.append("circle")
             .attr("r", node_radius)
-            .attr("fill", d => d.color)
+            .attr("fill", d => {
+                if(this.variant === "Original Line Graph"){
+                    return d.color;
+                } else if (this.variant === "Dual Line Graph"){
+                    return "whitesmoke";
+                }
+            })
+            .attr("stroke", d => {
+                if(this.variant === "Original Line Graph"){
+                    return "whitesmoke";
+                } else if (this.variant === "Dual Line Graph"){
+                    return d.color;
+                }
+            })
             .attr("id", d => this.svg_id+"-node-"+d.id)
             .attr("class", "line_node")
             .attr("cx", d=>d.x)

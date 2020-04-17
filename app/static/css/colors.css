@@ -35,7 +35,7 @@ h4 {
 }
 
 .line_node {
-    stroke: whitesmoke;
+    /* stroke: whitesmoke; */
     stroke-width: 4px;
 }
 
@@ -61,6 +61,10 @@ h4 {
     opacity: 1px;
 }
 
+text.faded {
+    opacity: 0.1;
+}
+
 circle.faded {
     opacity: 0.1;
 }
@@ -80,7 +84,7 @@ circle.grey_out {
 
 .convex_hull {
     opacity: 0.5;
-    stroke-width: 40;
+    stroke-width: 40px;
     stroke-linejoin: round;
 }
 
