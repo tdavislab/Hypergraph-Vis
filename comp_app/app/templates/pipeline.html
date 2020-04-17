@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Hypergraph Visualizations</title>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="../static/css/base.css">
 </head>
@@ -15,6 +17,12 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark text-light">
     <a class="navbar-brand" href="#">Hypergraph Visualization</a>
 </nav>
+
+<form id="import-form" action="/dataset" method="POST" enctype="multipart/form-data" style="display: none">
+    <input type="file" id="dataset" name="file">
+    <input type="submit" id="'dataset-submit">
+</form>
+
 <div class="container-fluid wrapper h-100">
     <div class="row h-100">
         <div id="toolbar" class="col-md-2 bg-light sidebar overflow-auto pt-3">

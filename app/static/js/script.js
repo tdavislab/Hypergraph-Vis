@@ -52,6 +52,7 @@ function read_hgraph_text(text_data){
         dataType:'text',
         success: function (response) {
             let data = process_response(response);
+            console.log(data);
             initialize_data(data);
         },
         error: function (error) {

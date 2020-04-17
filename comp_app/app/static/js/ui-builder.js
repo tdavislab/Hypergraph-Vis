@@ -1,3 +1,5 @@
+const dataset_id = 'input_data_holder'
+
 const graphDimensions = {
     width: 100,
     height: 50
@@ -13,14 +15,6 @@ function toggleClass(element, classname) {
     element.classed(classname, !element.classed(classname));
 }
 
-function detectCollision(player, obstacles) {
-    /**
-     * Detect collsion between player rectangle and obstacle list of rectangles, all rectangle should be of type
-     * DOMRect (output of `getBoundingClientRect()`)
-     */
-
-}
-
 function create_data_node(parent, id, title, content) {
     /**
      * Create a data-node from given parent css-accessor string, with a given title and content
@@ -28,7 +22,7 @@ function create_data_node(parent, id, title, content) {
     let container = d3.select(parent);
     let data_node = container.append('div')
         .attr('id', id)
-        .attr('class', 'draggable card w-25 h-25');
+        .attr('class', 'draggable card w-25');
 
     let header = data_node.append('div')
         .attr('class', 'card-header');
@@ -48,7 +42,7 @@ function create_data_node(parent, id, title, content) {
 
     jq_element.draggable({
         containment: 'parent', stack: '.draggable',
-        snap: '.draggable', snapMode: 'outer',
+        // snap: '.draggable', snapMode: 'outer',
         grid: [20, 20],
         start: () => {
             jq_element.addClass('selected');
@@ -64,134 +58,73 @@ function create_data_node(parent, id, title, content) {
         grid: [20, 20],
         start: () => {
             data_node.classed('w-25', false);
-            data_node.classed('h-25', false);
         }
     });
 
     d3.select('#' + id).on('click', d => {
-        console.log(d3.select(d3.event.target));
         toggleClass(d3.select('#' + id), 'selected');
     });
 
-    let svg = d3.select('#' + id).append('svg')
-        .attr("id", id + "-hypergraph-svg")
-        .attr("width", "100%")
-        // .attr("height", graphDimensions.height)
-        .attr('viewBox', '0 0 600 500');
+    // let svg = d3.select('#' + id).append('svg')
+    //     .attr("id", id + "-hypergraph-svg")
+    //     .attr("width", "100%")
+    //     .attr('viewBox', '0 0 600 500');
+    //
+    // d3.json("../static/uploads/hypergraph.json").then(data => force_graph(svg, data, true));
 
-    d3.json("../static/uploads/hypergraph.json").then(data => force_graph(svg, data, true));
     import_dataset_btn(d3.select('#' + id));
 }
 
-function draw_hypergraph(selector, data) {
-
-}
-
 function import_dataset_btn(parent) {
-    let btn_id = parent.id + '-import-btn'
-    parent.append('button')
-        .classed('btn btn-primary', true)
-        .html('Import dataset');
+    // let btn_id = parent.id + '-import-btn'
+    // console.log(parent);
+    parent.append('div')
+        .classed('card-footer bg-transparent', true)
+        .append('input')
+        .attr('id', 'import')
+        .attr('type', 'button')
+        .attr('form', 'import-form')
+        .attr('value', 'Import dataset')
+        .classed('w-100 btn btn-primary', true)
+        .on('click', () => {
+            $('#dataset').click();
+        });
 }
 
-d3.select('#node-input').on('click', d => create_data_node('#interface', 'test1_' + getRandomInt(), 'Input', ''));
+$('#import-form').change(function (event) {
+    // Can only send FormData object, so create an empty one
+    let files = new FormData();
+    // Add the file object to the FormData object created above
+    files.append('file', $('#dataset')[0].files[0]);
+
+    // Create an AJAX query to the backend
+    // Query reads the CSV file and return JSON node-link data for drawing the hypergraph
+    $.ajax({
+        type: 'POST',
+        url: '/dataset',
+        data: files,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            // On success draw the hypergraph
+            // console.log(event);
+            // console.log(response);
+            console.log(response);
+            d3.select('#' + dataset_id).select('svg').remove();
+            let svg = d3.select('#' + dataset_id).insert('svg', '.card-footer')
+                .attr("id", dataset_id + "-hypergraph-svg")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr('viewBox', '0 0 600 500');
+
+            force_graph(svg, response.data, true);
+        }
+    });
+});
+
+d3.select('#node-input').on('click', d => create_data_node('#interface', dataset_id, 'Input', ''));
 d3.select('#node-linegraph').on('click', d => create_data_node('#interface', 'test2_' + getRandomInt(), 'Line Graph', 'Content for line graph node type'));
 d3.select('#node-dualgraph').on('click', d => create_data_node('#interface', 'test3_' + getRandomInt(), 'Dual Graph', 'Content for dual graph node type'));
-
-//
-// function draw_linegraph(data) {
-//     // Create a SVG in linegraph div
-//     const svg = d3.select("#linegraph").append("svg")
-//         .attr("id", "linegraph-svg")
-//         .attr("width", graphDimensions.width)
-//         .attr("height", graphDimensions.height)
-//         .call(responsivefy);
-//
-//     let linegraph_simulation = force_graph(svg, data, false);
-// }
-//
-// function draw_barcode(data) {
-//     // Create a SVG for the barcode
-//     const svg = d3.select("#barcode")
-//         .append("svg")
-//         .attr("id", "barcode-svg")
-//         .attr("height", "500")
-//         .call(responsivefy);
-//
-//     bar_chart(svg, data.barcode)
-// // }
-//
-// function bar_chart(barcode_svg, data) {
-//     let barcode_width = 25;
-//     let slider_width = 10;
-//     let barcode_yoffset = 15;
-//     let barcode_xoffset = 0;
-//
-//
-//     let container = d3.select(barcode_svg.node().parentNode),
-//         width = parseInt(barcode_svg.style("width")),
-//         height = parseInt(barcode_svg.style("height"));
-//
-//     // Create the SVG element that contains the persistence barcode. The barcode is created using rect elements
-//     let barcode_rects = barcode_svg.selectAll("rect");
-//
-//     // Create the scale for length, y-coordinate of barcodes
-//     let x_min = 0;
-//     let x_max = width - 5;
-//     let rect_xscale = d3.scaleLinear().domain([0, d3.max(data.map(d => d.death))]).range([x_min, x_max]).nice();
-//
-//     // Bind data to create the barcodes
-//     barcode_rects.data(data)
-//         .enter()
-//         .append("rect")
-//         .attr("width", d => barcode_xoffset + rect_xscale(d.death - d.birth))
-//         .attr("height", barcode_width * 0.90)
-//         .attr("x", d => rect_xscale(d.birth))
-//         .attr("y", (d, i) => barcode_yoffset + barcode_width * i)
-//         .attr("fill", "#1f77b4")
-//         .classed("hover-darken", true);
-//
-//     barcode_rects.exit().remove();
-//
-//     let x_axis = d3.axisBottom()
-//         .scale(rect_xscale);
-//
-//     //Append group and insert axis
-//     // barcode_svg.append("g")
-//     //     .classed("barcode-axis", true)
-//     // .call(x_axis);
-//
-//     let slider = barcode_svg.selectAll("rect.slider")
-//         .data([1])
-//         .enter()
-//         .append("rect")
-//         .attr("width", slider_width)
-//         .attr("height", barcode_width * data.length)
-//         .attr("x", 20)
-//         .attr("y", 5)
-//         .attr("class", "slider hover-darken");
-//
-//     let drag = d3.drag()
-//         .on("drag", dragged);
-//     // .on("start", dragstarted)
-//     // .on("end", dragended);
-//
-//     slider.call(drag);
-//
-//     function dragged(d) {
-//         d3.select(this).attr("x", d.x = clamp(d3.event.x, 0, width));
-//         // let destination_position = d3.event.x - d3.select(this).attr("width") / 2;
-//         // d3.select(this).attr("x", clamp(destination_position, 5, 90));
-//     }
-//
-//     function dragstarted(d) {
-//         d3.select(this).raise();
-//     }
-//
-//     function dragended(d) {
-//         d3.select(this).attr("stroke", null);
-//     }
-// }
 
 function groupPath(vertices) {
     if (vertices.length <= 2) {
@@ -204,7 +137,6 @@ function groupPath(vertices) {
 
 function force_graph(svg, graph_data, hyperedges) {
     let id_suffix = svg.attr("id") + "-";
-    console.log(id_suffix);
 
     // Force directed graph
     const links = graph_data.links.map(d => Object.create(d));
@@ -213,17 +145,17 @@ function force_graph(svg, graph_data, hyperedges) {
     const color = d3.scaleOrdinal(d3.schemeCategory10);
     let groups = [];
 
-    for (let i = 0; i < links.length; i++) {
-        if (i % 2 === 0) {
-            links[i].distance = 50;
-        } else {
-            links[i].distance = 50;
-        }
-    }
+    // for (let i = 0; i < links.length; i++) {
+    //     if (i % 2 === 0) {
+    //         links[i].distance = 100;
+    //     } else {
+    //         links[i].distance = 100;
+    //     }
+    // }
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).distance(d => d.distance).id(d => d.id))
-        // .force("link", d3.forceLink(links).id(d => d.id))
+        // .force("link", d3.forceLink(links).distance(d => d.distance).id(d => d.id))
+        .force("link", d3.forceLink(links).id(d => d.id))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(500 / 2, 400 / 2));
 
