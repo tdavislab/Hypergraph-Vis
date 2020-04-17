@@ -15,28 +15,20 @@ function toggleClass(element, classname) {
     element.classed(classname, !element.classed(classname));
 }
 
-function create_data_node(parent, id, title, content) {
-    /**
-     * Create a data-node from given parent css-accessor string, with a given title and content
-     */
-    let container = d3.select(parent);
-    let data_node = container.append('div')
-        .attr('id', id)
-        .attr('class', 'draggable card w-25');
-
-    let header = data_node.append('div')
+function build_node_layout(div_selector, id, title, content) {
+    let header = div_selector.append('div')
         .attr('class', 'card-header');
 
     header.append('div')
         .attr('class', 'w-75 d-inline')
         .html(title);
 
-    // header.append('div')
-    //     .attr('class', 'w-25 d-inline fa fa-plus-square');
-
-    // data_node.append("div")
-    //     .attr("class", "card-body")
-    //     .html(content);
+    header.append('div')
+        .attr('id', id + '-close-btn')
+        .attr('class', 'clickable float-right d-inline fa fa-window-close')
+        .on('click', function () {
+            div_selector.remove();
+        });
 
     let jq_element = $('#' + id);
 
@@ -57,14 +49,70 @@ function create_data_node(parent, id, title, content) {
         minWidth: 50,
         grid: [20, 20],
         start: () => {
-            data_node.classed('w-25', false);
+            div_selector.classed('w-25', false);
         }
     });
 
     d3.select('#' + id).on('click', d => {
-        toggleClass(d3.select('#' + id), 'selected');
+        // Do not toggle when clicking on the close button
+        if (d3.event.target.id !== id + '-close-btn') {
+            toggleClass(d3.select('#' + id), 'selected');
+        }
     });
+}
 
+function create_data_node(parent, id, title, content) {
+    /**
+     * Create a data-node from given parent css-accessor string, with a given title and content
+     */
+
+    let container = d3.select(parent);
+    let data_node = container.append('div')
+        .attr('id', id)
+        .attr('class', 'draggable card w-25');
+
+    build_node_layout(data_node, id, title, content);
+    // make_dragresizeable(id);
+    // let header = data_node.append('div')
+    //     .attr('class', 'card-header');
+    //
+    // header.append('div')
+    //     .attr('class', 'w-75 d-inline')
+    //     .html(title);
+    //
+    // header.append('div')
+    //     .attr('id', id + '-close-btn')
+    //     .attr('class', 'clickable float-right d-inline fa fa-window-close')
+    //     .on('click', function () {
+    //         data_node.remove();
+    //     });
+    //
+    // data_node.append("div")
+    //     .attr("class", "card-body")
+    //     .html(content);
+    //
+    // let jq_element = $('#' + id);
+    //
+    // jq_element.draggable({
+    //     containment: 'parent', stack: '.draggable',
+    //     // snap: '.draggable', snapMode: 'outer',
+    //     grid: [20, 20],
+    //     start: () => {
+    //         jq_element.addClass('selected');
+    //     },
+    //     stop: () => {
+    //         jq_element.removeClass('selected');
+    //     }
+    // });
+    //
+    // jq_element.resizable({
+    //     helper: 'resize-transition',
+    //     minWidth: 50,
+    //     grid: [20, 20],
+    //     start: () => {
+    //         data_node.classed('w-25', false);
+    //     }
+    // });
     // let svg = d3.select('#' + id).append('svg')
     //     .attr("id", id + "-hypergraph-svg")
     //     .attr("width", "100%")
@@ -72,7 +120,41 @@ function create_data_node(parent, id, title, content) {
     //
     // d3.json("../static/uploads/hypergraph.json").then(data => force_graph(svg, data, true));
 
-    import_dataset_btn(d3.select('#' + id));
+    if (id === dataset_id) {
+        import_dataset_btn(d3.select('#' + id));
+    }
+}
+
+function create_line_graph(parent, id, title, content) {
+
+    // Build the layout first
+    let container = d3.select(parent);
+    let data_node = container.append('div')
+        .attr('id', id)
+        .attr('class', 'draggable card w-25');
+
+    build_node_layout(data_node, id, title, content);
+
+    // Then send an AJAX request to server to compute the line-graph and display it
+    $.ajax({
+        type: 'POST',
+        url: '/linegraph',
+        data: id,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            // On success draw the hypergraph
+            console.log(response);
+            d3.select('#' + id).select('svg').remove();
+            let svg = d3.select('#' + id).insert('svg', '.card-footer')
+                .attr("id", id + "-hypergraph-svg")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr('viewBox', '0 0 600 500');
+
+            force_graph(svg, response.data, false);
+        }
+    })
 }
 
 function import_dataset_btn(parent) {
@@ -123,7 +205,7 @@ $('#import-form').change(function (event) {
 });
 
 d3.select('#node-input').on('click', d => create_data_node('#interface', dataset_id, 'Input', ''));
-d3.select('#node-linegraph').on('click', d => create_data_node('#interface', 'test2_' + getRandomInt(), 'Line Graph', 'Content for line graph node type'));
+d3.select('#node-linegraph').on('click', d => create_line_graph('#interface', 'test2_' + getRandomInt(), 'Line Graph', ''));
 d3.select('#node-dualgraph').on('click', d => create_data_node('#interface', 'test3_' + getRandomInt(), 'Dual Graph', 'Content for dual graph node type'));
 
 function groupPath(vertices) {
@@ -154,10 +236,17 @@ function force_graph(svg, graph_data, hyperedges) {
     // }
 
     const simulation = d3.forceSimulation(nodes)
-        // .force("link", d3.forceLink(links).distance(d => d.distance).id(d => d.id))
+        .force("link", d3.forceLink(links).distance(d => d.distance).id(d => d.id))
         .force("link", d3.forceLink(links).id(d => d.id))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(500 / 2, 400 / 2));
+
+    // let simulation = d3.forceSimulation(nodes)
+    //         .force("link", d3.forceLink(links).id(d => d.id))
+    //         .force("charge", d3.forceManyBody(-200))
+    //         .force("center", d3.forceCenter(250, 200))
+    //         .force("x", d3.forceX().strength(0.02))
+    //         .force("y", d3.forceY().strength(0.02));
 
     const svg_g = svg.append("g");
 

@@ -1,6 +1,6 @@
-from flask import request, Blueprint, current_app as app, jsonify, session, g
+from flask import request, Blueprint, current_app as app, jsonify
 from werkzeug.utils import secure_filename
-from utils.CompGraph import Hypergraph
+from utils.CompGraph import Hypergraph, CompGraph
 import os
 
 upload = Blueprint('upload', __name__)
@@ -15,6 +15,7 @@ def upload_dataset():
             # session['graph_data'] = upload_candidate.read().decode('utf-8')
             hgraph_data = upload_candidate.read().decode('utf-8')
             hgraph = Hypergraph(hgraph_data)
+            app.comp_graph = CompGraph()
             app.comp_graph.append(hgraph)
             return jsonify(response='File added to computational graph sucessfully', responseType='success', data=hgraph.to_json())
     return jsonify(response='Could not upload file')
