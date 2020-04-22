@@ -14,15 +14,18 @@ class Barcode{
 
         d3.select("#vis-barcode")
             // .style("height", d3.select("#vis-hypergraph").style("height"));
-            .style("height", parseInt(this.container_height)+"px");
+            .style("height", parseInt(this.container_height-200)+"px");
 
 
         this.barcode_group = this.svg.append("g")
             .attr("id", "barcode_group");
         this.xAxis_group = this.svg.append('g')
             .attr('id','xAxis_group');
-        this.slider = this.svg.append('rect')
-            .attr('id', 'barcode_slider');
+        this.slider_group = this.svg.append('g')
+            .attr('id', 'slider_group');
+        this.slider = this.slider_group.append('rect');
+        this.slider_line = this.slider_group.append('line');
+            // .attr('id', 'barcode_slider');
         
         this.draw_barcode();
 
@@ -46,7 +49,7 @@ class Barcode{
         // let barcode_height = Math.floor((this.svg_height-this.svg_margin.top-this.svg_margin.bottom)/this.barcode.length);
 
         let barcode_height = 10;
-        this.svg_height = barcode_height * (this.barcode.length+1) + this.svg_margin.top + this.svg_margin.bottom;
+        this.svg_height = barcode_height * (this.barcode.length+1) + 2*this.svg_margin.top + this.svg_margin.bottom;
         this.svg.attr("height", this.svg_height);
 
         if(this.svg_height < this.container_height){
@@ -66,7 +69,7 @@ class Barcode{
             })
             .attr('height', barcode_height)
             .attr('x', this.svg_margin.left)
-            .attr('y', (d, i)=>this.svg_margin.top + i*barcode_height)
+            .attr('y', (d, i)=>this.svg_margin.top*2 + i*barcode_height)
             .attr("class", "barcode-rect-dim0")
             .classed("hover-darken", true)
             // .on("click", d=>{
@@ -85,13 +88,24 @@ class Barcode{
             .attr("transform", "translate("+this.svg_margin.left+","+ (this.svg_height-this.svg_margin.bottom-this.svg_margin.top) + ")")
             .call(xAxis);
 
+        this.slider_group.attr("transform", "translate("+(this.svg_margin.left)+",0)")
+
         this.slider
-            .attr("width", 8)
-            .attr("height", this.svg_height-this.svg_margin.bottom*2.5)
-            .attr("x",this.svg_margin.left+20)
-            .attr("y",5)
+            .attr("width", 15)
+            .attr("height", 8)
+            // .attr("x", 0)
+            // .attr("y",1)
             .attr("class", "slider hover-darken")
             .attr("id", "barcode-slider")
+
+        this.slider_line
+            .attr("x1",0)
+            .attr("y1",0)
+            .attr("x2",0)
+            .attr("y2", this.svg_height-this.svg_margin.bottom*2)
+            .attr("stroke","grey")
+            .attr("stroke-width",1)
+            .attr("id", "barcode-line")
     }
 
     extract_edgeid(threshold){

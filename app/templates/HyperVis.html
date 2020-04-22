@@ -39,7 +39,12 @@
             </div>
             <br>
             <br>
-            
+            <div class="help-tip" style="opacity: 0;" id="help-tip">
+                <h6>Selected Hyperedges</h6>
+                <p>
+                    
+                </p>
+            </div>
         </div>
         <div id="vis-area" class="col-sm-8">
             <div class="row">
@@ -119,11 +124,11 @@
                 <div class="edge-encoding-group" style="padding-top:10px; padding-left:5px;">
                     <form id="edge-encoding-form">
                         <div style="padding-left:0px; padding-right:15px">
-                            <input type="radio" class="form-radio" name="edge-type" value="edge_intersection_size" id="edge_intersection_size" checked="checked">
+                            <input type="radio" class="form-radio" name="edge-type" value="intersection_size" id="edge_intersection_size" checked="checked">
                             <label for="edge_intersection_size" class="radio_label">Intersection Size</label>
                         </div>
                         <div style="padding-left:0px; padding-right:0px;">
-                            <input type="radio" class="form-radio" name="edge-type" value="edge_jaccard_index" id="edge_jaccard_index">
+                            <input type="radio" class="form-radio" name="edge-type" value="jaccard_index" id="edge_jaccard_index">
                             <label for="edge_jaccard_index" class="radio_label">Jaccard Index</label>
                         </div>
                     </form>
@@ -180,12 +185,12 @@
                 <br>
                 <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_weights" value="Compute Weights" style="line-height:0px;">
             </div>
-            <div class="help-tip" style="opacity: 0;" id="help-tip">
+            <!-- <div class="help-tip" style="opacity: 0;" id="help-tip">
                 <h6>Selected Hyperedges</h6>
                 <p>
                     
                 </p>
-            </div>
+            </div> -->
 
         </div>
     </div> 

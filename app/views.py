@@ -266,10 +266,8 @@ def import_file():
     if jsdata == "hypergraph_samples":
         with open(path.join(APP_STATIC, "uploads/DNS_hypergraph_samples_new.txt"), 'r') as f:
             jsdata = f.read()
-        f.close()
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'w') as f:
         f.write(jsdata)
-    f.close()
     hgraph, label_map = process_hypergraph(jsdata)
     chgraph, id_map = collapse_hypergraph(hgraph)
 
@@ -311,7 +309,9 @@ def change_hgraph_type():
         label_map = json.load(f)
     with open(path.join(APP_STATIC,"uploads/current_id_map.json")) as f:
         id_map = json.load(f)
-    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id_map=id_map)
+    with open(path.join(APP_STATIC,"uploads/current_id2color.json")) as f:
+        id2color = json.load(f)
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id_map=id_map, id2color=id2color)
 
 @app.route('/change_s_value', methods=['POST', 'GET'])
 def recompute():
@@ -408,5 +408,10 @@ def compute_simplified_hgraph():
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     return jsonify(hyper_data=hgraph)
 
+@app.route('/id2color', methods=['POST', 'GET'])
+def save_id2color():
+    jsdata = json.loads(request.get_data())
+    write_json_file(jsdata, path.join(APP_STATIC,"uploads/current_id2color.json"))
+    return 'saved'
 
 

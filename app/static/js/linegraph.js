@@ -36,13 +36,17 @@ class Linegraph{
         this.nodes_group = this.svg_g.append("g")
             .attr("id", "line_nodes_group");
 
-        this.edge_scale = d3.scaleLinear()
-            .domain(d3.extent(this.links.map(d => parseFloat(d.intersection_size))))
-            .range([1, 10]);
+        
 
         this.threshold = 0;
+        this.weight = d3.select('input[name="edge-type"]:checked').node().value;
+        this.edge_scale = d3.scaleLinear()
+            .domain(d3.extent(this.links.map(d => parseFloat(d[this.weight]))))
+            .range([1, 10]);
 
         this.draw_linegraph();
+
+        
     }
 
     draw_linegraph(){
@@ -89,7 +93,7 @@ class Linegraph{
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
 
-            .attr("stroke-width", d => this.edge_scale(parseFloat(d.intersection_size)))
+            .attr("stroke-width", d => this.edge_scale(parseFloat(d[this.weight])))
             .attr("id", d => this.svg_id+"-edge-"+d.source.id+"-"+d.target.id)
             .attr("class", "line_edge")
             .attr("x1", d => d.source.x)
