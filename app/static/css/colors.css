@@ -231,7 +231,7 @@ path.filtering {
 
   /* Tooltip */
 div.help-tip {	
-    position: absolute;			
+    position: relative;			
     text-align: center;			
     width: 200px;					
     height: 150px;					
@@ -241,7 +241,6 @@ div.help-tip {
     /* background: lightsteelblue;	 */
     border: 0px;		
     border-radius: 8px;			
-    pointer-events: none;	
     overflow: scroll;		
 }
 

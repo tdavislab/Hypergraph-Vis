@@ -133,7 +133,8 @@ class Hypergraph{
                     let div_text = '';
                     label_list.forEach(label=>{ div_text += label+"<br> "; })
                     let div = d3.select("#help-tip")
-                    div.transition().duration(200).style("opacity", 0.9);	
+                    div.transition().duration(200).style("opacity", 0.9);
+                    // div.style("overflow","scroll")	
                     div.html("<h6>Selected Hyperedges</h6>"+div_text);
                 }
             })
