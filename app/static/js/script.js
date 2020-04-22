@@ -488,3 +488,21 @@ function clear_canvas(){
     //             //     d3.select("#simplified-hull-group").style("visibility","visible");
     //             // }
     //         })
+    let coll  = document.getElementsByClassName("block_title");
+    for(let i=0; i<coll.length; i++){
+        coll[i].addEventListener("click", function(){
+            this.classList.toggle("collapsed")
+            let block_body = this.nextElementSibling;
+            console.log(block_body.id)
+            if (block_body.style.maxHeight){
+                block_body.style.maxHeight = null;
+            } else {
+                // block_body.style.maxHeight = block_body.scrollHeight + "px";
+                if(block_body.id === "block_body_histogram"){
+                    block_body.style.maxHeight = "500px";
+                } else{
+                    block_body.style.maxHeight = "1000px";
+                }
+            } 
+        })
+    }

@@ -2,6 +2,8 @@
 html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    overflow-x:hidden;
 }
 
 #main_title {
@@ -47,8 +49,15 @@ html, body {
     border-top: 1px solid rgb(224,224,224);
 }
 
+.control-block-container {
+    margin: 5px;
+    background-color: #FFF;
+    height: 100px;
+    border: 1px solid rgb(224,224,224);
+}
+
 .control-container {
-    padding: 0;
+    padding: 10;
 }
 
 .dropdown-container {
@@ -61,3 +70,47 @@ html, body {
 }
 
 
+.block {
+    background-color:#FFF;
+    margin-bottom: 5px;
+    border: 1px solid #C5CBD0;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(221, 221, 221, 0.7);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(221, 221, 221, 0.7);
+    box-shadow: 1px 1px 2px 1px rgba(221, 221, 221, 0.7);
+  }
+  
+  .block_title {
+    font-weight: bold;
+    border-bottom: 1px solid #D3DBE2;
+    padding: 5px 10px;
+    background: transparent url("icons/fold.svg") 98% center no-repeat;
+    background-size: 15px;
+    cursor: pointer;
+  }
+  .block_title.collapsed {
+    border-bottom: none;
+    background-image: url("icons/unfold.svg");
+  }
+  
+  .block_body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+
+  .block_body-inner {
+    padding:10px 20px;
+  }
+
+  .block-inner-group {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: dotted 2px rgb(224,224,224);
+  }
+
+  .group-title {
+    font-family: sans-serif;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
