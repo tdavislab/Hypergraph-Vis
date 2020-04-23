@@ -1,4 +1,7 @@
-const dataset_id = 'input_data_holder'
+const input_div_id = 'input_viz';
+const output_div_id = 'output_viz';
+let vertex_modality_counter = 1;
+let edge_modality_counter = 1;
 
 const graphDimensions = {
     width: 100,
@@ -13,6 +16,10 @@ function getRandomInt() {
 
 function toggleClass(element, classname) {
     element.classed(classname, !element.classed(classname));
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function build_node_layout(div_selector, id, title, content) {
@@ -210,7 +217,7 @@ function create_barcode(parent, id, title, content) {
                 .attr("id", id + "-barcode-svg")
                 .attr("width", "100%")
                 .attr("height", "100%")
-                // .attr('viewBox', '0 0 600 500');
+            // .attr('viewBox', '0 0 600 500');
 
             draw_barcode(svg, response.data);
         }
@@ -232,11 +239,15 @@ function import_dataset_btn(parent) {
         });
 }
 
+$('#dataset-btn').on('click', () => {
+    $('#dataset-file').click();
+});
+
 $('#import-form').change(function (event) {
     // Can only send FormData object, so create an empty one
     let files = new FormData();
     // Add the file object to the FormData object created above
-    files.append('file', $('#dataset')[0].files[0]);
+    files.append('file', $('#dataset-file')[0].files[0]);
 
     // Create an AJAX query to the backend
     // Query reads the CSV file and return JSON node-link data for drawing the hypergraph
@@ -248,22 +259,87 @@ $('#import-form').change(function (event) {
         contentType: false,
         success: function (response) {
             // On success draw the hypergraph
-            d3.select('#' + dataset_id).select('svg').remove();
-            let svg = d3.select('#' + dataset_id).insert('svg', '.card-footer')
-                .attr("id", dataset_id + "-hypergraph-svg")
+            d3.select('#' + input_div_id).select('svg').remove();
+            let svg = d3.select('#' + input_div_id).insert('svg', '.card-footer')
+                .attr("id", input_div_id + "-hypergraph-svg")
                 .attr("width", "100%")
                 .attr("height", "100%")
                 .attr('viewBox', '0 0 600 500');
-
             force_graph(svg, response.data, true);
+        }
+    });
+
+    $('#io-panel').removeAttr('hidden');
+    $('#interface').removeClass('col-md-12').addClass('col-md-9');
+});
+
+function build_modality_layout(modality_type) {
+    let modality_counter = modality_type === 'edge' ? edge_modality_counter : vertex_modality_counter
+    // Create accordion element
+    let modality_div = d3.select('#modality-holder').append('div')
+        .attr('class', 'card');
+
+    let modality_div_header = modality_div.append('div')
+        .attr('class', 'card-header')
+        .attr('id', `accordion-header-${modality_type}-${modality_counter}`)
+        .append('h2')
+        .classed('mb-0', true)
+        .append('button')
+        .attr('type', 'button')
+        .attr('class', 'btn btn-link')
+        .attr('data-toggle', 'collapse')
+        .attr('data-target', `#accordion-body-${modality_type}-${modality_counter}`)
+        .html(`${capitalizeFirstLetter(modality_type)} modality ${modality_counter}`);
+
+    let modality_div_body = modality_div.append('div')
+        .attr('id', `accordion-body-${modality_type}-${modality_counter}`)
+        .attr('class', 'collapse show')
+        .attr('data-parent', '#modality-holder')
+        .append('div')
+        .attr('class', 'card-body')
+        .html('Chaku chaku');
+
+    if (modality_type === 'edge') {
+        edge_modality_counter += 1;
+    } else if (modality_type === 'vertex') {
+        vertex_modality_counter += 1
+    }
+    return modality_div;
+}
+
+$('#add-edge-modality').on('click', () => {
+    // Create accordion element
+    let modality_div = build_modality_layout('edge');
+
+    $.ajax({
+        type: 'POST',
+        url: '/add_edge_modality',
+        data: JSON.stringify({index: 1}),
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (response) {
+            console.log(response);
         }
     });
 });
 
-d3.select('#node-input').on('click', d => create_data_node('#interface', dataset_id, 'Input', ''));
-d3.select('#node-linegraph').on('click', d => create_line_graph('#interface', 'test2_' + getRandomInt(), 'Line Graph', ''));
-d3.select('#node-dualgraph').on('click', d => create_dual_line_graph('#interface', 'test3_' + getRandomInt(), 'Dual Graph', ''));
-d3.select('#op-barcode').on('click', d => create_barcode('#interface', 'test3_' + getRandomInt(), 'Barcode', ''));
+$('#add-vertex-modality').on('click', () => {
+    // Create accordion element
+    let modality_div = build_modality_layout('vertex');
+});
+
+$('#get-graph-data').on('click', () => {
+    $.ajax({
+        type: 'GET',
+        url: '/get_graph_data',
+        success: function (response) {
+            console.log(response);
+        },
+        error: () => {
+            console.log('error');
+        }
+    });
+});
 
 function groupPath(vertices) {
     if (vertices.length <= 2) {
@@ -400,7 +476,6 @@ function force_graph(svg, graph_data, hyperedges) {
                 .key(d => d.source.id)
                 .rollup(d => d.map(node => [node.target.x, node.target.y]))
                 .entries(links);
-
             d3.select('#' + id_suffix + 'hull-group').remove();
 
             let hulls = svg.select('g').insert('g', ':first-child')

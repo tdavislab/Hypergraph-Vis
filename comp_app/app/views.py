@@ -34,3 +34,18 @@ def draw_barcode():
     barcode = Barcode(input_node)
     barcode_data = barcode.compute()
     return jsonify(response='success', data=barcode_data)
+
+
+@views.route('/add_edge_modality', methods=['POST'])
+def add_edge_modality():
+    return jsonify(response='responswa')
+
+
+@views.route('/add_vertex_modality', methods=['POST'])
+def add_vertex_modality():
+    return jsonify(response='responswa')
+
+
+@views.route('/get_graph_data', methods=['GET'])
+def get_graph_data():
+    return jsonify(response='responswa')

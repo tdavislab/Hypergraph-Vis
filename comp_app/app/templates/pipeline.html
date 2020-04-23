@@ -18,25 +18,30 @@
     <a class="navbar-brand" href="#">Hypergraph Visualization</a>
 </nav>
 
-<form id="import-form" action="/dataset" method="POST" enctype="multipart/form-data" style="display: none">
-    <input type="file" id="dataset" name="file">
-    <input type="submit" id="'dataset-submit">
-</form>
-
 <div class="container-fluid wrapper h-100">
-    <div class="row h-100">
-        <div id="toolbar" class="col-md-2 bg-light sidebar overflow-auto pt-3">
-            <div>Nodes</div>
-            <hr/>
-            <button id="node-input" type="button" class="btn btn-dark m-1">Input</button>
-            <button id="node-linegraph" type="button" class="btn btn-dark m-1">Line-Graph</button>
-            <button id="node-dualgraph" type="button" class="btn btn-dark m-1">Dual-Graph</button>
-            <div class="pt-3">Operations</div>
-            <hr/>
-            <button id="op-barcode" type="button" class="btn btn-dark m-1">Barcode</button>
+    <div class="row p-2 bg-secondary">
+        <div class="col-md-3 text-center">
+            <form id="import-form" action="/dataset" method="POST" enctype="multipart/form-data">
+                <input type="file" id="dataset-file" name="file" hidden/>
+                <input id='dataset-btn' type="button" value="Import dataset" class="w-75 btn btn-light m-1"/>
+                <input type="submit" id="'dataset-submit" hidden/>
+            </form>
         </div>
-        <div id="interface" class="col-md-10 p-0 bg-grid"></div>
-        <!--<div id="params" class="col-md-2 bg-light"></div>-->
+        <div class="col-md-9 text-center">
+            <button id="add-edge-modality" class="btn btn-light m-1">Add edge modality</button>
+            <button id="add-vertex-modality" class="btn btn-light m-1">Add vertex modality</button>
+            <button id="get-graph-data" class="btn btn-light m-1">Get graph data</button>
+        </div>
+    </div>
+    <div class="row h-100">
+        <div id="io-panel" class="col-md-3 bg-light text-center p-2" hidden>
+            <div id="input_viz"><p>Input</p></div>
+            <hr/>
+            <div id="output_viz"><p>Output</p></div>
+        </div>
+        <div id="interface" class="col-md-12 p-0 bg-grid">
+            <div class="accordion" id="modality-holder"></div>
+        </div>
     </div>
 </div>
 </body>
