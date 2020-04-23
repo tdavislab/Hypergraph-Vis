@@ -304,42 +304,43 @@ function build_modality_layout(modality_type) {
         .attr('class', 'row');
 
     let parameter_area = modality_interface.append('div')
-        .attr('class', 'params col-md-3')
-        .html('params');
+        .attr('class', 'params col-md-3');
 
     let barcode_area = parameter_area.append('div')
-        .attr('class', 'barcode')
-        .html('barcode')
+        .attr('class', 'barcode');
 
     let s_area = parameter_area.append('div')
-        .attr('class', 's-param')
-        .html('s-param')
+        .attr('class', 's-param');
 
     let graph_area = modality_interface.append('div')
         .attr('class', 'col-md-9')
-        .html('Main Area')
         .append('div')
         .attr('class', 'row');
 
     let main_graph = graph_area.append('div')
-        .attr('class', 'main_graph col-md-6')
-        .html('Main Graph');
+        .attr('class', 'main_graph col-md-6');
 
     let simplified_graph = graph_area.append('div')
         .attr('class', 'simplified_graph col-md-6')
-        .html('Simplified Graph');
 
     if (modality_type === 'edge') {
         edge_modality_counter += 1;
     } else if (modality_type === 'vertex') {
         vertex_modality_counter += 1
     }
-    return modality_div;
+    return {
+        modality_div: modality_div,
+        barcode_area: barcode_area,
+        s_area: s_area,
+        main_graph: main_graph,
+        simplified_graph: simplified_graph
+    };
 }
 
 $('#add-edge-modality').on('click', () => {
     // Create accordion element
-    let modality_div = build_modality_layout('edge');
+    let layout = build_modality_layout('edge');
+    console.log(layout);
 
     $.ajax({
         type: 'POST',
@@ -348,14 +349,51 @@ $('#add-edge-modality').on('click', () => {
         dataType: 'json',
         contentType: 'application/json',
         success: function (response) {
-            console.log(response);
+            // Draw barcode
+            draw_barcode(layout.barcode_area.append('svg'), response.barcode);
+
+            // Create s-parameter
+            layout.s_area.append('span')
+                .html('s');
+
+            layout.s_area.append('input')
+                .attr('type', 'range')
+                .attr('min', 1)
+                .attr('max', 10)
+                .attr('step', 1)
+                .attr('value', 1);
+
+            // Draw line graph
+            let svg_line = layout.main_graph.append('svg')
+                .attr("width", "100%")
+                .attr('viewBox', '0 0 300 300');
+            force_graph(svg_line, response.line_graph, false);
+
+            // Draw simplified line-graph
+            let svg_simplified = layout.simplified_graph.append('svg')
+                .attr("width", "100%")
+                .attr('viewBox', '0 0 300 300');
+            force_graph(svg_simplified, response.line_graph, false);
+
+            d3.select('#output_viz').selectAll('svg').remove();
+            let output_area_svg = d3.select('#output_viz')
+                .append('svg')
+                .attr('id', 'temp' + getRandomInt())
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr('viewBox', '0 0 600 500');
+
+            force_graph(output_area_svg, response.hypergraph, true);
+            d3.select('#output-dropdown').append('option')
+                .attr('value', getRandomInt())
+                .html(`Edge modality ${edge_modality_counter - 1}`)
         }
     });
 });
 
 $('#add-vertex-modality').on('click', () => {
     // Create accordion element
-    let modality_div = build_modality_layout('vertex');
+    let layout = build_modality_layout('vertex');
 
     $.ajax({
         type: 'POST',
@@ -364,7 +402,28 @@ $('#add-vertex-modality').on('click', () => {
         dataType: 'json',
         contentType: 'application/json',
         success: function (response) {
-            console.log(response);
+            // Draw barcode
+            draw_barcode(layout.barcode_area.append('svg'), response.barcode);
+
+            // Create s-parameter
+            layout.s_area.append('input')
+                .attr('type', 'range')
+                .attr('min', 1)
+                .attr('max', 10)
+                .attr('step', 1)
+                .attr('value', 1);
+
+            // Draw line graph
+            let svg_line = layout.main_graph.append('svg')
+                .attr("width", "100%")
+                .attr('viewBox', '0 0 300 300');
+            force_graph(svg_line, response.line_graph, false);
+
+            // Draw simplified line-graph
+            let svg_simplified = layout.simplified_graph.append('svg')
+                .attr("width", "100%")
+                .attr('viewBox', '0 0 300 300');
+            force_graph(svg_simplified, response.line_graph, false);
         }
     });
 });
@@ -431,7 +490,7 @@ function force_graph(svg, graph_data, hyperedges) {
         .selectAll("line")
         .data(links)
         .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
+        .attr("stroke-width", d => 0.5);
 
     const node = svg_g.append("g")
         .attr("id", id_suffix + "nodes")

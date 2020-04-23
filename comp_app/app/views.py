@@ -38,12 +38,26 @@ def draw_barcode():
 
 @views.route('/add_edge_modality', methods=['POST'])
 def add_edge_modality():
-    return jsonify(response='responswa')
+    input_graph = app.comp_graph[-1]
+
+    line_graph = Linegraph(input_graph)
+    line_graph_data = line_graph.compute()
+    barcode = Barcode(line_graph)
+    barcode_data = barcode.compute()
+
+    return jsonify(response='success', barcode=barcode_data, line_graph=line_graph_data, hypergraph=app.comp_graph[0].to_json())
 
 
 @views.route('/add_vertex_modality', methods=['POST'])
 def add_vertex_modality():
-    return jsonify(response='responswa')
+    input_graph = app.comp_graph[-1]
+
+    line_graph = Linegraph(input_graph, dual=True)
+    line_graph_data = line_graph.compute()
+    barcode = Barcode(line_graph)
+    barcode_data = barcode.compute()
+
+    return jsonify(response='success', barcode=barcode_data, line_graph=line_graph_data, hypergraph=app.comp_graph[0].to_json())
 
 
 @views.route('/get_graph_data', methods=['GET'])
