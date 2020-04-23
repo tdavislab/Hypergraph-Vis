@@ -209,7 +209,33 @@ def write_json_file(json_dict, path):
     with open(path, 'w') as f:
         f.write(json.dumps(json_dict, indent=4))
 
-def recompute_graphs(config):
+def load_graphs(config):
+    hgraph_type = config['hgraph_type']
+    variant = config['variant']
+    weight_type = config['weight_type']
+    if hgraph_type == "collapsed_version":
+        f_hgraph = ""
+    else: #hgraph_type == "original_version"
+        f_hgraph = "_original"
+    if variant == "Original Line Graph":
+        f_variant = ""
+    else: # variant == "Dual Line Graph"
+        f_variant = "_dual"
+    if weight_type == "intersection_size":
+        f_weight = "_is"
+    else: # weight_type == "jaccard_index"
+        f_weight = "_ji"
+    with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
+        hgraph = json.load(f)
+    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_linegraph"+f_hgraph+".json")) as f:
+        lgraph = json.load(f)
+    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_barcode"+f_weight+f_hgraph+".json")) as f:
+        barcode = json.load(f)
+    hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
+    assign_hgraph_singletons(hgraph, lgraph['singletons'])
+    return hgraph, lgraph, barcode
+
+def compute_graphs(config):
     hgraph_type = config['hgraph_type']
     variant = config['variant']
     weight_type = config['weight_type']
@@ -289,6 +315,8 @@ def import_file():
 
     assign_hgraph_singletons(chgraph, lgraph['singletons'])
 
+    current_config = {'hgraph_type':'collapsed_version', 's':1, 'singleton_type':'grey_out', 'variant':'Original Line Graph', 'weight_type':'jaccard_index'}
+
     write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
     write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
     write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is.json"))
@@ -297,14 +325,37 @@ def import_file():
     write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji.json"))
     write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
     write_json_file(id_map, path.join(APP_STATIC,"uploads/current_id_map.json"))
+    write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
 
     return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, id_map=id_map)
 
-@app.route('/change_hgraph_type', methods=['POST', 'GET'])
-def change_hgraph_type():
-    hgraph_type = request.get_data().decode('utf-8')
-    config = {'hgraph_type': hgraph_type, 'variant': 'Original Line Graph', 'weight_type':'intersection_size', 's':'1'}
-    hgraph, lgraph, barcode = recompute_graphs(config)
+@app.route('/reload_graphs', methods=['POST', 'GET'])
+def reload_graphs():
+    """
+    Reload graphs and barcode according to the current configuration
+    """
+    current_config = json.loads(request.get_data())
+    with open(path.join(APP_STATIC,"uploads/current_config.json")) as f:
+            previous_config = json.load(f)
+    current_s = int(current_config['s'])
+    previous_s = int(previous_config['s'])
+    hgraph_type = current_config['hgraph_type']
+    # If s value dose not change, just reload the graphs and barcode
+    if current_s == previous_s:
+        if hgraph_type == 'collapsed_version':
+            hgraph, lgraph, barcode = load_graphs(current_config)
+        else: # hgraph_type == 'original_version'
+            if path.exists(path.join(APP_STATIC,"uploads/current_linegraph_original.json")):
+                hgraph, lgraph, barcode = load_graphs(current_config)
+            else:
+                hgraph, lgraph, barcode = compute_graphs(current_config)
+    
+    # else, recompute graphs and barcodes
+    else:
+        hgraph, lgraph, barcode = compute_graphs(current_config)
+
+    write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
+
     with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
         label_map = json.load(f)
     with open(path.join(APP_STATIC,"uploads/current_id_map.json")) as f:
@@ -312,46 +363,6 @@ def change_hgraph_type():
     with open(path.join(APP_STATIC,"uploads/current_id2color.json")) as f:
         id2color = json.load(f)
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id_map=id_map, id2color=id2color)
-
-@app.route('/change_s_value', methods=['POST', 'GET'])
-def recompute():
-    """
-    Given an s value, recompute the line graph and the barcode.
-    """
-    jsdata = json.loads(request.get_data())
-    hgraph, lgraph, barcode = recompute_graphs(jsdata)
-    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
-
-@app.route('/reload_graphs', methods=['POST', 'GET'])
-def reload_graphs():
-    """
-    Reload graphs and barcode according to the current configuration
-    """
-    jsdata = json.loads(request.get_data())
-    hgraph_type = jsdata['hgraph_type']
-    variant = jsdata['variant']
-    weight_type = jsdata['weight_type']
-    if hgraph_type == "collapsed_version":
-        f_hgraph = ""
-    elif hgraph_type == "original_version":
-        f_hgraph = "_original"
-    if variant == "Original Line Graph":
-        f_variant = ""
-    elif variant == "Dual Line Graph":
-        f_variant = "_dual"
-    if weight_type == "intersection_size":
-        f_weight = "_is"
-    elif weight_type == "jaccard_index":
-        f_weight = "_ji"
-    with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
-        hgraph = json.load(f)
-    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_linegraph"+f_hgraph+".json")) as f:
-        lgraph = json.load(f)
-    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_barcode"+f_weight+f_hgraph+".json")) as f:
-        barcode = json.load(f)
-    hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
-    assign_hgraph_singletons(hgraph, lgraph['singletons'])
-    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode)
     
 @app.route('/expanded_hgraph', methods=['POST', 'GET'])
 def compute_expanded_hgraph():

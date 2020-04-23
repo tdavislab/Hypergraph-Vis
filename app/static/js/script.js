@@ -1,46 +1,87 @@
-// Initialization 
-read_hgraph_text("hypergraph_samples");
+init();
 
-$("#import").click(function(){
-    $("#files").click();
-});
+function init(){
+    // Initialization 
+    read_hgraph_text("hypergraph_samples");
 
-d3.select("#files")
-    .on("change", ()=>{
-        let files = $('#files')[0].files[0]
-        let fileReader = new FileReader();
-        fileReader.onload = function(fileLoadedEvent) {
-            let textFromFileLoaded = fileLoadedEvent.target.result;
-            read_hgraph_text(textFromFileLoaded);
-        }
-        fileReader.readAsText(files, "UTF-8");
-        // console.log(data)
-    })
-
-d3.select("#hgraph-type-form")
-    .on("change", ()=>{
-        // When change the graph type, reset all the configuration
-        let hgraph_type = d3.select('input[name="hgraph-type"]:checked').node().value;
-        reset_config();
-        $.ajax({
-            type: "POST",
-            url: "/change_hgraph_type",
-            data: String(hgraph_type),
-            dataType:'text',
-            success: function (response) {
-                init(JSON.parse(response), hgraph_type = hgraph_type);
-            },
-            error: function (error) {
-                console.log("error",error);
-            }
-        });
-        
+    
+    $("#import").click(function(){
+        $("#files").click();
     });
 
+    d3.select("#files")
+        .on("change", ()=>{
+            let files = $('#files')[0].files[0]
+            let fileReader = new FileReader();
+            fileReader.onload = function(fileLoadedEvent) {
+                let textFromFileLoaded = fileLoadedEvent.target.result;
+                read_hgraph_text(textFromFileLoaded);
+            }
+            fileReader.readAsText(files, "UTF-8");
+        })
 
-function init(data, hgraph_type = "collapsed_version") {
+    d3.select("#reset_config")
+        .on("click", ()=>{
+            console.log("clicking")
+            reset_config()});
+    
+    d3.select("#graph_loader")
+        .on("click", ()=>{
+            console.log("loading graphs")
+            let current_config = get_current_config();
+            console.log(current_config)
+            $.ajax({
+                type: "POST",
+                url: "/reload_graphs",
+                data: JSON.stringify(current_config),
+                dataType:'text',
+                success: function (response) {
+                    load_data(JSON.parse(response), current_config);
+                },
+                error: function (error) {
+                    console.log("error",error);
+                }
+            });
+        })
+
+    // change s value
+    let s_value_slider = document.getElementById("s-walk_input");
+    s_value_slider.oninput = function(){
+        // config.s = this.value;
+        d3.select("#s-walk_label").html(this.value);
+    }
+
+    // change hypergraph visual encoding
+    d3.select("#visual-encoding-form")
+        .on("change", ()=>{
+            let encoding_type = d3.select('input[name="visual-type"]:checked').node().value;
+            if(encoding_type === "bipartite"){
+                d3.select("#hull-group").style("visibility","hidden");
+                d3.select("#simplified-hull-group").style("visibility","hidden");
+            } else if(encoding_type === "convex"){
+                d3.select("#hull-group").style("visibility","visible");
+                d3.select("#simplified-hull-group").style("visibility","visible");
+            }
+        });
+
+    // block control
+    let coll  = document.getElementsByClassName("block_title");
+    for(let i=0; i<coll.length; i++){
+        coll[i].addEventListener("click", function(){
+            this.classList.toggle("collapsed")
+            let block_body = this.nextElementSibling;
+            if (block_body.style.maxHeight){
+                block_body.style.maxHeight = null;
+            } else {
+                block_body.style.maxHeight = block_body.scrollHeight + "px";
+                // block_body.style.maxHeight = "1000px";
+            } 
+        })
+    }
+}
+function load_data(data, config) {
     console.log(data)
-    let config = {"hgraph_type":hgraph_type, "s":1, "variant":"Original Line Graph", "weight_type":"jaccard_index"};
+    console.log(config)
 
     let id2color;
     let labels = data.labels;
@@ -79,100 +120,31 @@ function init(data, hgraph_type = "collapsed_version") {
         dataType:'text',
         success: function (response) {
             console.log("success")
-            // init(JSON.parse(response), hgraph_type = hgraph_type);
         },
         error: function (error) {
             console.log("error",error);
         }
     });
 
-    console.log(id2color)
-
-    console.log("labels", labels)
-    console.log("id_map", id_map)
     assign_hyperedge_labels(data.hyper_data, labels, id_map, config.hgraph_type);
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
     console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, labels, config.variant);
 
-    d3.select("#edge-encoding-form")
-        .on("change", ()=>{
-            let weight = d3.select('input[name="edge-type"]:checked').node().value;
-            linegraph.weight = weight;
-            simplified_linegraph.weight = weight;
-            linegraph.edge_scale.domain(d3.extent(linegraph.links.map(d => parseFloat(d[linegraph.weight]))));
-            simplified_linegraph.edge_scale.domain(d3.extent(simplified_linegraph.links.map(d => parseFloat(d[simplified_linegraph.weight]))));
+    // d3.select("#edge-encoding-form")
+    //     .on("change", ()=>{
+    //         let weight = d3.select('input[name="edge-type"]:checked').node().value;
+    //         linegraph.weight = weight;
+    //         simplified_linegraph.weight = weight;
+    //         linegraph.edge_scale.domain(d3.extent(linegraph.links.map(d => parseFloat(d[linegraph.weight]))));
+    //         simplified_linegraph.edge_scale.domain(d3.extent(simplified_linegraph.links.map(d => parseFloat(d[simplified_linegraph.weight]))));
 
-            linegraph.svg.selectAll("line").attr("stroke-width", d => linegraph.edge_scale(parseFloat(d[linegraph.weight])));
-            simplified_linegraph.svg.selectAll("line").attr("stroke-width", d => simplified_linegraph.edge_scale(parseFloat(d[simplified_linegraph.weight])));
-            })
-
-    change_visual_encoding();
+    //         linegraph.svg.selectAll("line").attr("stroke-width", d => linegraph.edge_scale(parseFloat(d[linegraph.weight])));
+    //         simplified_linegraph.svg.selectAll("line").attr("stroke-width", d => simplified_linegraph.edge_scale(parseFloat(d[simplified_linegraph.weight])));
+    //         })
     
-    // change weight type
-    d3.select("#weight-type-form")
-        .on("change", ()=>{
-            config.weight_type = d3.select('input[name="weight-type"]:checked').node().value;
-            $.ajax({
-                type: "POST",
-                url: "/reload_graphs",
-                data: JSON.stringify(config),
-                dataType:'text',
-                success: function (response) {
-                    let data_new = JSON.parse(response);
-                    reload_graphs(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
-                },
-                error: function (error) {
-                    console.log("error",error);
-                }
-            });
-            
-        })
-
-    // change s value
-    let s_value_slider = document.getElementById("s-walk_input");
-    s_value_slider.oninput = function(){
-        config.s = this.value;
-        d3.select("#s-walk_label").html(this.value);
-    }
-
-    d3.select("#compute_line_graph")
-        .on("click", ()=>{
-            $.ajax({
-                type: "POST",
-                url: "/change_s_value",
-                data: JSON.stringify(config),
-                dataType:'text',
-                success: function (response) {
-                    let data_new = JSON.parse(response);
-                    reload_graphs(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
-                },
-                error: function (error) {
-                    console.log("error",error);
-                }
-            });
-        })
-
-    // change line graph variant
-    let line_variant_dropdown = document.getElementById("line_graph_variants");
-    line_variant_dropdown.onchange = function(){
-        config.variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
-        $.ajax({
-            type: "POST",
-            url: "/reload_graphs",
-            data: JSON.stringify(config),
-            dataType:'text',
-            success: function (response) {
-                let data_new = JSON.parse(response);
-                reload_graphs(data_new.line_data, data_new.hyper_data, data_new.barcode_data, config.variant);
-            },
-            error: function (error) {
-                console.log("error",error);
-            }
-        });
-    }
-
+    
 
     d3.selectAll(".barcode-rect-dim0")
         .on("click", d=>click_bar(d));
@@ -245,6 +217,7 @@ function init(data, hgraph_type = "collapsed_version") {
         // simplified_linegraph.threshold = threshold;
         let edgeid = barcode.extract_edgeid(threshold);
         barcode.threshold = threshold;
+        d3.select("#barcode-threshold").html("Current threshold: "+Math.round(threshold*1000)/1000);
         let cc_dict = simplified_linegraph.graph_contraction(edgeid);
         barcode.cc_dict = cc_dict;
         hypergraph.cancel_faded();
@@ -272,29 +245,6 @@ function init(data, hgraph_type = "collapsed_version") {
         });
     }
 
-    function reload_graphs(line_data, hyper_data, barcode_data, variant){
-        // if(variant === "Original Line Graph"){
-            line_data.nodes.forEach(node=>{
-                let c = id2color[node.id];
-                node.color = c;
-            })
-        // } 
-        // console.log(color_dict)
-        hyper_data.nodes.forEach(node=>{
-            let c = id2color[node.id];
-            node.color = c;
-        })
-        hyperedges2vertices = Object.assign({}, ...line_data.nodes.map((x) => ({[x.id]: x.vertices})));
-        [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(hyper_data, line_data, barcode_data, labels, variant);
-        d3.select("#barcode-slider")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-        d3.selectAll(".barcode-rect-dim0")
-            .on("click", d=>click_bar(d));
-    }
-
 }
 
 function initialize_graphs(hyper_data, line_data, barcode_data, labels, variant) {
@@ -309,13 +259,14 @@ function initialize_graphs(hyper_data, line_data, barcode_data, labels, variant)
 }
 
 function read_hgraph_text(text_data){
+    let current_config = get_current_config();
     $.ajax({
         type: "POST",
         url: "/import",
         data: text_data,
         dataType:'text',
         success: function (response) {
-            init(JSON.parse(response));
+            load_data(JSON.parse(response), current_config);
         },
         error: function (error) {
             console.log("error",error);
@@ -430,18 +381,19 @@ function copy_line_data(line_data){
     return {"nodes": line_nodes_new, "links": line_links_new};
 }
 
-function change_visual_encoding(){
-    d3.select("#visual-encoding-form")
-        .on("change", ()=>{
-            let encoding_type = d3.select('input[name="visual-type"]:checked').node().value;
-            if(encoding_type === "bipartite"){
-                d3.select("#hull-group").style("visibility","hidden");
-                d3.select("#simplified-hull-group").style("visibility","hidden");
-            } else if(encoding_type === "convex"){
-                d3.select("#hull-group").style("visibility","visible");
-                d3.select("#simplified-hull-group").style("visibility","visible");
-            }
-        });
+function get_current_config() {
+    //  1. graph version
+    let hgraph_type = d3.select('input[name="hgraph-type"]:checked').node().value;
+    //  2. s-value & turn off singletons
+    let s = d3.select("#s-walk_input").property("value");
+    let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
+    //  3. line graph variant
+    let line_variant_dropdown = document.getElementById("line_graph_variants")
+    let variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
+    //  4. weigth type
+    let weight_type = d3.select('input[name="weight-type"]:checked').node().value;
+
+    return {'hgraph_type':hgraph_type, 's':s, 'singleton_type':singleton_type, 'variant':variant, 'weight_type':weight_type};
 }
 
 function reset_config() {
@@ -456,7 +408,7 @@ function reset_config() {
     //  4. reset line graph variant
     d3.select("#line_graph_variants").property("selectedIndex", 0);
     //  5. reset weight type
-    d3.select("#intersection_size").property("checked", true);
+    d3.select("#jaccard_index").property("checked", true);
 }
 
 function clear_canvas(){
@@ -488,21 +440,4 @@ function clear_canvas(){
     //             //     d3.select("#simplified-hull-group").style("visibility","visible");
     //             // }
     //         })
-    let coll  = document.getElementsByClassName("block_title");
-    for(let i=0; i<coll.length; i++){
-        coll[i].addEventListener("click", function(){
-            this.classList.toggle("collapsed")
-            let block_body = this.nextElementSibling;
-            console.log(block_body.id)
-            if (block_body.style.maxHeight){
-                block_body.style.maxHeight = null;
-            } else {
-                // block_body.style.maxHeight = block_body.scrollHeight + "px";
-                if(block_body.id === "block_body_histogram"){
-                    block_body.style.maxHeight = "500px";
-                } else{
-                    block_body.style.maxHeight = "1000px";
-                }
-            } 
-        })
-    }
+    
