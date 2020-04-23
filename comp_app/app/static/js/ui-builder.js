@@ -296,8 +296,38 @@ function build_modality_layout(modality_type) {
         .attr('class', 'collapse show')
         .attr('data-parent', '#modality-holder')
         .append('div')
-        .attr('class', 'card-body')
-        .html('Chaku chaku');
+        .attr('class', 'card-body');
+
+    let modality_interface = modality_div_body.append('div')
+        .attr('class', 'modality-interface')
+        .append('div')
+        .attr('class', 'row');
+
+    let parameter_area = modality_interface.append('div')
+        .attr('class', 'params col-md-3')
+        .html('params');
+
+    let barcode_area = parameter_area.append('div')
+        .attr('class', 'barcode')
+        .html('barcode')
+
+    let s_area = parameter_area.append('div')
+        .attr('class', 's-param')
+        .html('s-param')
+
+    let graph_area = modality_interface.append('div')
+        .attr('class', 'col-md-9')
+        .html('Main Area')
+        .append('div')
+        .attr('class', 'row');
+
+    let main_graph = graph_area.append('div')
+        .attr('class', 'main_graph col-md-6')
+        .html('Main Graph');
+
+    let simplified_graph = graph_area.append('div')
+        .attr('class', 'simplified_graph col-md-6')
+        .html('Simplified Graph');
 
     if (modality_type === 'edge') {
         edge_modality_counter += 1;
@@ -326,6 +356,17 @@ $('#add-edge-modality').on('click', () => {
 $('#add-vertex-modality').on('click', () => {
     // Create accordion element
     let modality_div = build_modality_layout('vertex');
+
+    $.ajax({
+        type: 'POST',
+        url: '/add_edge_modality',
+        data: JSON.stringify({index: 1}),
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (response) {
+            console.log(response);
+        }
+    });
 });
 
 $('#get-graph-data').on('click', () => {
