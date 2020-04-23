@@ -85,15 +85,20 @@ class Hypergraph(Node):
 
 
 class Linegraph(Operation):
-    def __init__(self, input_node):
+    def __init__(self, input_node, dual=False):
         super().__init__(input_node)
-        self.line_graph = None
+        self.dual = dual
+        self.data = None
+        self.children = []
 
     def compute(self, s=1):
         # Line-graph is a NetworkX graph
         line_graph = nx.Graph()
 
-        hgraph = self.input_node.data
+        if self.dual:
+            hgraph = self.input_node.data.dual()
+        else:
+            hgraph = self.input_node.data
 
         # Nodes of the line-graph are nodes of the dual graph
         # OR equivalently edges of the original hypergraph
@@ -112,5 +117,47 @@ class Linegraph(Operation):
                 if intersection_size >= s:
                     # print(intersection_size)
                     line_graph.add_edge(node1, node2, intersection_size=str(intersection_size))
-        self.line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
-        return self.line_graph
+        self.data = nx.readwrite.json_graph.node_link_data(line_graph)
+        return self.data
+
+
+class Barcode(Operation):
+    def __init__(self, input_node):
+        super().__init__(input_node)
+        self.data = None
+
+    def compute(self):
+        def find_cc_index(components, vertex_id):
+            for i in range(len(components)):
+                if vertex_id in components[i]:
+                    return i
+
+        graph_data = self.input_node.data
+        nodes = graph_data['nodes']
+        links = graph_data['links']
+        components = []
+        barcode = []
+        for node in nodes:
+            components.append([node['id']])
+        for link in links:
+            link['intersection_size'] = int(link['intersection_size'])
+        links = sorted(links, key=lambda item: 1 / item['intersection_size'])
+        for link in links:
+            source_id = link['source']
+            target_id = link['target']
+            weight = 1 / link['intersection_size']
+            source_cc_idx = find_cc_index(components, source_id)
+            target_cc_idx = find_cc_index(components, target_id)
+            if source_cc_idx != target_cc_idx:
+                source_cc = components[source_cc_idx]
+                target_cc = components[target_cc_idx]
+                components = [components[i] for i in range(len(components)) if i not in [source_cc_idx, target_cc_idx]]
+                components.append(source_cc + target_cc)
+                link['nodes_subsets'] = {"source_cc": source_cc, "target_cc": target_cc}
+                link['cc_list'] = components.copy()
+                barcode.append({'birth': 0, 'death': weight, 'edge': link})
+        for cc in components:
+            barcode.append({'birth': 0, 'death': -1, 'edge': 'undefined'})
+        self.data = barcode
+        return barcode
+

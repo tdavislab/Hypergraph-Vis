@@ -37,3 +37,13 @@ body {
 .clickable {
     cursor: pointer;
 }
+
+.hover-darken {
+    opacity: 1;
+    /* transition: all 0.1s ease; */
+}
+
+.hover-darken:hover {
+    opacity: 0.5;
+    /*transition: 0.3s ease all;*/
+}

@@ -144,10 +144,9 @@ function create_line_graph(parent, id, title, content) {
         contentType: false,
         success: function (response) {
             // On success draw the hypergraph
-            console.log(response);
             d3.select('#' + id).select('svg').remove();
             let svg = d3.select('#' + id).insert('svg', '.card-footer')
-                .attr("id", id + "-hypergraph-svg")
+                .attr("id", id + "-linegraph-svg")
                 .attr("width", "100%")
                 .attr("height", "100%")
                 .attr('viewBox', '0 0 600 500');
@@ -157,9 +156,69 @@ function create_line_graph(parent, id, title, content) {
     })
 }
 
+function create_dual_line_graph(parent, id, title, content) {
+
+    // Build the layout first
+    let container = d3.select(parent);
+    let data_node = container.append('div')
+        .attr('id', id)
+        .attr('class', 'draggable card w-25');
+
+    build_node_layout(data_node, id, title, content);
+
+    // Then send an AJAX request to server to compute the line-graph and display it
+    $.ajax({
+        type: 'POST',
+        url: '/dualgraph',
+        data: id,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            d3.select('#' + id).select('svg').remove();
+            let svg = d3.select('#' + id).insert('svg', '.card-footer')
+                .attr("id", id + "-dualinegraph-svg")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr('viewBox', '0 0 600 500');
+
+            force_graph(svg, response.data, false);
+        }
+    })
+}
+
+function create_barcode(parent, id, title, content) {
+
+    // Build the layout first
+    let container = d3.select(parent);
+    let data_node = container.append('div')
+        .attr('id', id)
+        .attr('class', 'draggable card w-25');
+
+    build_node_layout(data_node, id, title, content);
+
+    // Then send an AJAX request to server to compute the line-graph and display it
+    $.ajax({
+        type: 'POST',
+        url: '/barcode',
+        data: id,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            // On success draw the hypergraph
+            d3.select('#' + id).select('svg').remove();
+            let svg = d3.select('#' + id).insert('svg', '.card-footer')
+                .attr("id", id + "-barcode-svg")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                // .attr('viewBox', '0 0 600 500');
+
+            draw_barcode(svg, response.data);
+        }
+    })
+}
+
 function import_dataset_btn(parent) {
     // let btn_id = parent.id + '-import-btn'
-    // console.log(parent);
     parent.append('div')
         .classed('card-footer bg-transparent', true)
         .append('input')
@@ -189,9 +248,6 @@ $('#import-form').change(function (event) {
         contentType: false,
         success: function (response) {
             // On success draw the hypergraph
-            // console.log(event);
-            // console.log(response);
-            console.log(response);
             d3.select('#' + dataset_id).select('svg').remove();
             let svg = d3.select('#' + dataset_id).insert('svg', '.card-footer')
                 .attr("id", dataset_id + "-hypergraph-svg")
@@ -206,7 +262,8 @@ $('#import-form').change(function (event) {
 
 d3.select('#node-input').on('click', d => create_data_node('#interface', dataset_id, 'Input', ''));
 d3.select('#node-linegraph').on('click', d => create_line_graph('#interface', 'test2_' + getRandomInt(), 'Line Graph', ''));
-d3.select('#node-dualgraph').on('click', d => create_data_node('#interface', 'test3_' + getRandomInt(), 'Dual Graph', 'Content for dual graph node type'));
+d3.select('#node-dualgraph').on('click', d => create_dual_line_graph('#interface', 'test3_' + getRandomInt(), 'Dual Graph', ''));
+d3.select('#op-barcode').on('click', d => create_barcode('#interface', 'test3_' + getRandomInt(), 'Barcode', ''));
 
 function groupPath(vertices) {
     if (vertices.length <= 2) {
@@ -253,7 +310,7 @@ function force_graph(svg, graph_data, hyperedges) {
     const link = svg_g.append("g")
         .attr("id", id_suffix + "links")
         .attr("stroke", "#000000")
-        .attr("stroke-opacity", 0.1)
+        .attr("stroke-opacity", 0.4)
         .selectAll("line")
         .data(links)
         .join("line")
@@ -383,6 +440,90 @@ function responsivefy(svg) {
         var targetWidth = parseInt(container.style("width"));
         svg.attr("width", targetWidth);
         svg.attr("height", Math.round(targetWidth / aspect));
+    }
+}
+
+function draw_barcode(svg, data) {
+    try {
+        // Read precomputed barcodes in CSV format
+        // let data = await d3.csv("data/barcode.csv");
+        console.log(data)
+        // Convert strings to numeric data type
+        for (let d of data) {
+            d.birth = parseFloat(d.birth);
+            d.death = parseFloat(d.death);
+            d.dim = 0;
+        }
+
+        // Create the SVG element that contains the persistence barcode. The barcode is created using rect elements
+        // let barcode_svg = d3.select("#barcode-svg");
+        let barcode_rects = svg.selectAll("rect");
+
+        let barcode_width = 5;
+        svg.attr("viewBox", "0 0 100 100")
+        // Create the scale for length, y-coordinate of barcodes
+        let x_min = 5;
+        let x_max = 95;
+        let rect_xscale = d3.scaleLinear().domain([0, d3.max(data.map(d => d.death))]).range([x_min, x_max]).nice();
+
+        let barcode_yoffset = 15;
+        let barcode_xoffset = 0;
+
+        // Bind data to create the barcodes
+        barcode_rects.data(data)
+            .enter()
+            .append("rect")
+            .attr("width", d => barcode_xoffset + rect_xscale(d.death - d.birth))
+            .attr("height", barcode_width * 0.95)
+            .attr("x", d => rect_xscale(d.birth))
+            .attr("y", (d, i) => barcode_yoffset + barcode_width * i)
+            .attr("fill", "#7bc6d6")
+            .attr("class", d => "barcode-rect hover-darken" + d.dim.toString())
+            .classed("hover-darken", true);
+
+        barcode_rects.exit().remove();
+
+        let x_axis = d3.axisBottom()
+            .scale(rect_xscale);
+
+        //Append group and insert axis
+        // barcode_svg.append("g")
+        //     .classed("barcode-axis", true)
+        // .call(x_axis);
+
+        let slider = svg.selectAll("rect.slider")
+            .data([1])
+            .enter()
+            .append("rect")
+            .attr("width", 2)
+            .attr("height", 80)
+            .attr("x", 20)
+            .attr("y", 5)
+            .attr("class", "slider hover-darken");
+
+        let drag = d3.drag()
+            .on("drag", dragged);
+        // .on("start", dragstarted)
+        // .on("end", dragended);
+
+        slider.call(drag);
+
+        function dragged(d) {
+            d3.select(this).attr("x", d.x = clamp(d3.event.x, 5, 95));
+            // let destination_position = d3.event.x - d3.select(this).attr("width") / 2;
+            // d3.select(this).attr("x", clamp(destination_position, 5, 90));
+        }
+
+        function dragstarted(d) {
+            d3.select(this).raise();
+        }
+
+        function dragended(d) {
+            d3.select(this).attr("stroke", null);
+        }
+
+    } catch (e) {
+        console.log(e);
     }
 }
 
