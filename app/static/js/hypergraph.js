@@ -253,7 +253,8 @@ class Hypergraph{
     toggle_hgraph_labels(){
         try {
             // Set show-labels to true at beginning
-            d3.select("#hgraph-labels").property("checked", true);
+            // d3.select("#hgraph-labels").property("checked", true);
+            update_labels();
             d3.select("#hgraph-labels").on("change", update_labels);
     
             function update_labels() {

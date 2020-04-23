@@ -1,5 +1,5 @@
 class Linegraph{
-    constructor(line_data, simplified_hypergraph, svg_id, variant="Original Line Graph"){
+    constructor(line_data, simplified_hypergraph, svg_id, variant, weight){
         this.nodes = [...line_data.nodes];
         this.links = [...line_data.links];
         this.simplified_hypergraph = simplified_hypergraph;
@@ -36,12 +36,10 @@ class Linegraph{
         this.nodes_group = this.svg_g.append("g")
             .attr("id", "line_nodes_group");
 
-        
-
-        this.threshold = 0;
-        this.weight = d3.select('input[name="edge-type"]:checked').node().value;
+        this.weight = weight;
+        console.log(this.weight)
         this.edge_scale = d3.scaleLinear()
-            .domain(d3.extent(this.links.map(d => parseFloat(d[this.weight]))))
+            .domain(d3.extent(this.links.map(d => parseFloat(d[this.weight].value))))
             .range([1, 10]);
 
         this.draw_linegraph();
@@ -93,7 +91,7 @@ class Linegraph{
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
 
-            .attr("stroke-width", d => this.edge_scale(parseFloat(d[this.weight])))
+            .attr("stroke-width", d => this.edge_scale(parseFloat(d[this.weight].value)))
             .attr("id", d => this.svg_id+"-edge-"+d.source.id+"-"+d.target.id)
             .attr("class", "line_edge")
             .attr("x1", d => d.source.x)
@@ -159,7 +157,7 @@ class Linegraph{
         let cc_list;
 
         if(edgeid){
-            cc_list = this.links_dict[edgeid].cc_list;
+            cc_list = this.links_dict[edgeid][this.weight].cc_list;
             this.links.forEach(link=>{
                 let source_cc_idx = this.find_cc_idx(link.source.id, cc_list);
                 let target_cc_idx = this.find_cc_idx(link.target.id, cc_list);
@@ -213,8 +211,8 @@ class Linegraph{
         let edge_id = bar.edge.source+"-"+bar.edge.target;
         console.log(edge_id)
         let persistence = bar.death - bar.birth;
-        let source_cc = this.links_dict[edge_id].nodes_subsets.source_cc;
-        let target_cc = this.links_dict[edge_id].nodes_subsets.target_cc;
+        let source_cc = this.links_dict[edge_id][this.weight].nodes_subsets.source_cc;
+        let target_cc = this.links_dict[edge_id][this.weight].nodes_subsets.target_cc;
         console.log(source_cc, target_cc)
         source_cc.forEach(snode=>{
             target_cc.forEach(tnode=>{

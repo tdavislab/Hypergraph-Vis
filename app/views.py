@@ -12,6 +12,7 @@ import networkx as nx
 from tqdm import tqdm
 from os import path
 import os
+import copy
 
 
 def process_graph_edges(edge_str: str):
@@ -70,34 +71,28 @@ def collapse_hypergraph(hgraph):
     chgraph = hgraph.collapse_edges()
     chgraph = chgraph.collapse_nodes()
     chgraph = chgraph.incidence_dict
-    hedges_map = {}
-    vertices_map = {}
-    hedges_list = []
-    vertices_list = []
-    hedge_idx = 0
-    vertex_idx = 0
     chgraph_new = {}
     for hkey in chgraph:
         hedges = list(hkey)
-        if hedges not in hedges_list:
-            hedges_list.append(hedges)
-            hkey_new = 'che'+str(hedge_idx)
-            hedges_map[hkey_new] = hedges
-            hedge_idx += 1
+        if len(hedges) > 1:
+            hkey_new = ""
+            for he in hedges:
+                hkey_new += he + "|"
+        else:
+            hkey_new = hedges[0]
         vertices = [list(v) for  v in chgraph[hkey]]
         vertices_new = []
-        for v in vertices:
-            if v not in vertices_list:
-                vertices_list.append(v)
-                vkey_new = 'cv'+str(vertex_idx)
-                vertices_map[tuple(v)] = vkey_new
-                vertex_idx += 1
-            vertices_new.append(vertices_map[tuple(v)])
+        for v_list in vertices:
+            if len(v_list) > 1:
+                v_new = ""
+                for v in v_list:
+                    v_new += v + "|"
+            else:
+                v_new = v_list[0]
+            vertices_new.append(v_new)
         chgraph_new[hkey_new] = vertices_new
-    vertices_map = {vkey:list(vertices) for vertices, vkey in vertices_map.items()}
-    id_map = {'vertices':vertices_map, 'hedges':hedges_map}
-    return hnx.Hypergraph(chgraph_new), id_map
-
+    return hnx.Hypergraph(chgraph_new)
+    
 def process_hypergraph_from_csv(graph_file: str):
     hgraph = {}
 
@@ -124,7 +119,7 @@ def convert_to_line_graph(hgraph_dict, s=1):
     vertices_list = []
 
     non_singletons = []
-    non_singleton_vertices = []
+    # non_singleton_vertices = []
 
     # For all pairs of edges (e1, e2), add edges such that
     # intersection(e1, e2) is not empty
@@ -140,7 +135,7 @@ def convert_to_line_graph(hgraph_dict, s=1):
                 union_size = len(set(vertices1) | set(vertices2))
                 jaccard_index = intersection_size / union_size
                 if intersection_size >= s:
-                    line_graph.add_edge(node1, node2, intersection_size=str(intersection_size), jaccard_index=str(jaccard_index))
+                    line_graph.add_edge(node1, node2, intersection_size={'value':str(intersection_size)}, jaccard_index={'value':str(jaccard_index)})
                     non_singletons.append(node1)
                     non_singletons.append(node2)
                     non_singletons += (list(set(vertices1)) + list(set(vertices2)))
@@ -174,21 +169,23 @@ def compute_barcode(graph_data, weight_col='intersection_size'):
     """
     nodes = graph_data['nodes']
     links = graph_data['links']
+    # nodes = [copy.deepcopy(node) for node in graph_data['nodes']]
+    # links = [copy.deepcopy(link) for link in graph_data['links']]
     components = []
     barcode = []
     for node in nodes:
         components.append([node['id']])
     for link in links:
-        link['intersection_size'] = int(link['intersection_size'])
-        link['jaccard_index'] = float(link['jaccard_index'])
-    links = sorted(links, key=lambda item: 1 / item[weight_col])
+        link['intersection_size']['value'] = int(link['intersection_size']['value'])
+        link['jaccard_index']['value'] = float(link['jaccard_index']['value'])
+    links = sorted(links, key=lambda item: 1 / item[weight_col]['value'])
     for link in links:
         source_id = link['source']
         target_id = link['target']
         if link[weight_col] == 0:
             weight = np.inf
         else:
-            weight = 1 / link[weight_col]
+            weight = 1 / link[weight_col]['value']
         source_cc_idx = find_cc_index(components, source_id)
         target_cc_idx = find_cc_index(components, target_id)
         if source_cc_idx != target_cc_idx:
@@ -196,8 +193,8 @@ def compute_barcode(graph_data, weight_col='intersection_size'):
             target_cc = components[target_cc_idx]
             components = [components[i] for i in range(len(components)) if i not in [source_cc_idx, target_cc_idx]]
             components.append(source_cc + target_cc)
-            link['nodes_subsets'] = {"source_cc": source_cc, "target_cc": target_cc}
-            link['cc_list'] = components.copy()
+            link[weight_col]['nodes_subsets'] = {"source_cc": source_cc, "target_cc": target_cc}
+            link[weight_col]['cc_list'] = components.copy()
             barcode.append({'birth': 0, 'death': weight, 'edge': link})
     # In the end, there might be more than one independent connected components with death=Infinite 
     for cc in components: 
@@ -254,6 +251,8 @@ def compute_graphs(config):
 
     barcode_is = compute_barcode(lgraph)
     dual_barcode_is = compute_barcode(dual_lgraph)
+    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is"+f_hgraph+".json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is"+f_hgraph+".json"))
 
     barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index") # ji: weight = 1/jaccard_index
     dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
@@ -261,8 +260,7 @@ def compute_graphs(config):
     write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph"+f_hgraph+".json"))
     write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph"+f_hgraph+".json"))
 
-    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is"+f_hgraph+".json"))
-    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is"+f_hgraph+".json"))
+    
     write_json_file(barcode_ji, path.join(APP_STATIC,"uploads/current_barcode_ji"+f_hgraph+".json"))
     write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji"+f_hgraph+".json"))
     if variant == "Dual Line Graph":
@@ -295,7 +293,7 @@ def import_file():
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'w') as f:
         f.write(jsdata)
     hgraph, label_map = process_hypergraph(jsdata)
-    chgraph, id_map = collapse_hypergraph(hgraph)
+    chgraph = collapse_hypergraph(hgraph)
 
     lgraph = convert_to_line_graph(chgraph.incidence_dict)
     dual_lgraph = compute_dual_line_graph(chgraph)
@@ -309,6 +307,8 @@ def import_file():
     
     barcode_is = compute_barcode(lgraph) # is: weight = 1/intersection_size
     dual_barcode_is = compute_barcode(dual_lgraph)
+    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is.json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is.json"))
 
     barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index") # ji: weight = 1/jaccard_index
     dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
@@ -319,15 +319,13 @@ def import_file():
 
     write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
     write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
-    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is.json"))
-    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is.json"))
+    
     write_json_file(barcode_ji, path.join(APP_STATIC,"uploads/current_barcode_ji.json"))
     write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji.json"))
     write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
-    write_json_file(id_map, path.join(APP_STATIC,"uploads/current_id_map.json"))
     write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
 
-    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, id_map=id_map)
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map)
 
 @app.route('/reload_graphs', methods=['POST', 'GET'])
 def reload_graphs():
@@ -358,22 +356,22 @@ def reload_graphs():
 
     with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
         label_map = json.load(f)
-    with open(path.join(APP_STATIC,"uploads/current_id_map.json")) as f:
-        id_map = json.load(f)
+
     with open(path.join(APP_STATIC,"uploads/current_id2color.json")) as f:
         id2color = json.load(f)
-    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id_map=id_map, id2color=id2color)
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id2color=id2color)
     
 @app.route('/expanded_hgraph', methods=['POST', 'GET'])
 def compute_expanded_hgraph():
     jsdata = json.loads(request.get_data())
     print(jsdata)
-    variant = jsdata['variant']
+    variant = jsdata['config']['variant']
+    weight_type = jsdata['config']['weight_type']
     hyper_data = jsdata['cc_dict']
-    source_id = jsdata['edge']['source']
-    target_id = jsdata['edge']['target']
-    source_cc = jsdata['edge']['nodes_subsets']['source_cc']
-    target_cc = jsdata['edge']['nodes_subsets']['target_cc']
+    # source_id = jsdata['edge']['source']
+    # target_id = jsdata['edge']['target']
+    source_cc = jsdata['edge'][weight_type]['nodes_subsets']['source_cc']
+    target_cc = jsdata['edge'][weight_type]['nodes_subsets']['target_cc']
     hyperedges2vertices = jsdata['hyperedges2vertices']
     for cc_key in hyper_data:
         hyperedge_keys = cc_key.split("|")
@@ -416,8 +414,9 @@ def compute_simplified_hgraph():
     hgraph = hnx.Hypergraph(hyper_data)
     if variant == "Dual Line Graph":
         hgraph = hgraph.dual()
-    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
-    return jsonify(hyper_data=hgraph)
+    chgraph = collapse_hypergraph(hgraph)
+    chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    return jsonify(hyper_data=chgraph)
 
 @app.route('/id2color', methods=['POST', 'GET'])
 def save_id2color():
