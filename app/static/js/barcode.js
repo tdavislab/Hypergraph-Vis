@@ -35,7 +35,7 @@ class Barcode{
         })
 
         this.threshold = 0;
-        this.cc_dict = this.linegraph.graph_contraction(undefined)
+        this.cc_dict = this.linegraph.get_cc_dict(undefined);
         // console.log(this.connected_components)
         // this.linegraph.compute_simplified_hypergraph(connected_components);
     }

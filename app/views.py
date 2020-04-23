@@ -403,8 +403,13 @@ def compute_expanded_hgraph():
     hgraph = hnx.Hypergraph(hyper_data)
     if variant == "Dual Line Graph":
         hgraph = hgraph.dual()
-    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
-    return jsonify(hyper_data=hgraph, cc_dict=hyper_data)
+    chgraph = collapse_hypergraph(hgraph)
+    if variant == "Dual Line Graph":
+        lgraph = compute_dual_line_graph(chgraph)
+    else:
+        lgraph = convert_to_line_graph(chgraph.incidence_dict)
+    chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph)
 
 @app.route('/simplified_hgraph', methods=['POST', 'GET'])
 def compute_simplified_hgraph():
@@ -415,8 +420,12 @@ def compute_simplified_hgraph():
     if variant == "Dual Line Graph":
         hgraph = hgraph.dual()
     chgraph = collapse_hypergraph(hgraph)
+    if variant == "Dual Line Graph":
+        lgraph = compute_dual_line_graph(chgraph)
+    else:
+        lgraph = convert_to_line_graph(chgraph.incidence_dict)
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
-    return jsonify(hyper_data=chgraph)
+    return jsonify(hyper_data=chgraph, line_data=lgraph)
 
 @app.route('/id2color', methods=['POST', 'GET'])
 def save_id2color():
