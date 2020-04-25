@@ -1,9 +1,10 @@
 class Hypergraph{
-    constructor(hyper_data, svg_id, original_hgraph=undefined){
+    constructor(hyper_data, svg_id, config, original_hgraph=undefined){
         this.nodes = hyper_data.nodes;
         this.links = hyper_data.links;
         this.svg_id = svg_id;
         this.original_hgraph = original_hgraph;
+        this.config = config;
 
         console.log(this.links, this.nodes)
 
@@ -348,33 +349,69 @@ class Hypergraph{
                 }
             })
 
-            d3.select("#linegraph-svg").selectAll("circle").classed("faded", d => {
-                if(he_list.indexOf(d.id.split("|")[0]) != -1){
-                    return false;
-                } else { return true; }
-            });
-            d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
-                if(he_list.indexOf(d.id.split("|")[0]) != -1){
-                    return false;
-                } else { return true; }
-            });
-            d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
-                if((he_list.indexOf(d.source.id.split("|")[0]) != -1) && (he_list.indexOf(d.target.id.split("|")[0]) != -1)){
-                    return false;
-                } else { return true; }
-            });
-            d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", d => {
-                if(d.id.split("|").indexOf(he_list[0]) != -1){
-                    return false;
-                } else { return true; }
-            });
-            d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
-                if(he_list.indexOf(d.id.split("|")[0]) != -1){
-                    return false;
-                } else { return true; }
-            });
-            // At most one node in simplified linegraph will be selected, so all edges will be faded
-            d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", true);
+            if(that.config.variant === "Original Line Graph"){
+                d3.select("#linegraph-svg").selectAll("circle").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
+                    if((he_list.indexOf(d.source.id.split("|")[0]) != -1) && (he_list.indexOf(d.target.id.split("|")[0]) != -1)){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", d => {
+                    if(d.id.split("|").indexOf(he_list[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                // At most one node in simplified linegraph will be selected, so all edges will be faded
+                d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", true);
+            } else {
+                let v_list = [];
+                d3.select("#linegraph-svg").selectAll("circle").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+                d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
+                    if(v_list.indexOf(d.source.id)!=-1 && v_list.indexOf(d.target.id)!=-1){
+                        return false;
+                    }
+                    return true;
+                });
+                let s_v_list = [];
+                d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            s_v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+                d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", d => {
+                    if(s_v_list.indexOf(d.source.id)!=-1 && s_v_list.indexOf(d.target.id)!=-1){
+                        return false;
+                    }
+                    return true;
+                });
+            }
+            
 
             d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", false);
         }
@@ -417,11 +454,10 @@ class Hypergraph{
     }
 
     cancel_faded(){
-        // if(this.original_hgraph){
-            d3.select("#hypergraph-svg").selectAll("path").classed("faded", false);
-            d3.select("#hypergraph-svg").selectAll("circle").classed("faded", false);
-            d3.select("#hypergraph-svg").selectAll("text").classed("faded", false);
-        // }
+        d3.select("#hypergraph-svg").selectAll("path").classed("faded", false);
+        d3.select("#hypergraph-svg").selectAll("circle").classed("faded", false);
+        d3.select("#hypergraph-svg").selectAll("text").classed("faded", false);
+
         d3.select("#simplified-hypergraph-svg").selectAll("path").classed("faded", false);
         d3.select("#simplified-hypergraph-svg").selectAll("circle").classed("faded", false);
         d3.select("#simplified-hypergraph-svg").selectAll("text").classed("faded", false);
