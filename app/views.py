@@ -265,10 +265,19 @@ def compute_graphs(config):
     write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji"+f_hgraph+".json"))
     if variant == "Dual Line Graph":
         lgraph = dual_lgraph
-    if weight_type == "intersection_size":
-        barcode = barcode_is
-    elif weight_type == "jaccard_index":
-        barcode = barcode_ji
+        if weight_type == "intersection_size":
+            with open(path.join(APP_STATIC,"uploads/current_dual_barcode_is"+f_hgraph+".json")) as f:
+                barcode = json.load(f)
+        elif weight_type == "jaccard_index":
+            with open(path.join(APP_STATIC,"uploads/current_dual_barcode_ji"+f_hgraph+".json")) as f:
+                barcode = json.load(f)
+    else:
+        if weight_type == "intersection_size":
+            with open(path.join(APP_STATIC,"uploads/current_barcode_is"+f_hgraph+".json")) as f:
+                barcode = json.load(f)
+        elif weight_type == "jaccard_index":
+            with open(path.join(APP_STATIC,"uploads/current_barcode_ji"+f_hgraph+".json")) as f:
+                barcode = json.load(f)
     assign_hgraph_singletons(hgraph, lgraph['singletons'])
 
     return hgraph, lgraph, barcode
@@ -414,6 +423,7 @@ def hgraph_expansion():
     else:
         lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    assign_hgraph_singletons(chgraph, lgraph['singletons'])
     cc_removed = cc_key
     return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph, cc_id=[cc1_id, cc2_id, cc_removed])
 
@@ -452,23 +462,27 @@ def undo_hgraph_expansion():
     else:
         lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    assign_hgraph_singletons(chgraph, lgraph['singletons'])
     return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph)    
 
 
 @app.route('/simplified_hgraph', methods=['POST', 'GET'])
 def compute_simplified_hgraph():
     jsdata = json.loads(request.get_data())
-    variant = jsdata['variant']
+    variant = jsdata['config']['variant']
+    s = int(jsdata['config']['s'])
     hyper_data = jsdata['cc_dict']
     hgraph = hnx.Hypergraph(hyper_data)
     if variant == "Dual Line Graph":
         hgraph = hgraph.dual()
-    chgraph = collapse_hypergraph(hgraph)
+    # chgraph = collapse_hypergraph(hgraph)
+    chgraph = hgraph
     if variant == "Dual Line Graph":
-        lgraph = compute_dual_line_graph(chgraph)
+        lgraph = compute_dual_line_graph(chgraph, s=s)
     else:
-        lgraph = convert_to_line_graph(chgraph.incidence_dict)
+        lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    assign_hgraph_singletons(chgraph, lgraph['singletons'])
     return jsonify(hyper_data=chgraph, line_data=lgraph)
 
 @app.route('/id2color', methods=['POST', 'GET'])

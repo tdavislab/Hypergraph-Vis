@@ -155,16 +155,9 @@ function load_data(data, config) {
                         $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
                         simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", hypergraph); 
                         simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict);
-                        // console.log(cc_id)
-
-                        // simplified_hypergraph.recover_graph_coordinates(hgraph_coordinates)
 
                         d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[|]/g,"")).classed("clicked", true);
-                        // .style("stroke","gold")
                         d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[|]/g,"")).classed("clicked", true);
-                        // d3.select("#simplified-hypergraph-hull-"+cc_id[0].replace(/[|]/g,"")).style("opacity",0.8)
-                        // d3.select("#simplified-hypergraph-hull-"+cc_id[1].replace(/[|]/g,"")).style("opacity",0.8)
-
                     },
                     error: function (error) {
                         console.log("error",error);
@@ -175,8 +168,8 @@ function load_data(data, config) {
         } else{
             // barcode.click_id = undefined;
             if(i === barcode.expanded_bars[barcode.expanded_bars.length-1]){
-                barcode.expanded_bars.pop();
                 d3.select("#barcode"+i).classed("hover-light", false);
+                barcode.expanded_bars.pop();
                 d3.select("#barcode"+barcode.expanded_bars[barcode.expanded_bars.length-1]).classed("unclickable", false);
                 // undo expanding
                 $.ajax({
@@ -209,14 +202,13 @@ function load_data(data, config) {
                         $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
                         simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", hypergraph); 
                         simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict);
-    
-                        // simplified_hypergraph.recover_graph_coordinates(hgraph_coordinates)
-    
-                        // d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[|]/g,"")).style("stroke","red")
-                        // d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[|]/g,"")).style("stroke","red")
-                        // d3.select("#simplified-hypergraph-hull-"+cc_id[0].replace(/[|]/g,"")).style("opacity",0.8)
-                        // d3.select("#simplified-hypergraph-hull-"+cc_id[1].replace(/[|]/g,"")).style("opacity",0.8)
-    
+
+                        if(barcode.expanded_bars.length > 0){
+                            let idx = barcode.expanded_bars[barcode.expanded_bars.length-1];
+                            let cc_id = barcode.expanded_bars_dict[idx];
+                            d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[|]/g,"")).classed("clicked", true);
+                            d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[|]/g,"")).classed("clicked", true);
+                        }
                     },
                     error: function (error) {
                         console.log("error",error);
@@ -253,17 +245,20 @@ function load_data(data, config) {
         let edgeid = barcode.extract_edgeid(threshold);
         barcode.threshold = threshold;
         barcode.expanded_bars = [];
+        barcode.expanded_bars_dict = {};
         d3.select("#barcode-threshold").html("Current threshold: "+Math.round(threshold*1000)/1000);
+        d3.selectAll(".barcode-rect-dim0").classed("hover-light", false).classed("unclickable", false);
         let cc_dict = linegraph.get_cc_dict(edgeid);
         barcode.cc_dict = cc_dict;
         hypergraph.cancel_faded();
         $.ajax({
             type: "POST",
             url: "/simplified_hgraph",
-            data: JSON.stringify({'cc_dict':cc_dict, 'variant':config.variant}),
+            data: JSON.stringify({'cc_dict':cc_dict, 'config':config}),
             dataType:'text',
             success: function (response) {
                 response = JSON.parse(response);
+                console.log(response)
                 let hgraph = response.hyper_data;
                 let lgraph = response.line_data;
                 // assign colors

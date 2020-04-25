@@ -127,6 +127,11 @@ path.highlighted {
     opacity: 1;
 }
 
+.vertex_node.highlighted {
+    /* opacity: 0.5; */
+    fill: whitesmoke;
+}
+
 path.grey_out {
     stroke: lightgrey;
     fill: lightgrey;

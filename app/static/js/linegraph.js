@@ -108,44 +108,10 @@ class Linegraph{
             .attr("class", "line_node")
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y)
-            .style("opacity",0)
-            // .on("mouseover", d => {
-            //     if(!this.click_id){
-            //         d3.select("#"+this.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
-            //         let label_list = this.nodes_dict[d.id].label.split("|")
-            //         let div_text = '';
-            //         label_list.forEach(label=>{ div_text += label+"<br> "; })
-            //         let div = d3.select("#help-tip")
-            //         div.transition().duration(200).style("opacity", 0.9);
-            //         div.html("<h6>Selected Hyperedges</h6>"+div_text);
-            //     }
-                
-            // })
-            // .on("mouseout", d=>{
-            //     if(!this.click_id){
-            //         d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
-            //         d3.select("#help-tip").transition().duration(200).style("opacity", 0);
-            //     } 
-            // })
-            // .on("click", d => {
-            //     if(this.click_id != d.id){
-            //         this.click_id = d.id;
-            //         click_node(d.id)
-            //     } else {
-            //         this.click_id = undefined;
-            //         this.cancel_faded();
-                    
-            //     }     
-            // });
-
-        ng.append("g")
-            .attr("class", "pie-group")
-            .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
-            .attr("transform",d => {
-            return "translate("+d.x+","+d.y+")"})
+            // .style("opacity",0)
             .on("mouseover", d => {
                 if(!this.click_id){
-                    d3.select("#"+this.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
+                    d3.select("#"+this.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
                     let label_list = this.nodes_dict[d.id].label.split("|")
                     let div_text = '';
                     label_list.forEach(label=>{ div_text += label+"<br> "; })
@@ -157,7 +123,7 @@ class Linegraph{
             })
             .on("mouseout", d=>{
                 if(!this.click_id){
-                    d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
+                    d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
                     d3.select("#help-tip").transition().duration(200).style("opacity", 0);
                 } 
             })
@@ -170,22 +136,56 @@ class Linegraph{
                     this.cancel_faded();
                     
                 }     
-            })
+            });
 
-            .selectAll("path")
-            .data(d => {
-            // arc = d3.arc()
-                // .innerRadius(0)
-                // .outerRadius(this.get_node_radius(d.id));
-            return pie(prepare_pie_data(d.id));
-        })
+        // ng.append("g")
+        //     .attr("class", "pie-group")
+        //     .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
+        //     .attr("transform",d => {
+        //     return "translate("+d.x+","+d.y+")"})
+        //     .on("mouseover", d => {
+        //         if(!this.click_id){
+        //             d3.select("#"+this.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
+        //             let label_list = this.nodes_dict[d.id].label.split("|")
+        //             let div_text = '';
+        //             label_list.forEach(label=>{ div_text += label+"<br> "; })
+        //             let div = d3.select("#help-tip")
+        //             div.transition().duration(200).style("opacity", 0.9);
+        //             div.html("<h6>Selected Hyperedges</h6>"+div_text);
+        //         }
+                
+        //     })
+        //     .on("mouseout", d=>{
+        //         if(!this.click_id){
+        //             d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
+        //             d3.select("#help-tip").transition().duration(200).style("opacity", 0);
+        //         } 
+        //     })
+        //     .on("click", d => {
+        //         if(this.click_id != d.id){
+        //             this.click_id = d.id;
+        //             click_node(d.id)
+        //         } else {
+        //             this.click_id = undefined;
+        //             this.cancel_faded();
+                    
+        //         }     
+        //     })
 
-            .enter()
-            .append("path")
-            .attr("d", arc)
-            .attr("fill", d => d.data.color)
-            .attr("stroke", "whitesmoke")
-            .attr("stroke-width", "2px")
+        //     .selectAll("path")
+        //     .data(d => {
+        //     // arc = d3.arc()
+        //         // .innerRadius(0)
+        //         // .outerRadius(this.get_node_radius(d.id));
+        //     return pie(prepare_pie_data(d.id));
+        // })
+
+            // .enter()
+            // .append("path")
+            // .attr("d", arc)
+            // .attr("fill", d => d.data.color)
+            // .attr("stroke", "whitesmoke")
+            // .attr("stroke-width", "2px")
         
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
