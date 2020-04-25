@@ -36,6 +36,8 @@ class Barcode{
 
         this.threshold = 0;
         this.cc_dict = this.linegraph.get_cc_dict(undefined);
+        this.expanded_bars = [];
+        this.expanded_bars_dict = {};
         // console.log(this.connected_components)
         // this.linegraph.compute_simplified_hypergraph(connected_components);
     }
@@ -71,7 +73,18 @@ class Barcode{
             .attr('x', this.svg_margin.left)
             .attr('y', (d, i)=>this.svg_margin.top*2 + i*barcode_height)
             .attr("class", "barcode-rect-dim0")
-            .classed("hover-darken", true)
+            .attr("id", (d,i)=>"barcode"+i)
+            .on("mouseover", (d,i)=>{
+                if(this.expanded_bars.indexOf(i)===-1){
+                    d3.select("#barcode"+i).classed("hover-light", true);
+                }
+            })
+            .on("mouseout", (d,i)=>{
+                if(this.expanded_bars.indexOf(i)===-1){
+                    d3.select("#barcode"+i).classed("hover-light", false);
+                }
+            })
+            // .classed("hover-darken", true)
             // .on("click", d=>{
             //     console.log(d)
             //     // let edge_id = d.edge.source+"-"+d.edge.target;
@@ -111,12 +124,16 @@ class Barcode{
     extract_edgeid(threshold){
         // find out the longest bar with length < threshold
         let edgeid;
+        d3.selectAll(".barcode-rect-dim0").classed("barcode-highlighted",false)
         for(let i=0; i<this.barcode.length; i++){
             let bar = this.barcode[i];
             if(bar.death > 0){
                 let next_bar = this.barcode[i+1];
                 let bar_length = bar.death - bar.birth;
-                let next_bar_length = next_bar.death - next_bar.birth;
+                let next_bar_length = next_bar.death - next_bar.birth; 
+                if(bar_length <= threshold){
+                    d3.select("#barcode"+i).classed("barcode-highlighted",true);
+                }               
                 if(bar_length <= threshold && next_bar_length > threshold){
                     edgeid = bar.edge.source+"-"+bar.edge.target;
                     break;

@@ -70,13 +70,68 @@ class Hypergraph{
         return this.radius_scale(n_list.length);
     }
 
+    get_graph_coordinates(){
+        let coordinates = {};
+        this.nodes.forEach(node=>{
+            coordinates[node.id] = {"x":node.x, "y":node.y}
+            // console.log(node.x)
+            // this.svg_id+"-hull-"+d.key.replace(/[|]/g,"")
+            if(node.bipartite===1){
+                coordinates[node.id].hull = d3.select("#"+this.svg_id+"-hull-"+node.id.replace(/[|]/g,"")).attr("d")
+            }
+        })
+        return coordinates;
+    }
+
+    recover_graph_coordinates(coordinates){
+        // this.nodes.forEach(node=>{
+        //     if(coordinates[node.id]){
+        //         // d3.select("#"+this.svg+"-node-"+node.id.replace(/[|]/g,""))
+        //     }
+        // })
+        this.nodes_group.selectAll("g")
+            .attr("transform", d=>{
+                if(coordinates[d.id]){
+                    d.x = coordinates[d.id].x;
+                    d.y = coordinates[d.id].y;
+                    // return "translate("+coordinates[d.id].x+","+coordinates[d.id].y+")";
+                } 
+                // else{
+                    return "translate("+d.x+","+d.y+")";
+                // }
+            });
+        this.links_group.selectAll("line")
+            .attr("x1", d=>d.source.x)
+            .attr("y1", d=>d.source.y)
+            .attr("x2", d=>d.target.x)
+            .attr("y2", d=>d.target.y);
+
+        let groups = d3.nest()
+            .key(d => d.source.id)
+            .rollup(d => d.map(node => [node.target.x, node.target.y]))
+            .entries(this.links);
+        let groups_dict = {};
+        groups.forEach(g=>{
+            groups_dict[g.key] = g.value;
+        })
+        this.svg.select("#hull-group").selectAll("path").attr("d", d=>{
+            if(coordinates[d.key]){
+                return coordinates[d.key].hull
+            } else {
+                return this.groupPath(groups_dict[d.key])
+
+            }
+        });
+        
+    }
+
     draw_hypergraph(){
         // let node_radius = 8;
         let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
 
         let simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).id(d => d.id))
-            .force("charge", d3.forceManyBody(-200))
+            .force("charge", d3.forceManyBody(-500))
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2))
             .force("x", d3.forceX().strength(0.02))
             .force("y", d3.forceY().strength(0.02))
@@ -145,6 +200,8 @@ class Hypergraph{
             .rollup(d => d.map(node => [node.target.x, node.target.y]))
             .entries(this.links);
 
+        console.log("group", groups)
+
         this.svg.select("g#hull-group").remove();
 
         let hulls = this.svg.select("g").insert("g", ":first-child")
@@ -169,16 +226,8 @@ class Hypergraph{
                     return true;
                 } else { return false; }
             })
-            .on("mouseover", d => {
-                if(!this.click_id){
-                    mouseover(d.key);
-                }
-            })
-            .on("mouseout",d => {
-                if(!this.click_id){
-                    mouseout(d.key);
-                } 
-            })
+            .on("mouseover", d => mouseover(d.key))
+            .on("mouseout",d => mouseout(d.key))
             .on("click", d => {
                 // if(this.original_hgraph ){
                     if(this.click_id != d.key){
@@ -227,18 +276,22 @@ class Hypergraph{
         let that = this;
 
         function mouseover(key) {
-            d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", true);
-            let label_list = that.nodes_dict[key].label.split("|")
-            let div_text = '';
-            label_list.forEach(label=>{ div_text += label+"<br> "; })
-            let div = d3.select("#help-tip")
-            div.transition().duration(200).style("opacity", 0.9);
-            div.html("<h6>Selected Hyperedges</h6>"+div_text);
+            if(!that.click_id){
+                d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", true);
+                let label_list = that.nodes_dict[key].label.split("|")
+                let div_text = '';
+                label_list.forEach(label=>{ div_text += label+"<br> "; })
+                let div = d3.select("#help-tip")
+                div.transition().duration(200).style("opacity", 0.9);
+                div.html("<h6>Selected Hyperedges</h6>"+div_text);
+            }
         }
 
         function mouseout(key) {
-            d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", false);
-            d3.select("#help-tip").transition().duration(200).style("opacity", 0);
+            if(!that.click_id){
+                d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", false);
+                d3.select("#help-tip").transition().duration(200).style("opacity", 0);
+            }
         }
 
         function click(key) {
@@ -292,6 +345,11 @@ class Hypergraph{
                     return false;
                 } else { return true; }
             });
+            d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                    return false;
+                } else { return true; }
+            });
             d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
                 if((he_list.indexOf(d.source.id.split("|")[0]) != -1) && (he_list.indexOf(d.target.id.split("|")[0]) != -1)){
                     return false;
@@ -299,6 +357,11 @@ class Hypergraph{
             });
             d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", d => {
                 if(d.id.split("|").indexOf(he_list[0]) != -1){
+                    return false;
+                } else { return true; }
+            });
+            d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                if(he_list.indexOf(d.id.split("|")[0]) != -1){
                     return false;
                 } else { return true; }
             });
@@ -328,6 +391,9 @@ class Hypergraph{
         d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", false);
         d3.select("#linegraph-svg").selectAll("line").classed("faded", false);
         d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", false);
+
+        d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", false);
+        d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", false);
     }
 
     toggle_hgraph_labels(){

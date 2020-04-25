@@ -57,7 +57,7 @@ html, body {
 }
 
 .control-container {
-    padding: 10;
+    padding: 10px;
 }
 
 .dropdown-container {
@@ -100,7 +100,7 @@ html, body {
   }
 
   .block_body-inner {
-    padding:10px 20px;
+    padding:5px 20px;
   }
 
   .block-inner-group {
@@ -112,5 +112,5 @@ html, body {
   .group-title {
     font-family: sans-serif;
     font-weight: bold;
-    margin-bottom: 2px;
+    /* margin-bottom: 2px; */
   }

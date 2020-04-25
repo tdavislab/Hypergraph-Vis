@@ -11,7 +11,8 @@ h4 {
 }
 
 .barcode-rect-dim0 {
-    fill: #7bc6d6;
+    /* fill: #7bc6d6; */
+    fill: #87c8ea;
     stroke: grey;
 }
 
@@ -26,12 +27,25 @@ h4 {
 
 .hover-darken {
     opacity: 1;
-    /* transition: all 0.1s ease; */
 }
 
 .hover-darken:hover {
     opacity: 0.5;
-    /*transition: 0.3s ease all;*/
+}
+
+.barcode-highlighted {
+    fill:#90E2F0;
+    opacity: 0.8;
+}
+
+.hover-light {
+    fill: #F09E90;
+    /* fill: lightgrey; */
+    opacity: 0.6;
+}
+
+.unclickable {
+    opacity: 0.3;
 }
 
 .line_node {
@@ -75,6 +89,19 @@ circle.faded {
 
 line.faded {
     opacity: 0.1;
+}
+
+.clicked {
+    stroke: gold;
+    stroke-width: 6px;
+}
+
+.pie-group.faded {
+    opacity: 0.1;
+}
+
+.pie-group.highlighted {
+    opacity: 0.5;
 }
 
 circle.grey_out {

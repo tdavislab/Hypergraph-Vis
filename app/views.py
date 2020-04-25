@@ -361,12 +361,13 @@ def reload_graphs():
         id2color = json.load(f)
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id2color=id2color)
     
-@app.route('/expanded_hgraph', methods=['POST', 'GET'])
-def compute_expanded_hgraph():
+@app.route('/hgraph_expansion', methods=['POST', 'GET'])
+def hgraph_expansion():
     jsdata = json.loads(request.get_data())
-    print(jsdata)
+    # print(jsdata)
     variant = jsdata['config']['variant']
     weight_type = jsdata['config']['weight_type']
+    s = int(jsdata['config']['s'])
     hyper_data = jsdata['cc_dict']
     # source_id = jsdata['edge']['source']
     # target_id = jsdata['edge']['target']
@@ -375,24 +376,28 @@ def compute_expanded_hgraph():
     hyperedges2vertices = jsdata['hyperedges2vertices']
     for cc_key in hyper_data:
         hyperedge_keys = cc_key.split("|")
-        hyperedge_keys.pop()
-        if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
+        if len(hyperedge_keys) > 1:
+            hyperedge_keys.pop()
+        if len(set(hyperedge_keys) & set(source_cc)) > 0 and len(set(hyperedge_keys) & set(target_cc))>0:
+        # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
             print(hyperedge_keys, source_cc, target_cc)
-            cc1_id_list = source_cc
-            cc2_id_list = [he for he in hyperedge_keys if he not in cc1_id_list]
+            cc1_id_list = []
+            cc2_id_list = []
+            for he in hyperedge_keys:
+                if he in source_cc:
+                    cc1_id_list.append(he)
+                else: cc2_id_list.append(he)
             cc1_id = ""
             cc2_id = ""
-            for he in cc1_id_list:
-                cc1_id += he + "|"
-            for he in cc2_id_list:
-                cc2_id += he + "|"
             cc1 = []
             cc2 = []
             for he in cc1_id_list:
+                cc1_id += he + "|"
                 for v in hyperedges2vertices[he]:
                     if v not in cc1:
                         cc1.append(v)
             for he in cc2_id_list:
+                cc2_id += he + "|"
                 for v in hyperedges2vertices[he]:
                     if v not in cc2:
                         cc2.append(v)
@@ -405,11 +410,50 @@ def compute_expanded_hgraph():
         hgraph = hgraph.dual()
     chgraph = collapse_hypergraph(hgraph)
     if variant == "Dual Line Graph":
-        lgraph = compute_dual_line_graph(chgraph)
+        lgraph = compute_dual_line_graph(chgraph, s=s)
     else:
-        lgraph = convert_to_line_graph(chgraph.incidence_dict)
+        lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
-    return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph)
+    cc_removed = cc_key
+    return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph, cc_id=[cc1_id, cc2_id, cc_removed])
+
+@app.route('/undo_hgraph_expansion', methods=['POST', 'GET'])
+def undo_hgraph_expansion():
+    jsdata = json.loads(request.get_data())
+    hyper_data = jsdata['cc_dict']
+    variant = jsdata['config']['variant']
+    s = int(jsdata['config']['s'])
+    hyperedges2vertices = jsdata['hyperedges2vertices']
+    cc1_id = jsdata['cc_id'][0]
+    cc1_keys = cc1_id.split("|")
+    if len(cc1_keys) > 1:
+        cc1_keys.pop()
+    cc2_id = jsdata['cc_id'][1]
+    cc2_keys = cc2_id.split("|")
+    if len(cc2_keys) > 1:
+        cc2_keys.pop()
+    cc_id = jsdata['cc_id'][2]
+    # cc1 and cc2: mutually exclusive
+    cc_keys = list(set(cc1_keys + cc2_keys))
+    cc_list = []
+    for he in cc_keys:
+        for v in hyperedges2vertices[he]:
+            if v not in cc_list:
+                cc_list.append(v)
+    hyper_data[cc_id] = cc_list
+    del hyper_data[cc1_id]
+    del hyper_data[cc2_id]
+    hgraph = hnx.Hypergraph(hyper_data)
+    if variant == "Dual Line Graph":
+        hgraph = hgraph.dual()
+    chgraph = collapse_hypergraph(hgraph)
+    if variant == "Dual Line Graph":
+        lgraph = compute_dual_line_graph(chgraph, s=s)
+    else:
+        lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
+    chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph)    
+
 
 @app.route('/simplified_hgraph', methods=['POST', 'GET'])
 def compute_simplified_hgraph():

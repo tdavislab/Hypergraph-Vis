@@ -83,20 +83,21 @@
             </div>
         </div>
         <div id="control-area" class="col-sm-2 control-container">
-            <div style="padding: 5px 5px">
-                <h6>Control Panel</h6>
-            </div>
+            <!-- <div style="padding: 5px 5px"> -->
+                <!-- <h6>Control Panel</h6> -->
+            <!-- </div> -->
             <div id="visual-encoding-control" class="block">
                 <div class="block_title">Visual Encoding Control</div>
                 <div class="block_body" style="max-height: 1000px">
                     <div class="block_body-inner">
                         <div class="block-inner-group">
-                            <div class="group-title">Labels</div>
-                            <input type="checkbox" id="hgraph-labels">Show labels</input>
+                            <!-- <div class="group-title">Labels</div> -->
+                            <input type="checkbox" id="hgraph-labels" >
+                            &nbsp&nbsp Show <a class="group-title">Labels</a>
                         </div>
                         <div class="block-inner-group">
-                            <div class="group-title">Hypergraph Visual Encoding</div>
-                            <div class="visual-encoding-group" style="padding-top:10px; padding-left:5px;">
+                            <div class="group-title">Hypergraph VIS</div>
+                            <div class="visual-encoding-group" style="padding-left:5px;">
                                 <form id="visual-encoding-form">
                                     <div style="padding-left:0px; padding-right:15px">
                                         <input type="radio" class="form-radio" name="visual-type" value="bipartite" id="bipartite">
@@ -114,7 +115,7 @@
             </div>
 
             <div id="parameter-control" class="block">
-                <div class="block_title">Graph Parameter Control</div>
+                <div class="block_title">Parameter Control</div>
                 <div class="block_body" style="max-height: 1000px">
                     <div class="block_body-inner">
                         <div class="block-inner-group">
@@ -129,6 +130,15 @@
                                     <label for="original_version" class="radio_label">Original Version</label>
                                 </div>
                             </form>
+                        </div>
+                        <div class="block-inner-group">
+                            <div class="group-title">Select Line Graph Variant</div>
+                            <div class="dropdown-container">
+                                <select name="line_graph_variants" class="custom-select" id="line_graph_variants">
+                                    <option>Original Line Graph</option>
+                                    <option>Dual Line Graph</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="block-inner-group">
                             <div class="group-title">Select Intersection Size</div>
@@ -153,15 +163,7 @@
                             <!-- <br> -->
                             <!-- <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_line_graph" value="Compute Line Graph" style="line-height:0px;"> -->
                         </div>
-                        <div class="block-inner-group">
-                            <div class="group-title">Select Line Graph Variant</div>
-                            <div class="dropdown-container">
-                                <select name="line_graph_variants" class="custom-select" id="line_graph_variants">
-                                    <option>Original Line Graph</option>
-                                    <option>Dual Line Graph</option>
-                                </select>
-                            </div>
-                        </div>
+                        
                         <div class="block-inner-group">
                             <div class="group-title">Select Weight Type</div>
                             <form id="weight-type-form">
