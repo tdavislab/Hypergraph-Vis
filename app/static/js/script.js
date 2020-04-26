@@ -22,14 +22,11 @@ function init(){
 
     d3.select("#reset_config")
         .on("click", ()=>{
-            console.log("clicking")
             reset_config()});
     
     d3.select("#graph_loader")
         .on("click", ()=>{
-            console.log("loading graphs")
             let current_config = get_current_config();
-            console.log(current_config)
             $.ajax({
                 type: "POST",
                 url: "/reload_graphs",
@@ -84,6 +81,7 @@ function load_data(data, config) {
     console.log(config)
 
     let labels = data.labels;
+    let singletons = data.line_data.singletons;
     let color_dict = assign_hyperedge_colors(data, data.id2color);
 
     $.ajax({
@@ -128,7 +126,7 @@ function load_data(data, config) {
                 $.ajax({
                     type: "POST",
                     url: "/hgraph_expansion",
-                    data: JSON.stringify({'cc_dict':barcode.cc_dict, 'edge':d.edge, 'hyperedges2vertices':hyperedges2vertices, 'config':config}),
+                    data: JSON.stringify({'cc_dict':barcode.cc_dict, 'edge':d.edge, 'hyperedges2vertices':hyperedges2vertices, 'config':config, 'singletons':singletons}),
                     dataType:'text',
                     success: function (response) {
                         response = JSON.parse(response);
@@ -175,7 +173,7 @@ function load_data(data, config) {
                 $.ajax({
                     type: "POST",
                     url: "/undo_hgraph_expansion",
-                    data: JSON.stringify({'cc_dict':barcode.cc_dict, 'cc_id':barcode.expanded_bars_dict[i], 'hyperedges2vertices':hyperedges2vertices, 'config':config}),
+                    data: JSON.stringify({'cc_dict':barcode.cc_dict, 'cc_id':barcode.expanded_bars_dict[i], 'hyperedges2vertices':hyperedges2vertices, 'config':config, 'singletons':singletons}),
                     dataType:'text',
                     success: function (response) {
                         response = JSON.parse(response);
@@ -249,12 +247,14 @@ function load_data(data, config) {
         d3.select("#barcode-threshold").html("Current threshold: "+Math.round(threshold*1000)/1000);
         d3.selectAll(".barcode-rect-dim0").classed("hover-light", false).classed("unclickable", false);
         let cc_dict = linegraph.get_cc_dict(edgeid);
+        console.log("cc_dict", cc_dict)
+        // console.log(linegraph.singletons)
         barcode.cc_dict = cc_dict;
         hypergraph.cancel_faded();
         $.ajax({
             type: "POST",
             url: "/simplified_hgraph",
-            data: JSON.stringify({'cc_dict':cc_dict, 'config':config}),
+            data: JSON.stringify({'cc_dict':cc_dict, 'config':config, 'singletons':singletons}),
             dataType:'text',
             success: function (response) {
                 response = JSON.parse(response);
@@ -314,7 +314,6 @@ function read_hgraph_text(text_data){
 }
 
 function assign_hyperedge_colors(data, color_dict=undefined){
-    console.log(color_dict)
     if(color_dict === undefined){
         color_dict = {};
         let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
@@ -439,7 +438,6 @@ function get_current_config() {
     let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
     //  4. weigth type
     let weight_type = d3.select('input[name="weight-type"]:checked').node().value;
-    console.log(hgraph_type)
     return {'hgraph_type':hgraph_type, 's':s, 'singleton_type':singleton_type, 'variant':variant, 'weight_type':weight_type};
 }
 
