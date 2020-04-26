@@ -46,6 +46,20 @@ function init(){
     s_value_slider.oninput = function(){
         d3.select("#s-walk_label").html(this.value);
     }
+    let s_range_container = document.getElementById("s-range-container-inner");
+    d3.select("#s-group-title")
+        .on("click", ()=>{
+            if(s_range_container.style.maxHeight){
+                s_range_container.style.maxHeight = null;
+            } else{
+                s_range_container.style.maxHeight = s_range_container.scrollHeight + "px";
+            }
+        })
+    let s_range = document.getElementById("s-range")
+    s_range.oninput = function(){
+        console.log(this.value)
+        d3.select("#s-walk_input").property("max", this.value)
+    }
 
     // change hypergraph visual encoding
     d3.select("#visual-encoding-form")
@@ -305,7 +319,9 @@ function read_hgraph_text(text_data){
         data: text_data,
         dataType:'text',
         success: function (response) {
-            load_data(JSON.parse(response), current_config);
+            response = JSON.parse(response)
+            load_data(response, current_config);
+            d3.select("#s-walk_input").property("max", response.s_max)
         },
         error: function (error) {
             console.log("error",error);
@@ -451,6 +467,10 @@ function reset_config() {
     //  4. reset s-value & how to turn off singletons
     d3.select("#s-walk_input").property("value", 1);
     d3.select("#s-walk_label").html("1");
+    d3.select("#s-walk_input").property("max", 10);
+    d3.select("#s-range").property("value", 10);
+    document.getElementById("s-range-container-inner").style.maxHeight = null;
+
     d3.select("#grey_out").property("checked", true);
     //  5. reset line graph variant
     d3.select("#line_graph").property("checked", true);

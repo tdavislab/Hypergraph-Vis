@@ -119,7 +119,7 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
     vertices_list = []
 
     non_singletons = []
-    # non_singleton_vertices = []
+    s_max = 0
 
     # For all pairs of edges (e1, e2), add edges such that
     # intersection(e1, e2) is not empty
@@ -132,6 +132,10 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
                 vertices_list += (list(set(vertices1)) + list(set(vertices2)))
                 # Compute the intersection size
                 intersection_size = len(set(vertices1) & set(vertices2))
+
+                if intersection_size > s_max:
+                    s_max = intersection_size
+
                 union_size = len(set(vertices1) | set(vertices2))
                 jaccard_index = intersection_size / union_size
                 if intersection_size >= s:
@@ -146,12 +150,12 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
     line_graph['singletons'] = singletons
     if singleton_type == "filtering":
         delete_lingraph_singletons(line_graph)
-    return line_graph
+    return line_graph, s_max
 
 def compute_dual_line_graph(hypergraph, s=1, singleton_type="grey_out"):
     dual_hgraph = hypergraph.dual()
-    dual_line_graph = convert_to_line_graph(dual_hgraph.incidence_dict, s, singleton_type)
-    return dual_line_graph
+    dual_line_graph, dual_s_max = convert_to_line_graph(dual_hgraph.incidence_dict, s, singleton_type)
+    return dual_line_graph, dual_s_max
 
 def assign_hgraph_singletons(hgraph, singletons, singleton_type="grey_out"):
     if singleton_type == "grey_out":
@@ -269,8 +273,8 @@ def compute_graphs(config):
     with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
         hgraph = json.load(f)
     hgraph = hnx.Hypergraph(hgraph)
-    lgraph = convert_to_line_graph(hgraph.incidence_dict, s=s, singleton_type=singleton_type)
-    dual_lgraph = compute_dual_line_graph(hgraph, s=s, singleton_type=singleton_type)
+    lgraph, s_max = convert_to_line_graph(hgraph.incidence_dict, s=s, singleton_type=singleton_type)
+    dual_lgraph, dual_s_max = compute_dual_line_graph(hgraph, s=s, singleton_type=singleton_type)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
 
     barcode_is = compute_barcode(lgraph)
@@ -328,8 +332,8 @@ def import_file():
     hgraph, label_map = process_hypergraph(jsdata)
     chgraph = collapse_hypergraph(hgraph)
 
-    lgraph = convert_to_line_graph(chgraph.incidence_dict)
-    dual_lgraph = compute_dual_line_graph(chgraph)
+    lgraph, s_max = convert_to_line_graph(chgraph.incidence_dict)
+    dual_lgraph, dual_s_max = compute_dual_line_graph(chgraph)
 
     hgraph_dict = {hkey:list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
     chgraph_dict = {hkey:list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
@@ -358,7 +362,9 @@ def import_file():
     write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
     write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
 
-    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map)
+    s_max = max(s_max, dual_s_max)
+
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, s_max=s_max)
 
 @app.route('/reload_graphs', methods=['POST', 'GET'])
 def reload_graphs():

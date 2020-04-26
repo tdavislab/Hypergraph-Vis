@@ -122,3 +122,28 @@ html, body {
   .radio-container {
     padding-left:0px; 
   }
+
+  #s-group-title {
+    background: transparent url("icons/pen-solid.svg") 98% center no-repeat;
+    background-size: 12px;
+  }
+
+  #s-range-container {
+    padding-top: 30px;
+    /* padding-right: 10px; */
+  }
+
+  #s-range-container-inner {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+
+  #s-range-span {
+    float: right;
+  }
+
+  #s-range {
+    width:3em;
+    height:25px;
+  }

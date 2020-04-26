@@ -130,11 +130,18 @@
                             </form>
                         </div>
                         <div class="block-inner-group">
-                            <div class="group-title">Select Intersection Size</div>
+                            <div class="group-title" id="s-group-title">
+                                Select Intersection Size
+                            </div>
                             <div class="ui-form-range">
                                 <label class="ui-form-range__label">s</label>
                                 <span class="ui-form-range__value" id="s-walk_label">1</span>
-                                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range" value="1" max="10" min="1" step="1">  
+                                <div id="s-range-container">
+                                    <div id="s-range-container-inner" style="padding:0px;">
+                                      <span id="s-range-span"><input type="number" id="s-range" min="1" value="10"></span>
+                                    </div>    
+                                </div>
+                                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range" value="1" max="10" min="1" step="1">
                             </div>
                             <br>
                             <form id="singleton-type-form">
