@@ -25,8 +25,8 @@ class Hypergraph{
             .attr("id", "hyper_links_group");
         this.nodes_group = this.svg_g.append("g")
             .attr("id", "hyper_nodes_group");
-
-        this.radius_scale = this.get_radius_range();
+        
+        this.radius_scale = d3.scaleLinear().domain([1, 8]).range([8,15]);
 
         this.draw_hypergraph();
         this.toggle_hgraph_labels();  
@@ -44,31 +44,10 @@ class Hypergraph{
         }
     }
 
-    get_radius_range(){
-        let min_len = Infinity;
-        let max_len = 0;
-        this.nodes.forEach(node=>{
-            let n_list = node.id.split("|");
-            if(n_list.length>1) { n_list.pop(); }
-            if(n_list.length < min_len){
-                min_len = n_list.length;
-            }
-            if(n_list.length > max_len){
-                max_len = n_list.length;
-            }
-        })
-        max_len = Math.max(5, max_len);
-        min_len = Math.min(3, min_len);
-        let radius_scale = d3.scaleLinear()
-            .domain([min_len, max_len])
-            .range([8,15]);
-        return radius_scale;
-    }
-
     get_node_radius(node_id) {
         let n_list = node_id.split("|");
         if(n_list.length>1) { n_list.pop(); }
-        return this.radius_scale(n_list.length);
+        return this.radius_scale(Math.min(n_list.length,8));
     }
 
     get_graph_coordinates(){
@@ -349,12 +328,8 @@ class Hypergraph{
                 }
             })
 
-            if(that.config.variant === "Original Line Graph"){
-                d3.select("#linegraph-svg").selectAll("circle").classed("faded", d => {
-                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
-                        return false;
-                    } else { return true; }
-                });
+            if(that.config.variant === "line_graph"){
+                d3.select("#linegraph-svg").selectAll("circle").classed("faded", true);
                 d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
                     if(he_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
@@ -365,11 +340,7 @@ class Hypergraph{
                         return false;
                     } else { return true; }
                 });
-                d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", d => {
-                    if(d.id.split("|").indexOf(he_list[0]) != -1){
-                        return false;
-                    } else { return true; }
-                });
+                d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", true);
                 d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
                     if(he_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
@@ -388,6 +359,15 @@ class Hypergraph{
                     }
                     return true;
                 });
+                d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
                 d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
                     if(v_list.indexOf(d.source.id)!=-1 && v_list.indexOf(d.target.id)!=-1){
                         return false;
@@ -396,6 +376,15 @@ class Hypergraph{
                 });
                 let s_v_list = [];
                 d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            s_v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+                d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
                     for(let i=0; i<d.vertices.length; i++){
                         if(he_list.indexOf(d.vertices[i])!=-1){
                             s_v_list.push(d.id);

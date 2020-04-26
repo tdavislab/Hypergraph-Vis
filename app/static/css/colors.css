@@ -51,11 +51,18 @@ h4 {
 .line_node {
     /* stroke: whitesmoke; */
     stroke-width: 4px;
+    opacity: 1;
 }
 
-.line_node.highlighted {
-    opacity: 0.5;
+.line_node.faded {
+    opacity: 0;
 }
+
+/* .line_node.highlighted {
+    opacity: 0.5;
+} */
+
+
 
 .line_edge {
     stroke: #999;

@@ -43,7 +43,7 @@ class Linegraph{
         this.edge_scale = d3.scaleLinear()
             .domain(d3.extent(this.links.map(d => parseFloat(d[this.weight].value))))
             .range([1, 10]);
-        // this.radius_scale = this.get_radius_range();
+        this.radius_scale = d3.scaleLinear().domain([1, 8]).range([8,15]);
 
         this.draw_linegraph();
     }
@@ -51,7 +51,7 @@ class Linegraph{
     get_node_radius(node_id) {
         let n_list = node_id.split("|");
         if(n_list.length>1) { n_list.pop(); }
-        return this.hypergraph.radius_scale(n_list.length);
+        return this.radius_scale(Math.min(n_list.length,8));
     }
 
     draw_linegraph(){
@@ -76,55 +76,44 @@ class Linegraph{
         ng.exit().remove();
         ng = ng.enter().append("g").merge(ng);
 
-        let pie = d3.pie()
-            .value(d => d.value)
-            .sort(null);
-        
-        let arc = d3.arc()
-            .innerRadius(0)
-            .outerRadius(d => {
-                return 10});
-
-    
-        // console.log(pie(10))
-        
-
         ng.append("circle")
             .attr("r", d => this.get_node_radius(d.id))
-            .attr("fill", d => {
-                if(this.variant === "line_graph"){
-                    return d.color;
-                } else if (this.variant === "clique_expansion"){
-                    return "whitesmoke";
-                }
-            })
-            .attr("stroke", d => {
-                if(this.variant === "line_graph"){
-                    return "whitesmoke";
-                } else if (this.variant === "clique_expansion"){
-                    return d.color;
-                }
-            })
-            .attr("id", d => this.svg_id+"-node-"+d.id.replace(/[|]/g,""))
+            .attr("fill", "white")
+            // .attr("id", d => this.svg_id+"-node-"+d.id.replace(/[|]/g,""))
             .attr("class", "line_node")
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y)
-            // .style("opacity",0)
+            // .style("opacity",1)
+        
+        let pie = d3.pie()
+            .value(d => d.value)
+            .sort(null);
+
+        let arc = d3.arc()
+            .innerRadius(()=>{
+                if(this.variant === "line_graph"){ return 0; }
+                else { return 5; }
+            })    
+
+        let pg = ng.append("g")
+            .attr("class", "pie-group")
+            .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
+            .attr("transform",d => "translate("+d.x+","+d.y+")")
             .on("mouseover", d => {
+                console.log(d)
                 if(!this.click_id){
-                    d3.select("#"+this.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
-                    let label_list = this.nodes_dict[d.id].label.split("|")
+                    d3.select("#"+this.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
+                    let label_list = this.nodes_dict[d.id].label.split("|");
                     let div_text = '';
                     label_list.forEach(label=>{ div_text += label+"<br> "; })
                     let div = d3.select("#help-tip")
                     div.transition().duration(200).style("opacity", 0.9);
                     div.html("<h6>Selected Hyperedges</h6>"+div_text);
-                }
-                
+                }  
             })
             .on("mouseout", d=>{
                 if(!this.click_id){
-                    d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
+                    d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
                     d3.select("#help-tip").transition().duration(200).style("opacity", 0);
                 } 
             })
@@ -137,57 +126,20 @@ class Linegraph{
                     this.cancel_faded();
                     
                 }     
-            });
+            })
 
-        // ng.append("g")
-        //     .attr("class", "pie-group")
-        //     .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
-        //     .attr("transform",d => {
-        //     return "translate("+d.x+","+d.y+")"})
-        //     .on("mouseover", d => {
-        //         if(!this.click_id){
-        //             d3.select("#"+this.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
-        //             let label_list = this.nodes_dict[d.id].label.split("|")
-        //             let div_text = '';
-        //             label_list.forEach(label=>{ div_text += label+"<br> "; })
-        //             let div = d3.select("#help-tip")
-        //             div.transition().duration(200).style("opacity", 0.9);
-        //             div.html("<h6>Selected Hyperedges</h6>"+div_text);
-        //         }
-                
-        //     })
-        //     .on("mouseout", d=>{
-        //         if(!this.click_id){
-        //             d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
-        //             d3.select("#help-tip").transition().duration(200).style("opacity", 0);
-        //         } 
-        //     })
-        //     .on("click", d => {
-        //         if(this.click_id != d.id){
-        //             this.click_id = d.id;
-        //             click_node(d.id)
-        //         } else {
-        //             this.click_id = undefined;
-        //             this.cancel_faded();
-                    
-        //         }     
-        //     })
+        pg.selectAll("path").data(d => pie(prepare_pie_data(d.id)))
+            .enter().append("path")
+            .attr("d", d => {
+                arc.outerRadius(this.get_node_radius(d.data.id));
+                return arc(d)})
+            .attr("fill", d => d.data.color)
+            .attr("stroke", "whitesmoke")
+            .attr("stroke-width", () => {
+                if(this.variant === "line_graph"){ return "2px"; }
+                else { return "0"; }
+            })
 
-        //     .selectAll("path")
-        //     .data(d => {
-        //     // arc = d3.arc()
-        //         // .innerRadius(0)
-        //         // .outerRadius(this.get_node_radius(d.id));
-        //     return pie(prepare_pie_data(d.id));
-        // })
-
-            // .enter()
-            // .append("path")
-            // .attr("d", arc)
-            // .attr("fill", d => d.data.color)
-            // .attr("stroke", "whitesmoke")
-            // .attr("stroke-width", "2px")
-        
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
@@ -262,7 +214,7 @@ class Linegraph{
                 let p = {};
                 p.value = 10;
                 p.color = that.color_dict[id];
-                p.id = id;
+                p.id = key;
                 pie_data.push(p);
             })
             return pie_data
@@ -335,11 +287,7 @@ class Linegraph{
                         d3.select("#simplified-hypergraph-node-"+l.target.id.replace(/[|]/g,"")).classed("faded", false);
                     }
                 })
-                d3.select("#linegraph-svg").selectAll("circle").classed("faded", d => {
-                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
-                        return false;
-                    } else { return true; }
-                });
+                d3.select("#linegraph-svg").selectAll(".line_node").classed("faded",true);
                 d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
                     if(he_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
@@ -350,11 +298,7 @@ class Linegraph{
                         return false;
                     } else { return true; }
                 });
-                d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", d => {
-                    if(d.id.split("|").indexOf(he_list[0]) != -1){
-                        return false;
-                    } else { return true; }
-                });
+                d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded",true);
                 d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
                     if(he_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
@@ -363,7 +307,7 @@ class Linegraph{
                 // At most one node in simplified linegraph will be selected, so all edges will be faded
                 d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", true);
     
-                d3.select("#"+that.svg_id+"-node-"+key.replace(/[|]/g,"")).classed("highlighted", false);
+                d3.select("#"+that.svg_id+"-pie-"+key.replace(/[|]/g,"")).classed("highlighted", false);
 
             } else {
                 let he_list = that.nodes_dict[key].vertices;
@@ -415,6 +359,11 @@ class Linegraph{
                         return false;
                     } else { return true; }
                 });
+                d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                    if(v_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
                 d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
                     if((v_list.indexOf(d.source.id.split("|")[0]) != -1) && (v_list.indexOf(d.target.id.split("|")[0]) != -1)){
                         return false;
@@ -425,10 +374,15 @@ class Linegraph{
                         return false;
                     } else { return true; }
                 });
+                d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                    if(d.id.split("|").indexOf(v_list[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
                 // At most one node in simplified linegraph will be selected, so all edges will be faded
                 d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", true);
     
-                d3.select("#"+that.svg_id+"-node-"+key.replace(/[|]/g,"")).classed("highlighted", false);
+                d3.select("#"+that.svg_id+"-pie-"+key.replace(/[|]/g,"")).classed("highlighted", false);
 
             }
         }
@@ -479,17 +433,16 @@ class Linegraph{
     }
 
     cancel_faded(){
-        // if(this.original_hgraph){
-            d3.select("#hypergraph-svg").selectAll("path").classed("faded", false);
-            d3.select("#hypergraph-svg").selectAll("circle").classed("faded", false);
-            d3.select("#hypergraph-svg").selectAll("text").classed("faded", false);
-        // }
+        d3.select("#hypergraph-svg").selectAll("path").classed("faded", false);
+        d3.select("#hypergraph-svg").selectAll("circle").classed("faded", false);
+        d3.select("#hypergraph-svg").selectAll("text").classed("faded", false);
+
         d3.select("#simplified-hypergraph-svg").selectAll("path").classed("faded", false);
         d3.select("#simplified-hypergraph-svg").selectAll("circle").classed("faded", false);
         d3.select("#simplified-hypergraph-svg").selectAll("text").classed("faded", false);
 
-        d3.select("#linegraph-svg").selectAll("circle").classed("faded", false);
-        d3.select("#simplified-linegraph-svg").selectAll("circle").classed("faded", false);
+        d3.select("#linegraph-svg").selectAll(".line_node").classed("faded",false);
+        d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded",false);
         d3.select("#linegraph-svg").selectAll("line").classed("faded", false);
         d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", false);
 

@@ -66,11 +66,9 @@ function init(){
         .on("change", ()=>{
             let encoding_type = d3.select('input[name="visual-type"]:checked').node().value;
             if(encoding_type === "bipartite"){
-                d3.select("#hull-group").style("visibility","hidden");
-                d3.select("#simplified-hull-group").style("visibility","hidden");
+                d3.selectAll(".convex_hull").style("visibility","hidden");
             } else if(encoding_type === "convex"){
-                d3.select("#hull-group").style("visibility","visible");
-                d3.select("#simplified-hull-group").style("visibility","visible");
+                d3.selectAll(".convex_hull").style("visibility","visible");
             }
         });
 
