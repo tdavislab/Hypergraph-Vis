@@ -29,7 +29,6 @@
     </div>
 </div>
 
-
 <div class="container-fluid">
     <div class="row">
         <div id="barcode-area" class="col-sm-2 outline" >
@@ -45,7 +44,6 @@
             <br>
             <div class="help-tip" style="opacity: 0;" id="help-tip">
                 <h6>Selected Hyperedges</h6>
-                <!-- <p></p> -->
             </div>
         </div>
         <div id="vis-area" class="col-sm-8">
@@ -83,27 +81,23 @@
             </div>
         </div>
         <div id="control-area" class="col-sm-2 control-container">
-            <!-- <div style="padding: 5px 5px"> -->
-                <!-- <h6>Control Panel</h6> -->
-            <!-- </div> -->
             <div id="visual-encoding-control" class="block">
                 <div class="block_title">Visual Encoding Control</div>
                 <div class="block_body" style="max-height: 1000px">
                     <div class="block_body-inner">
                         <div class="block-inner-group">
-                            <!-- <div class="group-title">Labels</div> -->
-                            <input type="checkbox" id="hgraph-labels" >
-                            &nbsp&nbsp Show <a class="group-title">Labels</a>
+                                <input type="checkbox" id="hgraph-labels">
+                                &nbsp;&nbsp; Show <a class="group-title">Labels</a>
                         </div>
-                        <div class="block-inner-group">
+                        <div class="block-inner-group" style=" border-bottom: none;">
                             <div class="group-title">Hypergraph VIS</div>
-                            <div class="visual-encoding-group" style="padding-left:5px;">
+                            <div class="visual-encoding-group">
                                 <form id="visual-encoding-form">
-                                    <div style="padding-left:0px; padding-right:15px">
+                                    <div class="radio-container">
                                         <input type="radio" class="form-radio" name="visual-type" value="bipartite" id="bipartite">
                                         <label for="bipartite" class="radio_label">Bipartite Graph</label>
                                     </div>
-                                    <div style="padding-left:0px; padding-right:0px;">
+                                    <div class="radio-container">
                                         <input type="radio" class="form-radio" name="visual-type" value="convex" id="convex" checked="checked">
                                         <label for="convex" class="radio_label">Convex Hulls</label>
                                     </div>
@@ -119,71 +113,58 @@
                 <div class="block_body" style="max-height: 1000px">
                     <div class="block_body-inner">
                         <div class="block-inner-group">
-                            <div class="group-title">Collapsing</div>
-                            <form id="hgraph-type-form">
-                                <div style="padding-left:0px; padding-right:15px">
-                                    <input type="radio" class="form-radio" name="hgraph-type" value="collapsed_version" id="collapsed_version" checked="checked">
-                                    <label for="collapsed_version" class="radio_label">Collapsed Version</label>
-                                </div>
-                                <div style="padding-left:0px; padding-right:0px;">
-                                    <input type="radio" class="form-radio" name="hgraph-type" value="original_version" id="original_version">
-                                    <label for="original_version" class="radio_label">Original Version</label>
-                                </div>
-                            </form>
+                            <input type="checkbox" id="hgraph-type" checked="true"> &nbsp;&nbsp;
+                            <a class="group-title">Collapse</a> Vertices & Edges
                         </div>
                         <div class="block-inner-group">
                             <div class="group-title">Select Line Graph Variant</div>
-                            <div class="dropdown-container">
-                                <select name="line_graph_variants" class="custom-select" id="line_graph_variants">
-                                    <option>Original Line Graph</option>
-                                    <option>Dual Line Graph</option>
-                                </select>
-                            </div>
+                            <form id="variant-type-form">
+                                <div class="radio-container">
+                                    <input type="radio" class="form-radio" name="variant-type" value="line_graph" id="line_graph" checked="checked">
+                                    <label for="line_graph" class="radio_label">Line Graph</label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" class="form-radio" name="variant-type" value="clique_expansion" id="clique_expansion">
+                                    <label for="clique_expansion" class="radio_label">Clique Expansion</label>
+                                </div>
+                            </form>
                         </div>
                         <div class="block-inner-group">
                             <div class="group-title">Select Intersection Size</div>
                             <div class="ui-form-range">
                                 <label class="ui-form-range__label">s</label>
                                 <span class="ui-form-range__value" id="s-walk_label">1</span>
-                                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range" value="1" max="10" min="1" step="1">
-                                
+                                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range" value="1" max="10" min="1" step="1">  
                             </div>
                             <br>
-                            Turn off singletons
                             <form id="singleton-type-form">
-                                <div style="padding-left:0px; padding-right:15px">
+                                <div class="radio-container">
                                     <input type="radio" class="form-radio" name="singleton-type" value="grey_out" id="grey_out" checked="checked">
-                                    <label for="grey_out" class="radio_label">Grey Out</label>
+                                    <label for="grey_out" class="radio_label">Grey Out Singletons</label>
                                 </div>
-                                <div style="padding-left:0px; padding-right:0px;">
+                                <div class="radio-container">
                                     <input type="radio" class="form-radio" name="singleton-type" value="filtering" id="filtering">
-                                    <label for="filtering" class="radio_label">Filtering</label>
+                                    <label for="filtering" class="radio_label">Filter Singletons</label>
                                 </div>
                             </form>
-                            <!-- <br> -->
-                            <!-- <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_line_graph" value="Compute Line Graph" style="line-height:0px;"> -->
                         </div>
-                        
-                        <div class="block-inner-group">
+                        <div class="block-inner-group" >
                             <div class="group-title">Select Weight Type</div>
                             <form id="weight-type-form">
-                                <div style="padding-left:0px; padding-right:0px;">
+                                <div class="radio-container">
                                     <input type="radio" class="form-radio" name="weight-type" value="jaccard_index" id="jaccard_index" checked="checked">
                                     <label for="jaccard_index" class="radio_label">Jaccard Index</label>
                                 </div>
-                                <div style="padding-left:0px; padding-right:15px">
+                                <div class="radio-container">
                                     <input type="radio" class="form-radio" name="weight-type" value="intersection_size" id="intersection_size">
-                                    <label for="weight" class="radio_label">Intersection Size</label>
+                                    <label for="weight" class="radio_label">Overlap Size</label>
                                 </div>
-                                
                             </form>
-                            <!-- <br> -->
-                            <!-- <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="compute_weights" value="Compute Weights" style="line-height:0px;"> -->
                         </div>
-                        <br>
-                        <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader" value="Compute Graphs">
-                        <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config" value="Reset Configuration">
-
+                        <div class="button-container">
+                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader" value="Compute Barcode">
+                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config" value="Reset Configuration">
+                        </div>
                     </div>
                 </div>
             </div>

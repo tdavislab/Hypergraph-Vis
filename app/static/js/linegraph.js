@@ -92,16 +92,16 @@ class Linegraph{
         ng.append("circle")
             .attr("r", d => this.get_node_radius(d.id))
             .attr("fill", d => {
-                if(this.variant === "Original Line Graph"){
+                if(this.variant === "line_graph"){
                     return d.color;
-                } else if (this.variant === "Dual Line Graph"){
+                } else if (this.variant === "clique_expansion"){
                     return "whitesmoke";
                 }
             })
             .attr("stroke", d => {
-                if(this.variant === "Original Line Graph"){
+                if(this.variant === "line_graph"){
                     return "whitesmoke";
-                } else if (this.variant === "Dual Line Graph"){
+                } else if (this.variant === "clique_expansion"){
                     return d.color;
                 }
             })
@@ -292,7 +292,7 @@ class Linegraph{
         }
 
         function click_node(key) {
-            if(that.variant === "Original Line Graph"){
+            if(that.variant === "line_graph"){
                 let he_list = key.split("|");
                 if(he_list.length > 1){ he_list.pop(); }
                 d3.select("#hypergraph-svg").selectAll("path").classed("faded", d => {

@@ -428,16 +428,18 @@ function copy_line_data(line_data){
 
 function get_current_config() {
     //  1. graph version
-    let hgraph_type = d3.select('input[name="hgraph-type"]:checked').node().value;
-    //  2. s-value & turn off singletons
+    let hgraph_type = "collapsed_version";
+    if (!d3.select("#hgraph-type").property("checked")){
+        hgraph_type = "original_version";
+    }
+    //  2. line graph variant
+    let variant = d3.select('input[name="variant-type"]:checked').node().value;
+    //  3. s-value & turn off singletons
     let s = d3.select("#s-walk_input").property("value");
     let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
-    //  3. line graph variant
-    let line_variant_dropdown = document.getElementById("line_graph_variants")
-    let variant = line_variant_dropdown.options[line_variant_dropdown.selectedIndex].text;
     //  4. weigth type
     let weight_type = d3.select('input[name="weight-type"]:checked').node().value;
-
+    console.log(hgraph_type)
     return {'hgraph_type':hgraph_type, 's':s, 'singleton_type':singleton_type, 'variant':variant, 'weight_type':weight_type};
 }
 
@@ -446,13 +448,15 @@ function reset_config() {
     // d3.select("#hgraph-labels").property("checked", false);
     //  2. reset hypergraph visual encoding
     // d3.select("#convex").property("checked", true);
-    //  3. reset s-value & how to turn off singletons
+    //  3. reset hypergraph vis type
+    d3.select("#hgraph-type").property("checked", true)
+    //  4. reset s-value & how to turn off singletons
     d3.select("#s-walk_input").property("value", 1);
     d3.select("#s-walk_label").html("1");
     d3.select("#grey_out").property("checked", true);
-    //  4. reset line graph variant
-    d3.select("#line_graph_variants").property("selectedIndex", 0);
-    //  5. reset weight type
+    //  5. reset line graph variant
+    d3.select("#line_graph").property("checked", true);
+    //  6. reset weight type
     d3.select("#jaccard_index").property("checked", true);
 }
 

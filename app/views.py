@@ -214,9 +214,9 @@ def load_graphs(config):
         f_hgraph = ""
     else: #hgraph_type == "original_version"
         f_hgraph = "_original"
-    if variant == "Original Line Graph":
+    if variant == "line_graph":
         f_variant = ""
-    else: # variant == "Dual Line Graph"
+    else: # variant == "clique_expansion"
         f_variant = "_dual"
     if weight_type == "intersection_size":
         f_weight = "_is"
@@ -263,7 +263,7 @@ def compute_graphs(config):
     
     write_json_file(barcode_ji, path.join(APP_STATIC,"uploads/current_barcode_ji"+f_hgraph+".json"))
     write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji"+f_hgraph+".json"))
-    if variant == "Dual Line Graph":
+    if variant == "clique_expansion":
         lgraph = dual_lgraph
         if weight_type == "intersection_size":
             with open(path.join(APP_STATIC,"uploads/current_dual_barcode_is"+f_hgraph+".json")) as f:
@@ -324,7 +324,7 @@ def import_file():
 
     assign_hgraph_singletons(chgraph, lgraph['singletons'])
 
-    current_config = {'hgraph_type':'collapsed_version', 's':1, 'singleton_type':'grey_out', 'variant':'Original Line Graph', 'weight_type':'jaccard_index'}
+    current_config = {'hgraph_type':'collapsed_version', 's':1, 'singleton_type':'grey_out', 'variant':'line_graph', 'weight_type':'jaccard_index'}
 
     write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
     write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
@@ -415,10 +415,10 @@ def hgraph_expansion():
             hyper_data[cc2_id] = cc2
             break
     hgraph = hnx.Hypergraph(hyper_data)
-    if variant == "Dual Line Graph":
+    if variant == "clique_expansion":
         hgraph = hgraph.dual()
     chgraph = collapse_hypergraph(hgraph)
-    if variant == "Dual Line Graph":
+    if variant == "clique_expansion":
         lgraph = compute_dual_line_graph(chgraph, s=s)
     else:
         lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
@@ -454,10 +454,10 @@ def undo_hgraph_expansion():
     del hyper_data[cc1_id]
     del hyper_data[cc2_id]
     hgraph = hnx.Hypergraph(hyper_data)
-    if variant == "Dual Line Graph":
+    if variant == "clique_expansion":
         hgraph = hgraph.dual()
     chgraph = collapse_hypergraph(hgraph)
-    if variant == "Dual Line Graph":
+    if variant == "clique_expansion":
         lgraph = compute_dual_line_graph(chgraph, s=s)
     else:
         lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
@@ -473,11 +473,11 @@ def compute_simplified_hgraph():
     s = int(jsdata['config']['s'])
     hyper_data = jsdata['cc_dict']
     hgraph = hnx.Hypergraph(hyper_data)
-    if variant == "Dual Line Graph":
+    if variant == "clique_expansion":
         hgraph = hgraph.dual()
     # chgraph = collapse_hypergraph(hgraph)
     chgraph = hgraph
-    if variant == "Dual Line Graph":
+    if variant == "clique_expansion":
         lgraph = compute_dual_line_graph(chgraph, s=s)
     else:
         lgraph = convert_to_line_graph(chgraph.incidence_dict, s=s)
