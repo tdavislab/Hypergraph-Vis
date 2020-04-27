@@ -13,15 +13,15 @@ bundles = {
         'js/barcode.js',
         'js/script.js',
         output='gen/script.js'
-        ),
+    ),
 
-        'css': Bundle(
+    'css': Bundle(
         'css/bootstrap.css',
         'css/layout-bootstrap.css',
         'css/colors.css',
 
         output='gen/styles.css'
-        )
+    )
 }
 
 assets = Environment(app)

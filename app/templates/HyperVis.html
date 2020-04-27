@@ -10,7 +10,7 @@
     <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
     {% endassets %}
     {% assets "css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    <link rel="stylesheet" href="{{ ASSET_URL }}"/>
     {% endassets %}
 </head>
 
@@ -22,9 +22,10 @@
     </div>
     <div id="files_group">
         <div class="import-group">
-            <form method="post" id="upload" enctype="multipart/form-data" action="" >
+            <form method="post" id="upload" enctype="multipart/form-data" action="">
                 <input type="file" style="display:none" id="files" name="files">
-                <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import" value="Import A Dataset">
+                <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import"
+                       value="Import A Dataset">
             </form>
         </div>
     </div>
@@ -32,7 +33,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div id="barcode-area" class="col-sm-2 barcode-container" >
+        <div id="barcode-area" class="col-sm-2 barcode-container">
             <div class="group-title">Barcode</div>
             <div id="barcode-threshold">
                 Current threshold: 0
@@ -75,7 +76,7 @@
                     <div id='vis-simplified-linegraph' class="graph-container">
                         <svg id="simplified-linegraph-svg"></svg>
                     </div>
-                </div>        
+                </div>
             </div>
         </div>
         <div id="control-area" class="col-sm-2 control-container">
@@ -91,18 +92,20 @@
                                 <div class="col-10">
                                     Show <a class="group-title">labels</a>
                                 </div>
-                            </div>                                
+                            </div>
                         </div>
                         <div class="block-inner-group" style=" border-bottom: none;">
                             <div class="group-title">Hypergraph visualization</div>
                             <div class="visual-encoding-group">
                                 <form id="visual-encoding-form">
                                     <div class="radio-container">
-                                        <input type="radio" class="form-radio" name="visual-type" value="bipartite" id="bipartite">
+                                        <input type="radio" class="form-radio" name="visual-type" value="bipartite"
+                                               id="bipartite">
                                         <label for="bipartite" class="radio_label">Bipartite graph</label>
                                     </div>
                                     <div class="radio-container">
-                                        <input type="radio" class="form-radio" name="visual-type" value="convex" id="convex" checked="checked">
+                                        <input type="radio" class="form-radio" name="visual-type" value="convex"
+                                               id="convex" checked="checked">
                                         <label for="convex" class="radio_label">Convex hulls</label>
                                     </div>
                                 </form>
@@ -119,21 +122,23 @@
                             <div class="row">
                                 <div class="col-1">
                                     <input type="checkbox" id="hgraph-type" checked="true">
-                                </div> 
+                                </div>
                                 <div class="col-10">
                                     <a class="group-title">Collapse</a> vertices & hyperedges
-                                </div>                               
+                                </div>
                             </div>
                         </div>
                         <div class="block-inner-group">
                             <div class="group-title">Graph representation</div>
                             <form id="variant-type-form">
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="variant-type" value="line_graph" id="line_graph" checked="checked">
+                                    <input type="radio" class="form-radio" name="variant-type" value="line_graph"
+                                           id="line_graph" checked="checked">
                                     <label for="line_graph" class="radio_label">Edge simplification</label>
                                 </div>
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="variant-type" value="clique_expansion" id="clique_expansion">
+                                    <input type="radio" class="form-radio" name="variant-type" value="clique_expansion"
+                                           id="clique_expansion">
                                     <label for="clique_expansion" class="radio_label">Vertex simplification</label>
                                 </div>
                             </form>
@@ -146,46 +151,54 @@
                                 <label class="ui-form-range__label">s</label>
                                 <span class="ui-form-range__value" id="s-walk_label">1</span>
                                 <div id="s-range-container">
-                                    <div id="s-range-container-inner" style="padding:0px;">
-                                      <span id="s-range-span"><input type="number" id="s-range" min="1" value="10"></span>
-                                    </div>    
+                                    <div id="s-range-container-inner" style="padding:0;">
+                                        <span id="s-range-span"><input type="number" id="s-range" min="1"
+                                                                       value="10"></span>
+                                    </div>
                                 </div>
-                                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range" value="1" max="10" min="1" step="1">
+                                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range"
+                                       value="1" max="10" min="1" step="1">
                             </div>
                             <br>
                             <form id="singleton-type-form">
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="singleton-type" value="grey_out" id="grey_out" checked="checked">
+                                    <input type="radio" class="form-radio" name="singleton-type" value="grey_out"
+                                           id="grey_out" checked="checked">
                                     <label for="grey_out" class="radio_label">Grey out singletons</label>
                                 </div>
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="singleton-type" value="filtering" id="filtering">
+                                    <input type="radio" class="form-radio" name="singleton-type" value="filtering"
+                                           id="filtering">
                                     <label for="filtering" class="radio_label">Filter singletons</label>
                                 </div>
                             </form>
                         </div>
-                        <div class="block-inner-group" >
+                        <div class="block-inner-group">
                             <div class="group-title">Weight type</div>
                             <form id="weight-type-form">
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="weight-type" value="jaccard_index" id="jaccard_index" checked="checked">
+                                    <input type="radio" class="form-radio" name="weight-type" value="jaccard_index"
+                                           id="jaccard_index" checked="checked">
                                     <label for="jaccard_index" class="radio_label">Jaccard index</label>
                                 </div>
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="weight-type" value="intersection_size" id="intersection_size">
+                                    <input type="radio" class="form-radio" name="weight-type" value="intersection_size"
+                                           id="intersection_size">
                                     <label for="weight" class="radio_label">Overlap size</label>
                                 </div>
                             </form>
                         </div>
                         <div class="button-container">
-                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader" value="Compute Barcode">
-                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config" value="Reset Configuration">
+                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader"
+                                   value="Compute Barcode">
+                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config"
+                                   value="Reset Configuration">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </div>
 <!-- 
 <script type="text/javascript" src="js/draw_barcode.js"></script>
