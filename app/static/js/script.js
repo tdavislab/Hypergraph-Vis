@@ -89,6 +89,13 @@ function init(){
 }
 
 function load_data(data, config) {
+    if(config.variant === "line_graph"){
+        d3.select("#vis-linegraph-title").html("Line graph")
+        d3.select("#vis-simplified-linegraph-title").html("Simplified line graph")
+    } else { // config.variant === "clique_expansion"
+        d3.select("#vis-linegraph-title").html("Clique expansion")
+        d3.select("#vis-simplified-linegraph-title").html("Simplified clique expansion")
+    }
     console.log(data)
     console.log(config)
 
@@ -305,6 +312,7 @@ function initialize_graphs(hyper_data, line_data, barcode_data, config, color_di
     let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", config, hypergraph);
     let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
     let barcode = new Barcode(barcode_data, simplified_linegraph);
+    
     return [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode];
 }
 

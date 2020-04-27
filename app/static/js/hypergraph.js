@@ -12,9 +12,12 @@ class Hypergraph{
         this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
 
         this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'));
+        let window_height = window.innerHeight;
+        let header_height = d3.select(".header-group").node().offsetHeight;
 
         this.svg_width = this.container_width;
-        this.svg_height = this.container_width*0.8;
+        this.svg_height = (window_height-header_height)/2-30;
+
         this.svg = d3.select("#"+svg_id+"-svg")
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width)
@@ -263,7 +266,8 @@ class Hypergraph{
                 let div_text = '';
                 label_list.forEach(label=>{ div_text += label+"<br> "; })
                 let div = d3.select("#help-tip")
-                div.transition().duration(200).style("opacity", 0.9);
+                div.classed("show", true);
+                // div.transition().duration(200).style("opacity", 0.9);
                 if(that.nodes_dict[key].bipartite === 1){
                     d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", true);
                     div.html("<h6>Selected Hyperedges</h6>"+div_text);
@@ -278,7 +282,8 @@ class Hypergraph{
             if(!that.click_id){
                 d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", false);
                 d3.select("#"+that.svg_id+"-node-"+key.replace(/[|]/g,"")).classed("highlighted", false);
-                d3.select("#help-tip").transition().duration(200).style("opacity", 0);
+                d3.select("#help-tip").classed("show", false);
+                // d3.select("#help-tip").transition().duration(200).style("opacity", 0);
             }
         }
 

@@ -22,10 +22,12 @@ class Linegraph{
 
         // console.log(this.links, this.nodes);
 
-        this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'))
+        this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'));
+        let window_height = window.innerHeight;
+        let header_height = d3.select(".header-group").node().offsetHeight;
 
         this.svg_width = this.container_width;
-        this.svg_height = this.container_width*0.8;
+        this.svg_height = (window_height-header_height)/2-30;
         
         this.svg = d3.select("#"+svg_id+"-svg")
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
@@ -83,6 +85,16 @@ class Linegraph{
             .attr("class", "line_node")
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y)
+            .on("click", d => {
+                if(this.click_id != d.id){
+                    this.click_id = d.id;
+                    click_node(d.id)
+                } else {
+                    this.click_id = undefined;
+                    this.cancel_faded();
+                    
+                }     
+            })
             // .style("opacity",1)
         
         let pie = d3.pie()
@@ -106,15 +118,17 @@ class Linegraph{
                     let label_list = this.nodes_dict[d.id].label.split("|");
                     let div_text = '';
                     label_list.forEach(label=>{ div_text += label+"<br> "; })
-                    let div = d3.select("#help-tip")
-                    div.transition().duration(200).style("opacity", 0.9);
+                    let div = d3.select("#help-tip");
+                    div.classed("show", true);
+                    // div.transition().duration(200).style("opacity", 0.9);
                     div.html("<h6>Selected Hyperedges</h6>"+div_text);
                 }  
             })
             .on("mouseout", d=>{
                 if(!this.click_id){
                     d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
-                    d3.select("#help-tip").transition().duration(200).style("opacity", 0);
+                    d3.select("#help-tip").classed("show", false);
+                    // d3.select("#help-tip").transition().duration(200).style("opacity", 0);
                 } 
             })
             .on("click", d => {
@@ -164,8 +178,9 @@ class Linegraph{
                             div_text += this.labels[v] + "<br> ";
                         }
                     });
-                    let div = d3.select("#help-tip")
-                    div.transition().duration(200).style("opacity", 0.9);
+                    let div = d3.select("#help-tip");
+                    div.classed("show", true);
+                    // div.transition().duration(200).style("opacity", 0.9);
                     div.html("<h6>Intersected Vertices</h6>"+div_text);
                 }
                 
@@ -173,7 +188,8 @@ class Linegraph{
             .on("mouseout", d => {
                 if(!this.click_id){
                     d3.select("#"+this.svg_id+"-edge-"+d.source.id.replace(/[|]/g,"")+"-"+d.target.id.replace(/[|]/g,"")).classed("highlighted", false);
-                    d3.select("#help-tip").transition().duration(200).style("opacity", 0);
+                    d3.select("#help-tip").classed("show", true);
+                    // d3.select("#help-tip").transition().duration(200).style("opacity", 0);
                 }
             })
             .on("click", d=>{

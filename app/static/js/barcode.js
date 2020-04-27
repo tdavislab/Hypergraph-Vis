@@ -6,7 +6,8 @@ class Barcode{
 
         this.svg = d3.select("#barcode-svg");
         this.svg_width = parseFloat(d3.select("#vis-barcode").style("width"));
-        this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"))*2;
+        // this.container_height = parseFloat(d3.select("#vis-hypergraph").style("height"))*2;
+        this.container_height = parseFloat(d3.select(".container-fluid").node().offsetHeight)-50;
         this.svg_margin = {'left':12, 'right':20, 'top':10, 'bottom':10};
         this.svg
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
