@@ -25,6 +25,7 @@ class Barcode {
         this.slider_group = this.svg.append('g')
             .attr('id', 'slider_group');
         this.slider = this.slider_group.append('rect');
+        // this.slider.append("image").attr("xlink:href", "/static/css/icons/arrows-h.svg");
         this.slider_line = this.slider_group.append('line');
         // .attr('id', 'barcode_slider');
 

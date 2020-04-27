@@ -2,203 +2,203 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Hypergraph Visualization</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Hypergraph Visualization</title>
 
-    {% assets "js" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
-    {% endassets %}
-    {% assets "css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}"/>
-    {% endassets %}
+  {% assets "js" %}
+  <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
+  {% endassets %}
+  {% assets "css" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}"/>
+  {% endassets %}
 </head>
 
 <body scroll="no" style="overflow: hidden">
 <div class="header-group">
-    <div id="main_title">
-        <h4>Hypergraph Visualization:</h4>
-        <h4>Multiscale Simplification and Multimodal Curation</h4>
+  <div id="main_title">
+    <h4>Hypergraph Visualization:</h4>
+    <h4>Multiscale Simplification and Multimodal Curation</h4>
+  </div>
+  <div id="files_group">
+    <div class="import-group">
+      <form method="post" id="upload" enctype="multipart/form-data" action="">
+        <input type="file" style="display:none" id="files" name="files">
+        <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import"
+               value="Import A Dataset">
+      </form>
     </div>
-    <div id="files_group">
-        <div class="import-group">
-            <form method="post" id="upload" enctype="multipart/form-data" action="">
-                <input type="file" style="display:none" id="files" name="files">
-                <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import"
-                       value="Import A Dataset">
-            </form>
-        </div>
-    </div>
+  </div>
 </div>
 
 <div class="container-fluid">
-    <div class="row">
-        <div id="barcode-area" class="col-sm-2 barcode-container">
-            <div class="group-title">Barcode</div>
-            <div id="barcode-threshold">
-                Current threshold: 0
+  <div class="row">
+    <div id="barcode-area" class="col-sm-2 barcode-container">
+      <div class="group-title">Barcode</div>
+      <div id="barcode-threshold">
+        Current threshold: 0
+      </div>
+      <div id="vis-barcode" class="svg-container" style="overflow: scroll">
+        <svg id="barcode-svg"></svg>
+      </div>
+      <div class="help-tip" id="help-tip">
+        <h6>Selected Hyperedges</h6>
+      </div>
+    </div>
+    <div id="vis-area" class="col-sm-8" style="padding-bottom:3px;">
+      <div class="row">
+        <div class="col-md-6 outline">
+          <div class="graph-title">Input hypergraph</div>
+          <div style="border-right: 1px solid rgb(224,224,224);">
+            <div id='vis-hypergraph' class="graph-container">
+              <svg id="hypergraph-svg"></svg>
             </div>
-            <div id="vis-barcode" class="svg-container" style="overflow: scroll">
-                <svg id="barcode-svg"></svg>
-            </div>
-            <div class="help-tip" id="help-tip">
-                <h6>Selected Hyperedges</h6>
-            </div>
+          </div>
         </div>
-        <div id="vis-area" class="col-sm-8" style="padding-bottom:3px;">
-            <div class="row">
-                <div class="col-md-6 outline">
-                    <div class="graph-title">Input hypergraph</div>
-                    <div style="border-right: 1px solid rgb(224,224,224);">
-                        <div id='vis-hypergraph' class="graph-container">
-                            <svg id="hypergraph-svg"></svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 outline">
-                    <div class="graph-title" id="vis-linegraph-title">Line graph</div>
-                    <div id='vis-linegraph' class="graph-container">
-                        <svg id="linegraph-svg"></svg>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 outline">
-                    <div class="graph-title">Output simplified hypergraph</div>
-                    <div style="border-right: 1px solid rgb(224,224,224);">
-                        <div id='vis-simplified-hypergraph' class="graph-container">
-                            <svg id="simplified-hypergraph-svg"></svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 outline">
-                    <div class="graph-title" id="vis-simplified-linegraph-title">Simplified line graph</div>
-                    <div id='vis-simplified-linegraph' class="graph-container">
-                        <svg id="simplified-linegraph-svg"></svg>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-6 outline">
+          <div class="graph-title" id="vis-linegraph-title">Line graph</div>
+          <div id='vis-linegraph' class="graph-container">
+            <svg id="linegraph-svg"></svg>
+          </div>
         </div>
-        <div id="control-area" class="col-sm-2 control-container">
-            <div id="visual-encoding-control" class="block" style="margin-bottom: 10px;">
-                <div class="block_title">Visual Encoding Control</div>
-                <div class="block_body" style="max-height: 1000px">
-                    <div class="block_body-inner">
-                        <div class="block-inner-group">
-                            <div class="row">
-                                <div class="col-1">
-                                    <input type="checkbox" id="hgraph-labels">
-                                </div>
-                                <div class="col-10">
-                                    Show <a class="group-title">labels</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="block-inner-group" style=" border-bottom: none;">
-                            <div class="group-title">Hypergraph visualization</div>
-                            <div class="visual-encoding-group">
-                                <form id="visual-encoding-form">
-                                    <div class="radio-container">
-                                        <input type="radio" class="form-radio" name="visual-type" value="bipartite"
-                                               id="bipartite">
-                                        <label for="bipartite" class="radio_label">Bipartite graph</label>
-                                    </div>
-                                    <div class="radio-container">
-                                        <input type="radio" class="form-radio" name="visual-type" value="convex"
-                                               id="convex" checked="checked">
-                                        <label for="convex" class="radio_label">Convex hulls</label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 outline">
+          <div class="graph-title">Output simplified hypergraph</div>
+          <div style="border-right: 1px solid rgb(224,224,224);">
+            <div id='vis-simplified-hypergraph' class="graph-container">
+              <svg id="simplified-hypergraph-svg"></svg>
             </div>
-            <div id="parameter-control" class="block">
-                <div class="block_title">Parameter Control</div>
-                <div class="block_body" style="max-height: 1000px">
-                    <div class="block_body-inner">
-                        <div class="block-inner-group">
-                            <div class="row">
-                                <div class="col-1">
-                                    <input type="checkbox" id="hgraph-type" checked="true">
-                                </div>
-                                <div class="col-10">
-                                    <a class="group-title">Collapse</a> vertices & hyperedges
-                                </div>
-                            </div>
-                        </div>
-                        <div class="block-inner-group">
-                            <div class="group-title">Graph representation</div>
-                            <form id="variant-type-form">
-                                <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="variant-type" value="line_graph"
-                                           id="line_graph" checked="checked">
-                                    <label for="line_graph" class="radio_label">Edge simplification</label>
-                                </div>
-                                <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="variant-type" value="clique_expansion"
-                                           id="clique_expansion">
-                                    <label for="clique_expansion" class="radio_label">Vertex simplification</label>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="block-inner-group">
-                            <div class="group-title" id="s-group-title">
-                                Edge threshold
-                            </div>
-                            <div class="ui-form-range">
-                                <label class="ui-form-range__label">s</label>
-                                <span class="ui-form-range__value" id="s-walk_label">1</span>
-                                <div id="s-range-container">
-                                    <div id="s-range-container-inner" style="padding:0;">
+          </div>
+        </div>
+        <div class="col-md-6 outline">
+          <div class="graph-title" id="vis-simplified-linegraph-title">Simplified line graph</div>
+          <div id='vis-simplified-linegraph' class="graph-container">
+            <svg id="simplified-linegraph-svg"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="control-area" class="col-sm-2 control-container">
+      <div id="visual-encoding-control" class="block" style="margin-bottom: 10px;">
+        <div class="block_title">Visual Encoding Control</div>
+        <div class="block_body" style="max-height: 1000px">
+          <div class="block_body-inner">
+            <div class="block-inner-group">
+              <div class="row">
+                <div class="col-1">
+                  <input type="checkbox" id="hgraph-labels">
+                </div>
+                <div class="col-10">
+                  Show <a class="group-title">labels</a>
+                </div>
+              </div>
+            </div>
+            <div class="block-inner-group" style=" border-bottom: none;">
+              <div class="group-title">Hypergraph visualization</div>
+              <div class="visual-encoding-group">
+                <form id="visual-encoding-form">
+                  <div class="radio-container">
+                    <input type="radio" class="form-radio" name="visual-type" value="bipartite"
+                           id="bipartite">
+                    <label for="bipartite" class="radio_label">Bipartite graph</label>
+                  </div>
+                  <div class="radio-container">
+                    <input type="radio" class="form-radio" name="visual-type" value="convex"
+                           id="convex" checked="checked">
+                    <label for="convex" class="radio_label">Convex hulls</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="parameter-control" class="block">
+        <div class="block_title">Parameter Control</div>
+        <div class="block_body" style="max-height: 1000px">
+          <div class="block_body-inner">
+            <div class="block-inner-group">
+              <div class="row">
+                <div class="col-1">
+                  <input type="checkbox" id="hgraph-type" checked="true">
+                </div>
+                <div class="col-10">
+                  <a class="group-title">Collapse</a> vertices & hyperedges
+                </div>
+              </div>
+            </div>
+            <div class="block-inner-group">
+              <div class="group-title">Graph representation</div>
+              <form id="variant-type-form">
+                <div class="radio-container">
+                  <input type="radio" class="form-radio" name="variant-type" value="line_graph"
+                         id="line_graph" checked="checked">
+                  <label for="line_graph" class="radio_label">Edge simplification</label>
+                </div>
+                <div class="radio-container">
+                  <input type="radio" class="form-radio" name="variant-type" value="clique_expansion"
+                         id="clique_expansion">
+                  <label for="clique_expansion" class="radio_label">Vertex simplification</label>
+                </div>
+              </form>
+            </div>
+            <div class="block-inner-group">
+              <div class="group-title" id="s-group-title">
+                Edge threshold
+              </div>
+              <div class="ui-form-range">
+                <label class="ui-form-range__label">s</label>
+                <span class="ui-form-range__value" id="s-walk_label">1</span>
+                <div id="s-range-container">
+                  <div id="s-range-container-inner" style="padding:0;">
                                         <span id="s-range-span"><input type="number" id="s-range" min="1"
                                                                        value="10"></span>
-                                    </div>
-                                </div>
-                                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range"
-                                       value="1" max="10" min="1" step="1">
-                            </div>
-                            <br>
-                            <form id="singleton-type-form">
-                                <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="singleton-type" value="grey_out"
-                                           id="grey_out" checked="checked">
-                                    <label for="grey_out" class="radio_label">Grey out singletons</label>
-                                </div>
-                                <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="singleton-type" value="filtering"
-                                           id="filtering">
-                                    <label for="filtering" class="radio_label">Filter singletons</label>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="block-inner-group">
-                            <div class="group-title">Weight type</div>
-                            <form id="weight-type-form">
-                                <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="weight-type" value="jaccard_index"
-                                           id="jaccard_index" checked="checked">
-                                    <label for="jaccard_index" class="radio_label">Jaccard index</label>
-                                </div>
-                                <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="weight-type" value="intersection_size"
-                                           id="intersection_size">
-                                    <label for="weight" class="radio_label">Overlap size</label>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="button-container">
-                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader"
-                                   value="Compute Barcode">
-                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config"
-                                   value="Reset Configuration">
-                        </div>
-                    </div>
+                  </div>
                 </div>
+                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range"
+                       value="1" max="10" min="1" step="1">
+              </div>
+              <br>
+              <form id="singleton-type-form">
+                <div class="radio-container">
+                  <input type="radio" class="form-radio" name="singleton-type" value="grey_out"
+                         id="grey_out" checked="checked">
+                  <label for="grey_out" class="radio_label">Grey out singletons</label>
+                </div>
+                <div class="radio-container">
+                  <input type="radio" class="form-radio" name="singleton-type" value="filtering"
+                         id="filtering">
+                  <label for="filtering" class="radio_label">Filter singletons</label>
+                </div>
+              </form>
             </div>
+            <div class="block-inner-group">
+              <div class="group-title">Weight type</div>
+              <form id="weight-type-form">
+                <div class="radio-container">
+                  <input type="radio" class="form-radio" name="weight-type" value="jaccard_index"
+                         id="jaccard_index" checked="checked">
+                  <label for="jaccard_index" class="radio_label">Jaccard index</label>
+                </div>
+                <div class="radio-container">
+                  <input type="radio" class="form-radio" name="weight-type" value="intersection_size"
+                         id="intersection_size">
+                  <label for="weight" class="radio_label">Overlap size</label>
+                </div>
+              </form>
+            </div>
+            <div class="button-container">
+              <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader"
+                     value="Compute Barcode">
+              <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config"
+                     value="Reset Configuration">
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- 
 <script type="text/javascript" src="js/draw_barcode.js"></script>

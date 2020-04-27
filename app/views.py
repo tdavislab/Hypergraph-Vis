@@ -4,15 +4,11 @@ from app import APP_STATIC
 from app import APP_ROOT
 import json
 import numpy as np
-import pandas as pd
 import hypernetx as hnx
 import re
-import matplotlib.pyplot as plt
 import networkx as nx
-from tqdm import tqdm
 from os import path
 import os
-import copy
 
 
 def process_graph_edges(edge_str: str):
