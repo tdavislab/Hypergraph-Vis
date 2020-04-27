@@ -89,7 +89,7 @@ h4 {
 .vertex_node {
     stroke: lightgrey;
     stroke-width: 2px;
-    opacity: 1px;
+    opacity: 1;
 }
 
 text.faded {

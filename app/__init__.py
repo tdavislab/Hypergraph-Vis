@@ -1,9 +1,9 @@
 from flask import Flask
 import os
 
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))  # refers to application_top
 APP_STATIC = os.path.join(APP_ROOT, 'static')
-UPLOAD_FOLDER = os.path.join(APP_STATIC,'uploads')
+UPLOAD_FOLDER = os.path.join(APP_STATIC, 'uploads')
 ALLOWED_EXTENSIONS = {'txt', 'csv'}
 app = Flask(__name__)
 app.config['DEBUG'] = True
