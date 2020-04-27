@@ -75,7 +75,9 @@ h4 {
 
 .hyper_edge {
     stroke: #999;
+    /* stroke: black; */
     stroke-opacity: 0.5;
+    /* stroke-opacity: 1; */
 }
 
 .hyper_node {
@@ -281,9 +283,7 @@ path.filtering {
     opacity: 0;
     position: relative;			
     text-align: center;			
-    /* width: 200px;					 */
     max-height: 180px;					
-    /* padding: 2px; */
     margin-top: 10px;	
     padding-top: 10px;
     padding-bottom: 10px;				

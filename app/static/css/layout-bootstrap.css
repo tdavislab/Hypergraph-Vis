@@ -33,10 +33,7 @@ html, body {
 }
 
 .outline {
-    /* border: 0.1px dashed chocolate; */
     padding: 2px 0px;;
-    /* padding-right: 0; */
-    /* border-right: 1px solid rgb(224,224,224); */
 }
 
 .barcode-container {

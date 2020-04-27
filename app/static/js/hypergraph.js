@@ -9,7 +9,16 @@ class Hypergraph{
         console.log(this.links, this.nodes)
 
         this.nodes_dict = {};
-        this.nodes.forEach(node=>{ this.nodes_dict[node.id] = node; })
+        this.nodes.forEach(node=>{
+            node.links_idx = {"source":[], "target":[]}; 
+            this.nodes_dict[node.id] = node; 
+        })
+
+        for(let i=0; i<this.links.length; i++){
+            let l = this.links[i];
+            this.nodes_dict[l.source].links_idx.source.push(i);
+            this.nodes_dict[l.target].links_idx.target.push(i);
+        }
 
         this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'));
         let window_height = window.innerHeight;
@@ -36,6 +45,7 @@ class Hypergraph{
     }
 
     groupPath(vertices) {
+        console.log(vertices)
         // not draw convex hull if vertices.length <= 1
         if(vertices.length >= 2){
             if (vertices.length == 2) {
@@ -121,21 +131,22 @@ class Hypergraph{
             .stop();
         simulation.tick(300);
 
+        this.nodes.forEach(node=>{
+            node.x0 = node.x;
+            node.y0 = node.y;
+        })
+
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();
-        ng = ng.enter().append("g").merge(ng);
-        ng.attr("transform", function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
-        })
-        .classed("filtering", d=>{
-            if(singleton_type === "filtering" && d.if_singleton){
-                return true;
-            } else { return false; }
-        })
+        ng = ng.enter().append("g").merge(ng)
+            .attr("id", d=>this.svg_id+'-nodegroup-'+d.id.replace(/[|]/g,""));
+        
         ng.append("circle")
             .attr("r", d => this.get_node_radius(d.id))
             .attr("fill", d => d["bipartite"] === 1 ? d.color : "")
             .attr("id", d => this.svg_id+'-node-'+d.id.replace(/[|]/g,""))
+            .attr("cx", d=>d.x)
+            .attr("cy", d=>d.y)
             .attr("class", d => d["bipartite"] === 1 ? "hyper_node" : "vertex_node")
             .classed("grey_out", d=>{
                 if(singleton_type === "grey_out" && d.if_singleton){
@@ -157,10 +168,16 @@ class Hypergraph{
                     this.cancel_faded();
                 }  
             })
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended))
 
         ng.append("text")
             .attr("dx", 12)
             .attr("dy", "0.35em")
+            .attr("x", d=>d.x)
+            .attr("y", d=>d.y)
             .attr("class", "node-label")
             .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
             .text(d => d.label);
@@ -174,18 +191,24 @@ class Hypergraph{
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y)
             .attr("class", "hyper_edge")
-            .classed("filtering", d=>{
-                if(singleton_type === "filtering" && (d.source.if_singleton || d.target.if_singleton)){
-                    return true;
-                } else { return false;}
-            })
+            .attr("id", d => this.svg_id+"-edge-"+d.source.id.replace(/[|]/g,"")+"-"+d.target.id.replace(/[|]/g,""))
+        
+        let links_new = [];
+        this.links.forEach(l=>{
+            links_new.push(l);
+        })
+        this.nodes.forEach(node=>{
+            links_new.push({"source":node, "target":node});
+        })
             
         let groups = d3.nest()
             .key(d => d.source.id)
             .rollup(d => d.map(node => [node.target.x, node.target.y]))
-            .entries(this.links);
+            // .entries(this.links);
+            .entries(links_new)
 
         console.log("group", groups)
+        // console.log(groups(this.nodes[0].id))
 
         this.svg.select("g#hull-group").remove();
 
@@ -206,11 +229,6 @@ class Hypergraph{
                     return true;
                 } else { return false; }
             })
-            .classed("filtering", d=>{
-                if(singleton_type === "filtering" && this.nodes_dict[d.key].if_singleton){
-                    return true;
-                } else { return false; }
-            })
             .on("mouseover", d => mouseover(d.key))
             .on("mouseout",d => mouseout(d.key))
             .on("click", d => {
@@ -225,40 +243,108 @@ class Hypergraph{
                 // }
             });
             
-        // add drag capabilities
-        const drag_handler = d3.drag()
-            .on("start", drag_start)
-            .on("drag", drag_drag)
-            .on("end", drag_end);
+        // // add drag capabilities
+        // const drag_handler = d3.drag()
+        //     .on("start", drag_start)
+        //     .on("drag", drag_drag)
+        //     .on("end", drag_end);
 
         //add zoom capabilities
         const zoom_handler = d3.zoom()
             .on("zoom", zoom_actions);
 
-        drag_handler(ng);
+        // drag_handler(ng);
         zoom_handler(this.svg);
 
-        // Drag functions
-        // d is the node
-        function drag_start(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
+        // // Drag functions
+        // // d is the node
+        // function drag_start(d) {
+        //     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        //     d.fx = d.x;
+        //     d.fy = d.y;
+        // }
 
-        //make sure you can"t drag the circle outside the box
-        function drag_drag(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-        }
+        // //make sure you can"t drag the circle outside the box
+        // function drag_drag(d) {
+        //     d.fx = d3.event.x;
+        //     d.fy = d3.event.y;
+        // }
 
-        function drag_end(d) {
-            if (!d3.event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
+        // function drag_end(d) {
+        //     if (!d3.event.active) simulation.alphaTarget(0);
+        //     d.fx = null;
+        //     d.fy = null;
+        // }
 
         let that = this;
+
+        function dragstarted(d) {
+            that.dragStarted = true;
+        }
+
+        function dragged(d) {
+            d3.select("#"+that.svg_id+'-node-'+d.id.replace(/[|]/g,"")).attr("cx", d3.event.x).attr("cy", d3.event.y);
+            d3.select("#"+that.svg_id+'-text-'+d.id.replace(/[|]/g,"")).attr("x", d3.event.x).attr("y", d3.event.y);
+            
+
+            d.links_idx.source.forEach(l_idx => {
+                let l = that.links[l_idx];
+                d3.select("#"+that.svg_id+"-edge-"+l.source.id.replace(/[|]/g,"")+"-"+l.target.id.replace(/[|]/g,""))
+                    .attr("x1", d3.event.x).attr("y1", d3.event.y)
+                    // .attr("x2", l.target.x + d3.event.x - d.x).attr("y2", l.target.y + d3.event.y - d.y);
+                // d3.select("#"+that.svg_id+"-node-"+l.target.id.replace(/[|]/g,""))
+                //     .attr("cx", l.target.x + d3.event.x - d.x).attr("cy", l.target.y + d3.event.y - d.y);
+                // l.target.links_idx.target.forEach(l_idx2 => {
+                //     let l2 = that.links[l_idx2];
+                //     d3.select("#"+that.svg_id+"-edge-"+l2.source.id.replace(/[|]/g,"")+"-"+l2.target.id.replace(/[|]/g,""))
+                //     .attr("x2", l.target.x + d3.event.x - d.x).attr("y2", l.target.y + d3.event.y - d.y);
+                // })
+            })
+            d.links_idx.target.forEach(l_idx => {
+                let l = that.links[l_idx];
+                d3.select("#"+that.svg_id+"-edge-"+l.source.id.replace(/[|]/g,"")+"-"+l.target.id.replace(/[|]/g,"")).attr("x2", d3.event.x).attr("y2", d3.event.y);
+            })
+            // d3.select("#"+that.svg_id+"-hull-"+d.id.replace(/[|]/g,""))
+                // .attr("transform", "translate("+(d3.event.x-d.x0)+","+(d3.event.y-d.y0)+")")
+        }
+
+        function dragended (d) {
+            let d_id = d.id;
+            d.x = d3.event.x;
+            d.y = d3.event.y;
+
+            if(d.bipartite === 1){
+                let d_links = [];
+                d_links.push({"source":d, "target":d})
+                d.links_idx.source.forEach(l_idx=> {
+                    d_links.push(that.links[l_idx]);
+                })
+
+                let d_groups = d3.nest()
+                    .key(d => d.source.id)
+                    .rollup(d => d.map(node => [node.target.x, node.target.y]))
+                    .entries(d_links);
+
+                d3.select("#"+that.svg_id+"-hull-"+d.id.replace(/[|]/g,"")).attr("d", that.groupPath(d_groups[0].value))
+                 
+            } else {
+                let new_groups = d3.nest()
+                    .key(d => d.source.id)
+                    .rollup(d => d.map(node => [node.target.x, node.target.y]))
+                    .entries(links_new);
+                let new_groups_dict = {};
+                new_groups.forEach(g=>{
+                    new_groups_dict[g.key] = g.value;
+                })
+                d.links_idx.target.forEach(l_idx => {
+                    console.log(l_idx)
+                    let l = that.links[l_idx];
+                    d3.select("#"+that.svg_id+"-hull-"+l.source.id.replace(/[|]/g,"")).attr("d", that.groupPath(new_groups_dict[l.source.id]))
+                })
+            }
+            console.log(d.x, d.y)            
+
+        }
 
         function mouseover(key) {
             if(!that.click_id){
@@ -267,7 +353,6 @@ class Hypergraph{
                 label_list.forEach(label=>{ div_text += label+"<br> "; })
                 let div = d3.select("#help-tip")
                 div.classed("show", true);
-                // div.transition().duration(200).style("opacity", 0.9);
                 if(that.nodes_dict[key].bipartite === 1){
                     d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", true);
                     div.html("<h6>Selected Hyperedges</h6>"+div_text);

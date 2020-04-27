@@ -11,13 +11,21 @@ class Linegraph{
 
         this.nodes_dict = {};
         this.nodes.forEach(n=>{
+            n.links_idx = {"source":[], "target":[]}; // for dragging
             this.nodes_dict[n.id] = n;
         })
 
         this.links_dict = {};
         this.links.forEach(l=>{
-            this.links_dict[l.source+"-"+l.target] = l;
+            
+            // this.nodes_dict[l.source].links_idx.push()
         })
+        for (let i=0; i<this.links.length; i++){
+            let l = this.links[i];
+            this.links_dict[l.source+"-"+l.target] = l;
+            this.nodes_dict[l.source].links_idx.source.push(i);
+            this.nodes_dict[l.target].links_idx.target.push(i);
+        }
         console.log(this.nodes_dict, this.links_dict)
 
         // console.log(this.links, this.nodes);
@@ -60,6 +68,12 @@ class Linegraph{
         // let node_radius = 8;
         let that = this;
 
+        // add drag capabilities
+        // const drag_handler = d3.drag()
+        //     .on("start", drag_start)
+        //     .on("drag", drag_drag)
+        //     .on("end", drag_end);
+
 
         for (let i=0; i < this.links.length; i++) {
             this.links[i].distance = 100
@@ -76,15 +90,23 @@ class Linegraph{
 
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();
-        ng = ng.enter().append("g").merge(ng);
-
-        ng.append("circle")
-            .attr("r", d => this.get_node_radius(d.id))
-            .attr("fill", "white")
-            // .attr("id", d => this.svg_id+"-node-"+d.id.replace(/[|]/g,""))
-            .attr("class", "line_node")
-            .attr("cx", d=>d.x)
-            .attr("cy",d=>d.y)
+        ng = ng.enter().append("g").merge(ng)
+            .on("mouseover", d => {
+                if(!this.click_id){
+                    d3.select("#"+this.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
+                    let label_list = this.nodes_dict[d.id].label.split("|");
+                    let div_text = '';
+                    label_list.forEach(label=>{ div_text += label+"<br> "; })
+                    d3.select("#help-tip").classed("show", true)
+                        .html("<h6>Selected Hyperedges</h6>"+div_text);
+                }  
+            })
+            .on("mouseout", d=>{
+                if(!this.click_id){
+                    d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
+                    d3.select("#help-tip").classed("show", false);
+                } 
+            })
             .on("click", d => {
                 if(this.click_id != d.id){
                     this.click_id = d.id;
@@ -95,7 +117,18 @@ class Linegraph{
                     
                 }     
             })
-            // .style("opacity",1)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        ng.append("circle")
+            .attr("r", d => this.get_node_radius(d.id))
+            .attr("fill", "white")
+            .attr("id", d => this.svg_id+"-node-"+d.id.replace(/[|]/g,""))
+            .attr("class", "line_node")
+            .attr("cx", d=>d.x)
+            .attr("cy",d=>d.y)
         
         let pie = d3.pie()
             .value(d => d.value)
@@ -111,37 +144,7 @@ class Linegraph{
             .attr("class", "pie-group")
             .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
             .attr("transform",d => "translate("+d.x+","+d.y+")")
-            .on("mouseover", d => {
-                console.log(d)
-                if(!this.click_id){
-                    d3.select("#"+this.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
-                    let label_list = this.nodes_dict[d.id].label.split("|");
-                    let div_text = '';
-                    label_list.forEach(label=>{ div_text += label+"<br> "; })
-                    let div = d3.select("#help-tip");
-                    div.classed("show", true);
-                    // div.transition().duration(200).style("opacity", 0.9);
-                    div.html("<h6>Selected Hyperedges</h6>"+div_text);
-                }  
-            })
-            .on("mouseout", d=>{
-                if(!this.click_id){
-                    d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
-                    d3.select("#help-tip").classed("show", false);
-                    // d3.select("#help-tip").transition().duration(200).style("opacity", 0);
-                } 
-            })
-            .on("click", d => {
-                if(this.click_id != d.id){
-                    this.click_id = d.id;
-                    click_node(d.id)
-                } else {
-                    this.click_id = undefined;
-                    this.cancel_faded();
-                    
-                }     
-            })
-
+            
         pg.selectAll("path").data(d => pie(prepare_pie_data(d.id)))
             .enter().append("path")
             .attr("d", d => {
@@ -157,7 +160,6 @@ class Linegraph{
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
-
             .attr("stroke-width", d => this.edge_scale(parseFloat(d[this.weight].value)))
             .attr("id", d => this.svg_id+"-edge-"+d.source.id.replace(/[|]/g,"")+"-"+d.target.id.replace(/[|]/g,""))
             .attr("class", "line_edge")
@@ -203,21 +205,36 @@ class Linegraph{
                 }   
             });
 
-        // add drag capabilities
-        const drag_handler = d3.drag()
-        .on("start", drag_start)
-        .on("drag", drag_drag)
-        .on("end", drag_end);
-
         //add zoom capabilities
         const zoom_handler = d3.zoom()
             .on("zoom", zoom_actions);
-
-        drag_handler(ng);
         zoom_handler(this.svg);
 
-        // Drag functions
-        // d is the node
+        function dragstarted(d) {
+            that.dragStarted = true;
+        }
+
+        function dragged(d) {
+            // console.log(d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")))
+            d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
+            d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).attr("cx", d3.event.x).attr("cy", d3.event.y);
+            d.links_idx.source.forEach(l_idx =>{
+                let l = that.links[l_idx];
+                d3.select("#"+that.svg_id+"-edge-"+l.source.id.replace(/[|]/g,"")+"-"+l.target.id.replace(/[|]/g,"")).attr("x1", d3.event.x).attr("y1", d3.event.y);
+            })
+            d.links_idx.target.forEach(l_idx => {
+                let l = that.links[l_idx];
+                d3.select("#"+that.svg_id+"-edge-"+l.source.id.replace(/[|]/g,"")+"-"+l.target.id.replace(/[|]/g,"")).attr("x2", d3.event.x).attr("y2", d3.event.y);
+            })
+        }
+
+        function dragended(d) {
+            if(that.dragStarted) {
+                d.x = d3.event.x;
+                d.y = d3.event.y;
+            }
+            that.dragStarted = false;
+        }
 
         function prepare_pie_data (key) {
             let id_list = key.split("|");
@@ -236,23 +253,34 @@ class Linegraph{
             return pie_data
         }
 
-        function drag_start(d) {
-            if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
+        // function drag_start(d) {
+        //     console.log("drag")
+        //     if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
+        //     d.fx = d.x;
+        //     d.fy = d.y;
+        //     // console.log(d.x, d.y)
 
-        //make sure you can"t drag the circle outside the box
-        function drag_drag(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-        }
+        // }
 
-        function drag_end(d) {
-            if (!d3.event.active) that.simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
+        // //make sure you can"t drag the circle outside the box
+        // function drag_drag(d) {
+        //     d.fx = d3.event.x;
+        //     d.fy = d3.event.y;
+        //     d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform",d => "translate("+d3.event.x+","+d3.event.y+")");
+        // }
+
+        // function drag_end(d) {
+        //     if (!d3.event.active) that.simulation.alphaTarget(0).stop();
+        //     that.simulation.tick(300);
+        //     d.fx = null;
+        //     d.fy = null;
+        //     // d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform",d => "translate("+d.x+","+d.y+")");
+        //     that.svg.selectAll(".pie-group").attr("transform",d => "translate("+d.x+","+d.y+")")
+        //     that.svg.selectAll(".line_node").attr("cx", d=>d.x).attr("cy", d=>d.y)
+        //     that.svg.selectAll("line").attr("x1", d=>d.source.x).attr("y1", d=>d.source.y)
+        //     // .attr("x2", d=>d.target.x).attr("y2", d=>d.target.y);
+        //     // console.log(d.x, d.y)
+        // }
 
         //Zoom functions
         function zoom_actions() {

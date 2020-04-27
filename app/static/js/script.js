@@ -325,9 +325,7 @@ function read_hgraph_text(text_data){
         data: text_data,
         dataType:'text',
         success: function (response) {
-            response = JSON.parse(response)
-            load_data(response, current_config);
-            d3.select("#s-walk_input").property("max", response.s_max)
+            load_data(JSON.parse(response), current_config);
         },
         error: function (error) {
             console.log("error",error);
