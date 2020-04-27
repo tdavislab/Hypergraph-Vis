@@ -14,12 +14,15 @@
   {% endassets %}
 </head>
 
-<body scroll="no" style="overflow: hidden">
+<body style="overflow: scroll">
 <div class="header-group">
+  <!--  Header -->
   <div id="main_title">
     <h4>Hypergraph Visualization:</h4>
     <h4>Multiscale Simplification and Multimodal Curation</h4>
   </div>
+
+  <!--  Dataset import-->
   <div id="files_group">
     <div class="import-group">
       <form method="post" id="upload" enctype="multipart/form-data" action="">
@@ -32,21 +35,26 @@
 </div>
 
 <div class="container-fluid">
+  <!--  Each row holds one modality -->
   <div class="row">
+    <!--  Barcode widget  -->
     <div id="barcode-area" class="col-sm-2 barcode-container">
       <div class="group-title">Barcode</div>
-      <div id="barcode-threshold">
-        Current threshold: 0
-      </div>
+      <div id="barcode-threshold">Current threshold: 0</div>
       <div id="vis-barcode" class="svg-container" style="overflow: scroll">
         <svg id="barcode-svg"></svg>
       </div>
-      <div class="help-tip" id="help-tip">
-        <h6>Selected Hyperedges</h6>
+      <div class="help-tip" id="help-tip"><h6>Selected Hyperedges</h6>
       </div>
     </div>
+
+    <!--  Four panel layout for graphs and hypergraphs  -->
     <div id="vis-area" class="col-sm-8" style="padding-bottom:3px;">
+
+      <!--  Panels: Hypergraph, LineGraph  -->
       <div class="row">
+
+        <!--  Hypergraph  -->
         <div class="col-md-6 outline">
           <div class="graph-title">Input hypergraph</div>
           <div style="border-right: 1px solid rgb(224,224,224);">
@@ -55,14 +63,21 @@
             </div>
           </div>
         </div>
+
+        <!--  Linegraph  -->
         <div class="col-md-6 outline">
           <div class="graph-title" id="vis-linegraph-title">Line graph</div>
-          <div id='vis-linegraph' class="graph-container">
+          <div class="graph-container" id='vis-linegraph'>
             <svg id="linegraph-svg"></svg>
           </div>
         </div>
+
       </div>
+
+      <!--  Panels: Simplified Hypergraph, Simplified LineGraph  -->
       <div class="row">
+
+        <!--  Simplified Hypergraph  -->
         <div class="col-md-6 outline">
           <div class="graph-title">Output simplified hypergraph</div>
           <div style="border-right: 1px solid rgb(224,224,224);">
@@ -71,6 +86,8 @@
             </div>
           </div>
         </div>
+
+        <!--  Simplified Linegraph  -->
         <div class="col-md-6 outline">
           <div class="graph-title" id="vis-simplified-linegraph-title">Simplified line graph</div>
           <div id='vis-simplified-linegraph' class="graph-container">
@@ -78,8 +95,13 @@
           </div>
         </div>
       </div>
+
     </div>
+
+    <!--  Control area  -->
     <div id="control-area" class="col-sm-2 control-container">
+
+      <!--  Visual Encoding Controls  -->
       <div id="visual-encoding-control" class="block" style="margin-bottom: 10px;">
         <div class="block_title">Visual Encoding Control</div>
         <div class="block_body" style="max-height: 1000px">
@@ -114,11 +136,15 @@
           </div>
         </div>
       </div>
+
+      <!-- Parameter controls -->
       <div id="parameter-control" class="block">
         <div class="block_title">Parameter Control</div>
         <div class="block_body" style="max-height: 1000px">
           <div class="block_body-inner">
             <div class="block-inner-group">
+
+              <!--  Collapse vertices and edges  -->
               <div class="row">
                 <div class="col-1">
                   <input type="checkbox" id="hgraph-type" checked="true">
@@ -127,7 +153,10 @@
                   <a class="group-title">Collapse</a> vertices & hyperedges
                 </div>
               </div>
+
             </div>
+
+            <!--  Modality selection -->
             <div class="block-inner-group">
               <div class="group-title">Graph representation</div>
               <form id="variant-type-form">
@@ -143,23 +172,25 @@
                 </div>
               </form>
             </div>
+
             <div class="block-inner-group">
-              <div class="group-title" id="s-group-title">
-                Edge threshold
-              </div>
+
+              <!--  Edge threshold -->
+              <div class="group-title" id="s-group-title">Edge threshold</div>
               <div class="ui-form-range">
                 <label class="ui-form-range__label">s</label>
                 <span class="ui-form-range__value" id="s-walk_label">1</span>
                 <div id="s-range-container">
                   <div id="s-range-container-inner" style="padding:0;">
-                                        <span id="s-range-span"><input type="number" id="s-range" min="1"
-                                                                       value="10"></span>
+                    <span id="s-range-span"><input type="number" id="s-range" min="1" value="10"></span>
                   </div>
                 </div>
-                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range"
-                       value="1" max="10" min="1" step="1">
+                <input class="ui-form-range__input" id="s-walk_input" name="s-walk" type="range" value="1" max="10"
+                       min="1" step="1">
               </div>
               <br>
+
+              <!--  Clean singletons -->
               <form id="singleton-type-form">
                 <div class="radio-container">
                   <input type="radio" class="form-radio" name="singleton-type" value="grey_out"
@@ -173,6 +204,8 @@
                 </div>
               </form>
             </div>
+
+            <!--  Weight type  -->
             <div class="block-inner-group">
               <div class="group-title">Weight type</div>
               <form id="weight-type-form">
@@ -184,10 +217,12 @@
                 <div class="radio-container">
                   <input type="radio" class="form-radio" name="weight-type" value="intersection_size"
                          id="intersection_size">
-                  <label for="weight" class="radio_label">Overlap size</label>
+                  <label for="intersection_size" class="radio_label">Overlap size</label>
                 </div>
               </form>
             </div>
+
+            <!--  Compute and Reset buttons -->
             <div class="button-container">
               <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader"
                      value="Compute Barcode">
