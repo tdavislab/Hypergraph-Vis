@@ -129,6 +129,24 @@ class Hypergraph{
         
     }
 
+    revert_force_directed_layout(){
+        this.nodes.forEach(node=>{
+            node.x = node.x0;
+            node.y = node.y0;
+        })
+        this.svg.selectAll("circle").attr("cx", d=>d.x).attr("cy", d=>d.y);
+        this.svg.selectAll("text").attr("x", d=>d.x).attr("y", d=>d.y);
+        this.svg.selectAll("line").attr("x1", d=>d.source.x).attr("y1", d=>d.source.y)
+            .attr("x2", d=>d.target.x).attr("y2", d=>d.target.y);
+        let groups = d3.nest()
+            .key(d => d.source.id)
+            .rollup(d => d.map(node => [node.target.x, node.target.y]))
+            .entries(this.links_new)
+        let groups_dict = Object.assign({}, ...groups.map(s => ({[s.key]: s.value})));
+        console.log(groups_dict)
+        this.svg.selectAll(".convex_hull").attr("d", d=>this.groupPath(groups_dict[d.key]));
+    }
+
     draw_hypergraph(){
         let that = this;
 
@@ -136,14 +154,14 @@ class Hypergraph{
 
         
 
-        let simulation = d3.forceSimulation(this.nodes)
+        this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
             .force("charge", d3.forceManyBody(-500))
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2))
             .force("x", d3.forceX().strength(0.02))
             .force("y", d3.forceY().strength(0.02))
             .stop();
-        simulation.tick(300);
+        this.simulation.tick(300);
 
         this.nodes.forEach(node=>{
             node.x0 = node.x;
@@ -238,18 +256,18 @@ class Hypergraph{
             .attr("class", "hyper_edge")
             .attr("id", d => this.svg_id+"-edge-"+d.source.id.replace(/[|]/g,"")+"-"+d.target.id.replace(/[|]/g,""))
         
-        let links_new = [];
+        this.links_new = [];
         this.links.forEach(l=>{
-            links_new.push(l);
+            this.links_new.push(l);
         })
         this.nodes.forEach(node=>{
-            links_new.push({"source":node, "target":node});
+            this.links_new.push({"source":node, "target":node});
         })
             
         let groups = d3.nest()
             .key(d => d.source.id)
             .rollup(d => d.map(node => [node.target.x, node.target.y]))
-            .entries(links_new)
+            .entries(this.links_new)
 
         console.log("group", groups)
 
@@ -348,7 +366,7 @@ class Hypergraph{
                     let new_groups = d3.nest()
                         .key(d => d.source.id)
                         .rollup(d => d.map(node => [node.target.x, node.target.y]))
-                        .entries(links_new);
+                        .entries(that.links_new);
                     let new_groups_dict = {};
                     new_groups.forEach(g=>{
                         new_groups_dict[g.key] = g.value;

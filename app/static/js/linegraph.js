@@ -69,10 +69,19 @@ class Linegraph{
         return this.radius_scale(Math.min(n_list.length,8));
     }
 
+    revert_force_directed_layout(){
+        this.nodes.forEach(node=>{
+            node.x = node.x0;
+            node.y = node.y0;
+        })
+        d3.selectAll(".line_node").attr("cx", d=>d.x).attr("cy", d=>d.y);
+        d3.selectAll(".pie-group").attr("transform",d => "translate("+d.x+","+d.y+")")
+        d3.selectAll(".line_edge").attr("x1", d=>d.source.x).attr("y1", d=>d.source.y)
+            .attr("x2", d=>d.target.x).attr("y2", d=>d.target.y);
+    }
+
     draw_linegraph(){
         let that = this;
-
-        
 
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
@@ -82,6 +91,11 @@ class Linegraph{
             .force("y", d3.forceY().strength(0.02))
             .stop();
         this.simulation.tick(300);
+
+        this.nodes.forEach(node=>{
+            node.x0 = node.x;
+            node.y0 = node.y;
+        })
 
         let ng = this.nodes_group.selectAll("g").data(this.nodes);
         ng.exit().remove();

@@ -122,6 +122,15 @@ function load_data(data, config) {
     console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels);
 
+    d3.select("#revert_graph")
+        .on("click", ()=>{
+            // clear_graphs();
+            hypergraph.revert_force_directed_layout();
+            simplified_hypergraph.revert_force_directed_layout();
+            linegraph.revert_force_directed_layout();
+            simplified_linegraph.revert_force_directed_layout();
+        })
+
     d3.selectAll(".barcode-rect-dim0")
         .on("click", (d,i)=>click_bar(d,i));
 
@@ -497,6 +506,18 @@ function clear_canvas(){
     $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
     d3.select("#barcode-threshold").html("Current threshold: 0");
 }
+
+function clear_graphs(){
+    $('#hypergraph-svg').remove();
+    $('#linegraph-svg').remove();
+    $('#simplified-hypergraph-svg').remove();
+    $('#simplified-linegraph-svg').remove();
+    $('#vis-hypergraph').append('<svg id="hypergraph-svg"></svg>');
+    $('#vis-linegraph').append('<svg id="linegraph-svg"></svg>');
+    $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+    $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
+}
+
 
 
 // d3.select("#singleton-type-form")
