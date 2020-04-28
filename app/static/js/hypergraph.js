@@ -42,6 +42,17 @@ class Hypergraph{
         
         this.radius_scale = d3.scaleLinear().domain([1, 8]).range([8,15]);
 
+        let distance_scale = d3.scaleLinear()
+            .domain([1,10])
+            .range([30,120])
+
+        this.links.forEach(l=>{
+            let source_size = l.source.split("|").length;
+            let target_size = l.target.split("|").length;
+            l.distance = distance_scale(Math.min((source_size+target_size)/2, 10));
+
+        })
+
         this.draw_hypergraph();
         this.toggle_hgraph_labels();  
     }
@@ -123,16 +134,7 @@ class Hypergraph{
 
         let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
 
-        let distance_scale = d3.scaleLinear()
-            .domain([1,10])
-            .range([30,120])
-
-        this.links.forEach(l=>{
-            let source_size = l.source.split("|").length;
-            let target_size = l.target.split("|").length;
-            l.distance = distance_scale(Math.min((source_size+target_size)/2, 10));
-
-        })
+        
 
         let simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))

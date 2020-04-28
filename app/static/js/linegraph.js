@@ -16,10 +16,6 @@ class Linegraph{
         })
 
         this.links_dict = {};
-        this.links.forEach(l=>{
-            
-            // this.nodes_dict[l.source].links_idx.push()
-        })
         for (let i=0; i<this.links.length; i++){
             let l = this.links[i];
             this.links_dict[l.source+"-"+l.target] = l;
@@ -55,6 +51,16 @@ class Linegraph{
             .range([1, 10]);
         this.radius_scale = d3.scaleLinear().domain([1, 8]).range([8,15]);
 
+        let distance_scale = d3.scaleLinear()
+            .domain([1,10])
+            .range([100,200]);
+
+        this.links.forEach(l=>{
+            let source_size = l.source.split("|").length;
+            let target_size = l.target.split("|").length;
+            l.distance = distance_scale(Math.min((source_size+target_size)/2, 10));
+        });
+
         this.draw_linegraph();
     }
 
@@ -66,15 +72,7 @@ class Linegraph{
     draw_linegraph(){
         let that = this;
 
-        let distance_scale = d3.scaleLinear()
-            .domain([1,10])
-            .range([100,200]);
-
-            this.links.forEach(l=>{
-                let source_size = l.source.split("|").length;
-                let target_size = l.target.split("|").length;
-                l.distance = distance_scale(Math.min((source_size+target_size)/2, 10));
-            });
+        
 
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
