@@ -1,0 +1,909 @@
+Mostafa A. Bassiouni,K. A. Hazboun,Ali Orooji
+Mark Sullivan,Michael Stonebraker,Michael A. Olson,Daniel Barbara
+Aditya N. Saharia,Debabrata Dey
+Kotagiri Ramamohanarao,Limsoon Wong,Justin Zobel,Elisa Bertino,Ron Sacks-Davis
+Apostolos Papadopoulos,Yannis Theodoridis,Philippe Rigaux,Enrico Nardelli,Timos K. Sellis,Michel Scholl
+Evaggelia Pitoura,Le Gruenwald,Elisa Bertino,Kai-Uwe Sattler,Abdelsalam Helal,Aidong Zhang,Bharat K. Bhargava,Andrew E. Wade,Omran A. Bukhres,Ahmed K. Elmagarmid,Serge Abiteboul,Thomas Schwarz,Margaret H. Dunham,Dieter Pfoser,Elena Ferrari,Krithi Ramamritham,Byung Suk Lee,Panos K. Chrysanthis,George Samaras
+Gurmeet Singh Manku,Rajeev Motwani,Jennifer Widom,Brian Babcock,Shivnath Babu,Bruce G. Lindsay
+Weimin Du,Ming-Chien Shan,William Kent,Abdelsalam Helal,Omran A. Bukhres,Witold Litwin,Won Kim,Ahmed K. Elmagarmid,Ravi Krishnamurthy,Joseph Albert,Umeshwar Dayal,Mohammad A. Ketabchi
+Randy H. Katz,Wei Hong,Leonard D. Shapiro,David J. DeWitt,Jeff Dozier,B. R. Badrinath,Nathan Goodman,Yanlei Diao,Tobin J. Lehman,Hong-Tai Chou,Hans-Arno Jacobsen,Michael Stonebraker,Lawrence A. Rowe,Frank Olken,Umeshwar Dayal,Haran Boral,Eugene Wong,Anthony C. Klug
+T. H. Merrett,Hanan Samet,Jack A. Orenstein,Yahiko Kambayashi,Ekow J. Otoo
+Dan Suciu,Ashish Gupta,Tova Milo,Kenneth A. Ross,Rada Chirkova,Richard Hull,Minos N. Garofalakis,Limsoon Wong,Gottfried Vossen,Daniela Florescu,Chris Clifton,Jihad Boulos,Catriel Beeri,Mary F. Fernandez,Jiawei Han,Jennifer Widom,Susan B. Davidson,Georg Lausen,Nick Koudas,Wang Chiew Tan,Ahmed K. Elmagarmid,Michael Stonebraker,Magdalena Balazinska,David Maier,Serge Abiteboul,Alin Deutsch,Alon Y. Levy,Daniel J. Rosenkrantz,Wenfei Fan,Lucian Popa,Peter Scheuermann,Rajeev Rastogi,Zachary G. Ives,Christopher Re,Maurizio Lenzerini,Peter Buneman,Alon Y. Halevy,Gerhard Weikum,Divesh Srivastava,Adam Bosworth,Sihem Amer-Yahia,Atsuyuki Morishima,Ioana Manolescu,AnHai Doan,Gerome Miklau,Sophie Cluet,Makoto Onizuka
+Pasquale Rullo,Elena Ferrari,Witold Staniszkis,Elisa Bertino
+Maria Zemankova,Alon Y. Levy,Divesh Srivastava,Abraham Silberschatz,Yannis E. Ioannidis
+Tirthankar Lahiri,Jennifer Widom,Ashok Joshi,Serge Abiteboul
+Le Gruenwald,Kai-Uwe Sattler,Daniela Florescu,Michael J. Franklin,Beng Chin Ooi,Joseph M. Hellerstein,Alon Y. Halevy,Alex Delis,Henry F. Korth,Michael Stonebraker,Johannes Gehrke,Laura M. Haas,Margaret H. Eich,Surajit Chaudhuri,Thomas Schwarz,Samuel Madden,Mary F. Fernandez,Sunita Sarawagi,Heinz Schweppe,Raghu Ramakrishnan,Michael J. Carey,Gerhard Weikum,Peter A. Boncz,Yannis E. Ioannidis,M. Tamer Ozsu,Donald Kossmann,Aris M. Ouksel,Philip A. Bernstein,Panos K. Chrysanthis,George Samaras,Rakesh Agrawal,Hector Garcia-Molina,AnHai Doan
+Eugene Wong,Michael Stonebraker,Philip A. Bernstein,Oliver Gunther,Nathan Goodman,David W. Shipman,Yannis E. Ioannidis,Michael Hammer
+Marian H. Nodine,David L. Wells,Mitch Cherniack,Abdelsalam Helal,Omran A. Bukhres,Aidong Zhang,Sridhar Ramaswamy,Bharat K. Bhargava,Anne H. H. Ngu,Ahmed K. Elmagarmid,Richard S. Brice,Darrell Woelk,Marek Rusinkiewicz,Dimitrios Georgakopoulos,Stanley B. Zdonik
+Jonathan Goldstein,Amarnath Gupta,Jingren Zhou,Kevin S. Beyer,Raghu Ramakrishnan,Mohamed H. Ali,Per-Ake Larson,Roger S. Barga
+Yanlei Diao,Hongjun Lu,Donald Kossmann,Songting Chen,Mehmet Altinel,Michael J. Franklin,Michael J. Carey,Daniela Florescu
+Serge Miranda,Stefano Spaccapietra
+Mark A. Roth,Don S. Batory,Henry F. Korth,Abraham Silberschatz,Eric N. Hanson
+Peter M. Stocker,Jorge B. Bocca,Peter M. D. Gray
+Munir Cochinwala,Vassilios S. Verykios,Gary E. Herman,Chung-Min Chen,Elisa Bertino,Paolo Missier,Ahmed K. Elmagarmid,Marco Mesiti,Patrick Valduriez,Dennis Shasha
+Yoshifumi Masunaga,Michael L. Brodie,Yoshinari Kanamori,Guy M. Lohman,Elisa Bertino,Laura M. Haas,Dean Daniels,Paul F. Wilms,Bruce G. Lindsay,Francois Bancilhon,Patricia G. Selinger,Elke A. Rundensteiner,C. Mohan
+Yannis Vassiliou,Alexander Borgida,Joachim W. Schmidt,Maurizio Lenzerini,Matthias Jarke,Janis A. Bubenko Jr.,Timos K. Sellis,Klaus R. Dittrich,Shamkant B. Navathe,John Mylopoulos,Martin Staudt,Valeria De Antonellis,Michael V. Mannino,James Clifford,Eric Simon
+Pamela Drew,Dennis McLeod,Dik Lun Lee,Frederick H. Lochovsky,Calton Pu,Abraham Silberschatz,Roger King,Murthy Ganti,Lyman Do,Chung-Dak Shum,Marek Rusinkiewicz,Kamalakar Karlapalem
+Kamalakar Karlapalem,Chung-Dak Shum,Soujanya Vadapalli,Frederick H. Lochovsky,Yahiko Kambayashi,Dik Lun Lee,Shamkant B. Navathe,Sharma Chakravarthy
+David Botzer,Opher Etzion
+Y. Edmund Lien,Shalom Tsur
+Kai-Uwe Sattler,M. Tamer Ozsu,Panos K. Chrysanthis,Aris M. Ouksel,Karl Aberer,Tiziana Catarci,Erich J. Neuhold,Stefano Spaccapietra,Michael Gertz,Wolfgang Lehner,Peter A. Boncz,Heinz Schweppe,Daniel A. Keim
+Erik G. Hoel,Vassilis J. Tsotras,Hanan Samet,Betty Salzberg,Marios Hadjieleftheriou,Dimitris Papadias,Philippe Rigaux,Max J. Egenhofer
+Michael A. Olson,Michael Stonebraker,Michael Ubell,Robert Devine,Witold Litwin,Wei Hong
+Christian Mathis,Theo Harder
+Bin Jiang,Xuemin Lin,Jiawei Han,Jian Pei
+Beng Chin Ooi,Gao Cong,Mario A. Nascimento,Kian-Lee Tan,Masaru Kitsuregawa,Henry F. Korth,Kenneth A. Ross,Sunita Sarawagi,Michael J. Carey,Heng Tao Shen,Wee Hyong Tok,Hongjun Lu,Hector Garcia-Molina,Jeffrey Xu Yu,Anthony K. H. Tung,Limsoon Wong,Surajit Chaudhuri,Daniela Florescu,Jiawei Han,Nick Koudas,Joseph M. Hellerstein,Samuel Madden,Yannis E. Ioannidis,Michael Stonebraker,Philip A. Bernstein,Mong-Li Lee,Raymond T. Ng,Michael J. Franklin,Elisa Bertino,Rakesh Agrawal,HweeHwa Pang,Dimitris Papadias,H. V. Jagadish,Alon Y. Halevy,Cheng Hian Goh,Gerhard Weikum,Divesh Srivastava,Laura M. Haas,Justin Zobel,Raghu Ramakrishnan,Christian S. Jensen,Haifeng Jiang,Weining Qian,Xiaofang Zhou,Chee Yong Chan,Jianwen Su,Johannes Gehrke,AnHai Doan,Christian Bohm,Donald Kossmann,Ron Sacks-Davis,Wei Wang
+Ashok Joshi,Gopalan Arun
+Torsten Grust,Stefan Manegold,Marc H. Scholl,Jan Flokstra,Michael J. Carey,Loredana Afanasiev,Dean Jacobs,Marco Mesiti,Alfons Kemper,Peter A. Boncz,Maurice van Keulen,Jerome Simeon,Jens Teubner
+Wolfgang Klas,Achim Kraiss,Peter Dadam,Beatrice Finance,Peter Fankhauser,Amit P. Sheth,Karl Aberer,Erich J. Neuhold,Peter Muth,Calton Pu,K. Selcuk Candan,Antonio L. Furtado,Klemens Bohm,Marek Rusinkiewicz
+Amit Basu,Rafiul Ahad
+Jonathan J. King,John Miles Smith,Alexander Borgida,John Mylopoulos,Peter Hitchcock
+eva Kuhn,Yungho Leu,Ahmed K. Elmagarmid,Omran A. Bukhres
+Oliver Gunther,Hans-Joachim Lenz,Arie Shoshani,Alejandro P. Buchmann,Hans-Arno Jacobsen,Maurizio Lenzerini,Max J. Egenhofer,Michel Scholl
+Leo Giakoumakis,Shankar Pal,Cesar A. Galindo-Legaria
+Ivan T. Bowman,Kenneth Salem
+Richard T. Snodgrass,Curtis E. Dyreson,Barbara Pernici,Christian S. Jensen,Dieter Gawlick,Christos Faloutsos,Stanley B. Zdonik,Rakesh Agrawal,James Clifford,Kenneth A. Ross,Don S. Batory,Z. Meral Ozsoyoglu,Alberto O. Mendelzon,Hans-Jorg Schek,Raghu Ramakrishnan,Gultekin Ozsoyoglu,Patricia G. Selinger,Serge Abiteboul,Krithi Ramamritham,V. S. Subrahmanian,Jennifer Widom,Roberto Zicari,Patrick Valduriez,Sophie Cluet,Michael J. Carey,Suryanarayana M. Sripada,Jeffrey D. Ullman,Amr El Abbadi,Vassilis J. Tsotras,Tomasz Imielinski,Stefano Ceri,Jan Chomicki,Alon Y. Halevy,Khaled K. Al-Taha,Michael J. Franklin,David Maier,Michael D. Soo,Hongjun Lu,Shashi K. Gadia,David B. Lomet,David J. DeWitt,Laura M. Haas,Carlo Zaniolo,Yannis E. Ioannidis,Kyu-Young Whang,Sushil Jajodia,Ramez Elmasri,Gerhard Weikum,Bongki Moon,Nikos A. Lorentzos,Arie Segev,Zachary G. Ives,Holger Meyer,Paolo Tiberio,Duri Schmidt,Sudha Ram,Claudio Bettini,Nick Kline,Niki Pissinou,Abdullah Uz Tansel,Joseph M. Hellerstein,Theodore Johnson,Jim Gray,Masaru Kitsuregawa,Michael H. Bohlen,Inderpal Singh Mumick,Ilsoo Ahn,Martin L. Kersten,Philip S. Yu,Nick Roussopoulos,Elisa Bertino,Guy M. Lohman,Michael Stonebraker,Jeffrey F. Naughton,Timos K. Sellis,Xiaoyang Sean Wang,T. Y. Cliff Leung,Umeshwar Dayal,Philip A. Bernstein,M. Tamer Ozsu,Gio Wiederhold,Hector Garcia-Molina,Peter M. G. Apers
+Weidong Chen,Nelson Mendonca Mattos,Yun Wang,Mario A. Nascimento,Bruce G. Lindsay
+Xiaoyang Sean Wang,Elisa Bertino,Curtis E. Dyreson,Amihai Motro,Zhen He,V. S. Subrahmanian,Min Wang,Alexander Brodsky,Menas Kafatos,Sushil Jajodia,Sriram Padmanabhan,Daniel Barbara,Xuemin Lin,Edgar H. Sibley,Claudio Bettini,Larry Kerschberg,Byung Suk Lee,Ruixin Yang
+Jean-Pierre Cheiney,Georges Gardarin,Christophe de Maindreville,Jean-Marc Thevenin,Patrick Valduriez,Rosana S. G. Lanzelotte,Pascal Faudemay
+Michael Siegel,Barbara T. Blaustein,Arnon Rosenthal,Cheng Hian Goh,Sharon C. Salveter,Edward Sciore,Stuart E. Madnick
+Jim Gray,Tanu Malik,Patricia G. Selinger,Prakash Sundaresan,David J. DeWitt,Henry F. Korth,Umeshwar Dayal,Dina Bitton,David B. Lomet,Svein-Olaf Hvasshovd,Betty Salzberg,Michael J. Carey,Bradford W. Wade,Bruce G. Lindsay,Timos K. Sellis,Hector Garcia-Molina,Naga K. Govindaraju,Phillip B. Gibbons,Surajit Chaudhuri,Erich J. Neuhold,Jim Melton,Susanne Englert,Hansjorg Zeller,David Beech,Jennifer Widom,Stanley B. Zdonik,Matthias Jarke,Paolo Tiberio,Joseph M. Hellerstein,Yannis E. Ioannidis,Michael Stonebraker,Philip A. Bernstein,Magdalena Balazinska,David Maier,Serge Abiteboul,Joachim W. Schmidt,Michael J. Franklin,Gio Wiederhold,Rakesh Agrawal,Lawrence A. Rowe,Hans-Jorg Schek,Peter C. Lockemann,H. V. Jagadish,Alon Y. Halevy,Andreas Reuter,Hamid Pirahesh,Gerhard Weikum,Dennis Shasha,Stefano Ceri,Ron Obermarck,Donald D. Chamberlin,Adam Bosworth,Martin L. Kersten,Dieter Gawlick,Laura M. Haas,Patrick E. O'Neil,Michael L. Brodie,Irving L. Traiger,Jeffrey D. Ullman,Pat Helland,Goetz Graefe,Mario Schkolnick,Raymond A. Lorie,Jeffrey F. Naughton,Amol Deshpande
+Theodore Johnson,Dennis Shasha,Sharma Chakravarthy,Kenneth A. Ross,Kenneth C. Sevcik,Alexandros Biliris,Peter J. Haas,Lukasz Golab,Damianos Chatziantoniou,Vladislav Shkapenyuk,Joseph M. Hellerstein,Kristin Tufte,Flip Korn,Laks V. S. Lakshmanan,Sunil Prabhakar,Sihem Amer-Yahia,Amr El Abbadi,Surajit Chaudhuri,Nick Koudas,Viswanath Poosala,Daniel Barbara,Christos Faloutsos,H. V. Jagadish,Raymond T. Ng,Yannis E. Ioannidis,David B. Lomet,Graham Cormode,Divesh Srivastava,Michael H. Bohlen,David Maier,Eric N. Hanson
+Jean-Francois Pons,Philippe Pucheral,Jean Ferrie,Michele Cart
+Fausto Rabitti,Alon Y. Halevy,Pavel Zezula,Paolo Tiberio,Serge Abiteboul,Won Kim,Peter Buneman,Elisa Bertino,Craig A. Knoblock,Susan B. Davidson,Yannis E. Ioannidis,Federico Barbic,Gerhard Weikum,Hans-Jorg Schek,Darrell Woelk,David Maier,Paolo Ciaccia
+Dongwon Lee,Ee-Peng Lim,Wesley W. Chu,Jian Pei,Nick Koudas,Sudha Ram,Richard R. Muntz,Sanghyun Park,Chen Li,Divesh Srivastava,Murali Mani,Wang-Chien Lee
+Harumi A. Kuno,Elke A. Rundensteiner,Wang-Chien Lee,Umeshwar Dayal,Gustavo Alonso,Alfons Kemper
+Hector Garcia-Molina,Sergey Brin,Dieter Gawlick,Robert B. Hagmann,Stanley B. Zdonik,Rakesh Agrawal,Vasilis Vassalos,Sunita Sarawagi,Hans-Jorg Schek,Alberto O. Mendelzon,Abraham Silberschatz,Donald Kossmann,Raghu Ramakrishnan,Patricia G. Selinger,Luis Gravano,Yannis Papakonstantinou,Serge Abiteboul,Ashish Gupta,Susan B. Davidson,Kevin Chen-Chuan Chang,Chen Li,Jennifer Widom,Hamid Pirahesh,Ramana Yerneni,Michael J. Carey,Daniel Barbara,Kenneth Salem,Jeffrey D. Ullman,Daniel R. Ries,Surajit Chaudhuri,Johannes Klein,H. V. Jagadish,Michael Rabinovich,Yuri Breitbart,Tomasz Imielinski,Stefano Ceri,Alon Y. Halevy,Anthony Tomasic,Michael J. Franklin,Erhard Rahm,David Maier,David B. Lomet,Dallan Quass,Sharad Mehrotra,David J. DeWitt,Laura M. Haas,Chris Clifton,Yannis E. Ioannidis,Ming-Chien Shan,Meichun Hsu,AnHai Doan,Gerhard Weikum,Barbara T. Blaustein,Peter Scheuermann,Sudarshan S. Chawathe,Martin Theobald,Arnon Rosenthal,Johannes Gehrke,Christopher Olston,Alon Y. Levy,Henry F. Korth,Joseph M. Hellerstein,Rafael Alonso,Walter H. Kohler,Jun Yang,Samuel Madden,Dennis McLeod,Anand Rajaraman,Marjorie Templeton,Tak W. Yan,Rajeev Motwani,Sergey Melnik,Joachim Hammer,Martin L. Kersten,Ahmed K. Elmagarmid,Nick Roussopoulos,Daniela Florescu,Junghoo Cho,Susan Malaika,Guy M. Lohman,Michael Stonebraker,Jeffrey F. Naughton,Timos K. Sellis,Michael L. Brodie,Dale Skeen,Kurt A. Shoens,Frank Manola,Brad Adelberg,Umeshwar Dayal,Philip A. Bernstein,Witold Litwin,Gio Wiederhold,Bruce G. Lindsay
+Geneva G. Belford,Sudha Ram,Ozgur Ulusoy
+Rajasekar Krishnamurthy,Kristin Tufte,David J. DeWitt,H. V. Jagadish,Yuan Wang,Eugene J. Shekita,Frederick Reiss,Jayavel Shanmugasundaram,Jeffrey F. Naughton,Raghav Kaushik,David Maier,Qiong Luo,Raghu Ramakrishnan,Ashraf Aboulnaga
+Alexey Pryakhin,Christian Bohm,Peer Kroger,Hans-Peter Kriegel,Elke Achtert
+Edward Omiecinski,Christopher M. Jermaine,Carlos Ordonez,Wai Gen Yee,Michael H. Bohlen,Anindya Datta,Shamkant B. Navathe,Chris Jermaine,Peter Scheuermann,Leo Mark
+Sergey Melnik,Philip A. Bernstein,Hong Hai Do,Alon Y. Halevy,Jose A. Blakeley,Gio Wiederhold,Erhard Rahm
+Arne-Jorgen Berre,T. Lougenia Anderson,Michele Missikoff
+John Mylopoulos,Lucian Popa,Kenneth C. Sevcik,Stefano Spaccapietra,Michael L. Brodie,Avigdor Gal,Dimitris Plexousakis,Joachim W. Schmidt,Matthias Jarke,Barbara Pernici,Harry K. T. Wong,Adel Shrufi,Brian A. Nixon,Tiziana Catarci,Paolo Paolini,Nick Roussopoulos,Renee J. Miller,Philip A. Bernstein,Manolis Koubarakis,Gio Wiederhold,Anastasios Kementsietsidis,Paolo Atzeni,Alexander Borgida,Mike P. Papazoglou
+Jayavel Shanmugasundaram,Qiong Luo,Zachary G. Ives,Yuan Wang,Daniela Florescu,Zhiyuan Chen,Oded Shmueli,Narain H. Gehani,Ashraf Aboulnaga,Jeffrey F. Naughton,Kristin Tufte,Christopher Re,Flip Korn,Hamid Pirahesh,Johannes Gehrke,Laura M. Haas,Sihem Amer-Yahia,David J. DeWitt,Bruce G. Lindsay,Minos N. Garofalakis,Nick Koudas,Kevin S. Beyer,Raghu Ramakrishnan,Michael J. Carey,Gerhard Weikum,Dina Bitton,Krithi Ramamritham,Divesh Srivastava,Subbu N. Subramanian,David Maier,Eugene J. Shekita
+Carla Schlatter Ellis,Adam Silberstein,Jun Yang
+Philippe Richard,Francois Bancilhon,Sophie Cluet,Serge Abiteboul,Claude Delobel,Michel E. Adiba,Michel Scholl
+Jianwen Su,Amr El Abbadi,Kian-Lee Tan,Sridhar Ramaswamy,Richard Hull,Kyuseok Shim,Gustavo Alonso,Sunil Prabhakar,Divyakant Agrawal,Ambuj K. Singh,Francois Llirbat,Eric Simon
+Arbee L. P. Chen,Son Dao,Jose A. Blakeley,Weining Zhang,Gustavo Alonso,Keh-Chang Guh,Leszek Lilien,Clement T. Yu,Marjorie Templeton,Wang-Chien Lee
+Ralf Hartmut Guting,Hans-Peter Kriegel,Michel Scholl,Philippe Rigaux,Barbara Pernici,Michael H. Bohlen,Timos K. Sellis,Roberto Zicari,Manolis Koubarakis,Nikos A. Lorentzos,Hans-Jorg Schek,Enrico Nardelli,Christian S. Jensen
+Minos N. Garofalakis,Frederick Reiss,Kenneth A. Ross,Amol Deshpande,Rajeev Rastogi,Michael J. Franklin,Abraham Silberschatz,Chee Yong Chan,Vasilis Vassalos,Shivnath Babu,Marco Mesiti,Joseph M. Hellerstein,Jeffrey F. Naughton,Wenfei Fan,Sridhar Ramaswamy,Yuri Breitbart,S. Seshadri,Johannes Gehrke,Kaushik Chakrabarti,Raghu Ramakrishnan,Kyuseok Shim,Nick Roussopoulos,Neoklis Polyzotis,Yannis E. Ioannidis,Graham Cormode,Phillip B. Gibbons,Ioana Manolescu,Alin Dobra,Wei Wang,Bhavani M. Thuraisingham,George A. Mihaila
+Vincent Y. Lum,C. Thomas Wu,Michael E. Senko,Shamkant B. Navathe,Stanley Y. W. Su,Barron C. Housel,Gunter Schlageter,Peter Dadam,David K. Hsiao,Nan C. Shu,Daniel A. Keim,Mario Schkolnick,Harry K. T. Wong,Henk M. Blanken,Toby J. Teorey,C. P. Wang,Peter Pistor,R. Erbe,James P. Fry,Jaideep Srivastava,Sakti P. Ghosh
+Debabrata Dey,Robert C. Goldstein,Veda C. Storey
+Cyrus Shahabi,Dennis McLeod,Shahram Ghandeharizadeh,Kian-Lee Tan,Wei Hong,Craig A. Knoblock,Per-Ake Larson,Surajit Chaudhuri,Karl Aberer
+Wai Gen Yee,Chris Jermaine,Christopher M. Jermaine,Shamkant B. Navathe
+Christian Bohm,Hans-Peter Kriegel,Christos Faloutsos,Jorg Sander,Thomas Seidl,Elke Achtert,Peer Kroger,H. V. Jagadish,Stefan Berchtold,Daniel A. Keim
+Antonin Guttman,W. Bradley Rubenstein,Michael Stonebraker
+Venkatesh Ganti,Eugene Agichtein,James C. French,Dong Xin,Sanjay Agrawal,Vivek R. Narasayya,Rajeev Motwani,Mong-Li Lee,Jiawei Han,Johannes Gehrke,Surajit Chaudhuri,Kaushik Chakrabarti,Arnd Christian Konig,Viswanath Poosala,Raghu Ramakrishnan,Yannis E. Ioannidis,Krithi Ramamritham,Raghav Kaushik,Luis Gravano,Umeshwar Dayal
+Kyuseok Shim,Timos K. Sellis,Kenneth A. Ross,Rajeev Rastogi,Zhiyuan Chen,Ravi Krishnamurthy,Yuqing Wu,Sridhar Ramaswamy,S. Seshadri,Surajit Chaudhuri,Kaushik Chakrabarti,Nick Koudas,Sunita Sarawagi,Raymond T. Ng,Mary F. Fernandez,Sergey Brin,Chin-Wan Chung,Yannis E. Ioannidis,Rakesh Agrawal
+Curtis E. Dyreson,Paolo Tiberio,T. Y. Cliff Leung,Christian S. Jensen,Torben Bach Pedersen,Abdullah Uz Tansel,Nick Kline,Don S. Batory,Sudha Ram,Nikos A. Lorentzos,Anindya Datta,Mario A. Nascimento,James Clifford,Sushil Jajodia,Arie Segev,Barbara Pernici,Margaret H. Dunham,Michael D. Soo,Suryanarayana M. Sripada,Shashi K. Gadia,Claudio Bettini,Dieter Pfoser,Ramez Elmasri,Gio Wiederhold,Michael H. Bohlen,Ilsoo Ahn
+Setrag Khoshafian,David J. DeWitt,Michael J. Carey,Harry K. T. Wong,Patrick Valduriez,George P. Copeland,Francois Bancilhon,Haran Boral,Michael J. Franklin,Arvola Chan
+Ralf Kramer,Klaus R. Dittrich,Epaminondas Kapetanios,Peter C. Lockemann,Gunter von Bultzingsloewen
+E. Nahouraii,Wesley W. Chu,Alfonso F. Cardenas
+Pei-Jyun Leu,Bharat K. Bhargava
+Alex Delis,Euthimios Panagos,Timos K. Sellis,Vassilis J. Tsotras,Yannis Kotidis,Vasilis Vassalos,Yannis Papakonstantinou,Torsten Suel,George Kollios,Marios Hadjieleftheriou,Nick Roussopoulos,Aris M. Ouksel,Louiqa Raschid,Athman Bouguettaya,Chung-Min Chen,Mike P. Papazoglou,Panos K. Chrysanthis,George Samaras,Dimitrios Gunopulos
+Ernest Szeto,Victor M. Markowitz,I-Min A. Chen
+Dennis McLeod,Elisa Bertino,Joachim Hammer,Roger King,Frank Manola,Shahram Ghandeharizadeh,R. G. G. Cattell,Abraham Silberschatz,Rafiul Ahad,Peter Scheuermann,Antonio Si,I-Min A. Chen,Richard Hull,John Miles Smith,Peter Buneman,Ahmed K. Elmagarmid,Arnon Rosenthal,Marek Rusinkiewicz,Peter Lyngbak,Marjorie Templeton,K. V. Bapa Rao,Alfonso F. Cardenas,Michael Hammer
+Richard Hull,Roger King,Shahram Ghandeharizadeh,Masatoshi Yoshikawa,V. S. Subrahmanian,Jeffrey D. Ullman,Eric Simon,I-Min A. Chen,Marcia A. Derr,Jerome Simeon,Peter Buneman,Francois Llirbat,Arnaud Sahuguet,Serge Abiteboul,Sophie Cluet,Dean Jacobs,Timothy Griffin,Daniel J. Rosenkrantz,Claude Delobel,Chris Clifton,David W. Stemple,Maurizio Lenzerini,David Maier,Daniel F. Lieuwen
+Paolo Naggar,Enrico Nardelli,Maurizio Lenzerini
+Ada Wai-Chee Fu,Jian Pei,Wei Wang,Jian Tang,Xuemin Lin,Alexander Tuzhilin,Jeffrey Xu Yu,Jiawei Han,Clement T. Yu,Man Hon Wong,Philip S. Yu,Haixun Wang,Yufei Tao
+Sunita Sarawagi,Kenneth A. Ross,Amol Deshpande,Daniela Florescu,Soumen Chakrabarti,Michael J. Franklin,Joseph M. Hellerstein,Alon Y. Halevy,Vivek R. Narasayya,Jeffrey F. Naughton,Vinayak R. Borkar,Prasad Deshpande,Henry F. Korth,Michael Stonebraker,Johannes Gehrke,Charu C. Aggarwal,Laura M. Haas,Surajit Chaudhuri,Samuel Madden,Nick Koudas,Raghu Ramakrishnan,Michael J. Carey,Gerhard Weikum,S. Sudarshan,Yannis E. Ioannidis,Donald Kossmann,Divesh Srivastava,Ashish Gupta,Alfons Kemper,Philip A. Bernstein,Rakesh Agrawal,AnHai Doan
+Roger S. Barga,Shirley Cohen,Michael Wilde,Per-Ake Larson,Calton Pu,Susan B. Davidson,Mohamed F. Mokbel,Juliana Freire,David B. Lomet,Gerhard Weikum,Surajit Chaudhuri,Ling Liu,Vivek R. Narasayya,Bertram Ludascher,Sanjay Agrawal,Zografoula Vagena,Mohamed H. Ali
+Torsten Schlieder,Felix Naumann
+Elke Achtert,Peer Kroger,Hans-Peter Kriegel
+Shamkant B. Navathe,Don S. Batory,Stefano Spaccapietra,Ramez Elmasri,Amit P. Sheth,James P. Fry,Kyu-Young Whang,Sharma Chakravarthy,Anindya Datta,Stanley Y. W. Su,Chris Jermaine,Ee-Peng Lim,Erich J. Neuhold,Klaus R. Dittrich,Krithi Ramamritham,S. Misbah Deen,Toby J. Teorey,S. Bing Yao,Jaideep Srivastava,Gio Wiederhold,Naphtali Rishe,Maurizio Lenzerini,San-Yih Hwang,Stefano Ceri,Leo Mark,Sunit K. Gala,Valeria De Antonellis,Peter Dadam,James A. Larson,Sakti P. Ghosh,Anant Jhingran,Mario Schkolnick,Eugene Agichtein,Michael V. Mannino
+Antonio Si,Shahram Ghandeharizadeh,Joachim Hammer
+John Miles Smith,Umeshwar Dayal,Alexander Borgida,Peter Hitchcock
+Arun N. Swami,Christos Faloutsos,Ashish Gupta,Honesty C. Young,Antoine N. Mourad,Balakrishna R. Iyer,Michael J. Carey,S. Seshadri,Peter J. Haas,K. Bernhard Schiefer,Maurice A. W. Houtsma,Praveen Seshadri,Sakti P. Ghosh,Jeffrey F. Naughton,Jennifer Widom,Tomasz Imielinski,Rakesh Agrawal
+Anthony Tomasic,Patrick Valduriez,Laurent Amsaleg,Michael J. Franklin,Christopher Olston,Eric Simon,Georges Gardarin,Philippe Bonnet,Laura M. Haas,Anastassia Ailamaki,Kurt A. Shoens,Peter Fankhauser,M. Lopez,M. Tamer Ozsu,Louiqa Raschid,Phillip B. Gibbons,Peter M. Schwarz,Luis Gravano,Zoe Lacroix,George A. Mihaila
+Sven Helmer,Donald Kossmann,Thomas Neumann,Guido Moerkotte
+Jignesh M. Patel,Kristin Tufte,Kanda Runapongsa,David J. DeWitt,Shurug Al-Khalifa,Yuqing Wu,Sriram Padmanabhan,Michael J. Carey,Nick Koudas,Kenneth A. Ross,Yannis E. Ioannidis,Susan B. Davidson,Laks V. S. Lakshmanan,H. V. Jagadish,Raghav Kaushik,Jeffrey F. Naughton,Divesh Srivastava,Cong Yu
+Donghui Zhang,Vassilis J. Tsotras,Kenneth A. Ross,Shashi Shekhar,Zografoula Vagena,Zhiyuan Chen,Christian A. Lang,Haixun Wang,George Kollios,Jian Pei,Mohamed F. Mokbel,Jiong Yang,Yufei Tao,Betty Salzberg,Carlo Zaniolo,Jun Yang,Bernhard Seeger,Wei Wang,Dimitrios Gunopulos
+Anand Deshpande,Jose A. Blakeley
+Erich J. Neuhold,Calton Pu,Stefano Spaccapietra,David J. DeWitt,Amit P. Sheth,Masaru Kitsuregawa,Rudolf Bayer,Umeshwar Dayal,David B. Lomet,Yuri Breitbart,Peter Muth,Betty Salzberg,Bruce G. Lindsay,Bernd Walter,Felix Saltor,Leonard J. Seligman,Ee-Peng Lim,S. Misbah Deen,Matthias Jarke,Michael Stonebraker,Philip A. Bernstein,David Maier,Aris M. Ouksel,Joachim W. Schmidt,Gio Wiederhold,Rakesh Agrawal,Hans-Jorg Schek,Maurizio Lenzerini,Lawrence A. Rowe,Peter C. Lockemann,Andreas Reuter,Anne H. H. Ngu,Dieter Gawlick,Tiziana Catarci,Karl Aberer,Peter Fankhauser,V. S. Subrahmanian,Klemens Bohm,Anant Jhingran,Antonio L. Furtado
+Mikael Berndtsson,Daniel F. Lieuwen,Sharma Chakravarthy
+Wang Chiew Tan,Arnaud Sahuguet,Wenfei Fan,Mary F. Fernandez,Mauricio A. Hernandez,Keishi Tajima,Limsoon Wong,Peter Buneman,Susan B. Davidson,Alin Deutsch,Renee J. Miller,Atsuyuki Morishima,Lucian Popa
+Songting Chen,Elke A. Rundensteiner,Hongjun Lu,K. Selcuk Candan,Divyakant Agrawal,Egemen Tanin
+Reynold Cheng,Yuni Xia,Yufei Tao,Brad Adelberg,Dmitri V. Kalashnikov,Kam-yiu Lam,Sunil Prabhakar,Mohamed F. Mokbel,Elisa Bertino
+Torben Bach Pedersen,Wolfgang Lehner,Arie Shoshani,Tore Risch,Christian S. Jensen,Dieter Pfoser
+Christos Faloutsos,Vassilis J. Tsotras,Alexandros Labrinidis,Stavros Christodoulakis,Kenneth C. Sevcik,Balakrishna R. Iyer,Kenneth A. Ross,Nick Roussopoulos,David B. Lomet,Flip Korn,Joel Richardson,Viswanath Poosala,Michael J. Carey,Roberto Zicari,Timos K. Sellis,Dennis Tsichritzis,Carlo Zaniolo,Eric Simon,Yannis Kotidis,Phillip B. Gibbons,Yufei Tao,Surajit Chaudhuri,Alexandros Biliris,Nick Koudas,Joseph M. Hellerstein,Samuel Madden,Yannis E. Ioannidis,Abraham Silberschatz,Masatoshi Yoshikawa,Tomasz Imielinski,Raymond T. Ng,Philip S. Yu,Alon Y. Levy,Anastassia Ailamaki,Rakesh Agrawal,Dimitris Papadias,H. V. Jagadish,Maurice A. W. Houtsma,Gerhard Weikum,Spiros Papadimitriou,Ralf Rantzau,Wayne Niblack,Stefano Ceri,Peter Triantafillou,Divesh Srivastava,Alexander Tuzhilin,Leo Mark,Ibrahim Kamel,Patrick E. O'Neil,Ambuj K. Singh,Bernhard Seeger,Peter J. Haas,Yoshiharu Ishikawa,Bongki Moon,V. S. Subrahmanian,Yasushi Sakurai,Sakti P. Ghosh,Daniel Barbara
+Man Lung Yiu,Kyriakos Mouratidis,Marios Hadjieleftheriou,Heng Tao Shen,Nikos Mamoulis,Xiaofang Zhou,Christian S. Jensen,Dimitris Papadias,Yufei Tao,Vagelis Hristidis
+Frank Wm. Tompa,T. Snider,Nick Koudas,Jose A. Blakeley,Stanley Y. W. Su,Mariano P. Consens,Ashraf Aboulnaga,Doron Rotem,Per-Ake Larson
+Michel Leonard,Claude Delobel,Michel E. Adiba
+Deborah DuBourdieux,Michael Stonebraker
+Manolis Koubarakis,Timos K. Sellis,Enrico Nardelli,Christian S. Jensen,Yannis Theodoridis,Michel Scholl,Dimitris Papadias,Nikos A. Lorentzos,Stratos Idreos,Dimitris Plexousakis,Matthias Jarke,Barbara Pernici,Gerhard Weikum,Peter Triantafillou,Philippe Rigaux,Alexander Borgida,Hans-Jorg Schek
+Chen Li,Gio Wiederhold,Vasilis Vassalos,Yannis Papakonstantinou,Rada Chirkova,Sharad Mehrotra,Avigdor Gal,Balakrishna R. Iyer,Nick Koudas,Ramana Yerneni,Jeffrey D. Ullman,Anthony K. H. Tung,Jeffrey Xu Yu,Jiaheng Lu,Junghoo Cho,Amarnath Gupta
+D. G. Shin,Keki B. Irani
+Kenneth C. Sevcik,Kenneth A. Ross,Peter J. Haas,Hans Hinterberger,Joseph M. Hellerstein,Surajit Chaudhuri,Stewart A. Schuster,Torsten Suel,Nick Koudas,Daniel Barbara,Viswanath Poosala,H. V. Jagadish,Raymond T. Ng,Antonio L. Furtado,Yannis E. Ioannidis,David B. Lomet,Renee J. Miller,Xiaohui Yu,Esen A. Ozkarahan
+Daniel Barbara,Arthur M. Keller,Kenneth A. Ross,Kenneth Salem,Amihai Motro,Peter J. Haas,Sharad Mehrotra,Joseph M. Hellerstein,Henry F. Korth,Yuri Breitbart,Michael Stonebraker,Alexander Brodsky,Surajit Chaudhuri,Sushil Jajodia,Marek Rusinkiewicz,Rafael Alonso,Viswanath Poosala,Narayanan Krishnakumar,H. V. Jagadish,Raymond T. Ng,Tomasz Imielinski,Edgar H. Sibley,Shamim A. Naqvi,Yannis E. Ioannidis,David B. Lomet,Chris Clifton,Larry Kerschberg,Walid G. Aref,Ibrahim Kamel,Jose A. Blakeley
+Mauricio A. Hernandez,Felix Naumann,Takeshi Fukuda,Laura M. Haas,Stefano Ceri,Renee J. Miller,Stefan Dessloch,Lucian Popa,Anastasios Kementsietsidis
+Thomas Neumann,Guido Moerkotte,Sebastian Michel,Peter Triantafillou,Gerhard Weikum
+Cecilia Magdalena Procopiuc,Philip S. Yu,Charu C. Aggarwal
+Andrea Sikeler,Theo Harder,Willem Jonker,Bernhard Mitschang,Harald Schoning
+Timothy Griffin,Daniel F. Lieuwen,Inderpal Singh Mumick,Latha S. Colby
+Gerhard Weikum,Harald Schoning,J. Eliot B. Moss,Dieter Gawlick,Sebastian Michel,Volker Markl,Stanley B. Zdonik,Rakesh Agrawal,Patrick E. O'Neil,Kenneth A. Ross,Hans-Jorg Schek,Abraham Silberschatz,Donald Kossmann,Raghu Ramakrishnan,Catriel Beeri,Serge Abiteboul,Sihem Amer-Yahia,Krithi Ramamritham,Susan B. Davidson,Jennifer Widom,Patrick Valduriez,Michael J. Carey,Kenneth Salem,Jeffrey D. Ullman,Betty Salzberg,Achim Kraiss,Arnd Christian Konig,George P. Copeland,Surajit Chaudhuri,Johannes Klein,Yuri Breitbart,Amr El Abbadi,Anja Theobald,Stefano Ceri,Alon Y. Halevy,Eric Simon,Klaus R. Dittrich,Angelika Kotz Dittrich,Michael J. Franklin,Roger Barga,Erhard Rahm,Divesh Srivastava,David Maier,Peter Muth,Amit P. Sheth,David B. Lomet,David J. DeWitt,Laura M. Haas,Peter Buneman,Gottfried Vossen,Yannis E. Ioannidis,Guido Nerjes,Peter Triantafillou,AnHai Doan,Vagelis Hristidis,Zachary G. Ives,Peter Scheuermann,Martin Theobald,Daniel A. Keim,Johannes Gehrke,S. Sudarshan,Sam Lightstone,Alon Y. Levy,Henry F. Korth,Joseph M. Hellerstein,Craig A. Knoblock,Samuel Madden,Anastassia Ailamaki,Marc H. Scholl,Divyakant Agrawal,Shalom Tsur,Gustavo Alonso,Radek Vingralek,Martin L. Kersten,Daniela Florescu,Guy M. Lohman,Michael Stonebraker,Jeffrey F. Naughton,Timos K. Sellis,Andreas Reuter,Umeshwar Dayal,Philip A. Bernstein,Michael Rys,Alejandro P. Buchmann
+Louiqa Raschid,Bertram Ludascher,Amarnath Gupta,Timos K. Sellis,Ya-Hui Chang,Patrick Valduriez,Daniela Florescu,Stanley Y. W. Su,Jeffrey D. Ullman,Alexander Tuzhilin,Philippe Bonnet,Avigdor Gal,Peter Buneman,H. V. Jagadish,Felix Naumann,Vagelis Hristidis,M. Tamer Ozsu,Xiaolei Qian,Jarek Gryz,Mike P. Papazoglou,George A. Mihaila,Zoe Lacroix
+Amol Deshpande,Zachary G. Ives,Qiong Luo,Frederick Reiss,Rajeev Rastogi,Michael J. Franklin,Vijayshankar Raman,Joseph M. Hellerstein,Wei Hong,Mehul A. Shah,Alexandros Labrinidis,Samuel Madden,Nick Roussopoulos,Jun Yang,Phillip B. Gibbons,Magdalena Balazinska,Lise Getoor
+Wolf-Tilo Balke,Werner Kiesling,SungRan Cho
+Anant Jhingran,Ambuj Shatdal,George P. Copeland,Kenneth A. Ross,Philip S. Yu,Hui-I Hsiao,S. Misbah Deen,Nabil R. Adam,Anupam Bhide,Hamid Pirahesh,Michael Stonebraker,Ramesh C. Agarwal,Sriram Padmanabhan,Timothy Malkemus,Chaitanya K. Baru,Yannis E. Ioannidis,Gio Wiederhold,Nelson Mendonca Mattos
+Dimitris Papadias,Max J. Egenhofer,Timos K. Sellis,Spiros Papadimitriou,Yannis Theodoridis,Dik Lun Lee,Yannis Papakonstantinou,George Kollios,Marios Hadjieleftheriou,Yufei Tao,Vagelis Hristidis,Betty Salzberg,Kyriakos Mouratidis,Nikos Mamoulis,Bernhard Seeger,Kian-Lee Tan,Anthony K. H. Tung
+Peter M. Schwarz,Vanja Josifovski,Joel Richardson,Hamid Pirahesh,Donald J. Haderle,Guy M. Lohman,Laura M. Haas,Jim Melton,Kurt A. Shoens,Bruce G. Lindsay,Johann Christoph Freytag,Paul F. Wilms,Michael J. Carey,Wayne Niblack,Renee J. Miller,C. Mohan,Luis Gravano,Hans-Jorg Schek
+Patricia G. Selinger,Elisa Bertino,Dean Daniels,Bradford W. Wade,Paolo Tiberio,Jeffrey D. Ullman,Felipe Carino,Raymond A. Lorie,Hamid Pirahesh,Guy M. Lohman,Donald D. Chamberlin,Laura M. Haas,Irving L. Traiger,Bruce G. Lindsay,Mario Schkolnick,Michel E. Adiba,Tomasz Imielinski,Paul F. Wilms,C. Mohan,Ron Obermarck,David Maier
+Kazumi Kubota,Hiroshi Ishikawa,Tadashi Ohmori
+Jussi Myllymaki,Vanja Josifovski,David J. DeWitt,Gabriele Sonnenberger,Hamid Pirahesh,Daniel Alexander Ford,Peter J. Haas,Kevin S. Beyer,Paul Brown,Raghu Ramakrishnan
+Svein Erik Bratsberg,Svein-Olaf Hvasshovd
+Jean-Claude Mamou,Sophie Cluet,Tova Milo,Serge Abiteboul,Amelie Marian
+Stephen W. Sherman,Richard S. Brice
+James P. Fry,Dennis G. Severance,Witold Litwin,Mario Schkolnick,Yuri Breitbart,Toby J. Teorey,Beverly K. Kahn,Edgar H. Sibley,Stanley Y. W. Su,Amihai Motro,Sakti P. Ghosh,D. Swartwout,Umeshwar Dayal,Leo Mark
+Bruce E. Martin,Walter A. Burkhard,R. G. G. Cattell
+Nabil Kamel,Stanley Y. W. Su,Roger King
+Phillip B. Gibbons,Anastassia Ailamaki,Ashish Gupta,Magdalena Balazinska,Christopher Olston,Viswanath Poosala,Sridhar Ramaswamy,Abraham Silberschatz,Spiros Papadimitriou,Wayne Niblack,Torsten Suel,Michael J. Franklin
+Masatoshi Yoshikawa,Yahiko Kambayashi,Yasushi Sakurai,Kyoji Kawagoe
+Kathrin Anne Meier,Hans Hinterberger
+Alfons Kemper,R. Erbe,Ehud Gudes,Peter C. Lockemann,Guido Moerkotte,Peter Dadam,Donald Kossmann,Reinhard Braumandl,Kenneth A. Ross,Charu C. Aggarwal,Dean Jacobs,Peter Pistor,S. Sudarshan,Volker Linnemann,Umeshwar Dayal
+Fernando de Ferreira Rezende,Nelson Mendonca Mattos,Joachim Thomas,Theo Harder
+J. Eliot B. Moss,Panos K. Chrysanthis,David W. Stemple,Krithi Ramamritham,Henry F. Korth,David B. Lomet,Walter H. Kohler
+Andreas Gawecki,Joachim W. Schmidt
+Wesley W. Chu,Paolo Atzeni,Ricky K. Taira,Georges Gardarin,Alfonso F. Cardenas,Sanghyun Park,Junghoo Cho,Qiming Chen,Murali Mani
+Jeffrey F. Naughton,S. Seshadri,Marianne Winslett,David J. DeWitt,Ashish Gupta,Henry F. Korth,Prasad Deshpande,Kenneth A. Ross,Donovan A. Schneider,Michael J. Carey,Bruce G. Lindsay,Timos K. Sellis,Surajit Chaudhuri,Jennifer Widom,Gang Luo,Stanley B. Zdonik,Joseph M. Hellerstein,S. Sudarshan,Yannis E. Ioannidis,Kristin Tufte,Michael Stonebraker,Philip A. Bernstein,C. Mohan,Serge Abiteboul,David Maier,Philip S. Yu,Michael J. Franklin,Eugene J. Shekita,Qiong Luo,Rakesh Agrawal,Raghav Kaushik,Ambuj Shatdal,Hans-Jorg Schek,Alon Y. Halevy,H. V. Jagadish,Hamid Pirahesh,Stefano Ceri,Divesh Srivastava,Martin L. Kersten,Laura M. Haas,Dieter Gawlick,Shivakumar Venkataraman,Raghu Ramakrishnan,Paul Brown,Ashraf Aboulnaga,Michael L. Brodie,Yuan Wang,Peter J. Haas,Guy M. Lohman,Jeffrey D. Ullman,Johannes Gehrke,Philip Bohannon,AnHai Doan
+Peter Buneman,Bertram Ludascher,Amihai Motro,R. G. G. Cattell,Jeffrey D. Ullman,Susan B. Davidson,Alon Y. Halevy,Wenfei Fan,Christoph Koch,Limsoon Wong,Jerome Simeon,Eric K. Clemons,Alin Deutsch,Arnaud Sahuguet,Philip Bohannon,Serge Abiteboul,Mary F. Fernandez,Aaron Watters,Gao Cong,Catriel Beeri,Shamim A. Naqvi,Keishi Tajima,Yannis E. Ioannidis,Craig A. Knoblock,Claude Delobel,Anastasios Kementsietsidis,David Maier,Hans-Jorg Schek
+Volker Linnemann,Peter Dadam,Peter Pistor,Gunther Stiege,R. Erbe,Matthias Jarke,Joachim W. Schmidt
+Hans-Jorg Schek,Calton Pu,Daniel A. Keim,Divyakant Agrawal,Witold Litwin,David J. DeWitt,Amit P. Sheth,Radek Vingralek,Umeshwar Dayal,Michel Scholl,Nikos A. Lorentzos,Nick Roussopoulos,Yuri Breitbart,Michael J. Carey,Bruce G. Lindsay,Timos K. Sellis,Peter Pistor,Enrico Nardelli,Michael H. Bohlen,Catriel Beeri,Jennifer Widom,Susan B. Davidson,Stanley B. Zdonik,Barbara Pernici,Matthias Jarke,Joseph M. Hellerstein,Yannis E. Ioannidis,Michael Stonebraker,Philip A. Bernstein,David Maier,Michael Rys,Serge Abiteboul,Joachim W. Schmidt,Philippe Rigaux,Michael J. Franklin,Gio Wiederhold,Paul F. Wilms,Rakesh Agrawal,Amr El Abbadi,Lawrence A. Rowe,Peter C. Lockemann,Alon Y. Halevy,Andreas Reuter,Stefano Ceri,Gustavo Alonso,Theo Harder,Martin L. Kersten,Laura M. Haas,Dieter Gawlick,Christian S. Jensen,Peter Dadam,Jeffrey D. Ullman,M. Tamer Ozsu,Klemens Bohm,Nelson Mendonca Mattos,Craig A. Knoblock,Raymond A. Lorie,Marc H. Scholl
+Martin Ringwald,Albert Burger
+Fusheng Wang,Carlo Zaniolo
+Marie-Anne Neimat,Waqar Hasan,David Beech,Tore Risch,Jurgen Annevelink,W. Kevin Wilkinson,Donovan A. Schneider,Ming-Chien Shan,William Kent,Witold Litwin,Peter Lyngbak,Curtis P. Kolovson,Michael L. Heytens,Stefano Ceri,David B. Lomet,Rajeev Rastogi,Tomasz Imielinski
+Prasad Deshpande,Kristin Tufte,Rakesh Agrawal,David J. DeWitt,Ashish Gupta,Raghu Ramakrishnan
+Raymond T. Ng,Timos K. Sellis,Kenneth A. Ross,Zhiyuan Chen,Peter J. Haas,V. S. Subrahmanian,Jorg Sander,Joseph M. Hellerstein,Flip Korn,Laks V. S. Lakshmanan,Jiawei Han,Hans-Peter Kriegel,Daniel A. Keim,Nick Koudas,Jian Pei,Viswanath Poosala,H. V. Jagadish,Nick Roussopoulos,Yannis E. Ioannidis,M. Tamer Ozsu,Divesh Srivastava,Lei Chen 0002,Anthony K. H. Tung
+Maurizio Rafanelli,Arie Shoshani,Francesco M. Malvestuto,Elaheh Pourabbas,Leonardo Tininini,Fabrizio L. Ricci
+Michael Ubell,Michael Stonebraker,Wei Hong
+Wayne Niblack,Laura M. Haas,Michael J. Carey
+Alexandros Labrinidis,Panos K. Chrysanthis,Max J. Egenhofer,Alberto O. Mendelzon,Dina Q. Goldin,Mitch Cherniack,Silvia Nittel,Magdalena Balazinska,Jun Yang,Nick Roussopoulos,Yannis Kotidis,Flip Korn,Samuel Madden,Isabel F. Cruz,Qiong Luo
+Srinath Srinivasa,Dina Q. Goldin
+Ee-Peng Lim,Shashi Shekhar,Boualem Benatallah,San-Yih Hwang,Jaideep Srivastava,Danzhou Liu,HweeHwa Pang
+Radu Sion,Dmitri V. Kalashnikov,Sunil Prabhakar,K. Selcuk Candan,Marianne Winslett,Divyakant Agrawal,Ahmed K. Elmagarmid,Inderpal Narang
+Yuri Breitbart,Rajeev Rastogi,Divyakant Agrawal,Juliana Freire,Amihai Motro,Dimitrios Georgakopoulos,Radek Vingralek,Chee Yong Chan,Abraham Silberschatz,Amit P. Sheth,Peter Scheuermann,Sharad Mehrotra,Henry F. Korth,S. Seshadri,Amr El Abbadi,Marek Rusinkiewicz,Ruoming Jin,Gustavo Alonso,Daniel J. Rosenkrantz,Nick Roussopoulos,Calton Pu,Paolo Paolini,Witold Litwin,Umeshwar Dayal,Gio Wiederhold
+Xuemin Lin,Jian Pei,Wei Wang,Haifeng Jiang,Heng Tao Shen,Martin Ester,Masaru Kitsuregawa,Flip Korn,Jeffrey Xu Yu,Jiawei Han,Xiaofang Zhou,Philip S. Yu,Hongjun Lu,Haixun Wang,Yufei Tao
+Soujanya Vadapalli,Prasan Roy,Manish Bhide
+Gabriel Matsliach,Oded Shmueli
+Catriel Beeri,Michele Missikoff,Alberto O. Mendelzon,Tova Milo,Jeffrey D. Ullman,Shalom Tsur,Michel Scholl,Ravi Krishnamurthy,Oded Shmueli,Wenfei Fan,Henry F. Korth,Limsoon Wong,Joachim W. Schmidt,Alon Y. Levy,Serge Abiteboul,Raghu Ramakrishnan,Gustavo Alonso,Nathan Goodman,Shamim A. Naqvi,S. Sudarshan,Divesh Srivastava,Philip A. Bernstein,Ron Obermarck,David Maier,Francois Bancilhon,Asuman Dogac
+Haixun Wang,Philip S. Yu,Zhiyuan Chen,Jeffrey Xu Yu,Shalom Tsur,Min Wang,Jiawei Han,Kevin Chen-Chuan Chang,Charu C. Aggarwal,Kun-Lung Wu,Ruoming Jin,Jian Pei,Jiong Yang,Yufei Tao,Richard R. Muntz,Carlo Zaniolo,Jun Yang,Douglas Stott Parker Jr.,Lipyeow Lim,Sanghyun Park,Wei Wang,Gang Luo
+Ibrahim Kamel,Abdelsalam Helal,Shahram Ghandeharizadeh,Nick Koudas,Mohamed F. Mokbel,Ahmed K. Elmagarmid,Rafael Alonso,Ramez Elmasri,Walid G. Aref,Mohamed H. Ali,Nabil R. Adam
+Debajyoti Mukhopadhyay,Gomer Thomas
+Kristin Tufte,David J. DeWitt,Yuan Wang,Vladislav Shkapenyuk,Qiong Luo,David Maier,Ashraf Aboulnaga
+Jean-Marc Thevenin,Philippe Pucheral,Patrick Valduriez,Pascal Faudemay
+Qiming Chen,Georges Gardarin,Jiawei Han,Ming-Chien Shan,Meichun Hsu,Umeshwar Dayal,Yahiko Kambayashi,Jian Pei
+Akifumi Makinouchi,Yasuo Yamane,Hiroshi Ishikawa
+Bradley Malin,Elena Ferrari,Vassilios S. Verykios
+Viswanath Poosala,Kenneth A. Ross,Peter J. Haas,Joseph M. Hellerstein,Sridhar Ramaswamy,Henry F. Korth,Surajit Chaudhuri,Nick Koudas,Torsten Suel,H. V. Jagadish,David B. Lomet,Yannis E. Ioannidis,Eugene J. Shekita
+Amihai Motro,Witold Litwin,Larry Kerschberg,Edgar H. Sibley,Opher Etzion,Alexander Brodsky,Umeshwar Dayal,Sushil Jajodia
+Douglas Stott Parker Jr.,Hans-Werner Six,Matthias Jarke,Paolo Atzeni,Gerald J. Popek,Claude Delobel,Michael J. Carey,Richard R. Muntz,Carlo Zaniolo,Patrick Valduriez,Alexis Koster,Edward Sciore,Eric Simon
+Christian A. Lang,Timothy Malkemus,Sriram Padmanabhan,Kenneth A. Ross,George A. Mihaila,Kevin Chen-Chuan Chang,Min Wang,Ambuj K. Singh,Bishwaranjan Bhattacharjee
+Toni Urpi,Piero Fraternali,Felix Saltor
+M. Erol Arkun,Abdullah Uz Tansel,Gultekin Ozsoyoglu,Asuman Dogac
+San-Yih Hwang,Y. H. Chin,Jian Tang,Haojun Wang,Jaideep Srivastava
+Hongjun Lu,Qiong Luo,Haifeng Jiang,Gang Gou,Rajeev Rastogi,Philip S. Yu,Chiang Lee,Jeffrey Xu Yu,Chee Yong Chan,Son Dao,Wenfei Fan,HweeHwa Pang,Mong-Li Lee,Jiawei Han,Jian Pei,Stefano Ceri,Cheng Hian Goh,Michael J. Carey,Stuart E. Madnick,Xiaofang Zhou,Ming-Chien Shan,Weining Qian,Ji-Rong Wen,Masaru Kitsuregawa,Wei Wang,Z. Meral Ozsoyoglu,Kian-Lee Tan,Anthony K. H. Tung
+Riccardo Torlone,Paolo Merialdo,Philip A. Bernstein,Paolo Atzeni,Paolo Ciaccia,Stefano Paraboschi,Stefano Ceri
+Peter Dadam,R. Erbe,Peter C. Lockemann,Gunter Schlageter,Jukka Teuhola,Henk M. Blanken,Peter Pistor
+G. Barbara Demo,Valeria De Antonellis,Stefano Spaccapietra
+Shashi K. Gadia,Elisa Bertino,Paolo Tiberio,Christian S. Jensen,Nick Kline,Abdullah Uz Tansel,Nikos A. Lorentzos,James Clifford,Sushil Jajodia,Arie Segev,Barbara Pernici,Michael D. Soo,Edgar H. Sibley,Elena Ferrari,Ramez Elmasri,Gio Wiederhold,Michael H. Bohlen
+Christopher M. Jermaine,Jayendra Venkateswaran,Peter J. Haas,Alin Dobra
+Weining Qian,Jeffrey Xu Yu,Martin Ester,Anthony K. H. Tung,Kian-Lee Tan
+David L. Spooner,Sibel Adali,Martin Hardwick,George Samaras,Matthew Morgenstern,Gio Wiederhold,Bhavani M. Thuraisingham,Ehud Gudes,Arthur M. Keller
+Elena Ferrari,Claudio Bettini,Kian-Lee Tan,Alberto O. Mendelzon,Alon Y. Levy,Elisa Bertino,Bhavani M. Thuraisingham,Ahmed K. Elmagarmid,Chris Clifton,Marco Mesiti,Nabil R. Adam,Sushil Jajodia
+Salvatore T. March,Sudha Ram,Dennis G. Severance,Beverly K. Kahn,John V. Carlis,Stefano Spaccapietra,Mohammad A. Ketabchi,Prashant Palvia
+Linda G. DeMichiel,Nelson Mendonca Mattos,Rakesh Agrawal,Donald D. Chamberlin,Bruce G. Lindsay
+Akmal B. Chaudhri,Mary E. S. Loomis,Marco Mesiti,Paul Brown
+Justin Zobel,M. V. Ramakrishna,Kian-Lee Tan,Elisa Bertino,Ron Sacks-Davis
+M. V. Ramakrishna,Per-Ake Larson
+Balakrishna R. Iyer,Philip S. Yu,Divyakant Agrawal,Min Wang,Sharad Mehrotra,Donald J. Haderle,Amr El Abbadi,John T. Robinson,Daniel M. Dias,Tomasz Imielinski,Michael J. Carey,Maurice A. W. Houtsma,C. Mohan,Yun Wang,Rakesh Agrawal,Sakti P. Ghosh,Gary H. Sockut
+Loredana Afanasiev,Stefan Manegold,Jens-Peter Dittrich,Neoklis Polyzotis,Dennis Shasha,Ioana Manolescu,Jens Teubner
+Fabio Pippolini,Francesca Cesarini,Elisabetta Grazzini
+Prakash Ramanan,H. V. Jagadish
+Amit P. Sheth,James A. Larson,Kuo Chu Lee,Ullas Nambiar,Dimitrios Georgakopoulos,V. S. Subrahmanian,Stefano Spaccapietra,Christoph Bussler,Anoop Singhal,Ahmed K. Elmagarmid,Darrell Woelk,Marek Rusinkiewicz,Mark F. Hornick,Narayanan Krishnakumar,Calton Pu,Sunit K. Gala,Aris M. Ouksel,Gomer Thomas
+Barbara Pernici,Stefano Spaccapietra,Ramez Elmasri,Umeshwar Dayal,Michel Scholl,Nick Kline,Nikos A. Lorentzos,Federico Barbic,Sushil Jajodia,Timos K. Sellis,Enrico Nardelli,Inderpal Singh Mumick,Michael H. Bohlen,Paolo Tiberio,Paolo Atzeni,Giuseppe Pozzi,Abdullah Uz Tansel,Gio Wiederhold,Arie Segev,Stefano Ceri,Niki Pissinou,Christian S. Jensen,Tiziana Catarci,Valeria De Antonellis,Paolo Missier,Fabio A. Schreiber,Michael D. Soo,James Clifford,Giancarlo Martella,M. Tamer Ozsu
+Wei Hong,Vijayshankar Raman,Gustavo Alonso,Mehul A. Shah,Samuel Madden,Frederick Reiss,Michael Stonebraker,Joseph M. Hellerstein,Jennifer Widom,Michael J. Franklin
+Stefanie Scherzinger,Dan Olteanu,Christoph Koch
+Benjamin W. Wah,Jiawei Han,Philip S. Yu,Daniel P. Miranker,Xiaolei Li,Jian Pei,Dong Xin
+Juliana Freire,Shirley Cohen,Bertram Ludascher,Rajeev Rastogi,Chee Yong Chan,Alberto O. Mendelzon,Susan B. Davidson,Narain H. Gehani,Wenfei Fan,Jerome Simeon,Sihem Amer-Yahia,Philip Bohannon,Michael Wilde,Jayant R. Haritsa,Prasan Roy,Joann J. Ordille,Daniel F. Lieuwen
+Sitaram Lanka,Shankar Pal,Ramana Yerneni
+Mohammad A. Ketabchi,Ming-Chien Shan,William Kent,Witold Litwin,R. G. G. Cattell,Ravi Krishnamurthy,Martin Hardwick,Joseph Albert
+Ming-Syan Chen,Honesty C. Young,Kun-Lung Wu,Wen-Chih Peng,Chung-Min Chen,Chinya V. Ravishankar,Jiawei Han,Hui-I Hsiao,Philip S. Yu,Sudarshan S. Chawathe
+Benjamin Nguyen,Georges Gardarin,Serge Abiteboul,Maria Halkidi,Ioana Manolescu
+P. Bruce Berra,Bhavani M. Thuraisingham,Nabil I. Hachem
+Stefan Berchtold,Hans-Peter Kriegel,Dimitrios Gunopulos,Jorg Sander,Thomas Seidl,Nick Koudas,Kenneth A. Ross,H. V. Jagadish,Alexandros Biliris,George Kollios,Daniel A. Keim,Euthimios Panagos
+Weining Zhang,Chengwen Liu,Wei Sun,Keh-Chang Guh,Jiawei Han,Ouri Wolfson,Clement T. Yu,Marjorie Templeton,W. S. Luk,Naphtali Rishe
+Damianos Chatziantoniou,Divesh Srivastava,Kenneth A. Ross
+Sandra Heiler,David Goldhirsch,Michael L. Brodie,Susan Malaika,Upen S. Chakravarthy,Mark F. Hornick,Alejandro P. Buchmann,Bhavani M. Thuraisingham,Frank Manola,Barbara T. Blaustein,Jack A. Orenstein,Umeshwar Dayal,Dimitrios Georgakopoulos,Wang-Chien Lee,Stanley B. Zdonik,Arnon Rosenthal
+Wei Sun,Cyril U. Orji,Carlos Ordonez,Chengwen Liu,Son Dao,Won Kim,Dina Bitton,Clement T. Yu,Naphtali Rishe
+Anil Nori,Nelson Mendonca Mattos,David Campbell,Wen-Te K. Lin,Jose A. Blakeley,Daniel R. Ries,Michael J. Carey,Arvola Chan
+Felipe Carino,William O'Connell,Andrew Witkowski
+M. Lopez,Georges Gardarin,Peter Fankhauser,Bjorn Bergsten
+Heinz Schweppe,Peter A. Boncz,Wolfgang Lehner,Gunther Stiege,Aris M. Ouksel,Hans Christoph Zeidler
+Mark F. Hornick,Michael L. Brodie,Susie Stephens,Alejandro P. Buchmann,Frank Manola,Joseph Yarmus,Dimitrios Georgakopoulos,Stanley B. Zdonik
+Thomas Seidl,M. Tamer Ozsu,Hans-Peter Kriegel,Matthias Jarke,Stefan Schonauer,Martin Ester,Peer Kroger,Erhard Rahm,Daniel A. Keim
+David Vaskevitch,Patrick E. O'Neil
+George A. Mihaila,Spiros Papadimitriou,Flavio Rizzolo,Alberto O. Mendelzon,Vasilis Vassalos,Tova Milo,Marco Mesiti,Susan B. Davidson,Oded Shmueli,Jerome Simeon,Sriram Padmanabhan,Felix Naumann,Ioana Manolescu,Yi Chen,Bhavani M. Thuraisingham
+Eugene J. Shekita,Zachary G. Ives,Frederick Reiss,Vanja Josifovski,Daniela Florescu,Peter J. Haas,Michael J. Franklin,Honesty C. Young,Hamid Pirahesh,Goetz Graefe,Bishwaranjan Bhattacharjee,Guy M. Lohman,Laura M. Haas,David J. DeWitt,Bruce G. Lindsay,Kevin S. Beyer,Timothy Malkemus,Volker Markl,Paul F. Wilms,Tobin J. Lehman,Michael J. Carey,M. Muralikrishna,Jun Rao,Yannis E. Ioannidis,Subbu N. Subramanian,Kian-Lee Tan
+Daniel A. Keim,Alexander Hinneburg,Marc H. Scholl,Meichun Hsu,Michael J. Franklin,Yannis Theodoridis,Charu C. Aggarwal,Hans-Peter Kriegel,Surajit Chaudhuri,Wolfgang Lehner,Nick Koudas,Alejandro P. Buchmann,Umeshwar Dayal,Martin L. Kersten,Bhavani M. Thuraisingham
+Carlos Ordonez,Naphtali Rishe,Cyril U. Orji
+Christoph Bussler,Hartmut Wedekind,Avigdor Gal
+Jun Yang,Rada Chirkova,Qiong Luo,Kenneth A. Ross,Philip S. Yu,Zhiyuan Chen,Jeffrey Xu Yu,Shivnath Babu,Laura M. Haas,Jian Pei,Samuel Madden,Jiong Yang,Yufei Tao,Raghu Ramakrishnan,Paul Brown,Donald Kossmann,Jennifer Widom,Magdalena Balazinska,Wei Wang,Adam Silberstein,Jingren Zhou,Dimitrios Gunopulos,AnHai Doan
+Vanja Josifovski,Eugene Agichtein,Bertram Ludascher,Peter J. Haas,Christopher Olston,Stanley Y. W. Su,Hamid Pirahesh,Rajeev Motwani,Guy M. Lohman,Laura M. Haas,Jim Melton,Kevin S. Beyer,Tore Risch,Felix Naumann,Matthias Nicola,Fatma Ozcan,Zoe Lacroix
+Lukasz Golab,Flip Korn,Nick Koudas,Divesh Srivastava,M. Tamer Ozsu
+Mario Terranova,Silvio Salza,Michele Missikoff
+Adel Shrufi,Dimitris Plexousakis
+Ulf Schreier,C. Mohan,Rakesh Agrawal,Hartmut Wedekind,Hamid Pirahesh
+Leo Mark,Elizabeth N. Fong,Michael H. Bohlen,Witold Litwin,Timos K. Sellis,Nick Roussopoulos,Calton Pu,Ling Liu,Christian S. Jensen
+David Maier,Dieter Gawlick,Leonidas Fegaras,Stanley B. Zdonik,Rakesh Agrawal,Don S. Batory,Alberto O. Mendelzon,Abraham Silberschatz,David Beech,Matthias Jarke,Serge Abiteboul,Stephanie J. Cammarata,Susan B. Davidson,Jennifer Widom,Hamid Pirahesh,Sophie Cluet,Michael J. Carey,T. Lougenia Anderson,Albert Croker,Jeffrey D. Ullman,Leonard D. Shapiro,George P. Copeland,Ling Liu,Surajit Chaudhuri,H. V. Jagadish,Tomasz Imielinski,Stefano Ceri,William J. McKenna,Alon Y. Halevy,Klaus R. Dittrich,Michael J. Franklin,Theo Harder,Joachim W. Schmidt,Fereidoon Sadri,Mitch Cherniack,Matthew Morgenstern,David B. Lomet,David J. DeWitt,Laura M. Haas,Carlo Zaniolo,Gottfried Vossen,Yannis E. Ioannidis,Johann Christoph Freytag,Alexander Borgida,Duri Schmidt,Alin Deutsch,Lawrence A. Rowe,Alon Y. Levy,Henry F. Korth,Joseph M. Hellerstein,Craig A. Knoblock,Lois M. L. Delcambre,Peter C. Lockemann,Goetz Graefe,Kenneth R. Jacobs,Qiong Luo,Mary F. Fernandez,Martin L. Kersten,Sharon C. Salveter,Calton Pu,Daniela Florescu,Guy M. Lohman,Vladislav Shkapenyuk,Michael Stonebraker,Timos K. Sellis,Michael L. Brodie,Ashraf Aboulnaga,Andreas Reuter,Francois Bancilhon,Won Kim,Umeshwar Dayal,Philip A. Bernstein,Gio Wiederhold,Yuan Wang,Bruce G. Lindsay
+James C. French,Johannes Gehrke,Raghu Ramakrishnan,John L. Pfaltz
+Tak W. Yan,Umeshwar Dayal,Jurgen Annevelink,Surajit Chaudhuri
+Michael E. Senko,Sakti P. Ghosh,C. P. Wang
+David B. Lomet,Per-Ake Larson,Divyakant Agrawal,Witold Litwin,Henry F. Korth,Umeshwar Dayal,Rajeev Motwani,Kenneth A. Ross,Patrick Valduriez,Betty Salzberg,Mohamed F. Mokbel,Kyu-Young Whang,Timos K. Sellis,Surajit Chaudhuri,Krithi Ramamritham,Jose A. Blakeley,Joseph M. Hellerstein,Michael Stonebraker,Philip A. Bernstein,Serge Abiteboul,Tomasz Imielinski,Michael J. Franklin,Rakesh Agrawal,Amr El Abbadi,Sanjay Agrawal,Zografoula Vagena,H. V. Jagadish,Dennis Shasha,Gustavo Alonso,Martin L. Kersten,Raghu Ramakrishnan,Christian S. Jensen,Gultekin Ozsoyoglu,Peter J. Haas,Guy M. Lohman,Gennady Antoshenkov,Vivek R. Narasayya,Sophie Cluet
+Valery Soloviev,David J. DeWitt
+Kyoji Kawagoe,Arie Shoshani
+James B. Rothnie,Georges Gardarin,Nathan Goodman,Rudolf Munz,Bruce G. Lindsay
+Jai Menon,Alexander Thomasian,Dina Bitton,Walter A. Burkhard,Tore Risch,David J. DeWitt,David K. Hsiao,Douglas S. Kerr,Witold Litwin
+S. Seshadri,Rajeev Rastogi,Peter J. Haas,Abraham Silberschatz,Donovan A. Schneider,Henry F. Korth,Philip Bohannon,Jayant R. Haritsa,David J. DeWitt,Prasan Roy,H. V. Jagadish,S. Sudarshan,Krithi Ramamritham,Daniel F. Lieuwen,Doron Rotem
+Flip Korn,Kenneth A. Ross,Zhiyuan Chen,Divyakant Agrawal,Yannis Kotidis,Johannes Gehrke,Amr El Abbadi,Nick Koudas,H. V. Jagadish,Graham Cormode,Renee J. Miller,Divesh Srivastava,Wei Wang,Dimitrios Gunopulos
+Philippe Rigaux,Zoe Lacroix,Michel Scholl,Michael H. Bohlen,Witold Litwin,Alexandra Poulovassilis,Thomas Schwarz,Christian S. Jensen,Nicolas Spyratos
+C. Robert Carlson,Peter Scheuermann
+M. Seetha Lakshmi,Philip S. Yu
+Gosta Grahne,Seppo Sippu,Serge Abiteboul,Nicolas Spyratos,H. V. Jagadish,Alberto O. Mendelzon,Laks V. S. Lakshmanan,Surajit Chaudhuri,Kenneth A. Ross
+Wen-Chih Peng,Jianliang Xu,Wang-Chien Lee
+Eric Sedlar,Zhen Hua Liu,Ravi Murthy,Daniela Florescu
+Ji-Rong Wen,Frederick H. Lochovsky,Zaiqing Nie,Wang-Chien Lee
+Pat Helland,C. Mohan,Michael Stonebraker,Daniel J. Abadi,Patrick E. O'Neil,Samuel Madden,Dennis Shasha,Andreas Reuter
+Jiaheng Lu,Chee Yong Chan,Wei Wang,Changqing Li
+Yuan Wang,David J. DeWitt,Z. Meral Ozsoyoglu,Gultekin Ozsoyoglu,Qiong Luo,Ashraf Aboulnaga
+Mario A. Nascimento,Alon Y. Halevy,Kian-Lee Tan,Michael H. Bohlen,Anindya Datta,Jorg Sander,Dieter Pfoser,K. Selcuk Candan,Sudha Ram,Anthony K. H. Tung,Philip A. Bernstein,Ramez Elmasri,Margaret H. Eich,Yannis Theodoridis,Margaret H. Dunham
+Tore Risch,David Beech,Waqar Hasan,Gio Wiederhold,Jurgen Annevelink,W. Kevin Wilkinson,Ming-Chien Shan,William Kent,Dushan Z. Badal,Per Svensson,Witold Litwin,Peter Lyngbak,Jonas S. Karlsson,Peter M. D. Gray
+Yann Lepetit,Philippe Pucheral,Beatrice Finance
+Jeffrey D. Ullman,David J. DeWitt,Ashish Gupta,Henry F. Korth,Rajeev Motwani,Ramana Yerneni,Shalom Tsur,Michael J. Carey,Arnon Rosenthal,Timos K. Sellis,Carlo Zaniolo,Sergey Brin,Chris Clifton,Jennifer Widom,Arthur M. Keller,Stanley B. Zdonik,Fereidoon Sadri,Joseph M. Hellerstein,Yannis E. Ioannidis,Abraham Silberschatz,Michael Stonebraker,Philip A. Bernstein,Serge Abiteboul,Tomasz Imielinski,Alon Y. Levy,Daniel J. Rosenkrantz,Yannis Papakonstantinou,Michael J. Franklin,Gio Wiederhold,Alberto O. Mendelzon,Laurent Vieille,Anand Rajaraman,Rakesh Agrawal,Alon Y. Halevy,H. V. Jagadish,Hamid Pirahesh,Dallan Quass,Stefano Ceri,Vasilis Vassalos,Francois Bancilhon,Martin L. Kersten,Laura M. Haas,Dieter Gawlick,Sudarshan S. Chawathe,Raghu Ramakrishnan,Michael L. Brodie,Joachim Hammer,Bharat K. Bhargava
+Raymond T. Yeh,Sushil Jajodia,Nick Roussopoulos
+Yannis Theodoridis,Max J. Egenhofer,Elisa Bertino,Timos K. Sellis,Enrico Nardelli,Vassilis J. Tsotras,Adriano Di Pasquale,Stefano Spaccapietra,Christian S. Jensen,Marios Hadjieleftheriou,Dieter Pfoser,Vassilios S. Verykios,Paolo Ciaccia,Nikos Mamoulis,Bernhard Seeger
+Haojun Wang,Jian Tang,Jaideep Srivastava
+Samuel Madden,Mehul A. Shah,Nicolas Bruno,David J. DeWitt,Daniel J. Abadi,Henry F. Korth,Michael J. Carey,Dina Q. Goldin,Surajit Chaudhuri,Daniela Florescu,Stanley B. Zdonik,Isabel F. Cruz,Silvia Nittel,Joseph M. Hellerstein,Yannis E. Ioannidis,Michael Stonebraker,Max J. Egenhofer,Philip A. Bernstein,Magdalena Balazinska,Mitch Cherniack,Michael J. Franklin,Qiong Luo,Rakesh Agrawal,Vijayshankar Raman,Alon Y. Halevy,Laura M. Haas,Raghu Ramakrishnan,Patrick E. O'Neil,Frederick Reiss,Johannes Gehrke,AnHai Doan,Donald Kossmann,Wei Wang
+Alexandros Biliris,Shaul Dar,Krithi Ramamritham,Michael Rabinovich,Abraham Silberschatz,Jack A. Orenstein,H. V. Jagadish,Narain H. Gehani,Rajeev Rastogi,Euthimios Panagos,William O'Connell
+K. V. S. Ramarao,Sushil Jajodia,Ravi Mukkamala
+Wenfei Fan,Rajeev Rastogi,Jeffrey Xu Yu,Chee Yong Chan,Susan B. Davidson,Limsoon Wong,Jerome Simeon,Alin Deutsch,Arnaud Sahuguet,Philip Bohannon,Gao Cong,Anastasios Kementsietsidis
+Peter Lyngbak,David Beech,Waqar Hasan,Jurgen Annevelink,W. Kevin Wilkinson,Ming-Chien Shan,William Kent,Rafiul Ahad
+Tom Bruns,Max J. Egenhofer
+Jerome Simeon,Guido Moerkotte,Daniela Florescu,Tova Milo,Christopher Re,Donald D. Chamberlin,Philip Bohannon,Jayant R. Haritsa,Serge Abiteboul,Sophie Cluet,Prasan Roy,Amelie Marian,Mary F. Fernandez,Michael Rys,Peter Fankhauser,Peter A. Boncz,Claude Delobel,Maurice van Keulen
+Shalom Tsur,Johannes Klein,Abraham Silberschatz,Frank Olken,Ravi Krishnamurthy,Oded Shmueli,Ehud Gudes,Rajeev Motwani,Arnon Rosenthal,Serge Abiteboul,Sergey Brin,Raghu Ramakrishnan,Shamim A. Naqvi,Laurent Vieille,Carlo Zaniolo,Chris Clifton,Umeshwar Dayal,Rakesh Agrawal
+Sharad Mehrotra,Dmitri V. Kalashnikov,Henry F. Korth,Aidong Zhang,Abraham Silberschatz,Chris Clifton,Walid G. Aref,Kaushik Chakrabarti,Rajeev Rastogi,Marek Rusinkiewicz
+Ashraf Aboulnaga,Qiong Luo,Kenneth Salem,Peter J. Haas,Vijayshankar Raman,Ihab F. Ilyas,Shivnath Babu,Guy M. Lohman,Sam Lightstone,Surajit Chaudhuri,David J. DeWitt,Kevin S. Beyer,Volker Markl,Paul Brown,M. Tamer Ozsu,Walid G. Aref
+Jens Teubner,Stefan Manegold,Peter A. Boncz,Maurice van Keulen,Jan Flokstra
+Jinho Kim,Sanghyun Park
+Alejandro A. Vaisman,Flavio Rizzolo,Carlos A. Hurtado,Mariano P. Consens,Alberto O. Mendelzon
+Joseph Yarmus,Susie Stephens
+Mohamed E. El-Sharkawi,Yahiko Kambayashi
+Giovanni Maria Sacco,Dorothy E. Denning,Mario Schkolnick,S. Bing Yao
+Silvio Salza,Francesca Cesarini,Michel Scholl,Michele Missikoff,Stefano Ceri
+Asuman Dogac,M. Tamer Ozsu,Ibrahim Cingil,Esen A. Ozkarahan,Stefano Spaccapietra,Ismail Hakki Toroslu,Fatma Ozcan,Mehmet Altinel
+Joachim Thomas,Nelson Mendonca Mattos,Theo Harder,Bernhard Mitschang
+Isabel F. Cruz,Max J. Egenhofer,Alberto O. Mendelzon,Nancy Wiegand,Dina Q. Goldin,Silvia Nittel,Tiziana Catarci,Dieter Pfoser,Yannis E. Ioannidis,Ouri Wolfson,Peter Scheuermann,Clement T. Yu,Mariano P. Consens
+Themistoklis Palpanas,Nick Koudas,Hamid Pirahesh,Alberto O. Mendelzon,Divesh Srivastava,Yannis Kotidis,Dimitrios Gunopulos
+Peter Thanisch,Albert Burger,Thomas Zurek
+David J. DeWitt,Christian S. Jensen,Dieter Gawlick,Stanley B. Zdonik,A. James Baroody Jr.,Rakesh Agrawal,M. Muralikrishna,Raghu Ramakrishnan,Matthias Jarke,Serge Abiteboul,Jennifer Widom,Hamid Pirahesh,Shahram Ghandeharizadeh,Michael J. Carey,Shivakumar Venkataraman,Frank Olken,Paul Brown,David K. Hsiao,Leonard D. Shapiro,Michael L. Heytens,Marianne Winslett,H. V. Jagadish,Paula B. Hawthorn,Carolyn Turbyfill,Stefano Ceri,Alon Y. Halevy,Hui-I Hsiao,Klaus R. Dittrich,Hong-Tai Chou,Haran Boral,Michael J. Franklin,Joachim W. Schmidt,Laura M. Haas,Anthony C. Klug,Yannis E. Ioannidis,W. Kevin Wilkinson,AnHai Doan,Kyu-Young Whang,Vijayshankar Raman,Zachary G. Ives,Shivnath Babu,Holger Meyer,Johannes Gehrke,Lawrence A. Rowe,Joseph M. Hellerstein,Peter C. Lockemann,Goetz Graefe,Anastassia Ailamaki,Donovan A. Schneider,Daniel F. Lieuwen,Qiong Luo,Martin L. Kersten,Dina Bitton,Guy M. Lohman,Michael Stonebraker,Timos K. Sellis,Michael L. Brodie,Andreas Reuter,Francois Bancilhon,Umeshwar Dayal,Philip A. Bernstein,Fred J. Maryanski,M. Tamer Ozsu,Bruce G. Lindsay,Daniel J. Abadi
+Leonard J. Seligman,Gio Wiederhold,Shahram Ghandeharizadeh,Larry Kerschberg,Michael J. Carey,Guy M. Lohman,Bhavani M. Thuraisingham,Barbara T. Blaustein,Dean Jacobs,Michael Stonebraker,Cesar A. Galindo-Legaria,Michael J. Franklin,Arnon Rosenthal
+Joseph Albert,Ming-Chien Shan,Witold Litwin,Raghu Ramakrishnan,Yannis E. Ioannidis,William Kent
+Georg Lausen,Serge Abiteboul,Bertram Ludascher
+Dennis Shasha,Stefan Manegold,Patrick Valduriez,Kenneth A. Ross,Daniela Florescu,Divyakant Agrawal,Patrick E. O'Neil,Philippe Pucheral,Eric Simon,Narain H. Gehani,Philippe Bonnet,William H. Piel,Rajeev Motwani,Fred J. Maryanski,Francois Llirbat,Amr El Abbadi,Matthias Jarke,Hans-Arno Jacobsen,Jens-Peter Dittrich,Nathan Goodman,Neoklis Polyzotis,Ioana Manolescu,Luc Bouganim,Rakesh Agrawal
+Michael L. Heytens,Waqar Hasan,Jurgen Annevelink,Donovan A. Schneider,William Kent,M. Muralikrishna,Curtis P. Kolovson,Goetz Graefe,Rafiul Ahad
+Maria Halkidi,Dimitrios Gunopulos,Elisa Bertino
+Ela Hunt,Jeffrey Xu Yu,Klaus R. Dittrich,Michael H. Bohlen,Sihem Amer-Yahia,Rainer Unland
+Wen-Te K. Lin,Barbara T. Blaustein,Daniel R. Ries,Arvola Chan
+Keki B. Irani,Toby J. Teorey,Chin-Wan Chung,Ghassan Z. Qadah
+Davood Rafiei,Jorg Sander,Dallan Quass,Steve Lawrence,Alberto O. Mendelzon,Luis Gravano
+Francesca Cesarini,Elisabetta Grazzini,Stefano Ceri,Michele Missikoff
+Yasuhiko Morimoto,Takeshi Fukuda
+Johannes Gehrke,Zhiyuan Chen,Henry F. Korth,Kenneth A. Ross,Michael J. Carey,Jun Rao,Surajit Chaudhuri,Philippe Bonnet,Daniela Florescu,Jennifer Widom,Stanley B. Zdonik,Nick Koudas,Joseph M. Hellerstein,Yannis E. Ioannidis,Michael Stonebraker,Philip A. Bernstein,Mitch Cherniack,Michael J. Franklin,Ugur Cetintemel,Anastassia Ailamaki,Rajeev Rastogi,Rakesh Agrawal,Ling Liu,Praveen Seshadri,Alon Y. Halevy,Divesh Srivastava,Laura M. Haas,Christoph Koch,Raghu Ramakrishnan,Paul Brown,Dimitrios Gunopulos,Alin Dobra,AnHai Doan,Donald Kossmann
+Paolo Paolini,Piero Fraternali,Roberto Zicari,Giuseppe Pelagatti,Stefano Ceri
+Hakan Ferhatosmanoglu,Divyakant Agrawal,Amr El Abbadi
+Harald Schoning,Theo Harder,Bernhard Mitschang,Erhard Rahm,Michael Gesmann
+Anne H. H. Ngu,Athman Bouguettaya,Boualem Benatallah,Limsoon Wong,Masaru Kitsuregawa,Ahmed K. Elmagarmid,Terence Critchlow,Bertram Ludascher,Dimitrios Georgakopoulos
+Peter J. Haas,Frederick Reiss,Kenneth A. Ross,Peter Scheuermann,Ihab F. Ilyas,Vijayshankar Raman,Joseph M. Hellerstein,Hamid Pirahesh,Guy M. Lohman,Sam Lightstone,Surajit Chaudhuri,Wolfgang Lehner,Kevin S. Beyer,H. V. Jagadish,Volker Markl,Paul Brown,Jun Rao,Yannis E. Ioannidis,Gang Luo,Rakesh Agrawal
+Fatma Ozcan,V. S. Subrahmanian,Donald D. Chamberlin,Hamid Pirahesh,Matthias Nicola,Laura M. Haas,Guy M. Lohman,Mehmet Altinel,Kevin S. Beyer,Alex Dekhtyar,Zografoula Vagena,Latha S. Colby
+Craig A. Knoblock,Alon Y. Halevy,Alon Y. Levy,Shahram Ghandeharizadeh,Serge Abiteboul,Yannis E. Ioannidis,Susan B. Davidson,Lise Getoor,Craig W. Thompson
+Jorge B. Bocca,Edward Babb,Laurent Vieille,Peter M. D. Gray,Jean-Marie Nicolas,Johann Christoph Freytag
+Daniel Alexander Ford,Stavros Christodoulakis,Tobin J. Lehman
+Dennis Tsichritzis,Peter C. Lockemann,Michael L. Brodie,Larry Kerschberg,Frederick H. Lochovsky,Stavros Christodoulakis,Philip A. Bernstein,Stuart E. Madnick,Francois Bancilhon,Stewart A. Schuster,Anthony C. Klug
+Dallan Quass,Inderpal Singh Mumick,Kenneth A. Ross,Patrick E. O'Neil,Alberto O. Mendelzon,Vasilis Vassalos,Brad Adelberg,Yannis Papakonstantinou,Steve Lawrence,Serge Abiteboul,Anand Rajaraman,Thierry Barsalou,Jennifer Widom,Ashish Gupta,Luis Gravano,Byung Suk Lee,Gio Wiederhold,Daniel F. Lieuwen,David W. Embley
+Marco Mesiti,Vasilis Vassalos,Chung-Min Chen,Elisa Bertino,Bhavani M. Thuraisingham,Ioana Manolescu
+Donald J. Haderle,C. Mohan,Yun Wang,Hamid Pirahesh,Bruce G. Lindsay
+Paolo Tiberio,Bradford W. Wade,Christian S. Jensen,Abdullah Uz Tansel,Nick Kline,Raymond A. Lorie,Nikos A. Lorentzos,Donald D. Chamberlin,Irving L. Traiger,James Clifford,Sushil Jajodia,Arie Segev,Valeria De Antonellis,Bruce G. Lindsay,Mario Schkolnick,Michael D. Soo,Pavel Zezula,Paolo Ciaccia,Ramez Elmasri,Sheldon J. Finkelstein,Gio Wiederhold,Michael H. Bohlen
+George Kollios,Dimitrios Gunopulos,Marios Hadjieleftheriou,Nick Koudas,Nikos Mamoulis,Spiros Papadimitriou,Vassilis J. Tsotras,Betty Salzberg,Joseph M. Hellerstein,Philip S. Yu,Divesh Srivastava,Azer Bestavros,Yufei Tao
+Euthimios Panagos,Azer Bestavros,William O'Connell,Rajeev Rastogi,H. V. Jagadish,Michael Rabinovich
+Bruce G. Lindsay,Nathan Goodman,Umeshwar Dayal,Michael J. Carey,Bradford W. Wade,Peter Pistor,Kenneth Salem,Jun Rao,Dean Daniels,Tobin J. Lehman,Jennifer Widom,David Beech,Michel E. Adiba,Matthias Jarke,Rudolf Munz,Georges Gardarin,Michael Stonebraker,Philip A. Bernstein,C. Mohan,Joachim W. Schmidt,Qiong Luo,Paul F. Wilms,Elisa Bertino,Rakesh Agrawal,Lawrence A. Rowe,Peter C. Lockemann,Andreas Reuter,Hamid Pirahesh,Ron Obermarck,Donald D. Chamberlin,Dieter Gawlick,Kevin S. Beyer,Laura M. Haas,K. Bernhard Schiefer,Michael L. Brodie,Irving L. Traiger,Guy M. Lohman,Mehmet Altinel,Nelson Mendonca Mattos,Mario Schkolnick,Raymond A. Lorie,Bernhard Mitschang
+Gerard Levy,Witold Litwin
+Zvi M. Kedem,C. Mohan,Alexander Tuzhilin,Abraham Silberschatz
+Yelena Yesha,Naphtali Rishe,Serge Abiteboul,Ouri Wolfson,Nabil R. Adam,Niki Pissinou
+Peter Muth,Angelika Kotz Dittrich,Achim Kraiss,Guido Nerjes,Peter Fankhauser,Patrick E. O'Neil,Marek Rusinkiewicz,Peter Triantafillou
+Stanley B. Zdonik,Daniel J. Abadi,Rafael Alonso,Umeshwar Dayal,Demet Aksoy,Barbara T. Blaustein,Michael J. Carey,Arnon Rosenthal,Timos K. Sellis,David W. Stemple,Mary F. Fernandez,Klaus R. Dittrich,Jennifer Widom,Joseph M. Hellerstein,Yannis E. Ioannidis,Abraham Silberschatz,Michael Stonebraker,Philip A. Bernstein,Magdalena Balazinska,Mitch Cherniack,Serge Abiteboul,Michael J. Franklin,Ugur Cetintemel,Gio Wiederhold,Rakesh Agrawal,Alon Y. Halevy,Stefano Ceri,Francois Bancilhon,Martin L. Kersten,Dieter Gawlick,Laura M. Haas,Patrick E. O'Neil,Michael Hammer,Sridhar Ramaswamy,Mehmet Altinel
+Panos K. Chrysanthis,Aris M. Ouksel,Mitch Cherniack,Krithi Ramamritham,Nick Roussopoulos,George Samaras,David W. Stemple,Peter A. Boncz
+B. Paul Jenq,Darrell Woelk,Won Kim
+Matthias Nicola,Kevin S. Beyer,Guy M. Lohman,Hamid Pirahesh,Matthias Jarke
+Eugene Agichtein,Steve Lawrence,Panagiotis G. Ipeirotis,Luis Gravano
+Ghassan Z. Qadah,Jiawei Han
+Tiziana Catarci,Maurizio Lenzerini,Aris M. Ouksel,Paolo Atzeni,Karl Aberer,Elisa Bertino,Yannis E. Ioannidis,Stefano Spaccapietra,Ahmed K. Elmagarmid,Renee J. Miller,Felix Saltor,Paolo Ciaccia
+Gholamhosein Sheikholeslami,Aidong Zhang
+Barron C. Housel,George Samaras,Sakti P. Ghosh,Nan C. Shu,S. Bing Yao
+Carlos A. Hurtado,Alexandra Poulovassilis,Alberto O. Mendelzon
+Samuel DeFazio,Eugene Inseok Chong,Souripriya Das,Jagannathan Srinivasan,Ravi Murthy
+Frank Olken,Victor M. Markowitz,Arie Shoshani,Leonard D. Shapiro,Harry K. T. Wong,Robin McEntire,H. V. Jagadish,Hans-Arno Jacobsen,Michael Stonebraker,Doron Rotem,Deane Merrill,Ekow J. Otoo
+Kyu-Young Whang,Elisa Bertino,Zachary G. Ives,Eui Kyeong Hong,Holger Meyer,Christian S. Jensen,Suk Kyoon Lee,Ravi Krishnamurthy,Gunter Schlageter,Jiawei Han,Guy M. Lohman,Amr El Abbadi,Daniel Sagalowicz,Mario Schkolnick,Gustavo Alonso,Sang Hyuk Son,M. Tamer Ozsu,Jennifer Widom,Philip A. Bernstein,Umeshwar Dayal,Byung Suk Lee,Martin L. Kersten,Gio Wiederhold,Moshe M. Zloof,Gary H. Sockut
+Abraham Silberschatz,Per-Ake Larson,Henry F. Korth,Daniel F. Lieuwen,Aidong Zhang,Prasan Roy,Inderpal Singh Mumick,Surajit Chaudhuri,Roger King,Klaus R. Dittrich,Marek Rusinkiewicz,S. Sudarshan,Yannis E. Ioannidis,Michael Stonebraker,C. Mohan,Alon Y. Levy,Dimitrios Georgakopoulos,Michael J. Franklin,Ugur Cetintemel,Ravi Krishnamurthy,Gio Wiederhold,Rajeev Rastogi,Nandit Soparkar,Rakesh Agrawal,Meichun Hsu,H. V. Jagadish,Andreas Reuter,Ouri Wolfson,Divesh Srivastava,Francois Bancilhon,Alexander Tuzhilin,Raghu Ramakrishnan,Chee Yong Chan,Sridhar Ramaswamy,Philip Bohannon
+Krithi Ramamritham,Z. Meral Ozsoyoglu,Calton Pu,Kian-Lee Tan,Henry F. Korth,Nick Roussopoulos,Prasan Roy,Jayant R. Haritsa,Chinya V. Ravishankar,Anindya Datta,David W. Stemple,B. R. Badrinath,Laks V. S. Lakshmanan,Klaus R. Dittrich,Oded Shmueli,Jennifer Widom,S. Sudarshan,Narain H. Gehani,C. Mohan,Michael Rabinovich,Philip S. Yu,Alberto O. Mendelzon,Elisa Bertino,Nandit Soparkar,HweeHwa Pang,H. V. Jagadish,Alejandro P. Buchmann,Sang Hyuk Son,Soumen Chakrabarti,Laura M. Haas,Patrick E. O'Neil,Kam-yiu Lam,Bongki Moon,Malu Castellanos,Renu Tewari,Manish Bhide,Shaul Dar
+Zaiqing Nie,Ullas Nambiar,Wang-Chien Lee,Thomas Hernandez
+Peter Baumann,Wolfgang Lehner,Karl Hahn,Norbert Widmann
+Fereidoon Sadri,Rada Chirkova,Subbu N. Subramanian,Hasan M. Jamil,Alberto O. Mendelzon,Laks V. S. Lakshmanan
+Alon Y. Halevy,Henry F. Korth,Dina Bitton,Erhard Rahm,Michael J. Carey,Rada Chirkova,Arnon Rosenthal,Timos K. Sellis,Inderpal Singh Mumick,Surajit Chaudhuri,Daniela Florescu,Oded Shmueli,Jennifer Widom,Susan B. Davidson,Joseph M. Hellerstein,Yannis E. Ioannidis,Michael Stonebraker,Philip A. Bernstein,Joann J. Ordille,Serge Abiteboul,Shirley Cohen,Michael J. Franklin,Anastassia Ailamaki,Zachary G. Ives,Anand Rajaraman,Rakesh Agrawal,Cong Yu,Stefano Ceri,Gustavo Alonso,Martin L. Kersten,Dieter Gawlick,Laura M. Haas,Raghu Ramakrishnan,Sihem Amer-Yahia,Vishal Sikka,Martin Theobald,AnHai Doan,Gerome Miklau,Donald Kossmann,Volker Markl
+Prasan Roy,Jayant R. Haritsa,Alberto O. Mendelzon,Manish Bhide,Bhuvan Bamba,Philip Bohannon,S. Sudarshan
+Robert Devine,Michael Stonebraker,Marcel Kornacker,Witold Litwin
+Dorothy E. Denning,Arie Shoshani,Matthew Morgenstern,Gordon Sande,Mayer D. Schwartz
+Guido Moerkotte,V. S. Subrahmanian,Peter C. Lockemann,Donald Kossmann,Serge Abiteboul,Hamid Pirahesh,Sophie Cluet,Goetz Graefe,Joachim Schu,Tova Milo,Wolfgang Scheufele
+Ravi Murthy,Jagannathan Srinivasan,Zhen Hua Liu,Daniela Florescu
+V. S. Subrahmanian,Inderpal Singh Mumick,Elisa Bertino,Roberto Zicari,K. Selcuk Candan,Laks V. S. Lakshmanan,Yannis Papakonstantinou,Edward Hung,Sibel Adali,Sushil Jajodia,Alex Dekhtyar,Stefano Ceri,Jan Chomicki,Raghu Ramakrishnan,Calton Pu,Joachim Schu,Carlo Zaniolo,Ashish Gupta,Maurizio Lenzerini,Lise Getoor
+Joachim W. Schmidt,Lawrence A. Rowe,R. G. G. Cattell,Michael L. Brodie,Peter C. Lockemann,Michael Stonebraker,Matthias Jarke,Dieter Gawlick,Andreas Reuter,Philip A. Bernstein,Umeshwar Dayal,Alexander Borgida
+Jean Ferrie,Philippe Pucheral,Patrick Valduriez,Luc Bouganim,Michele Cart
+Stefano Spaccapietra,Felix Saltor,Georges Gardarin,Karl Aberer,Aris M. Ouksel,Paolo Atzeni,Mike P. Papazoglou
+Lawrence A. Rowe,David Beech,R. G. G. Cattell,Michael L. Brodie,Peter C. Lockemann,Michael Stonebraker,Kurt A. Shoens,Matthias Jarke,Michael J. Carey,Dieter Gawlick,Andreas Reuter,Philip A. Bernstein,Umeshwar Dayal
+Patrick E. O'Neil,William J. McKenna,Kenneth A. Ross,Mitch Cherniack,Eric Simon,Kesheng Wu,Goetz Graefe,Michael Stonebraker,Jim Melton,Ozgur Ulusoy,Daniel J. Abadi,Alon Y. Levy,Dieter Gawlick,Clark D. French,Calton Pu,Shankar Pal,Divesh Srivastava,Philip A. Bernstein
+Ron Obermarck,Henry F. Korth,Irving L. Traiger,Inderpal Narang,Laura M. Haas,Dean Daniels,Paul F. Wilms,Johannes Klein,Meichun Hsu,Kurt A. Shoens,C. Mohan
+Gomer Thomas,Marjorie Templeton,Chin-Wan Chung,Marek Rusinkiewicz,Ramez Elmasri
+Dimitrios Georgakopoulos,M. Tamer Ozsu,Ming-Chien Shan,Michael L. Brodie,Witold Litwin,Alejandro P. Buchmann,Frank Manola,Mike P. Papazoglou,Marek Rusinkiewicz
+Giansalvatore Mecca,Paolo Atzeni,Paolo Merialdo,Paolo Missier,Alberto O. Mendelzon
+Matthias Grosmann,Bernhard Mitschang,Thomas Schwarz
+Vojkan Mihajlovic,Willem Jonker,Peter M. G. Apers
+Wang-Chien Lee,Dik Lun Lee,Ya-Hui Chang,George Samaras,Jianliang Xu,Peter Scheuermann,Baihua Zheng,Elke A. Rundensteiner
+Svein-Olaf Hvasshovd,Betty Salzberg
+David K. Hsiao,Dina Bitton,Michael Stonebraker,Stuart E. Madnick,C. Thomas Wu,Ali Orooji,Douglas S. Kerr
+William Kent,David Beech,Waqar Hasan,Jurgen Annevelink,W. Kevin Wilkinson,Christopher M. Stone,Ming-Chien Shan,Witold Litwin,Ravi Krishnamurthy,Rafiul Ahad
+Naga K. Govindaraju,Qiong Luo,Anastassia Ailamaki,Wei Wang
+Bishwaranjan Bhattacharjee,Timothy Malkemus,Sam Lightstone,Hamid Pirahesh,Sriram Padmanabhan,Guy M. Lohman,Jun Rao,Lipyeow Lim,Frederick Reiss,Volker Markl
+Michael L. Brodie,Umeshwar Dayal,Mike P. Papazoglou,Barbara T. Blaustein,Frank Manola,Michael J. Carey,Arnon Rosenthal,Surajit Chaudhuri,David Beech,Matthias Jarke,Joseph M. Hellerstein,Stuart E. Madnick,Michael Stonebraker,Philip A. Bernstein,Michael J. Franklin,Gio Wiederhold,H. V. Jagadish,R. G. G. Cattell,Hamid Pirahesh,Stefano Ceri,Francois Bancilhon,David S. Reiner
+Phil Shaw,Johannes Klein
+Peer Kroger,Jorg Sander,Hans-Peter Kriegel
+Michael Wilde,Susan B. Davidson,Bertram Ludascher,Shirley Cohen
+Ullas Nambiar,Mong-Li Lee,Bertram Ludascher,Zoe Lacroix
+Jeffrey Xu Yu,Haifeng Jiang,Gang Gou,Rajeev Rastogi,Philip S. Yu,Rainer Unland,Martin Ester,Jiawei Han,Sihem Amer-Yahia,Jian Pei,Yoshiharu Ishikawa,Yufei Tao,Xiaofang Zhou,M. Tamer Ozsu,Masaru Kitsuregawa,Wei Wang,Kian-Lee Tan
+Pascal Faudemay,Patrick Valduriez
+Klaus R. Dittrich,Michael V. Mannino,Gunter von Bultzingsloewen,Raymond A. Lorie,Peter C. Lockemann,Silvia Nittel,Angelika Kotz Dittrich,Surajit Chaudhuri,Valeria De Antonellis,Yahiko Kambayashi,Michael J. Carey,Frederick H. Lochovsky,Sang Hyuk Son,Alejandro P. Buchmann,Walid Rjaibi,Andreas Reuter,Matthew Morgenstern,C. Mohan,Umeshwar Dayal,Michael H. Bohlen,Rakesh Agrawal,Francois Bancilhon
+Don S. Batory,Michael V. Mannino,David S. Reiner,T. Y. Cliff Leung,Christian S. Jensen,Stanley Y. W. Su,Nick Kline,Henry F. Korth,Nikos A. Lorentzos,Laura M. Haas,James Clifford,Arie Segev,Won Kim,Michael D. Soo,Theo Harder,Suryanarayana M. Sripada,Alejandro P. Buchmann,Ramez Elmasri,Philip A. Bernstein,Umeshwar Dayal,Gio Wiederhold,Ilsoo Ahn
+Marios Hadjieleftheriou,Kyriakos Mouratidis,Dimitrios Gunopulos,Nick Koudas,Nikos Mamoulis,Xiaohui Yu,Vassilis J. Tsotras,Graham Cormode,Philip S. Yu,Divesh Srivastava,Yufei Tao
+Johann Christoph Freytag,Gottfried Vossen,Hamid Pirahesh,Guy M. Lohman,Laura M. Haas,Serge Abiteboul,Wolfgang Lehner,Felix Naumann,Raghu Ramakrishnan,Michael J. Carey,Nathan Goodman,Per-Ake Larson,C. Mohan,Christof Bornhovd,Jingren Zhou,Rakesh Agrawal
+Mayer D. Schwartz,Frank G. Halasz
+Stavros Christodoulakis,M. Tamer Ozsu,Anastassia Ailamaki,Per-Ake Larson,Elisa Bertino,Yannis E. Ioannidis,Jiawei Han,Peter Triantafillou
+Peter Hitchcock,Alexander Borgida,Patrick A. V. Hall
+Charu C. Aggarwal,Alexander Hinneburg,Jian Pei,Kun-Lung Wu,Gang Luo,Kenneth A. Ross,Jiawei Han,S. Sudarshan,Ramesh C. Agarwal,Philip S. Yu
+Hamid Pirahesh,Michael J. Carey,Peter Pistor,Sam Lightstone,Jun Rao,Inderpal Singh Mumick,Surajit Chaudhuri,Wolfgang Lehner,Tobin J. Lehman,Jennifer Widom,Sheldon J. Finkelstein,Joseph M. Hellerstein,S. Sudarshan,Michael Stonebraker,Philip A. Bernstein,C. Mohan,Jarek Gryz,Michael J. Franklin,Qiong Luo,Paul F. Wilms,Rakesh Agrawal,Praveen Seshadri,Waqar Hasan,Vijayshankar Raman,H. V. Jagadish,Latha S. Colby,Stefano Ceri,T. Y. Cliff Leung,Divesh Srivastava,Adam Bosworth,Donald D. Chamberlin,Kevin S. Beyer,Laura M. Haas,Raghu Ramakrishnan,Paul Brown,K. Bernhard Schiefer,Yun Wang,Frederick Reiss,Guy M. Lohman,Christof Bornhovd,Mehmet Altinel,Nelson Mendonca Mattos,Goetz Graefe,Raymond A. Lorie,Bernhard Mitschang,Volker Markl
+R. Erbe,Peter Pistor,Henk M. Blanken
+Janis A. Bubenko Jr.,Matthias Jarke,Mike P. Papazoglou,S. Bing Yao
+Rakesh Agrawal,Dieter Gawlick,Donald Kossmann,Raghu Ramakrishnan,Sakti P. Ghosh,Serge Abiteboul,Ashish Gupta,Jennifer Widom,Michael J. Carey,Vivek R. Narasayya,Surajit Chaudhuri,Johannes Klein,H. V. Jagadish,Tomasz Imielinski,Stefano Ceri,Stefan Schonauer,Shaul Dar,Ralf Rantzau,Maurice A. W. Houtsma,Michael J. Franklin,Tobin J. Lehman,Laura M. Haas,Yannis E. Ioannidis,AnHai Doan,Soumen Chakrabarti,Alexander Borgida,Henry F. Korth,Joseph M. Hellerstein,Mohamed Zait,Donald D. Chamberlin,Dimitrios Gunopulos,Narain H. Gehani,Martin L. Kersten,Daniela Florescu,Guy M. Lohman,Michael Stonebraker,Timos K. Sellis,Andreas Reuter,C. Mohan,Umeshwar Dayal,Philip A. Bernstein,Spiros Papadimitriou,Walid Rjaibi
+M. Muralikrishna,Shahram Ghandeharizadeh,Goetz Graefe,Donovan A. Schneider,Michael J. Carey
+Regis Saint-Paul,Boualem Benatallah
+Michael H. Bohlen,Ramez Elmasri,Michel Scholl,Nick Kline,Nikos A. Lorentzos,Sushil Jajodia,Duri Schmidt,Anindya Datta,Enrico Nardelli,Jan Chomicki,Laks V. S. Lakshmanan,Nick Koudas,Abdullah Uz Tansel,Gio Wiederhold,Arie Segev,Divesh Srivastava,Sudha Ram,Christian S. Jensen,Michael D. Soo,Margaret H. Dunham,James Clifford,Bongki Moon,Dieter Pfoser
+Daniel R. Ries,Nathan Goodman,Barbara T. Blaustein,Michael Stonebraker,Dale Skeen,Umeshwar Dayal,Arvola Chan
+Wee Hyong Tok,Mong-Li Lee,Kian-Lee Tan
+Edward Sciore,Arnon Rosenthal,Stuart E. Madnick,Sharon C. Salveter,Matthias Jarke,Michael J. Carey
+Ozgur Ulusoy,Sharma Chakravarthy,Alejandro P. Buchmann,Ugur Cetintemel,Ahmed K. Elmagarmid,Z. Meral Ozsoyoglu,Kam-yiu Lam,Gultekin Ozsoyoglu,Ouri Wolfson
+Nikos Mamoulis,Kyriakos Mouratidis,Martin L. Kersten,Edward Hung,Yufei Tao,Vagelis Hristidis
+Wiebren de Jonge,Peter Scheuermann,Martin L. Kersten,Anthony I. Wasserman
+Yannis E. Ioannidis,Henry F. Korth,Kenneth A. Ross,Michael J. Carey,Timos K. Sellis,Surajit Chaudhuri,Daniela Florescu,Leonard D. Shapiro,Jennifer Widom,Susan B. Davidson,Neoklis Polyzotis,Joseph M. Hellerstein,Michael Stonebraker,Philip A. Bernstein,Serge Abiteboul,Michael J. Franklin,Anastassia Ailamaki,Eric N. Hanson,H. V. Jagadish,Stefano Ceri,Martin L. Kersten,Dieter Gawlick,Sakti Pramanik,Laura M. Haas,Raghu Ramakrishnan,Chee Yong Chan,AnHai Doan,Renee J. Miller,Donald Kossmann
+Barbara T. Blaustein,Sharma Chakravarthy,Frank Manola,Meichun Hsu,Sunil K. Sarin,Upen S. Chakravarthy,Arnon Rosenthal,Sushil Jajodia,Dennis R. McCarthy,Michael J. Carey,Alejandro P. Buchmann,Philip A. Bernstein,Umeshwar Dayal,Bhavani M. Thuraisingham,Jose A. Blakeley
+Dean Daniels,Roger L. Haskin,Elisa Bertino,Guy M. Lohman,Laura M. Haas,Paul F. Wilms,Gary Hallmark,C. Mohan
+Souripriya Das,Eugene Inseok Chong,Jagannathan Srinivasan
+Alexander Tuzhilin,James Clifford,Albert Croker
+Chris Clifton,Elisa Bertino,Kenneth Salem,Peter Scheuermann,Rajeev Motwani,Ahmed K. Elmagarmid,Sunil Prabhakar,Arnon Rosenthal,Arnaud Sahuguet,Sushil Jajodia,Serge Abiteboul,Vassilios S. Verykios,Daniel F. Lieuwen,Bhavani M. Thuraisingham,AnHai Doan
+Anthony I. Wasserman,Martin L. Kersten
+Lipyeow Lim,Guy M. Lohman,Min Wang,Susan Malaika,Sriram Padmanabhan,Ramesh C. Agarwal,Kevin Chen-Chuan Chang
+Maurice A. W. Houtsma,Martin L. Kersten,Jan Flokstra,Michael J. Carey,Willem Jonker,Peter M. G. Apers,Arthur M. Keller,Stefano Ceri,Henk M. Blanken,Sakti P. Ghosh,Tomasz Imielinski
+Valeria De Antonellis,Maurizio Lenzerini,Antonio Albano,Giuseppe Pozzi,Paolo Atzeni,Stefano Ceri,Michael V. Mannino,Fabio A. Schreiber
+Laura M. Haas,Christian S. Jensen,Dieter Gawlick,Z. Meral Ozsoyoglu,Anastasios Kementsietsidis,Alberto O. Mendelzon,Donald Kossmann,Raghu Ramakrishnan,Matthias Jarke,Luis Gravano,Yannis Papakonstantinou,Serge Abiteboul,Ashish Gupta,Inderpal Narang,Jennifer Widom,Michael J. Carey,Surajit Chaudhuri,Stefano Ceri,Michael J. Franklin,Theo Harder,Erhard Rahm,AnHai Doan,Vijayshankar Raman,Renee J. Miller,Henry F. Korth,Joseph M. Hellerstein,Paul F. Wilms,Martin L. Kersten,Philip S. Yu,Dina Bitton,Nick Roussopoulos,Elisa Bertino,Daniela Florescu,Susan Malaika,Guy M. Lohman,Michael Stonebraker,Timos K. Sellis,Won Kim,C. Mohan,Umeshwar Dayal,Felix Naumann,Philip A. Bernstein,Gio Wiederhold,Lucian Popa
+Susanne Englert,Prakash Sundaresan,Waqar Hasan
+Tova Milo,Kenneth A. Ross,Alberto O. Mendelzon,Susan B. Davidson,Oded Shmueli,Laks V. S. Lakshmanan,Limsoon Wong,Arnaud Sahuguet,Serge Abiteboul,Stefano Ceri,Sophie Cluet,H. V. Jagadish,Amelie Marian,Mariano P. Consens,Neoklis Polyzotis,Divesh Srivastava,Per-Ake Larson,Ioana Manolescu,Luis Gravano
+Daniel Sagalowicz,Gio Wiederhold
+Maurizio Lenzerini,Alexander Borgida,Matthias Jarke,Arie Shoshani,Paolo Atzeni,Michele Missikoff,Witold Staniszkis,Hans-Joachim Lenz
+Luiz Tucherman,Antonio L. Furtado
+Francois Llirbat,Eric Simon,Hans-Arno Jacobsen,Patrick Valduriez,Kenneth A. Ross
+Rainer Unland,Gunter Schlageter,Holger Meyer,Sihem Amer-Yahia
+Ekow J. Otoo,Hanan Samet,Arie Shoshani,Kesheng Wu,Doron Rotem
+Beatrice Finance,Philippe Pucheral,Georges Gardarin,Peter Fankhauser,Martin L. Kersten,Bjorn Bergsten,Benoit Dageville
+Doron Rotem,Arie Shoshani,Arie Segev,Jaideep Srivastava,Kesheng Wu,Per-Ake Larson,Harry K. T. Wong,I-Min A. Chen
+Mehmet Altinel,Christof Bornhovd,Ibrahim Cingil,Sriram Padmanabhan,Ugur Cetintemel,Paul Brown,Qiong Luo,Volker Markl,Michael J. Franklin,Demet Aksoy,C. Mohan
+Kesheng Wu,Joseph M. Hellerstein,Arie Shoshani,Frederick Reiss,Marianne Winslett
+Richard R. Muntz,Wei Wang,Silvia Nittel,Shahram Ghandeharizadeh,Gerald J. Popek,Son Dao,T. Y. Cliff Leung,Elisa Bertino,Jiong Yang,Ouri Wolfson,Michael Stonebraker,Carlo Zaniolo,Philip S. Yu,Chung-Dak Shum,Murali Mani
+Daniel M. Dias,John T. Robinson,Alexander Thomasian,Philip S. Yu,Anupam Bhide,Renu Tewari,Scott T. Leutenegger
+Marcia A. Derr,Kenneth A. Ross
+Guy M. Lohman,Benoit Dageville,Henry F. Korth,Umeshwar Dayal,Ihab F. Ilyas,Kenneth A. Ross,Patrick Valduriez,Michael J. Carey,Timos K. Sellis,Kenneth Salem,Sam Lightstone,Jun Rao,Surajit Chaudhuri,Tobin J. Lehman,Jennifer Widom,C. Mohan,Serge Abiteboul,Jarek Gryz,Michael J. Franklin,Anastassia Ailamaki,Qiong Luo,Cesar A. Galindo-Legaria,Dennis G. Severance,Elisa Bertino,Paul F. Wilms,Vijayshankar Raman,Alfonso F. Cardenas,Latha S. Colby,Gustavo Alonso,Martin L. Kersten,Kevin S. Beyer,Raghu Ramakrishnan,K. Bernhard Schiefer,Yun Wang,Min Wang,Frederick Reiss,Gultekin Ozsoyoglu,Volker Markl,Sophie Cluet
+Stewart A. Schuster,Esen A. Ozkarahan
+Michael D. Soo,Khaled K. Al-Taha,T. Y. Cliff Leung,Christian S. Jensen,Abdullah Uz Tansel,Nick Kline,Nikos A. Lorentzos,James Clifford,Sushil Jajodia,Arie Segev,Suryanarayana M. Sripada,Ramez Elmasri,Gio Wiederhold,Ilsoo Ahn
+Sakti Pramanik,Myoung-Ho Kim
+Roger Bamford,Rafiul Ahad
+Jan Chomicki,Shamim A. Naqvi,Dina Q. Goldin,Witold Litwin,Werner Kiesling,Jarek Gryz,Tomasz Imielinski
+Benoit Dageville,Mohamed Zait,Daniela Florescu,Martin L. Kersten,Bjorn Bergsten,Surajit Chaudhuri,Patrick Valduriez,Luc Bouganim
+Gregory A. Riccardi,Naphtali Rishe
+Anastassia Ailamaki,Stefan Manegold,Zachary G. Ives,Vishal Sikka,Kenneth A. Ross,Kenneth Salem,Tanu Malik,Michael J. Franklin,Vladislav Shkapenyuk,Christopher Olston,Joseph M. Hellerstein,Sam Lightstone,Surajit Chaudhuri,Sang Kyun Cha,Peter A. Boncz,Jennifer Widom,Philip A. Bernstein
+Witold Litwin,Umeshwar Dayal,Nick Roussopoulos,Donovan A. Schneider,Sushil Jajodia,Thomas Schwarz,Jonas S. Karlsson,Timos K. Sellis,Marcel Kornacker,Marek Rusinkiewicz,Ahmed K. Elmagarmid,Georges Gardarin,Michael Stonebraker,Tomasz Imielinski,Gio Wiederhold,Ravi Krishnamurthy,Yungho Leu,Ming-Chien Shan
+Ken Q. Pu,Vagelis Hristidis,Nick Koudas,Divesh Srivastava,Alberto O. Mendelzon,Xiaohui Yu
+Joann J. Ordille,Anand Rajaraman,Daniel F. Lieuwen,Alon Y. Levy,Narain H. Gehani
+Mohamed F. Mokbel,Shashi Shekhar,Abdelsalam Helal,Ihab F. Ilyas,Ahmed K. Elmagarmid,Sunil Prabhakar,Walid G. Aref,Mohamed H. Ali
+Philip A. Bernstein,Christian S. Jensen,Dieter Gawlick,Anastasios Kementsietsidis,David Beech,Donald Kossmann,Jim Melton,Shankar Pal,Raghu Ramakrishnan,Matthias Jarke,Serge Abiteboul,Jennifer Widom,Michael J. Carey,Michael Hammer,Surajit Chaudhuri,H. V. Jagadish,Stefano Ceri,Ming-Yee Lai,Michael J. Franklin,Theo Harder,Erhard Rahm,Claude Delobel,Nathan Goodman,Meichun Hsu,AnHai Doan,Zachary G. Ives,Holger Meyer,David W. Shipman,Henry F. Korth,Joseph M. Hellerstein,Peter C. Lockemann,Paolo Atzeni,Mary F. Fernandez,Martin L. Kersten,Elisa Bertino,Daniela Florescu,Michael Stonebraker,Harry K. T. Wong,Timos K. Sellis,Andreas Reuter,Won Kim,Umeshwar Dayal,M. Tamer Ozsu,Gio Wiederhold
+Roger K. Shultz,Ravi Mukkamala
+Sihem Amer-Yahia,SungRan Cho,Yannis Kotidis,Laks V. S. Lakshmanan,Alin Deutsch,Philip Bohannon,Sophie Cluet,Nick Koudas,H. V. Jagadish,Mary F. Fernandez,Volker Markl,Amelie Marian,Raghu Ramakrishnan,Gustavo Alonso,Mariano P. Consens,Rick Greer,Claude Delobel,Donald Kossmann,Divesh Srivastava,Cong Yu,AnHai Doan
+Dieter Pfoser,Max J. Egenhofer,Enrico Nardelli,Thanasis Hadzilacos,Adriano Di Pasquale,Christian S. Jensen,Bongki Moon,Sudha Ram,Anindya Datta,Serge Abiteboul,Margaret H. Dunham,George Samaras
+Bhavani M. Thuraisingham,Elisa Bertino,Shashi Shekhar,Vasilis Vassalos,Arnon Rosenthal,Sushil Jajodia,Marianne Winslett,Sang Hyuk Son,Susan Malaika,Sylvia L. Osborn,Matthew Morgenstern,Ioana Manolescu,Dimitrios Gunopulos
+Mehul A. Shah,Marcel Kornacker,Vijayshankar Raman,Goetz Graefe,Frederick Reiss,Joseph M. Hellerstein,Michael J. Franklin
+Alexander Thomasian,John T. Robinson,Jayant R. Haritsa,Philip S. Yu,Erhard Rahm
+Peter Scheuermann,Kenneth A. Ross,Rajeev Rastogi,Frank Manola,Radek Vingralek,Dik Lun Lee,Eugene Inseok Chong,Jiawei Han,Ahmed K. Elmagarmid,Arnon Rosenthal,Nick Koudas,Marjorie Templeton,Ouri Wolfson,Opher Etzion,Daniel J. Rosenkrantz,Clement T. Yu,Aris M. Ouksel,Niki Pissinou,Peter M. G. Apers,Kian-Lee Tan,George Samaras
+Radek Vingralek,Amr El Abbadi,Gustavo Alonso,Divyakant Agrawal,Torsten Suel,Umesh Maheshwari
+Hans Hermann Bruggemann,Elisa Bertino
+Hans Christoph Zeidler,Gunther Stiege
+Edward P. F. Chan,Paolo Atzeni,Frederick H. Lochovsky,Alberto O. Mendelzon
+Alejandro P. Buchmann,Umeshwar Dayal,Bettina Kemme,Frank Manola,Michael J. Carey,Arnon Rosenthal,Sharma Chakravarthy,Dennis R. McCarthy,Surajit Chaudhuri,Ming-Chuan Wu,Jose A. Blakeley,C. Mohan,Alin Deutsch,Upen S. Chakravarthy,Michael J. Franklin,Ugur Cetintemel,Meichun Hsu,Sang Hyuk Son,David L. Wells,Sunil K. Sarin,Martin L. Kersten,M. Tamer Ozsu,Malu Castellanos,Christof Bornhovd,David Goldhirsch,Jack A. Orenstein
+Inderpal Narang,Norman W. Paton,Susan Malaika,Donald Kossmann,Irving L. Traiger,Vijayshankar Raman,Takeshi Fukuda,K. Selcuk Candan,Frederick Reiss,Hui-I Hsiao,Kurt A. Shoens,C. Mohan
+Witold Lipski Jr.,Tomasz Imielinski
+Dimitris Plexousakis,Nicolas Spyratos,Michel Scholl
+Felix Naumann,Zoe Lacroix,Ramana Yerneni,Renee J. Miller,Lucian Popa,Anastasios Kementsietsidis
+Dushan Z. Badal,Gerald J. Popek
+Klaus Elhardt,Werner Kiesling,Rudolf Bayer,Volker Markl,Timos K. Sellis
+Sushil Jajodia,Ravi Mukkamala,Claudio Bettini,Ramez Elmasri,Nick Kline,Nikos A. Lorentzos,Larry Kerschberg,Anoop Singhal,Won Kim,Alexander Brodsky,Abdullah Uz Tansel,Gio Wiederhold,Elisa Bertino,Arie Segev,Ouri Wolfson,Christian S. Jensen,James Clifford,Stefano Paraboschi,K. Selcuk Candan,Edgar H. Sibley
+Angelika Kotz Dittrich,Eric Simon,Duri Schmidt
+Paolo Atzeni,Alberto O. Mendelzon,Stefano Paraboschi,Paolo Merialdo,Paolo Missier,Stefano Ceri
+James R. Hamilton,Michael Stonebraker,Joseph M. Hellerstein,Limsoon Wong,Laks V. S. Lakshmanan,Kenneth A. Ross
+Xiaolei Qian,Sibel Adali,H. V. Jagadish,Marianne Winslett,Gio Wiederhold
+Edward Hung,Lise Getoor
+Chris Jermaine,Anindya Datta,Renee J. Miller,Ruoming Jin,Alin Dobra
+Chung-Min Chen,Naphtali Rishe,Yannis Papakonstantinou,Kenneth Salem,Nick Roussopoulos
+Raghu Ramakrishnan,Shamim A. Naqvi,Kenneth A. Ross,Donald Kossmann,Gultekin Ozsoyoglu,Praveen Seshadri,Serge Abiteboul,Ashish Gupta,Philip Bohannon,Patrick Valduriez,Ramana Yerneni,Sophie Cluet,Michael J. Carey,Paul Brown,Oded Shmueli,Mong-Li Lee,Surajit Chaudhuri,Hans-Arno Jacobsen,Stefano Ceri,Kevin S. Beyer,Shaul Dar,Michael J. Franklin,Divesh Srivastava,Sheldon J. Finkelstein,AnHai Doan,Renee J. Miller,Christopher Olston,S. Sudarshan,Henry F. Korth,Joseph M. Hellerstein,Raghav Kaushik,Inderpal Singh Mumick,Adam Silberstein,Ravi Krishnamurthy,Daniela Florescu,Michael Stonebraker,Timos K. Sellis,T. Y. Cliff Leung,Francois Bancilhon,Gio Wiederhold,Per-Ake Larson
+Paolo Missier,Paolo Merialdo,Marek Rusinkiewicz,Norman W. Paton,Vassilios S. Verykios
+K. V. Bapa Rao,Rafiul Ahad
+Sebastian Michel,Peter Triantafillou,Karl Aberer
+Christopher Re,Jihad Boulos,Magdalena Balazinska,Mary F. Fernandez
+Oded Shmueli,Inderpal Singh Mumick,Ravi Krishnamurthy,Narain H. Gehani,Kurt A. Shoens,Alon Y. Levy,Sriram Padmanabhan,H. V. Jagadish,Nathan Goodman,Shamim A. Naqvi,Carlo Zaniolo,Jennifer Widom
+Kam-yiu Lam,Brad Adelberg,Sunil Prabhakar,Sheung-lun Hung,Sang Hyuk Son
+William J. McKenna,Richard L. Cole,Jose A. Blakeley,Goetz Graefe,Clark D. French,Latha S. Colby
+Atsuyuki Morishima,Yoshiharu Ishikawa,Mary F. Fernandez
+Cesar A. Galindo-Legaria,Martin L. Kersten,Jose A. Blakeley,Goetz Graefe,Michael Rys,Shankar Pal,Ming-Chuan Wu,Michael J. Franklin,Arnon Rosenthal
+Abdullah Uz Tansel,Christian S. Jensen,Nick Kline,Nikos A. Lorentzos,James Clifford,Arie Segev,M. Tamer Ozsu,Ramez Elmasri,Esen A. Ozkarahan,Gio Wiederhold,Gultekin Ozsoyoglu
+Lois M. L. Delcambre,Leonard D. Shapiro,Susan Darling Urban,Goetz Graefe,Calton Pu
+Jiong Yang,Jian Pei,Gao Cong,Silvia Nittel,Wei Wang,Xiaolei Li,Anthony K. H. Tung,Gultekin Ozsoyoglu,Jiawei Han,Zhiyuan Chen,Philip S. Yu,Yufei Tao
+Jiawei Han,W. S. Luk,Kian-Lee Tan,Marianne Winslett,Umeshwar Dayal,Kenneth A. Ross,Michael J. Carey,Bin He,Anthony K. H. Tung,Laks V. S. Lakshmanan,Dik Lun Lee,Nick Koudas,Xiaolei Li,Hasan M. Jamil,Philip S. Yu,Daniel J. Rosenkrantz,Kevin Chen-Chuan Chang,Rajeev Rastogi,Ling Liu,Meichun Hsu,Toshiharu Hasegawa,Martin Ester,Kaushik Chakrabarti,Dong Xin,Jian Pei,Xiaofang Zhou,Bharat K. Bhargava,AnHai Doan,Wei Wang
+Jong P. Yoon,Larry Kerschberg
+Ramez Elmasri,Umeshwar Dayal,Nick Kline,Nikos A. Lorentzos,Sharma Chakravarthy,Ilsoo Ahn,Inderpal Singh Mumick,Gene T. J. Wuu,Marek Rusinkiewicz,Margaret H. Eich,Abdelsalam Helal,Gio Wiederhold,Leonidas Fegaras,Arie Segev,T. Y. Cliff Leung,Niki Pissinou,Suryanarayana M. Sripada,Christian S. Jensen,Margaret H. Dunham,James A. Larson,James Clifford,M. Tamer Ozsu,David W. Embley
+John T. Robinson,Jayant R. Haritsa,Ravi Krishnamurthy,Philip S. Yu,Henry F. Korth
+Khaled K. Al-Taha,Max J. Egenhofer
+Virginia E. Ogle,Michael Stonebraker
+Daniela Florescu,Zhen Hua Liu,Henry F. Korth,Subbu N. Subramanian,Patrick Valduriez,Michael J. Carey,Eric Simon,Surajit Chaudhuri,Mary F. Fernandez,Joseph M. Hellerstein,Michael Stonebraker,Dan Olteanu,Michael Rys,Alin Deutsch,Luc Bouganim,Alon Y. Levy,Michael J. Franklin,Alberto O. Mendelzon,Zachary G. Ives,Waqar Hasan,Donald D. Chamberlin,Martin L. Kersten,Mohamed Zait,Ioana Manolescu,AnHai Doan,Donald Kossmann
+Rudolf Bayer,Werner Kiesling,Mario Schkolnick,Volker Markl,Timos K. Sellis
+Jian Tang,Wei Wang,Jaideep Srivastava
+Jonas S. Karlsson,Martin L. Kersten,T. Y. Cliff Leung
+Wolfgang Lehner,Alexander Hinneburg,Aris M. Ouksel,Kenneth Salem,Per-Ake Larson,Jingren Zhou,Patrick Valduriez,Peter A. Boncz,Hong Hai Do,Hartmut Wedekind
+M. W. Du,C. C. Chang
+Roger Gunthor,C. Mohan,Gustavo Alonso,Divyakant Agrawal,Amr El Abbadi
+Paolo Ciaccia,M. Tamer Ozsu,Pavel Zezula,Paolo Merialdo,Elisa Bertino
+Philippe Bonnet,Laurent Amsaleg,Ioana Manolescu,Zhiyuan Chen,Bernhard Mitschang,Praveen Seshadri,Michael J. Franklin
+Darrell Woelk,Abdelsalam Helal,Won Kim,Alfred G. Dale,Elisa Bertino,Hong-Tai Chou,Richard S. Brice,Marek Rusinkiewicz
+Eugene Inseok Chong,Jagannathan Srinivasan
+Kian-Lee Tan,Calton Pu,Gao Cong,Honesty C. Young,Masaru Kitsuregawa,Heng Tao Shen,Anthony K. H. Tung,Nick Koudas,Stuart E. Madnick,Mong-Li Lee,Chiang Lee,Elisa Bertino,Ling Liu,HweeHwa Pang,H. V. Jagadish,Cheng Hian Goh,Ouri Wolfson,Son Dao,Xiaofang Zhou,Karl Aberer,Ming-Chien Shan,Chee Yong Chan,M. Tamer Ozsu,Ron Sacks-Davis
+Philip Bohannon,Rajeev Rastogi,Ehud Gudes,Ramana Yerneni,Henry F. Korth,Hans-Arno Jacobsen,Jayant R. Haritsa,Gao Cong,S. Sudarshan,Raghav Kaushik,Adam Silberstein,Anastasios Kementsietsidis,Daniel F. Lieuwen,AnHai Doan
+Bhuvan Bamba,Philip S. Yu,Ling Liu
+Charles Kellogg,Frank G. Halasz,Gio Wiederhold,Carlo Zaniolo,Clarence A. Ellis
+Anindya Datta,Jayant R. Haritsa,Martin L. Kersten,Sharma Chakravarthy,Nick Roussopoulos,Sudha Ram,Bongki Moon,Sang Hyuk Son,Margaret H. Dunham
+W. S. Luk,Clement T. Yu
+Elisa Bertino,Claudio Bettini,Umeshwar Dayal,Ji-Won Byun,Sylvia L. Osborn,Susan Darling Urban,Limsoon Wong,Vassilios S. Verykios,Won Kim,Ahmed K. Elmagarmid,Giuseppe Pelagatti,C. Mohan,Holger Meyer,Sunil Prabhakar,Henk M. Blanken,Nabil R. Adam,Paul F. Wilms,Christian S. Jensen,Elke A. Rundensteiner,M. Tamer Ozsu,Walid G. Aref,Athman Bouguettaya,Ron Sacks-Davis
+Donald D. Chamberlin,Bradford W. Wade,Raymond A. Lorie,Irving L. Traiger,Mario Schkolnick,Kevin S. Beyer,Peter Fankhauser,Michael Rys,Michael J. Carey,Latha S. Colby,Donald Kossmann,Michael Hammer,Nelson Mendonca Mattos
+Elaheh Pourabbas,Arie Shoshani,Francesco M. Malvestuto,Fabrizio L. Ricci,Michele Missikoff
+Ramana Yerneni,Vasilis Vassalos,Yannis Papakonstantinou,Joachim Hammer,Serge Abiteboul,Adam Silberstein,Hans-Arno Jacobsen
+AnHai Doan,Marianne Winslett,Henry F. Korth,Michael J. Carey,Arnon Rosenthal,Clement T. Yu,Surajit Chaudhuri,Joseph M. Hellerstein,Ahmed K. Elmagarmid,Michael Stonebraker,Alon Y. Levy,Kevin Chen-Chuan Chang,Michael J. Franklin,Zachary G. Ives,Gustavo Alonso,Luis Gravano,Donald Kossmann,Volker Markl
+A. Kumaran,Jayant R. Haritsa
+Suryanarayana M. Sripada,Matthias Jarke,Arie Segev,T. Y. Cliff Leung,Nikos A. Lorentzos,Ilsoo Ahn,Christian S. Jensen,James Clifford,Nick Kline
+Nick Kline,T. Y. Cliff Leung,Christian S. Jensen,Nikos A. Lorentzos,James Clifford,Arie Segev,Gio Wiederhold,Ilsoo Ahn
+Leonard D. Shapiro,Ralf Rantzau,Timos K. Sellis,Calton Pu,Goetz Graefe,Michael V. Mannino,Michael Stonebraker,Eric N. Hanson,Bernhard Mitschang
+Demet Aksoy,Michael Gertz,Ugur Cetintemel,Michael J. Franklin
+Goetz Graefe,Andrew Witkowski,Vivek R. Narasayya,William O'Connell,Surajit Chaudhuri,Richard L. Cole,Duri Schmidt,Michael Rys,Michael J. Carey,Calton Pu,Per-Ake Larson,Jose A. Blakeley
+Alin Dobra,Rajeev Rastogi
+Keith G. Jeffery,Matthias Jarke
+Glenn S. Iwerks,Hanan Samet
+Adriano Di Pasquale,Christian S. Jensen,Enrico Nardelli
+Dina Q. Goldin,Silvia Nittel,Max J. Egenhofer
+M. Tamer Ozsu,Ken Barker,Michael Gertz,Mariano P. Consens,Henry F. Korth,Umeshwar Dayal,Ihab F. Ilyas,Patrick Valduriez,Frank Manola,Inderpal Singh Mumick,Mary F. Fernandez,Jennifer Widom,Esen A. Ozkarahan,Jose A. Blakeley,Zoe Lacroix,Holger Meyer,Zachary G. Ives,Ling Liu,Arie Segev,Niki Pissinou,Gustavo Alonso,Christian S. Jensen,Karl Aberer,Klemens Bohm,Renee J. Miller,Donald Kossmann
+Carlo Zaniolo,David Beech,Vassilis J. Tsotras,Filippo Furfaro,Zografoula Vagena,Haran Boral,Roberto Zicari,Ravi Krishnamurthy,Stephanie J. Cammarata,Alin Deutsch,Stefano Ceri,Shamim A. Naqvi,Laurent Vieille,Gio Wiederhold
+Christoph Koch,Dan Olteanu
+Ming-Yee Lai,W. Kevin Wilkinson,Nathan Goodman
+Andreas Reuter,Johannes Klein,Peter C. Lockemann,Michael Stonebraker,Surajit Chaudhuri,Matthias Jarke,Stefano Ceri,Theo Harder,Hansjorg Zeller,Dieter Gawlick,Calton Pu,Betty Salzberg,Umeshwar Dayal
+Matthew Morgenstern,Alexander Borgida,Gio Wiederhold
+John J. Donovan,Stuart E. Madnick
+Gordon Sande,Arie Shoshani
+SungRan Cho,Nick Koudas,Divesh Srivastava,Laks V. S. Lakshmanan
+Larry Kerschberg,S. Bing Yao,Esen A. Ozkarahan,Menas Kafatos,Peter M. D. Gray,Edgar H. Sibley,Antonio L. Furtado,Alexander Brodsky,Anthony C. Klug
+Latha S. Colby,Lawrence V. Saxton,Sam Lightstone,Inderpal Singh Mumick,Jun Rao,Kenneth A. Ross,Jarek Gryz,Kevin S. Beyer,Daniel F. Lieuwen,Volker Markl,Zografoula Vagena,Richard L. Cole
+Mohamed Zait,Andrew Witkowski,Rosana S. G. Lanzelotte,Patrick Valduriez
+Chaitanya K. Baru,Amarnath Gupta,George P. Copeland,Bertram Ludascher,Hui-I Hsiao,Stanley Y. W. Su,Sriram Padmanabhan,Yannis Papakonstantinou
+Upen S. Chakravarthy,David Goldhirsch,Dennis R. McCarthy,Michael J. Carey,Frank Manola,Jack A. Orenstein,Sunil K. Sarin,Meichun Hsu,Umeshwar Dayal,Arnon Rosenthal
+Bernhard Mitschang,Tobias Kraft,Christian S. Jensen,Thomas Schwarz,Theo Harder,Volker Markl,Gustavo Alonso,Michael Gesmann,Peter Pistor,Ralf Rantzau,Nelson Mendonca Mattos
+Frank Manola,R. G. G. Cattell,Alain Pirotte,Craig W. Thompson,Jack A. Orenstein,Ahmed K. Elmagarmid,Arnon Rosenthal,Mary E. S. Loomis,Marjorie Templeton,David Goldhirsch,Umeshwar Dayal
+Inderpal Singh Mumick,Kenneth A. Ross,Alberto O. Mendelzon,Narain H. Gehani,Alon Y. Levy,Arie Segev,H. V. Jagadish,Jun Rao,S. Sudarshan,Jennifer Widom,Niki Pissinou,Ashish Gupta,Sheldon J. Finkelstein,Umeshwar Dayal,Michael Rabinovich,Daniel F. Lieuwen
+Vinayak R. Borkar,Vasilis Vassalos,Yannis Papakonstantinou,Michael J. Carey
+Michele Missikoff,Michel Scholl,Gio Wiederhold,Stefano Ceri
+Jukka Teuhola,Matti Jakobsson
+Ravi Mukkamala,Sang Hyuk Son
+Stuart E. Madnick,Matthias Jarke,Cheng Hian Goh,Arie Segev,Meichun Hsu,Douglas S. Kerr
+W. Kevin Wilkinson,David Beech,Waqar Hasan,Donovan A. Schneider,Jurgen Annevelink,Ming-Chien Shan,Curtis P. Kolovson,Dina Bitton,Haran Boral
+Ramesh Bhashyam,William O'Connell,Andrew Witkowski,Surajit Chaudhuri
+Kenneth A. Ross,Volker Markl,Vasilis Vassalos,Gultekin Ozsoyoglu,Luis Gravano,Serge Abiteboul,Ashish Gupta,Daniel J. Rosenkrantz,Patrick Valduriez,Rada Chirkova,Sophie Cluet,Jun Rao,Surajit Chaudhuri,Hans-Arno Jacobsen,H. V. Jagadish,Amr El Abbadi,Stefano Ceri,Eric Simon,Nick Koudas,Jingren Zhou,Michael J. Franklin,Divesh Srivastava,Mitch Cherniack,Gottfried Vossen,Renee J. Miller,Ihab F. Ilyas,Rajeev Rastogi,S. Sudarshan,Amelie Marian,Alon Y. Levy,Joseph M. Hellerstein,Limsoon Wong,Laks V. S. Lakshmanan,Daniel F. Lieuwen,Dimitrios Gunopulos,Mary F. Fernandez,Timos K. Sellis,Peter A. Boncz,Per-Ake Larson
+Federico Barbic,Stefano Ceri
+Vijayshankar Raman,Zachary G. Ives,Frederick Reiss,Michael J. Franklin,K. Selcuk Candan,Joseph M. Hellerstein,Norman W. Paton,Sam Lightstone,Volker Markl,Susan Malaika,Donald Kossmann
+Paula B. Hawthorn,Michael Stonebraker,Eric Simon,Fred J. Maryanski
+Rada Chirkova,Gang Gou,Dimitrios Gunopulos,Jingren Zhou
+Per Svensson,Geoffrey A. Stephenson
+Martin Ester,Hans-Peter Kriegel,Jian Pei,Wei Wang,Jorg Sander,Werner Kiesling,Anthony K. H. Tung,Yufei Tao
+Limsoon Wong,Susan B. Davidson,HweeHwa Pang,Laks V. S. Lakshmanan,Mong-Li Lee,Jian Pei,Shamim A. Naqvi
+H. V. Jagadish,Kanda Runapongsa,Alberto O. Mendelzon,Luis Gravano,Ashish Gupta,Susan B. Davidson,Hans-Peter Kriegel,Jorg Sander,Chee Yong Chan,Cong Yu,Nandit Soparkar,Surajit Chaudhuri,Michael Rabinovich,Stefano Ceri,Shaul Dar,Nick Koudas,Michael J. Franklin,Divesh Srivastava,Victor M. Markowitz,Bongki Moon,Alexander Borgida,Panagiotis G. Ipeirotis,Anthony K. H. Tung,Rajeev Rastogi,S. Sudarshan,Alon Y. Levy,Joseph M. Hellerstein,Yuqing Wu,Laks V. S. Lakshmanan,Zhiyuan Chen,Daniel F. Lieuwen,Narain H. Gehani,Torsten Suel,Michael Stonebraker,Heng Tao Shen,Shurug Al-Khalifa
+C. Y. Chen,C. C. Chang
+Kyoji Hirata,K. Selcuk Candan,Divyakant Agrawal,Kevin Chen-Chuan Chang
+Erhard Rahm,Gio Wiederhold,Matthias Jarke,Theo Harder,Hong Hai Do,Gottfried Vossen
+Arnd Christian Konig,Achim Kraiss,Vivek R. Narasayya,Surajit Chaudhuri
+Mario Schkolnick,Bradford W. Wade,Stanley Y. W. Su,Raymond A. Lorie,Irving L. Traiger,Won Kim,Toby J. Teorey,Sheldon J. Finkelstein,Sakti P. Ghosh
+Divesh Srivastava,Zhiyuan Chen,Vassilis J. Tsotras,Nicolas Bruno,Eric Simon,Anthony K. H. Tung,Yannis Kotidis,Laks V. S. Lakshmanan,Vagelis Hristidis,Panagiotis G. Ipeirotis,Mary F. Fernandez,Nick Koudas,Yuqing Wu,Joseph M. Hellerstein,S. Sudarshan,Michael Rabinovich,Alin Deutsch,Alon Y. Levy,Yannis Papakonstantinou,Amelie Marian,Michael J. Franklin,Ugur Cetintemel,Alberto O. Mendelzon,Praveen Seshadri,Xiaohui Yu,Cong Yu,Zografoula Vagena,T. Y. Cliff Leung,Shurug Al-Khalifa,Rick Greer,Dimitrios Gunopulos,Graham Cormode,Luis Gravano,Bjorn Tor Jonsson,Shaul Dar,Sophie Cluet
+Margaret H. Eich,Ali R. Hurson,David L. Wells
+Douglas S. Kerr,Ali Orooji
+Shinya Fushimi,Masaru Kitsuregawa,Won Kim
+Giancarlo Martella,Fabio A. Schreiber,Giuseppe Pelagatti,Stefano Ceri
+Haifeng Jiang,Wei Wang,Lucian Popa
+Lee A. Hollaar,Roger L. Haskin
+Narain H. Gehani,Shaul Dar,William H. Piel,Michael Rabinovich,Daniel F. Lieuwen
+Dan Olteanu,Donald Kossmann,Ioana Manolescu
+Ken Barker,Ramon Lawrence
+Mary E. S. Loomis,Michael Stonebraker,R. G. G. Cattell,Michael V. Mannino
+Volker Markl,Frederick Reiss,Timos K. Sellis,Tobias Kraft,Vasilis Vassalos,Ihab F. Ilyas,Sam Lightstone,Sriram Padmanabhan,Kevin S. Beyer,Paul Brown,Gustavo Alonso,Jun Rao,Peter A. Boncz,Donald Kossmann
+Raymond A. Lorie,Roger L. Haskin,Honesty C. Young,Irving L. Traiger,Won Kim,Gary Hallmark,Bradford W. Wade,C. Mohan
+Antoine N. Mourad,Honesty C. Young
+Michael Rabinovich,Alberto O. Mendelzon,Alon Y. Levy,Susan Malaika,Nick Koudas
+Jan Flokstra,Stefan Manegold,Martin L. Kersten,Peter M. G. Apers,Henk M. Blanken,Peter A. Boncz,Rolf A. de By,Maurice van Keulen,Paul W. P. J. Grefen
+Alexander Borgida,Matthias Jarke,Tomasz Imielinski,Harry K. T. Wong,Brian A. Nixon,Nick Roussopoulos,Renee J. Miller,Martin Staudt,Gio Wiederhold
+Irving L. Traiger,E. F. Codd,Bradford W. Wade,Kurt A. Shoens
+Athman Bouguettaya,Roger King,Ahmed K. Elmagarmid,Mike P. Papazoglou,Boualem Benatallah
+Kyriakos Mouratidis,Spiros Papadimitriou,Yufei Tao,HweeHwa Pang,Timos K. Sellis
+Nisheeth Shrivastava,Rajeev Rastogi,Divyakant Agrawal
+Kaushik Chakrabarti,Dong Xin,Surajit Chaudhuri,Rajeev Rastogi,Sanjay Agrawal
+Hasan M. Jamil,Avigdor Gal,Jian Pei,Laks V. S. Lakshmanan
+Arie Segev,Arie Shoshani,T. Y. Cliff Leung,Christian S. Jensen,Avigdor Gal,Michael Stonebraker,Nikos A. Lorentzos,James Clifford,Opher Etzion,Niki Pissinou,Umeshwar Dayal,Gio Wiederhold,Ilsoo Ahn
+Bharat K. Bhargava,Yahiko Kambayashi,Abdelsalam Helal,Omran A. Bukhres,Jagannathan Srinivasan,Aidong Zhang,Marianne Winslett,Leszek Lilien,Henry Tirri,Arnon Rosenthal
+Kenneth R. Jacobs,Michael J. Carey
+Hui-I Hsiao,Donovan A. Schneider,Shahram Ghandeharizadeh,Sriram Padmanabhan,Anupam Bhide,Kevin S. Beyer,George P. Copeland,Philip S. Yu,C. Mohan
+Michael Pizzo,Jose A. Blakeley
+Sunil Prabhakar,Amr El Abbadi,Dmitri V. Kalashnikov,Ihab F. Ilyas,Yuni Xia,Ahmed K. Elmagarmid,Divyakant Agrawal,Walid G. Aref,Ambuj K. Singh,Yufei Tao
+Stefan Manegold,Martin L. Kersten,Stratos Idreos,Neoklis Polyzotis,Jens-Peter Dittrich,Ioana Manolescu,Peter A. Boncz,Maurice van Keulen
+Susan Malaika,Jim Melton,Alberto O. Mendelzon,Norman W. Paton,Alon Y. Levy,Andrew Eisenberg,Arnon Rosenthal
+Patrick Valduriez,Haran Boral,Rosana S. G. Lanzelotte,Umeshwar Dayal,Philippe Pucheral,Timos K. Sellis,George P. Copeland,Bjorn Bergsten,Eric Simon,Georges Gardarin,C. Mohan,Serge Abiteboul,Luc Bouganim,Laurent Daynes,Michael J. Franklin,Waqar Hasan,Francois Bancilhon,Gultekin Ozsoyoglu,Sophie Cluet
+S. Sudarshan,Rajeev Rastogi,Soumen Chakrabarti,T. Y. Cliff Leung,Alberto O. Mendelzon,Joseph M. Hellerstein,Laks V. S. Lakshmanan,Praveen Seshadri,Henry F. Korth,Jayant R. Haritsa,Surajit Chaudhuri,Vagelis Hristidis,Daniel F. Lieuwen
+S. Bing Yao,Philip L. Lehman,Toby J. Teorey,Peter M. G. Apers
+Paolo Merialdo,Fabrizio L. Ricci,Alberto O. Mendelzon,Stefano Ceri
+Dale Skeen,Michael Stonebraker,Susan B. Davidson,Umeshwar Dayal,Nathan Goodman,Arvola Chan,Amr El Abbadi
+Zhen He,Byung Suk Lee
+Gerald J. Popek,Calton Pu,B. R. Badrinath,Deborah Downs
+Bin He,Kevin Chen-Chuan Chang
+Calton Pu,Bertram Ludascher,Amarnath Gupta,Philip S. Yu,Terence Critchlow,Arie Shoshani,Roger Barga,Ahmed K. Elmagarmid,Kun-Lung Wu,Ling Liu,Masaru Kitsuregawa,Mike P. Papazoglou
+Jens-Peter Dittrich,Bernhard Seeger,Donald Kossmann,Neoklis Polyzotis,Ioana Manolescu
+Xiaofang Zhou,Kerry L. Taylor,Wei Wang,Heng Tao Shen,Masaru Kitsuregawa,Christian S. Jensen
+C. Mohan,Honesty C. Young,Marianne Winslett,Divyakant Agrawal,George Samaras,Jun Rao,Marcel Kornacker,Tobin J. Lehman,Sang Kyun Cha,Jennifer Widom,Sheldon J. Finkelstein,Joseph M. Hellerstein,Luc Bouganim,Qiong Luo,Paul F. Wilms,Rajeev Rastogi,Amr El Abbadi,Meichun Hsu,Sang Hyuk Son,Gustavo Alonso,Yun Wang,Vishal Sikka,Christof Bornhovd
+Nan C. Shu,Sakti P. Ghosh,Harry K. T. Wong
+Meikel Poss,Arthur M. Keller,Per-Ake Larson
+Mike P. Papazoglou,Matthias Jarke,Timos K. Sellis,Masaru Kitsuregawa,Roger King
+Malu Castellanos,Felix Saltor,Ming-Chien Shan,Umeshwar Dayal,Dimitrios Gunopulos
+Kenneth Salem,Johannes Klein,Sam Lightstone,Surajit Chaudhuri,Kevin S. Beyer,Rafael Alonso,Dieter Gawlick,Arunprasad P. Marathe
+Theo Harder,Marc H. Scholl,Won Kim,Hartmut Wedekind,Michael Gesmann,Umeshwar Dayal,Gio Wiederhold,Nelson Mendonca Mattos
+Ralf Rantzau,Tobias Kraft
+Byung Suk Lee,Gio Wiederhold,Abdelsalam Helal,Thierry Barsalou,Sang Kyun Cha,Andrew E. Wade,Ahmed K. Elmagarmid,Terence Critchlow
+Honesty C. Young,Vishal Sikka,Ashish Gupta,Kien A. Hua,Sang Kyun Cha,Gary Hallmark,Chiang Lee,Philip S. Yu,Rajeev Rastogi,Meichun Hsu
+Ouri Wolfson,Aris M. Ouksel,Niki Pissinou,Son Dao,Clement T. Yu,Christian S. Jensen,Naphtali Rishe
+Reinhard Braumandl,Donald Kossmann
+Norman W. Paton,Jim Melton,Alexandra Poulovassilis,Andrew Eisenberg,Peter M. D. Gray
+Christopher Olston,Adam Silberstein,Junghoo Cho,Vladislav Shkapenyuk,Jennifer Widom,Soumen Chakrabarti
+Vagelis Hristidis,Luis Gravano,Yannis Papakonstantinou,Ihab F. Ilyas,Nick Koudas,Surajit Chaudhuri,Philip S. Yu,Yufei Tao,Naphtali Rishe
+Laks V. S. Lakshmanan,Shurug Al-Khalifa,Ravi Krishnamurthy,Yuqing Wu,Jian Pei,Subbu N. Subramanian,Anthony K. H. Tung,Cong Yu
+Gottfried Vossen,Matthias Jarke,Mitch Cherniack,Nick Koudas,Nicolas Spyratos
+Vivek R. Narasayya,Arunprasad P. Marathe,Rajeev Motwani,Per-Ake Larson,Nicolas Bruno,Surajit Chaudhuri,Sanjay Agrawal
+Zhiyuan Chen,Yuqing Wu,Praveen Seshadri,Surajit Chaudhuri,Nick Koudas,Jian Pei,Yufei Tao,Wei Wang
+Hansjorg Zeller,Johannes Klein,Pedro Celis
+Philippe Pucheral,Peter M. G. Apers,Georges Gardarin,Luc Bouganim,Michele Cart
+Nick Roussopoulos,Timos K. Sellis,Philip S. Yu,Alberto O. Mendelzon,Christian S. Jensen,Yannis Kotidis,Yannis Papakonstantinou,Jayant R. Haritsa,Harry K. T. Wong,E. F. Codd,Elizabeth N. Fong,Jennifer Widom,Z. Meral Ozsoyoglu,Gio Wiederhold
+Vasilis Vassalos,Joachim Hammer,Yannis Kotidis,Ihab F. Ilyas,Yannis Papakonstantinou,Serge Abiteboul,Anand Rajaraman,Michael Rys,Peter A. Boncz,Jennifer Widom,Ioana Manolescu
+David W. Stemple,Leonidas Fegaras,Antonio Albano
+Zhen Hua Liu,Dieter Gawlick
+Alex Dekhtyar,Maurice van Keulen
+Esen A. Ozkarahan,Aris M. Ouksel
+John V. Carlis,Dennis G. Severance,Jaideep Srivastava
+Hans-Peter Kriegel,Jorg Sander,Bernhard Seeger,Stefan Schonauer,Thomas Brinkhoff
+Junghoo Cho,Soumen Chakrabarti,Panagiotis G. Ipeirotis,Luis Gravano,Kevin Chen-Chuan Chang
+David Campbell,Jose A. Blakeley
+B. R. Badrinath,Tomasz Imielinski,Divyakant Agrawal,Amr El Abbadi
+Adam Bosworth,Michael Stonebraker,Jennifer Widom,Surajit Chaudhuri
+Guido Nerjes,Peter Triantafillou
+Sang Kyun Cha,Rajeev Rastogi,Meichun Hsu,Gio Wiederhold,Vishal Sikka
+E. F. Codd,C. J. Date
+Michel Scholl,Timos K. Sellis,Enrico Nardelli,Christian S. Jensen,Eric Simon,Georges Gardarin,Nikos A. Lorentzos,Serge Abiteboul,Sophie Cluet,Francois Bancilhon
+C. J. Date,Hugh Darwen
+Nick Koudas,Vassilis J. Tsotras,Nicolas Bruno,Ihab F. Ilyas,Torsten Suel,Heng Tao Shen,Anthony K. H. Tung,Yannis Kotidis,Panagiotis G. Ipeirotis,Yuqing Wu,Daniel J. Rosenkrantz,Amelie Marian,Yannis Papakonstantinou,Rajeev Rastogi,Alberto O. Mendelzon,Xiaohui Yu,Zografoula Vagena,Shurug Al-Khalifa,Dimitrios Gunopulos,Graham Cormode,Luis Gravano
+Tobin J. Lehman,Michael J. Carey,Jennifer Widom
+Bertram Ludascher,Shirley Cohen,Zachary G. Ives,Amarnath Gupta,Terence Critchlow,Arie Shoshani,Susan B. Davidson,Michael Gertz,Chad Berkley,Yannis Papakonstantinou,Alin Deutsch,Ling Liu,Ioana Manolescu,Zoe Lacroix
+Daniel J. Abadi,Mitch Cherniack,Magdalena Balazinska,Ugur Cetintemel,Michael Stonebraker
+Paul Brown,Ihab F. Ilyas,Michael J. Carey,Michael Stonebraker,Joseph M. Hellerstein,Jennifer Widom
+Rudolf Munz,Georges Gardarin,H.-J. Schneider,Nathan Goodman
+Duri Schmidt,James Clifford,Christian S. Jensen
+Bjorn Tor Jonsson,Donald Kossmann,Ugur Cetintemel,Shaul Dar,Laurent Amsaleg,Michael J. Franklin
+Clement T. Yu,Keh-Chang Guh,Son Dao,Leszek Lilien,Naphtali Rishe,Won Kim,Marjorie Templeton,Dina Bitton,C. C. Chang,Aris M. Ouksel,King-Lup Liu,Wei Wang,Z. Meral Ozsoyoglu,Chengwen Liu
+Andrew Witkowski,William O'Connell,Surajit Chaudhuri
+Elke Radeke,Marc H. Scholl
+Aidong Zhang,Jian Pei,Wei Wang,Omran A. Bukhres,Won Kim,Ahmed K. Elmagarmid
+Hans-Joachim Lenz,Veit Koppen,Arie Shoshani,Martin Staudt
+Daniel F. Lieuwen,Rajeev Rastogi,Arnaud Sahuguet
+Mohamed H. Ali,Walid G. Aref,Ihab F. Ilyas,Abdelsalam Helal,Ahmed K. Elmagarmid
+Nabil R. Adam,Terence Critchlow,Christof Bornhovd,Shamim A. Naqvi
+Ugur Cetintemel,Mitch Cherniack,Magdalena Balazinska,Michael Stonebraker,Jennifer Widom,Michael J. Franklin
+Shurug Al-Khalifa,Cong Yu,Yuqing Wu,Kanda Runapongsa
+Nikos A. Lorentzos,Timos K. Sellis,Enrico Nardelli,T. Y. Cliff Leung,Christian S. Jensen,Alexandra Poulovassilis,James Clifford,Gio Wiederhold,Ilsoo Ahn
+Clarence A. Ellis,Frank G. Halasz,Henry F. Korth,Roger King,Matthias Jarke
+Surajit Chaudhuri,Sanjay Agrawal,William O'Connell,Donald Kossmann,Luis Gravano,Brian Babcock,Ashish Gupta,Dong Xin,Shahram Ghandeharizadeh,Michael J. Carey,Marianne Winslett,Michael J. Franklin,Waqar Hasan,Amelie Marian,Sam Lightstone,Henry F. Korth,Joseph M. Hellerstein,Raghav Kaushik,Yuqing Wu,Rajeev Motwani,Martin L. Kersten,Ravi Krishnamurthy,Michael Stonebraker,Arunprasad P. Marathe,Umeshwar Dayal,Gio Wiederhold,Nicolas Bruno,Per-Ake Larson
+Jaideep Srivastava,Shashi Shekhar
+Leonidas Fegaras,Sharma Chakravarthy
+Opher Etzion,Avigdor Gal
+Andrew E. Wade,Abdelsalam Helal,Ahmed K. Elmagarmid
+Michel E. Adiba,Georges Gardarin,Gia Toan Nguyen,Claude Delobel
+Zoe Lacroix,Arnaud Sahuguet,Claude Delobel,Susan B. Davidson,Mong-Li Lee,Yi Chen
+Cyril U. Orji,Dina Bitton,Naphtali Rishe,Carolyn Turbyfill,Leszek Lilien
+Yungho Leu,Marek Rusinkiewicz,Ahmed K. Elmagarmid,Omran A. Bukhres
+Betty Salzberg,Max J. Egenhofer,Per-Ake Larson,Stefano Ceri,Masaru Kitsuregawa,Vassilis J. Tsotras
+Laurent Amsaleg,Michael J. Franklin
+Michael Stonebraker,Dieter Gawlick,Eric N. Hanson,Donald Kossmann,David Beech,Matthias Jarke,Serge Abiteboul,Jose A. Blakeley,Jennifer Widom,Michael J. Carey,Stefano Ceri,Anupam Bhide,Michael J. Franklin,Mitch Cherniack,Rowland R. Johnson,Henry F. Korth,Joseph M. Hellerstein,Peter C. Lockemann,Curtis P. Kolovson,W. Bradley Rubenstein,Joachim Hammer,Martin L. Kersten,Magdalena Balazinska,Timos K. Sellis,Umeshwar Dayal,Gio Wiederhold,Marcel Kornacker,Jeff Dozier
+Jian Pei,Philip S. Yu,Shashi Shekhar,Meichun Hsu,Dik Lun Lee,Yuqing Wu,Yufei Tao,Umeshwar Dayal,Wei Wang,Anthony K. H. Tung
+Aris M. Ouksel,Felix Saltor,Karl Aberer,Naphtali Rishe,Peter Fankhauser,Peter A. Boncz,Chengwen Liu,George Samaras
+Donald Kossmann,Henry F. Korth,Michael J. Carey,Joseph M. Hellerstein,Michael J. Franklin,Gustavo Alonso,Frederick Reiss,Karl Aberer,Ioana Manolescu,Renee J. Miller
+Fabio A. Schreiber,Piero Fraternali,Giuseppe Pozzi,Giuseppe Pelagatti,Stefano Ceri
+Umeshwar Dayal,Dieter Gawlick,Eric N. Hanson,James Clifford,Dennis R. McCarthy,Jim Melton,Arvola Chan,Matthias Jarke,Sunil K. Sarin,Serge Abiteboul,Jennifer Widom,Michael J. Carey,Johannes Klein,Sharma Chakravarthy,Ming-Chien Shan,Nathan Goodman,Meichun Hsu,Arnon Rosenthal,David Goldhirsch,Hai-Yann Hwang,Niki Pissinou,Jack A. Orenstein,Peter C. Lockemann,Gustavo Alonso,Dimitrios Gunopulos,Gene T. J. Wuu,Martin L. Kersten,Ravi Krishnamurthy,Won Kim,Gio Wiederhold
+HweeHwa Pang,Michael J. Carey,Anthony K. H. Tung
+Klemens Bohm,Peter Fankhauser,Bernd Walter,Karl Aberer
+Sylvia L. Osborn,Arnon Rosenthal,Gio Wiederhold
+Margaret H. Dunham,Abdelsalam Helal,Sudha Ram
+Omran A. Bukhres,Boualem Benatallah,Won Kim,Ahmed K. Elmagarmid
+Bettina Kemme,Matthias Wiesmann,Elena Baralis,Gustavo Alonso
+Paul W. P. J. Grefen,Martin L. Kersten,Karl Aberer,Willem Jonker,Peter M. G. Apers,Stefano Ceri,Henk M. Blanken,Jennifer Widom,Rolf A. de By
+Joachim Hammer,Yannis Papakonstantinou,Abdelsalam Helal,Stanley Y. W. Su,Jennifer Widom,Sudarshan S. Chawathe
+Sharma Chakravarthy,Jose A. Blakeley,Stanley Y. W. Su,Eric N. Hanson,Jennifer Widom,Arnon Rosenthal
+Martin Theobald,Jennifer Widom
+Son Dao,Chengwen Liu,Won Kim,Marjorie Templeton,Naphtali Rishe
+Gustavo Alonso,Divyakant Agrawal,Michael J. Franklin,Christian S. Jensen,Karl Aberer,Amr El Abbadi,Jennifer Widom,Martin L. Kersten,Matthias Wiesmann,Jose A. Blakeley
+Tomasz Imielinski,Ravi Krishnamurthy,Henry F. Korth,Michael J. Carey,Shamim A. Naqvi,Nicolas Spyratos,Sakti P. Ghosh
+Adam Silberstein,Hans-Arno Jacobsen
+Wei Wang,Chinya V. Ravishankar,Philip S. Yu,Joseph M. Hellerstein,Silvia Nittel,Nicolas Bruno,Naphtali Rishe,Amelie Marian,Yufei Tao,Anthony K. H. Tung
+Marjorie Templeton,C. C. Chang,Chin-Wan Chung,Keh-Chang Guh,Ahmed K. Elmagarmid,Leszek Lilien,Arnon Rosenthal
+Stefano Ceri,Z. Meral Ozsoyoglu,Per-Ake Larson,Masaru Kitsuregawa,Michael J. Carey,Elena Baralis,Roberto Zicari,Timos K. Sellis,Jennifer Widom,Arthur M. Keller,Joseph M. Hellerstein,Giuseppe Pelagatti,Giuseppe Pozzi,Serge Abiteboul,Michael J. Franklin,Gio Wiederhold,Martin L. Kersten,Dieter Gawlick,Ming-Chien Shan,Stefano Paraboschi,Ioana Manolescu,Piero Fraternali,Peter M. G. Apers,Luis Gravano
+Alin Deutsch,Arnaud Sahuguet,Alon Y. Levy,Mary F. Fernandez,Yannis Papakonstantinou,Lucian Popa
+Rick Greer,Mary F. Fernandez
+Won Kim,David S. Reiner,Henry F. Korth,Ahmed K. Elmagarmid,Yahiko Kambayashi,Frederick H. Lochovsky,Sang Hyuk Son,Sunit K. Gala,Hong-Tai Chou,Gio Wiederhold,Alfred G. Dale,Francois Bancilhon
+Arie Shoshani,Amarnath Gupta,Frederick Reiss,Terence Critchlow,Christian S. Jensen,Joseph M. Hellerstein,Deane Merrill,Harry K. T. Wong,Marianne Winslett,Ling Liu,Victor M. Markowitz,Fabrizio L. Ricci
+David L. Wells,John Joseph,Jose A. Blakeley,Satish M. Thatte,Craig W. Thompson
+Per-Ake Larson,T. Snider,Alberto O. Mendelzon,Pedro Celis,Mariano P. Consens,Toby J. Teorey,Luis Gravano,Bernhard Seeger,Masaru Kitsuregawa,Jingren Zhou,Jose A. Blakeley
+Roberto Zicari,Ling Liu,Rolf A. de By
+Veda C. Storey,Robert C. Goldstein,Sudha Ram
+Matthias Jarke,Martin Staudt,Michael J. Carey,Timos K. Sellis,Eric Simon,Gio Wiederhold,Peter C. Lockemann,Dieter Gawlick,James Clifford
+David W. Shipman,Nathan Goodman,Michael Hammer
+Azer Bestavros,Sang Hyuk Son
+Wen-Chi Hou,Gultekin Ozsoyoglu
+Gio Wiederhold,Christian S. Jensen,Toshimi Minoura,S. Misbah Deen,James Clifford,David Beech,Sang Hyuk Son,Sakti P. Ghosh,Richard L. Shuey,Yahiko Kambayashi,Marianne Winslett,Alfonso F. Cardenas,Waqar Hasan,Arnon Rosenthal,Thierry Barsalou,Arthur M. Keller,Martin L. Kersten
+Piero Fraternali,Giuseppe Pozzi,Stefano Paraboschi,Elena Baralis,Peter M. G. Apers,Ioana Manolescu,Jennifer Widom,Sudarshan S. Chawathe,Giuseppe Pelagatti
+Baihua Zheng,Jianliang Xu,Dik Lun Lee
+Yuni Xia,Walid G. Aref,Dmitri V. Kalashnikov
+Yuqing Wu,Cong Yu
+Bernhard Seeger,Dimitrios Gunopulos,Thomas Brinkhoff,Vassilis J. Tsotras,Torsten Suel,Yufei Tao
+Nelson Mendonca Mattos,Marc H. Scholl,Andrew Eisenberg,Hugh Darwen,Jim Melton,Michael J. Carey,Yun Wang
+Ioana Manolescu,Zachary G. Ives,Eric Simon,Georges Gardarin,Yannis Papakonstantinou,Alon Y. Levy,Serge Abiteboul,Michael J. Carey,Neoklis Polyzotis,Luc Bouganim,Martin L. Kersten
+Jim Melton,Andrew Eisenberg
+Frederick Reiss,Michael J. Franklin,Joseph M. Hellerstein,Jun Rao
+Nicolas Spyratos,Serge Abiteboul,George Samaras,Alexandra Poulovassilis,Francois Bancilhon
+Claude Delobel,Serge Abiteboul,Sophie Cluet,Laurent Vieille,Francois Bancilhon
+Albert Croker,James Clifford
+Peter Fankhauser,Bernd Walter,Mary F. Fernandez,Karl Aberer,Georges Gardarin,Michael Rys
+Marc H. Scholl,Henk M. Blanken,Arnon Rosenthal
+Eric N. Hanson,Timos K. Sellis,W. Bradley Rubenstein,Stanley Y. W. Su,Jennifer Widom
+Ihab F. Ilyas,Ahmed K. Elmagarmid,Kevin Chen-Chuan Chang,Peter A. Boncz,Jun Rao,Walid G. Aref
+Anton P. Karadimce,Susan Darling Urban
+Douglas K. Barry,R. G. G. Cattell
+Abdelsalam Helal,Stanley Y. W. Su,Ahmed K. Elmagarmid,Richard S. Brice,Marek Rusinkiewicz,Rafael Alonso,Ali R. Hurson,Jagannathan Srinivasan,Walid G. Aref
+Kevin Chen-Chuan Chang,Luis Gravano,Dong Xin,Divyakant Agrawal,Marianne Winslett,Min Wang
+Ilsoo Ahn,T. Y. Cliff Leung,Christian S. Jensen,James Clifford
+Luc Bouganim,Peter M. G. Apers,Georges Gardarin,Eric Simon
+Laurent Vieille,Jean-Marie Nicolas
+Antonio L. Furtado,Karl Aberer
+Niki Pissinou,Chengwen Liu,Ravi Krishnamurthy
+Raghav Kaushik,Ehud Gudes,Henry F. Korth
+Sakti P. Ghosh,Timos K. Sellis,Stanley Y. W. Su,Yahiko Kambayashi,Michael J. Carey,Toby J. Teorey,Alfonso F. Cardenas
+Renee J. Miller,Lucian Popa,Alberto O. Mendelzon,Takeshi Fukuda,Jarek Gryz,Lise Getoor,Anastasios Kementsietsidis
+W. Bradley Rubenstein,R. G. G. Cattell
+Walter A. Burkhard,C. Thomas Wu
+Ashish Gupta,Arthur M. Keller,Yannis Papakonstantinou,Anand Rajaraman,Jun Rao,Makoto Onizuka,Gerome Miklau,Jennifer Widom,Jose A. Blakeley
+Anthony K. H. Tung,Chee Yong Chan,Heng Tao Shen,Gao Cong,Masaru Kitsuregawa
+Meichun Hsu,Vishal Sikka,Rajeev Rastogi,Sunil K. Sarin,Arnon Rosenthal,Arvola Chan,Dennis R. McCarthy,Michael J. Carey,Ming-Chien Shan
+James Clifford,T. Y. Cliff Leung,Christian S. Jensen
+Steve Lawrence,Alberto O. Mendelzon,Luis Gravano
+Yi Chen,Susan Darling Urban,Susan B. Davidson,Sriram Padmanabhan
+Ambuj Shatdal,Sriram Padmanabhan
+Miyuki Nakano,Masaru Kitsuregawa,Mikio Takagi
+Jianliang Xu,Dik Lun Lee
+Arthur M. Keller,Thierry Barsalou,Marianne Winslett
+Jack A. Orenstein,David Goldhirsch,Arnon Rosenthal
+Holger Meyer,Zachary G. Ives,Jennifer Widom,Christian S. Jensen
+Divyakant Agrawal,Qiong Luo,Ambuj K. Singh,K. Selcuk Candan,Rajeev Motwani,Amr El Abbadi,Man Hon Wong,Dmitri V. Kalashnikov
+Ravi Krishnamurthy,George P. Copeland,Haran Boral,Waqar Hasan,Henry F. Korth,Shamim A. Naqvi,Ming-Chien Shan,Subbu N. Subramanian,Moshe M. Zloof,Gary H. Sockut
+Susan B. Davidson,Shirley Cohen,Serge Abiteboul,Sriram Padmanabhan,Mary F. Fernandez,Aaron Watters,Victor M. Markowitz
+Yasushi Sakurai,Spiros Papadimitriou
+Waqar Hasan,David Beech,T. Y. Cliff Leung,Joseph M. Hellerstein,Donovan A. Schneider,Rajeev Motwani,Marianne Winslett,Curtis P. Kolovson,Jurgen Annevelink,Ming-Chien Shan
+Rajeev Rastogi,Henry F. Korth,Sergey Brin,Daniel J. Rosenkrantz,Vishal Sikka,Dimitrios Gunopulos,Chee Yong Chan,Shivnath Babu,Sridhar Ramaswamy,Graham Cormode
+Giuseppe Pelagatti,Giuseppe Pozzi
+Martin L. Kersten,Stratos Idreos,Willem Jonker,Michael J. Carey,Timos K. Sellis,Bjorn Bergsten,Jennifer Widom,Joseph M. Hellerstein,Serge Abiteboul,Michael J. Franklin,Dieter Gawlick,Christian S. Jensen,Peter A. Boncz,Peter M. G. Apers
+Ambuj K. Singh,Amr El Abbadi
+Yahiko Kambayashi,Sang Hyuk Son
+Peter Pistor,Henk M. Blanken
+Sanghyun Park,Philip S. Yu,Renu Tewari,Sriram Padmanabhan
+Michael Hammer,Nathan Goodman,Sunil K. Sarin,Arvola Chan
+Kanda Runapongsa,Toby J. Teorey,Sriram Padmanabhan
+Christian S. Jensen,Vassilis J. Tsotras,Thomas Schwarz,Heng Tao Shen,Timos K. Sellis,Enrico Nardelli,Jennifer Widom,Scott T. Leutenegger,Mong-Li Lee,Zachary G. Ives,T. Y. Cliff Leung
+Hong-Tai Chou,Anthony C. Klug
+Victor M. Markowitz,Yoav Raz,I-Min A. Chen
+Giuseppe Pozzi,Stefano Paraboschi
+Arvola Chan,Nathan Goodman,Harry K. T. Wong,Sunil K. Sarin
+Ahmed K. Elmagarmid,Rafael Alonso,Arnon Rosenthal,Vassilios S. Verykios,Panagiotis G. Ipeirotis,Marek Rusinkiewicz,Boualem Benatallah,Michael J. Franklin,Walid G. Aref
+Spiros Papadimitriou,Alexander Hinneburg,Philip S. Yu,Zografoula Vagena
+Egemen Tanin,Gisli R. Hjaltason,Hanan Samet
+Dieter Gawlick,Michael J. Carey,Timos K. Sellis,Johannes Klein,Jennifer Widom,Joseph M. Hellerstein,Serge Abiteboul,Michael J. Franklin,Peter C. Lockemann,Jagannathan Srinivasan
+Qiong Luo,Zachary G. Ives,Dik Lun Lee,K. Selcuk Candan,Magdalena Balazinska
+Alberto O. Mendelzon,Z. Meral Ozsoyoglu,Mariano P. Consens,Jennifer Widom,Toby J. Teorey,Philip S. Yu,Alon Y. Levy,Luis Gravano,Flavio Rizzolo
+Subbu N. Subramanian,Zachary G. Ives,Michael J. Carey,Shivakumar Venkataraman
+Felix Saltor,Karl Aberer
+Georges Gardarin,Rosana S. G. Lanzelotte,Eric Simon,Christophe de Maindreville,Serge Abiteboul,Nathan Goodman
+Fabrizio L. Ricci,Enrico Nardelli
+T. Y. Cliff Leung,Joseph M. Hellerstein,Praveen Seshadri,Jarek Gryz,K. Bernhard Schiefer
+Peter C. Lockemann,Gunter von Bultzingsloewen,Francois Bancilhon
+Sheau-Dong Lang,Kien A. Hua
+Kien A. Hua,Chiang Lee,Danzhou Liu
+Shankar Pal,Michael Rys
+Peter M. G. Apers,Stefano Paraboschi,Henk M. Blanken,Willem Jonker,Jennifer Widom,Rolf A. de By,Sudarshan S. Chawathe,Maurice van Keulen
+Dean Jacobs,Shahram Ghandeharizadeh,Michael J. Carey
+Zografoula Vagena,Dimitrios Gunopulos,Timos K. Sellis,Vassilis J. Tsotras,Philip S. Yu
+Mitch Cherniack,Magdalena Balazinska,Chinya V. Ravishankar,Jennifer Widom,Michael J. Franklin
+Ruoming Jin,Xiaogang Li
+Nabil I. Hachem,Elke A. Rundensteiner
+Heng Tao Shen,Gao Cong
+Jarek Gryz,Sam Lightstone,K. Bernhard Schiefer
+Toby J. Teorey,Dennis G. Severance,Stanley Y. W. Su
+Paul F. Wilms,Michael J. Carey
+Keh-Chang Guh,Dina Bitton,Leszek Lilien
+Yannis Kotidis,Amelie Marian
+Yasuo Yamane,Hiroshi Ishikawa
+Rolf A. de By,Maurice van Keulen,Henk M. Blanken
+Amelie Marian,Mary F. Fernandez,Luis Gravano,Sophie Cluet,Serge Abiteboul,Nicolas Bruno
+Sang Hyuk Son,Sheung-lun Hung
+Leszek Lilien,Arnon Rosenthal,Marianne Winslett
+Sanjay Agrawal,Nicolas Bruno,Arunprasad P. Marathe
+Roger King,Marek Rusinkiewicz
+Henry Tirri,Jagannathan Srinivasan
+Shahram Ghandeharizadeh,Donovan A. Schneider,Michael J. Carey,Walid G. Aref
+Chee Yong Chan,Cheng Hian Goh
+Gunter Schlageter,Amr El Abbadi
+Naphtali Rishe,Chengwen Liu,King-Lup Liu
+Masaru Kitsuregawa,Tadashi Ohmori,Mong-Li Lee,Mikio Takagi,Ling Liu,P. Krishna Reddy,Z. Meral Ozsoyoglu
+Peter A. Boncz,George Samaras,Maurice van Keulen
+Alexander Brodsky,Claudio Bettini,Edgar H. Sibley
+Gao Cong,Mong-Li Lee,Anastasios Kementsietsidis
+Satish M. Thatte,John Joseph,Craig W. Thompson
+Yun Wang,K. Bernhard Schiefer
+Jose A. Blakeley,Stanley Y. W. Su,Ming-Chuan Wu,Craig W. Thompson,Arnon Rosenthal,Michael Rys
+Marek Rusinkiewicz,Richard S. Brice,David W. Embley
+Elke A. Rundensteiner,Nandit Soparkar,Karl Aberer,K. Selcuk Candan,Susan Darling Urban,Murali Mani
+Chinya V. Ravishankar,Philip S. Yu
+Daniel J. Rosenkrantz,Serge Abiteboul
+Brad Adelberg,Jennifer Widom
+Sin Yeung Lee,Mong-Li Lee
+Menas Kafatos,Ruixin Yang
+Hanan Samet,Walid G. Aref,Gisli R. Hjaltason
+David Goldhirsch,Arnon Rosenthal
+Timothy Malkemus,Sriram Padmanabhan,Ramesh C. Agarwal
+Carolyn Turbyfill,Dina Bitton
+Achim Kraiss,Thomas Zurek
+Rafiul Ahad,Jurgen Annevelink
+Kerry L. Taylor,Dean Kuo
+K. Selcuk Candan,Amr El Abbadi,Dmitri V. Kalashnikov,Yannis Papakonstantinou,Sibel Adali
+David S. Reiner,Arnon Rosenthal
+Gultekin Ozsoyoglu,Timos K. Sellis,Michael J. Franklin,Serge Abiteboul,Sophie Cluet,Graham Cormode,Z. Meral Ozsoyoglu
+Ricky K. Taira,Alfonso F. Cardenas
+Johannes Klein,Serge Abiteboul
+Renu Tewari,Roger L. Haskin,Navendu Jain,Sriram Padmanabhan
+Ramesh C. Agarwal,Min Wang,Sriram Padmanabhan
+Vladislav Shkapenyuk,Torsten Suel
+Nicolas Bruno,Luis Gravano
+Jurgen Annevelink,David Beech,Ming-Chien Shan
+Sriram Padmanabhan,George P. Copeland,Min Wang
+Curtis P. Kolovson,Donovan A. Schneider
+Makoto Onizuka,Gerome Miklau
+Michael J. Carey,Dennis R. McCarthy,David Beech,Sunil K. Sarin,Serge Abiteboul,Jennifer Widom,Marianne Winslett,Jayant R. Haritsa,Michael J. Franklin,Vishal Sikka,Frederick H. Lochovsky,Zachary G. Ives,Arnon Rosenthal,Henry F. Korth,Joseph M. Hellerstein,Dina Bitton,Timos K. Sellis
+Sunil K. Sarin,Dennis R. McCarthy,Arnon Rosenthal
+Michael J. Franklin,Serge Abiteboul,Jennifer Widom,Sophie Cluet,George P. Copeland,Marianne Winslett,Shaul Dar,Haran Boral,Zachary G. Ives,Henry F. Korth,Joseph M. Hellerstein,Rafael Alonso,Magdalena Balazinska,Walid G. Aref,Timos K. Sellis,Gisli R. Hjaltason
+Anthony C. Klug,Haran Boral
+Yufei Tao,Dik Lun Lee,Yannis Papakonstantinou
+Stephanie J. Cammarata,David Beech
+Daniel P. Miranker,Joseph M. Hellerstein,William H. Piel
+David Beech,Ming-Chien Shan,Toshimi Minoura
+Kamran Parsaye,Toshimi Minoura
+Shirley Cohen,Cong Yu
+George P. Copeland,Stanley Y. W. Su,Haran Boral
+Brian Babcock,Rajeev Motwani,Jennifer Widom,Shivnath Babu
+Craig W. Thompson,John Joseph
+Sudha Ram,David W. Embley,Bongki Moon,Arnon Rosenthal
+Chiang Lee,Stanley Y. W. Su,Ming-Chuan Wu
+Panagiotis G. Ipeirotis,Luis Gravano,Vassilios S. Verykios
+Rajeev Motwani,Shivnath Babu,Arnon Rosenthal,Amr El Abbadi,Serge Abiteboul,Sergey Brin,Jennifer Widom
+Anand Rajaraman,Yannis Papakonstantinou,Alon Y. Levy,Serge Abiteboul,Jennifer Widom,Sudarshan S. Chawathe
+Rafael Alonso,Henry F. Korth
+Shaul Dar,Alon Y. Levy
+Claudio Bettini,Lise Getoor
+Elena Baralis,Jennifer Widom,Stefano Paraboschi
+Stefano Paraboschi,Jennifer Widom,Sudarshan S. Chawathe
+Hugh Darwen,Andrew Eisenberg
+Ling Liu,Kun-Lung Wu,Terence Critchlow,Amarnath Gupta,Philip S. Yu
+Dong Xin,Xiaolei Li
+Dina Bitton,Vishal Sikka,Haran Boral,Arnon Rosenthal
+Serge Abiteboul,Yannis Papakonstantinou,Jennifer Widom,Sophie Cluet,Eric Simon,Neoklis Polyzotis,Arnaud Sahuguet,Sudarshan S. Chawathe,Arnon Rosenthal,Sridhar Ramaswamy,Joseph M. Hellerstein,Timos K. Sellis,Francois Bancilhon,George Samaras,Michael Rys
+Thomas Schwarz,George Samaras
+Phillip M. Fernandez,Donovan A. Schneider
+Silvia Nittel,Max J. Egenhofer
+Marcel Kornacker,Joseph M. Hellerstein
+Maurice van Keulen,Willem Jonker,Henk M. Blanken
+Marianne Winslett,Arnon Rosenthal
+Enrico Nardelli,Timos K. Sellis
+Timos K. Sellis,Eric Simon,Jennifer Widom,Joseph M. Hellerstein,Max J. Egenhofer,Sophie Cluet
+Chengwen Liu,King-Lup Liu
+Mong-Li Lee,Cheng Hian Goh
+Flavio Rizzolo,Mariano P. Consens
+Jennifer Widom,Z. Meral Ozsoyoglu,Yannis Papakonstantinou,Sheldon J. Finkelstein,Zachary G. Ives,Shivnath Babu,Sudarshan S. Chawathe,Joseph M. Hellerstein,Philip S. Yu
+Jingren Zhou,Dimitrios Gunopulos,Jun Rao
+T. Snider,Mariano P. Consens
+Mary F. Fernandez,Lucian Popa,Henry F. Korth,Alon Y. Levy,Michael Rys
+W. Terry Hardgrave,Edgar H. Sibley
+Frederick H. Lochovsky,Dik Lun Lee,Chung-Dak Shum
+Graham Cormode,Z. Meral Ozsoyoglu
+Walid G. Aref,Dmitri V. Kalashnikov
+Chung-Dak Shum,Dik Lun Lee
+Nandit Soparkar,Henry F. Korth
+Min Wang,Anastasios Kementsietsidis
+Dik Lun Lee,George Samaras
+Gary H. Sockut,Moshe M. Zloof
+Francois Bancilhon,Henry F. Korth,Sophie Cluet
+Sheldon J. Finkelstein,R. G. G. Cattell
+Sudarshan S. Chawathe,Yannis Papakonstantinou,Philip S. Yu
+Torsten Suel,Sridhar Ramaswamy
+Z. Meral Ozsoyoglu,Philip S. Yu
+Lucian Popa,Arnaud Sahuguet,Takeshi Fukuda,Joseph M. Hellerstein,Cong Yu,Anastasios Kementsietsidis
+Henry F. Korth,Joseph M. Hellerstein
+Christophe de Maindreville,Eric Simon
+Sibel Adali,Yannis Papakonstantinou
+Amarnath Gupta,Yannis Papakonstantinou,Terence Critchlow
+Alexandra Poulovassilis,George Samaras
+Joseph M. Hellerstein,Praveen Seshadri
+Alfonso F. Cardenas,Terence Critchlow
+Gang Luo,Philip S. Yu,Kun-Lung Wu
+Mariano P. Consens,Sam Lightstone
+Harry K. T. Wong,Deane Merrill
+R. G. G. Cattell,Martin Hardwick
+Kun-Lung Wu,Philip S. Yu
+Vishal Sikka,Arnon Rosenthal
+Chris Eaton,Sam Lightstone
+K. Bernhard Schiefer,Sam Lightstone
+Zachary G. Ives,Alon Y. Levy,Gerome Miklau
+Alon Y. Levy,Eric Simon
+Luis Gravano,Yannis Papakonstantinou
+Jun Rao,Sam Lightstone
+Philip S. Yu,Vassilis J. Tsotras
+Dennis R. McCarthy,Arnon Rosenthal
+George Samaras,Martin Hardwick
+Vassilis J. Tsotras,Dimitrios Gunopulos
