@@ -1,3 +1,4 @@
+let modality_counter = 1;
 init();
 
 function init() {
@@ -8,38 +9,76 @@ function init() {
         $("#files").click();
     });
 
-    d3.select("#files")
-        .on("change", () => {
-            let files = $('#files')[0].files[0]
-            let fileReader = new FileReader();
-            fileReader.onload = function (fileLoadedEvent) {
-                let textFromFileLoaded = fileLoadedEvent.target.result;
-                read_hgraph_text(textFromFileLoaded);
+    d3.select('#home').on('click', () => {
+        $('html,body').animate({scrollTop: 0});
+    })
+
+    d3.select("#files").on("change", () => {
+        let files = $('#files')[0].files[0]
+        let fileReader = new FileReader();
+        fileReader.onload = function (fileLoadedEvent) {
+            let textFromFileLoaded = fileLoadedEvent.target.result;
+            read_hgraph_text(textFromFileLoaded);
+        }
+        fileReader.readAsText(files, "UTF-8");
+    })
+
+    d3.select("#reset_config").on("click", () => {
+        reset_config()
+    });
+
+    d3.select("#graph_loader").on("click", () => {
+        let current_config = get_current_config();
+        $.ajax({
+            type: "POST",
+            url: "/reload_graphs",
+            data: JSON.stringify(current_config),
+            dataType: 'text',
+            success: function (response) {
+                load_data(JSON.parse(response), current_config);
+            },
+            error: function (error) {
+                console.log("error", error);
             }
-            fileReader.readAsText(files, "UTF-8");
-        })
-
-    d3.select("#reset_config")
-        .on("click", () => {
-            reset_config()
         });
+    })
 
-    d3.select("#graph_loader")
-        .on("click", () => {
-            let current_config = get_current_config();
-            $.ajax({
-                type: "POST",
-                url: "/reload_graphs",
-                data: JSON.stringify(current_config),
-                dataType: 'text',
-                success: function (response) {
-                    load_data(JSON.parse(response), current_config);
-                },
-                error: function (error) {
-                    console.log("error", error);
-                }
-            });
+    d3.select("#add-edge-modality").on('click', () => {
+        $.ajax({
+            type: "GET",
+            url: "/add_edge_modality",
+            success: function (response) {
+                d3.select('#modality-container').append('br')
+                let new_modality = d3.select('#modality-container').append('div').attr('class', 'row').html(response);
+                new_modality.attr('style', 'border-top: 1px dashed gray;padding-top: 1em;')
+            },
+            error: function (error) {
+                console.log("error", error);
+            }
         })
+    })
+
+    d3.select("#add-vertex-modality").on('click', () => {
+        $.ajax({
+            type: "GET",
+            url: "/add_edge_modality",
+            success: function (response) {
+                d3.select('#modality-container').append('br')
+                let new_modality = d3.select('#modality-container').append('div')
+                new_modality.attr('class', 'row')
+                    .attr('id', `modality-${modality_counter}`)
+                    .attr('style', 'border-top: 1px dashed gray;padding-top: 1em;')
+                    .html(response);
+                let container = $('body');
+                let scrollTo = $(`#modality-${modality_counter}`);
+                $('html,body').animate({scrollTop: scrollTo.offset().top});
+                modality_counter += 1
+            },
+            error: function (error) {
+                console.log("error", error);
+            }
+        })
+    })
 
     // change s value
     let s_value_slider = document.getElementById("s-walk_input");

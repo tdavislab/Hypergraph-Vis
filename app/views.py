@@ -173,8 +173,8 @@ def assign_hgraph_singletons(hgraph, singletons, singleton_type="grey_out"):
         hgraph['nodes'] = nodes_new
         # 2. delete singleton edges
         links_new = [link for link in hgraph['links'] if (
-                    link['source'].replace("|", "") not in singletons and link['target'].replace("|",
-                                                                                                 "") not in singletons)]
+                link['source'].replace("|", "") not in singletons and link['target'].replace("|",
+                                                                                             "") not in singletons)]
         hgraph['links'] = links_new
 
 
@@ -188,8 +188,8 @@ def delete_lingraph_singletons(lgraph):
     lgraph['nodes'] = nodes_new
     # 3. delete singleton edges
     links_new = [link for link in lgraph['links'] if (
-                link['source'].replace("|", "") not in lgraph['singletons'] and link['target'].replace("|", "") not in
-                lgraph['singletons'])]
+            link['source'].replace("|", "") not in lgraph['singletons'] and link['target'].replace("|", "") not in
+            lgraph['singletons'])]
     lgraph['links'] = links_new
 
 
@@ -320,6 +320,28 @@ def compute_graphs(config):
     assign_hgraph_singletons(hgraph, lgraph['singletons'], singleton_type=singleton_type)
 
     return hgraph, lgraph, barcode
+
+
+def recover_linegraph(hgraph_dict, singletons, s=1):
+    line_graph = nx.Graph()
+    [line_graph.add_node(edge, vertices=list(vertices)) for edge, vertices in hgraph_dict.items()]
+
+    node_list = list(hgraph_dict.keys())
+
+    for node_idx_1, node1 in enumerate(node_list):
+        for node_idx_2, node2 in enumerate(node_list[node_idx_1 + 1:]):
+            if node1.replace("|", "") not in singletons and node2.replace("|", "") not in singletons:
+                vertices1 = hgraph_dict[node1]
+                vertices2 = hgraph_dict[node2]
+                if len(vertices1) > 0 or len(vertices2) > 0:
+                    intersection_size = len(set(vertices1) & set(vertices2))
+                    union_size = len(set(vertices1) | set(vertices2))
+                    jaccard_index = intersection_size / union_size
+                    if intersection_size >= s:
+                        line_graph.add_edge(node1, node2, intersection_size={'value': str(intersection_size)},
+                                            jaccard_index={'value': str(jaccard_index)})
+    line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
+    return line_graph
 
 
 @app.route('/')
@@ -542,30 +564,18 @@ def compute_simplified_hgraph():
     return jsonify(hyper_data=chgraph, line_data=lgraph)
 
 
-def recover_linegraph(hgraph_dict, singletons, s=1):
-    line_graph = nx.Graph()
-    [line_graph.add_node(edge, vertices=list(vertices)) for edge, vertices in hgraph_dict.items()]
-
-    node_list = list(hgraph_dict.keys())
-
-    for node_idx_1, node1 in enumerate(node_list):
-        for node_idx_2, node2 in enumerate(node_list[node_idx_1 + 1:]):
-            if node1.replace("|", "") not in singletons and node2.replace("|", "") not in singletons:
-                vertices1 = hgraph_dict[node1]
-                vertices2 = hgraph_dict[node2]
-                if len(vertices1) > 0 or len(vertices2) > 0:
-                    intersection_size = len(set(vertices1) & set(vertices2))
-                    union_size = len(set(vertices1) | set(vertices2))
-                    jaccard_index = intersection_size / union_size
-                    if intersection_size >= s:
-                        line_graph.add_edge(node1, node2, intersection_size={'value': str(intersection_size)},
-                                            jaccard_index={'value': str(jaccard_index)})
-    line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
-    return line_graph
-
-
 @app.route('/id2color', methods=['POST', 'GET'])
 def save_id2color():
     jsdata = json.loads(request.get_data())
     write_json_file(jsdata, path.join(APP_STATIC, "uploads/current_id2color.json"))
     return 'saved'
+
+
+@app.route('/add_edge_modality', methods=['POST', 'GET'])
+def add_edge_modality():
+    return render_template('modality.html')
+
+
+@app.route('/add_vertex_modality', methods=['POST', 'GET'])
+def add_vertex_modality():
+    return render_template('modality.html')

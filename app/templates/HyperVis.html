@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <link rel="stylesheet" type="text/css" href="../static/css/layout-bootstrap.css"/>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Hypergraph Visualization</title>
@@ -11,6 +12,7 @@
   {% endassets %}
   {% assets "css" %}
   <link rel="stylesheet" href="{{ ASSET_URL }}"/>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   {% endassets %}
 </head>
 
@@ -33,8 +35,15 @@
     </div>
   </div>
 
-  <button
+  <div id="modality-btn-group">
+    <button id="add-edge-modality" class="btn btn-outline-dark ui-form-button">Add edge modality</button>
+    <button id="add-vertex-modality" class="btn btn-outline-dark ui-form-button">Add vertex modality</button>
+  </div>
 </div>
+
+<!--<div id="home">-->
+<!--  <i class="fa fa-home"></i>-->
+<!--</div>-->
 
 <div id="modality-container" class="container-fluid">
   <!--  Each row holds one modality -->
