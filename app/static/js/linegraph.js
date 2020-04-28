@@ -60,7 +60,6 @@ class Linegraph{
 
     get_node_radius(node_id) {
         let n_list = node_id.split("|");
-        if(n_list.length>1) { n_list.pop(); }
         return this.radius_scale(Math.min(n_list.length,8));
     }
 
@@ -238,7 +237,6 @@ class Linegraph{
 
         function prepare_pie_data (key) {
             let id_list = key.split("|");
-            if(id_list.length > 1){ id_list.pop(); }
             if(id_list.length > 8) {
                 id_list = id_list.slice(0,8);
             }
@@ -290,7 +288,6 @@ class Linegraph{
         function click_node(key) {
             if(that.variant === "line_graph"){
                 let he_list = key.split("|");
-                if(he_list.length > 1){ he_list.pop(); }
                 d3.select("#hypergraph-svg").selectAll("path").classed("faded", d => {
                     if(he_list.indexOf(d.key.split("|")[0]) != -1){
                         return false;
@@ -397,7 +394,6 @@ class Linegraph{
                 });
 
                 let v_list = key.split("|");
-                if(v_list.length > 1){ v_list.pop(); }
                 d3.select("#linegraph-svg").selectAll("circle").classed("faded", d => {
                     if(v_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
@@ -537,9 +533,10 @@ class Linegraph{
             let cc_id = "";
             let vertices = [];
             cc.forEach(nId=>{
-                cc_id += nId + "|";
+                cc_id += nId + ",";
                 vertices = vertices.concat(this.nodes_dict[nId].vertices)
             })
+            cc_id = cc_id.substring(0, cc_id.length-1);
             vertices = [...new Set(vertices)];
             cc_dict[cc_id] = vertices;
         })

@@ -74,21 +74,17 @@ def collapse_hypergraph(hgraph):
     chgraph_new = {}
     for hkey in chgraph:
         hedges = list(hkey)
-        if len(hedges) > 1:
-            hkey_new = ""
-            for he in hedges:
-                hkey_new += he + "|"
-        else:
-            hkey_new = hedges[0]
+        hkey_new = ""
+        for he in hedges:
+            hkey_new += he + "|"
+        hkey_new = hkey_new[:-1]
         vertices = [list(v) for  v in chgraph[hkey]]
         vertices_new = []
         for v_list in vertices:
-            if len(v_list) > 1:
-                v_new = ""
-                for v in v_list:
-                    v_new += v + "|"
-            else:
-                v_new = v_list[0]
+            v_new = ""
+            for v in v_list:
+                v_new += v + "|"
+            v_new = v_new[:-1]
             vertices_new.append(v_new)
         chgraph_new[hkey_new] = vertices_new
     return hnx.Hypergraph(chgraph_new)
@@ -119,7 +115,6 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
     vertices_list = []
 
     non_singletons = []
-    s_max = 0
 
     # For all pairs of edges (e1, e2), add edges such that
     # intersection(e1, e2) is not empty
@@ -132,9 +127,6 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
                 vertices_list += (list(set(vertices1)) + list(set(vertices2)))
                 # Compute the intersection size
                 intersection_size = len(set(vertices1) & set(vertices2))
-
-                if intersection_size > s_max:
-                    s_max = intersection_size
 
                 union_size = len(set(vertices1) | set(vertices2))
                 jaccard_index = intersection_size / union_size
@@ -150,12 +142,12 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
     line_graph['singletons'] = singletons
     if singleton_type == "filtering":
         delete_lingraph_singletons(line_graph)
-    return line_graph, s_max
+    return line_graph
 
 def compute_dual_line_graph(hypergraph, s=1, singleton_type="grey_out"):
     dual_hgraph = hypergraph.dual()
-    dual_line_graph, dual_s_max = convert_to_line_graph(dual_hgraph.incidence_dict, s, singleton_type)
-    return dual_line_graph, dual_s_max
+    dual_line_graph = convert_to_line_graph(dual_hgraph.incidence_dict, s, singleton_type)
+    return dual_line_graph
 
 def assign_hgraph_singletons(hgraph, singletons, singleton_type="grey_out"):
     if singleton_type == "grey_out":
@@ -273,8 +265,8 @@ def compute_graphs(config):
     with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
         hgraph = json.load(f)
     hgraph = hnx.Hypergraph(hgraph)
-    lgraph, s_max = convert_to_line_graph(hgraph.incidence_dict, s=s, singleton_type=singleton_type)
-    dual_lgraph, dual_s_max = compute_dual_line_graph(hgraph, s=s, singleton_type=singleton_type)
+    lgraph = convert_to_line_graph(hgraph.incidence_dict, s=s, singleton_type=singleton_type)
+    dual_lgraph = compute_dual_line_graph(hgraph, s=s, singleton_type=singleton_type)
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
 
     barcode_is = compute_barcode(lgraph)
@@ -332,8 +324,8 @@ def import_file():
     hgraph, label_map = process_hypergraph(jsdata)
     chgraph = collapse_hypergraph(hgraph)
 
-    lgraph, s_max = convert_to_line_graph(chgraph.incidence_dict)
-    dual_lgraph, dual_s_max = compute_dual_line_graph(chgraph)
+    lgraph = convert_to_line_graph(chgraph.incidence_dict)
+    dual_lgraph = compute_dual_line_graph(chgraph)
 
     hgraph_dict = {hkey:list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
     chgraph_dict = {hkey:list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
@@ -362,9 +354,7 @@ def import_file():
     write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
     write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
 
-    s_max = max(s_max, dual_s_max)
-
-    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, s_max=s_max)
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map)
 
 @app.route('/reload_graphs', methods=['POST', 'GET'])
 def reload_graphs():
@@ -410,16 +400,17 @@ def hgraph_expansion():
     singleton_type = jsdata['config']['singleton_type']
     weight_type = jsdata['config']['weight_type']
 
-    hyper_data = jsdata['cc_dict']
+    cc_dict = jsdata['cc_dict']
     source_cc = jsdata['edge'][weight_type]['nodes_subsets']['source_cc']
     target_cc = jsdata['edge'][weight_type]['nodes_subsets']['target_cc']
     hyperedges2vertices = jsdata['hyperedges2vertices']
     singletons = jsdata['singletons']
 
-    for cc_key in hyper_data:
-        hyperedge_keys = cc_key.split("|")
-        if len(hyperedge_keys) > 1:
-            hyperedge_keys.pop()
+    for cc_key in cc_dict:
+        hyperedge_keys = cc_key.split(",")
+        print(hyperedge_keys)
+        # if len(hyperedge_keys) > 1:
+            # hyperedge_keys.pop()
         if len(set(hyperedge_keys) & set(source_cc)) > 0 and len(set(hyperedge_keys) & set(target_cc))>0:
         # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
             print(hyperedge_keys, source_cc, target_cc)
@@ -434,36 +425,41 @@ def hgraph_expansion():
             cc1 = []
             cc2 = []
             for he in cc1_id_list:
-                cc1_id += he + "|"
+                cc1_id += he + ","
                 for v in hyperedges2vertices[he]:
                     if v not in cc1:
                         cc1.append(v)
             for he in cc2_id_list:
-                cc2_id += he + "|"
+                cc2_id += he + ","
                 for v in hyperedges2vertices[he]:
                     if v not in cc2:
                         cc2.append(v)
-            del hyper_data[cc_key]
-            hyper_data[cc1_id] = cc1
-            hyper_data[cc2_id] = cc2
+            cc1_id = cc1_id[:-1]
+            cc2_id = cc2_id[:-1]
+            del cc_dict[cc_key]
+            cc_dict[cc1_id] = cc1
+            cc_dict[cc2_id] = cc2
             break
     
+    hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
-    lgraph = recover_linegraph(hyper_data, singletons, s=s)
-    hgraph = hnx.Hypergraph(hyper_data)
+    lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
+    hgraph = hnx.Hypergraph(hgraph_dict)
     if variant == "clique_expansion":
         hgraph = hgraph.dual()
     chgraph = collapse_hypergraph(hgraph)
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
     if singleton_type == "grey_out":
         assign_hgraph_singletons(chgraph, singletons)
-    cc_removed = cc_key
-    return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph, cc_id=[cc1_id, cc2_id, cc_removed])
+    cc1_id = cc1_id.replace(",","|")
+    cc2_id = cc2_id.replace(",","|")
+    cc_removed = cc_key.replace(",","|")
+    return jsonify(hyper_data=chgraph, cc_dict=cc_dict, line_data=lgraph, cc_id=[cc1_id, cc2_id, cc_removed])
 
 @app.route('/undo_hgraph_expansion', methods=['POST', 'GET'])
 def undo_hgraph_expansion():
     jsdata = json.loads(request.get_data())
-    hyper_data = jsdata['cc_dict']
+    cc_dict = jsdata['cc_dict']
     variant = jsdata['config']['variant']
     s = int(jsdata['config']['s'])
     singleton_type = jsdata['config']['singleton_type']
@@ -471,13 +467,9 @@ def undo_hgraph_expansion():
     singletons = jsdata['singletons']
 
     cc1_id = jsdata['cc_id'][0]
-    cc1_keys = cc1_id.split("|")
-    if len(cc1_keys) > 1:
-        cc1_keys.pop()
+    cc1_keys = cc1_id.split(",")
     cc2_id = jsdata['cc_id'][1]
-    cc2_keys = cc2_id.split("|")
-    if len(cc2_keys) > 1:
-        cc2_keys.pop()
+    cc2_keys = cc2_id.split(",")
     cc_id = jsdata['cc_id'][2]
     # cc1 and cc2: mutually exclusive
     cc_keys = list(set(cc1_keys + cc2_keys))
@@ -486,20 +478,21 @@ def undo_hgraph_expansion():
         for v in hyperedges2vertices[he]:
             if v not in cc_list:
                 cc_list.append(v)
-    hyper_data[cc_id] = cc_list
-    del hyper_data[cc1_id]
-    del hyper_data[cc2_id]
+    cc_dict [cc_id] = cc_list
+    del cc_dict [cc1_id]
+    del cc_dict[cc2_id]
     
+    hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
-    lgraph = recover_linegraph(hyper_data, singletons, s=s)
-    hgraph = hnx.Hypergraph(hyper_data)
+    lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
+    hgraph = hnx.Hypergraph(hgraph_dict)
     if variant == "clique_expansion":
         hgraph = hgraph.dual()
     chgraph = collapse_hypergraph(hgraph)
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
     if singleton_type == "grey_out":
         assign_hgraph_singletons(chgraph, singletons)
-    return jsonify(hyper_data=chgraph, cc_dict=hyper_data, line_data=lgraph)    
+    return jsonify(hyper_data=chgraph, cc_dict=cc_dict, line_data=lgraph)    
 
 
 @app.route('/simplified_hgraph', methods=['POST', 'GET'])
@@ -511,8 +504,9 @@ def compute_simplified_hgraph():
     singleton_type = jsdata['config']['singleton_type']
 
     singletons = jsdata['singletons']
-    hgraph_dict = jsdata['cc_dict']
-
+    cc_dict = jsdata['cc_dict']
+    
+    hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
     hgraph = hnx.Hypergraph(hgraph_dict)
