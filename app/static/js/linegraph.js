@@ -378,9 +378,15 @@ class Linegraph{
                 d3.select("#simplified-hypergraph-svg").selectAll(".convex_hull").classed("faded", true);
                 d3.select("#simplified-hypergraph-svg").selectAll(".he-group").classed("faded", true);
                 d3.select("#simplified-hypergraph-svg").selectAll(".v-group").classed("faded", d => {
-                    if(v_list.indexOf(d.id.split("|")[0]) != -1){
-                        return false;
-                    } else { return true; }
+                    for(let i=0; i<v_list.length; i++){
+                        if(d.id.split("|").indexOf(v_list[i])!=-1){
+                            return false;
+                        }
+                    } 
+                    return true;
+                    // if(v_list.indexOf(d.id.split("|")[0]) != -1){
+                    //     return false;
+                    // } else { return true; }
                 });
 
                 d3.select("#linegraph-svg").selectAll(".line_node").classed("faded", d => {
