@@ -47,7 +47,6 @@ class Hypergraph{
     }
 
     groupPath(vertices) {
-        console.log(vertices)
         // not draw convex hull if vertices.length <= 1
         if(vertices.length >= 2){
             if (vertices.length == 2) {
@@ -122,11 +121,21 @@ class Hypergraph{
     draw_hypergraph(){
         let that = this;
 
-        // let node_radius = 8;
         let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
 
+        let distance_scale = d3.scaleLinear()
+            .domain([1,10])
+            .range([30,120])
+
+        this.links.forEach(l=>{
+            let source_size = l.source.split("|").length;
+            let target_size = l.target.split("|").length;
+            l.distance = distance_scale(Math.min((source_size+target_size)/2, 10));
+
+        })
+
         let simulation = d3.forceSimulation(this.nodes)
-            .force("link", d3.forceLink(this.links).id(d => d.id))
+            .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
             .force("charge", d3.forceManyBody(-500))
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2))
             .force("x", d3.forceX().strength(0.02))

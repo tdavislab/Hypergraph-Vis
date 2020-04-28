@@ -408,9 +408,6 @@ def hgraph_expansion():
 
     for cc_key in cc_dict:
         hyperedge_keys = cc_key.split(",")
-        print(hyperedge_keys)
-        # if len(hyperedge_keys) > 1:
-            # hyperedge_keys.pop()
         if len(set(hyperedge_keys) & set(source_cc)) > 0 and len(set(hyperedge_keys) & set(target_cc))>0:
         # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
             print(hyperedge_keys, source_cc, target_cc)
@@ -451,9 +448,9 @@ def hgraph_expansion():
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
     if singleton_type == "grey_out":
         assign_hgraph_singletons(chgraph, singletons)
-    cc1_id = cc1_id.replace(",","|")
-    cc2_id = cc2_id.replace(",","|")
-    cc_removed = cc_key.replace(",","|")
+    # cc1_id = cc1_id.replace(",","|")
+    # cc2_id = cc2_id.replace(",","|")
+    cc_removed = cc_key
     return jsonify(hyper_data=chgraph, cc_dict=cc_dict, line_data=lgraph, cc_id=[cc1_id, cc2_id, cc_removed])
 
 @app.route('/undo_hgraph_expansion', methods=['POST', 'GET'])

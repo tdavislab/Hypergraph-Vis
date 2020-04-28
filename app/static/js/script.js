@@ -176,8 +176,8 @@ function load_data(data, config) {
 
                         console.log(cc_id)
 
-                        d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[|]/g,"")).classed("clicked", true);
-                        d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[|]/g,"")).classed("clicked", true);
+                        d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[,]/g,"")).classed("clicked", true);
+                        d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[,]/g,"")).classed("clicked", true);
                     },
                     error: function (error) {
                         console.log("error",error);
@@ -226,8 +226,8 @@ function load_data(data, config) {
                         if(barcode.expanded_bars.length > 0){
                             let idx = barcode.expanded_bars[barcode.expanded_bars.length-1];
                             let cc_id = barcode.expanded_bars_dict[idx];
-                            d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[|]/g,"")).classed("clicked", true);
-                            d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[|]/g,"")).classed("clicked", true);
+                            d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[,]/g,"")).classed("clicked", true);
+                            d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[,]/g,"")).classed("clicked", true);
                         }
                     },
                     error: function (error) {

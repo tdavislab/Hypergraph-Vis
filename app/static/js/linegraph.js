@@ -64,19 +64,17 @@ class Linegraph{
     }
 
     draw_linegraph(){
-        // let node_radius = 8;
         let that = this;
 
-        // add drag capabilities
-        // const drag_handler = d3.drag()
-        //     .on("start", drag_start)
-        //     .on("drag", drag_drag)
-        //     .on("end", drag_end);
+        let distance_scale = d3.scaleLinear()
+            .domain([1,10])
+            .range([100,200]);
 
-
-        for (let i=0; i < this.links.length; i++) {
-            this.links[i].distance = 100
-        }
+            this.links.forEach(l=>{
+                let source_size = l.source.split("|").length;
+                let target_size = l.target.split("|").length;
+                l.distance = distance_scale(Math.min((source_size+target_size)/2, 10));
+            });
 
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
