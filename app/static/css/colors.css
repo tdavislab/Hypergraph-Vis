@@ -58,6 +58,11 @@ h4 {
     opacity: 0;
 }
 
+.vertex-container {
+    stroke: black;
+    stroke-width: 1.5px;
+}
+
 /* .line_node.highlighted {
     opacity: 0.5;
 } */
@@ -90,6 +95,12 @@ h4 {
     stroke: lightgrey;
     stroke-width: 2px;
     opacity: 1px;
+}
+
+.vertex_node-container {
+    fill: white;
+    stroke: black;
+    stroke-width: 2.5px;
 }
 
 text.faded {

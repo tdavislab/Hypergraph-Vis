@@ -136,35 +136,56 @@ class Linegraph{
             .attr("fill", "white")
             .attr("id", d => this.svg_id+"-node-"+d.id.replace(/[|]/g,""))
             .attr("class", "line_node")
+            .classed("vertex-container", d=>{
+                if(this.variant === "clique_expansion"){
+                    return true;
+                }
+                return false;
+            })
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y)
+
+        if(this.variant === "line_graph"){
+            let pie = d3.pie()
+                .value(d => d.value)
+                .sort(null);
+
+            let arc = d3.arc()
+                .innerRadius(()=>{
+                    if(this.variant === "line_graph"){ return 0; }
+                    else { return 5; }
+                })    
+
+            let pg = ng.append("g")
+                .attr("class", "pie-group")
+                .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
+                .attr("transform",d => "translate("+d.x+","+d.y+")")
+                
+            pg.selectAll("path").data(d => pie(prepare_pie_data(d.id)))
+                .enter().append("path")
+                .attr("d", d => {
+                    arc.outerRadius(this.get_node_radius(d.data.id));
+                    return arc(d)})
+                .attr("fill", d => d.data.color)
+                .attr("stroke", "whitesmoke")
+                .attr("stroke-width", () => {
+                    if(this.variant === "line_graph"){ return "2px"; }
+                    else { return "0"; }
+                })
+        } else { // this.variant === "clique_expansion"
+            let pg = ng.append("g")
+                .attr("class", "pie-group")
+                .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
+                .attr("transform",d => "translate("+d.x+","+d.y+")")
+            pg.selectAll("circle").data(d => prepare_ring_data(d))
+                .enter().append("circle")
+                .attr("r", (d,i) => Math.max(d.r-2*i-2, 0))
+                .attr("stroke", d=>d.color)
+                .attr("stroke-width", 1)
+                .attr("fill", "#fff");
+        }
         
-        let pie = d3.pie()
-            .value(d => d.value)
-            .sort(null);
-
-        let arc = d3.arc()
-            .innerRadius(()=>{
-                if(this.variant === "line_graph"){ return 0; }
-                else { return 5; }
-            })    
-
-        let pg = ng.append("g")
-            .attr("class", "pie-group")
-            .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
-            .attr("transform",d => "translate("+d.x+","+d.y+")")
-            
-        pg.selectAll("path").data(d => pie(prepare_pie_data(d.id)))
-            .enter().append("path")
-            .attr("d", d => {
-                arc.outerRadius(this.get_node_radius(d.data.id));
-                return arc(d)})
-            .attr("fill", d => d.data.color)
-            .attr("stroke", "whitesmoke")
-            .attr("stroke-width", () => {
-                if(this.variant === "line_graph"){ return "2px"; }
-                else { return "0"; }
-            })
+        
 
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
@@ -261,34 +282,17 @@ class Linegraph{
             return pie_data
         }
 
-        // function drag_start(d) {
-        //     console.log("drag")
-        //     if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
-        //     d.fx = d.x;
-        //     d.fy = d.y;
-        //     // console.log(d.x, d.y)
-
-        // }
-
-        // //make sure you can"t drag the circle outside the box
-        // function drag_drag(d) {
-        //     d.fx = d3.event.x;
-        //     d.fy = d3.event.y;
-        //     d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform",d => "translate("+d3.event.x+","+d3.event.y+")");
-        // }
-
-        // function drag_end(d) {
-        //     if (!d3.event.active) that.simulation.alphaTarget(0).stop();
-        //     that.simulation.tick(300);
-        //     d.fx = null;
-        //     d.fy = null;
-        //     // d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform",d => "translate("+d.x+","+d.y+")");
-        //     that.svg.selectAll(".pie-group").attr("transform",d => "translate("+d.x+","+d.y+")")
-        //     that.svg.selectAll(".line_node").attr("cx", d=>d.x).attr("cy", d=>d.y)
-        //     that.svg.selectAll("line").attr("x1", d=>d.source.x).attr("y1", d=>d.source.y)
-        //     // .attr("x2", d=>d.target.x).attr("y2", d=>d.target.y);
-        //     // console.log(d.x, d.y)
-        // }
+        function prepare_ring_data (d) {
+            let v_list = [];
+            let r = that.get_node_radius(d.id);
+            d.vertices.forEach(v=>{
+                v_list.push({"r":r, "id":v, "color":that.color_dict[v]});
+            })
+            if(v_list.length>8){
+                v_list = v_list.slice(0,8);
+            }
+            return v_list;
+        }
 
         //Zoom functions
         function zoom_actions() {
