@@ -60,7 +60,7 @@ h4 {
 
 .vertex-container {
     stroke: black;
-    stroke-width: 1.5px;
+    stroke-width: 2px;
 }
 
 /* .line_node.highlighted {
@@ -86,8 +86,8 @@ h4 {
 }
 
 .hyper_node {
-    stroke: lightgrey;
-    stroke-width: 4px;
+    stroke: #fff;
+    stroke-width: 2px;
     opacity: 1;
 }
 
@@ -120,13 +120,21 @@ line.faded {
     stroke-width: 6px;
 }
 
-.pie-group.faded {
+/* .pie-group.faded {
+    opacity: 0.1;
+} */
+
+g.faded {
     opacity: 0.1;
 }
 
-.pie-group.highlighted {
+g.highlighted {
     opacity: 0.5;
 }
+
+/* .pie-group.highlighted {
+    opacity: 0.5;
+} */
 
 circle.grey_out {
     fill: grey;
@@ -153,6 +161,12 @@ path.highlighted {
 
 .vertex_node.highlighted {
     /* opacity: 0.5; */
+    fill: whitesmoke;
+}
+
+.vertex_node-container.highlighted {
+    /* opacity: 0.5; */
+    stroke: whitesmoke;
     fill: whitesmoke;
 }
 
