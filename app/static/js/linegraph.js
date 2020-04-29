@@ -209,7 +209,7 @@ class Linegraph{
                     if(d.id.split("|").length === 1){
                         return d.color;
                     } else {
-                        return "";
+                        return "black";
                     }
                 })
             }
@@ -226,9 +226,9 @@ class Linegraph{
                 });
             pg.selectAll("circle").data(d => prepare_ring_data(d))
                 .enter().append("circle")
-                .attr("r", (d,i) => Math.max(d.r-3*i, 0))
+                .attr("r", (d,i) => Math.max(d.r-2*i-2, 0))
                 .attr("stroke", d=>d.color)
-                .attr("stroke-width", 3)
+                .attr("stroke-width", 2)
                 .attr("fill", "#fff");
         }
         

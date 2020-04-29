@@ -528,9 +528,13 @@ function copy_line_data(line_data){
 function get_current_config() {
     //  1. graph version
     let hgraph_type = "collapsed_version";
-    if (!d3.select("#hgraph-type").property("checked")){
+    if (!d3.select("#collapse-input").property("checked")){
         hgraph_type = "original_version";
     }
+    // let simplification_type = "collapsed_version";
+    // if (!d3.select("#collapse-output").property("checked")){
+    //     simplification_type = "original_version";
+    // }
     //  2. line graph variant
     let variant = d3.select('input[name="variant-type"]:checked').node().value;
     //  3. s-value & turn off singletons
@@ -554,8 +558,9 @@ function reset_visual_encoding() {
 
 function reset_config() {
     // Reset "Parameter Control"
-    //  1. reset hypergraph vis type
-    d3.select("#hgraph-type").property("checked", true)
+    //  1. reset hypergraph type
+    d3.select("#collapse-input").property("checked", true)
+    // d3.select("#collapse-output").property("checked", true)
     //  2. reset s-value & how to turn off singletons
     d3.select("#s-walk_input").property("value", 1);
     d3.select("#s-walk_label").html("1");
