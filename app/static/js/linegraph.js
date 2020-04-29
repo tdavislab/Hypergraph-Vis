@@ -61,6 +61,9 @@ class Linegraph{
             l.distance = distance_scale(Math.min((source_size+target_size)/2, 10));
         });
 
+        this.if_hyperedge_glyph = d3.select("#hyperedge-glyph").property("checked");
+        this.if_vertex_glyph = d3.select("#vertex-glyph").property("checked");
+
         this.draw_linegraph();
     }
 
@@ -76,6 +79,7 @@ class Linegraph{
         })
         d3.selectAll(".line_node").attr("cx", d=>d.x).attr("cy", d=>d.y);
         d3.selectAll(".pie-group").attr("transform",d => "translate("+d.x+","+d.y+")")
+        d3.selectAll(".ring-group").attr("transform",d => "translate("+d.x+","+d.y+")")
         d3.selectAll(".line_edge").attr("x1", d=>d.source.x).attr("y1", d=>d.source.y)
             .attr("x2", d=>d.target.x).attr("y2", d=>d.target.y);
     }
@@ -102,7 +106,9 @@ class Linegraph{
         ng = ng.enter().append("g").merge(ng)
             .on("mouseover", d => {
                 if(!this.click_id){
+                    d3.select("#"+this.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
                     d3.select("#"+this.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
+                    d3.select("#"+this.svg_id+"-ring-"+d.id.replace(/[|]/g,"")).classed("highlighted", true);
                     let label_list = this.nodes_dict[d.id].label.split("|");
                     let div_text = '';
                     label_list.forEach(label=>{ div_text += label+"<br> "; })
@@ -119,6 +125,8 @@ class Linegraph{
             .on("mouseout", d=>{
                 if(!this.click_id){
                     d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
+                    d3.select("#"+that.svg_id+"-ring-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
+                    d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).classed("highlighted", false);
                     d3.select("#help-tip").classed("show", false);
                 } 
             })
@@ -139,17 +147,24 @@ class Linegraph{
 
         ng.append("circle")
             .attr("r", d => this.get_node_radius(d.id))
-            .attr("fill", "white")
+            .attr("fill", d => {
+                if(this.variant === "line_graph"){
+                    return d.color;
+                } else { // variant === "clique_expansion"
+                    return "whitesmoke";
+                }
+            })
+            .attr("stroke", d => {
+                if(this.variant === "line_graph"){
+                    return "whitesmoke";
+                } else { // variant === "clique_expansion"
+                    return d.color;
+                }
+            })
             .attr("id", d => this.svg_id+"-node-"+d.id.replace(/[|]/g,""))
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y)
-            .attr("class", "line_node")
-            .classed("vertex-container", d=>{
-                if(this.variant === "clique_expansion"){
-                    return true;
-                }
-                return false;
-            });
+            .attr("class", "line_node");
             
 
         if(this.variant === "line_graph"){
@@ -167,6 +182,10 @@ class Linegraph{
                 .attr("class", "pie-group")
                 .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
                 .attr("transform",d => "translate("+d.x+","+d.y+")")
+                .attr("visibility", ()=>{
+                    if(this.if_hyperedge_glyph){ return "visible"; }
+                    else { return "hidden"; }
+                });
                 
             pg.selectAll("path").data(d => pie(prepare_pie_data(d.id)))
                 .enter().append("path")
@@ -175,15 +194,20 @@ class Linegraph{
                     return arc(d)})
                 .attr("fill", d => d.data.color)
                 .attr("stroke", "whitesmoke")
-                .attr("stroke-width", () => {
-                    if(this.variant === "line_graph"){ return "2px"; }
-                    else { return "0"; }
-                })
+                .attr("stroke-width", "2px");
         } else { // this.variant === "clique_expansion"
+            d3.selectAll(".line_node").classed("line_node-container", true);
+            if(this.if_vertex_glyph){
+                d3.selectAll(".line_node-container").attr("stroke","black").style("stroke-width", 2);
+            }
             let pg = ng.append("g")
-                .attr("class", "pie-group")
-                .attr("id", d => this.svg_id+"-pie-"+d.id.replace(/[|]/g,""))
+                .attr("class", "ring-group")
+                .attr("id", d => this.svg_id+"-ring-"+d.id.replace(/[|]/g,""))
                 .attr("transform",d => "translate("+d.x+","+d.y+")")
+                .attr("visibility", ()=>{
+                    if(this.if_vertex_glyph){ return "visible"; }
+                    else { return "hidden"; }
+                });
             pg.selectAll("circle").data(d => prepare_ring_data(d))
                 .enter().append("circle")
                 .attr("r", (d,i) => Math.max(d.r-2*i-2.5, 0))
@@ -256,6 +280,7 @@ class Linegraph{
         function dragged(d) {
             // console.log(d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")))
             d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
+            d3.select("#"+that.svg_id+"-ring-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
             d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).attr("cx", d3.event.x).attr("cy", d3.event.y);
             d.links_idx.source.forEach(l_idx =>{
                 let l = that.links[l_idx];
@@ -343,7 +368,11 @@ class Linegraph{
                         d3.select("#simplified-hypergraph-nodegroup-"+l.target.id.replace(/[|]/g,"")).classed("faded", false);
                     }
                 })
-                d3.select("#linegraph-svg").selectAll(".line_node").classed("faded",true);
+                d3.select("#linegraph-svg").selectAll(".line_node").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
                 d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
                     if(he_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
@@ -354,7 +383,11 @@ class Linegraph{
                         return false;
                     } else { return true; }
                 });
-                d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded",true);
+                d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
                 d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
                     if(he_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
@@ -364,6 +397,7 @@ class Linegraph{
                 d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", true);
     
                 d3.select("#"+that.svg_id+"-pie-"+key.replace(/[|]/g,"")).classed("highlighted", false);
+                d3.select("#"+that.svg_id+"-node-"+key.replace(/[|]/g,"")).classed("highlighted", false);
 
             } else {
                 let v_list = key.split("|");
@@ -394,7 +428,7 @@ class Linegraph{
                         return false;
                     } else { return true; }
                 });
-                d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                d3.select("#linegraph-svg").selectAll(".ring-group").classed("faded", d => {
                     if(v_list.indexOf(d.id.split("|")[0]) != -1){
                         return false;
                     } else { return true; }
@@ -405,19 +439,32 @@ class Linegraph{
                     } else { return true; }
                 });
                 d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded", d => {
-                    if(d.id.split("|").indexOf(v_list[0]) != -1){
-                        return false;
-                    } else { return true; }
+                    for(let i=0; i<v_list.length; i++){
+                        if(d.id.split("|").indexOf(v_list[i])!=-1){
+                            return false;
+                        }
+                    } 
+                    return true;
+                    // if(d.id.split("|").indexOf(v_list[0]) != -1){
+                    //     return false;
+                    // } else { return true; }
                 });
-                d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
-                    if(d.id.split("|").indexOf(v_list[0]) != -1){
-                        return false;
-                    } else { return true; }
+                d3.select("#simplified-linegraph-svg").selectAll(".ring-group").classed("faded", d => {
+                    for(let i=0; i<v_list.length; i++){
+                        if(d.id.split("|").indexOf(v_list[i])!=-1){
+                            return false;
+                        }
+                    } 
+                    return true;
+                    // if(d.id.split("|").indexOf(v_list[0]) != -1){
+                    //     return false;
+                    // } else { return true; }
                 });
                 // At most one node in simplified linegraph will be selected, so all edges will be faded
                 d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", true);
     
                 d3.select("#"+that.svg_id+"-pie-"+key.replace(/[|]/g,"")).classed("highlighted", false);
+                d3.select("#"+that.svg_id+"-node-"+key.replace(/[|]/g,"")).classed("highlighted", false);
 
             }
         }
@@ -529,6 +576,8 @@ class Linegraph{
 
         d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", false);
         d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", false);
+        d3.select("#linegraph-svg").selectAll(".ring-group").classed("faded", false);
+        d3.select("#simplified-linegraph-svg").selectAll(".ring-group").classed("faded", false);
     }
 
     get_cc_dict(edgeid){

@@ -63,9 +63,9 @@ h4 {
     stroke-width: 2px;
 }
 
-/* .line_node.highlighted {
+.line_node.highlighted {
     opacity: 0.5;
-} */
+}
 
 
 
@@ -86,8 +86,10 @@ h4 {
 }
 
 .hyper_node {
-    stroke: #fff;
-    stroke-width: 2px;
+    /* stroke: #fff;
+    stroke-width: 2px; */
+    stroke: lightgrey;
+    stroke-width: 4px;
     opacity: 1;
 }
 
@@ -211,21 +213,22 @@ path.filtering {
      position: relative;
      background-color: #f1f1f1;
      color: rgb(51,54,57);
-     top: 7px;
-     height: 20px;
-     width: 20px;
+     top: 3px;
+     height: 15px;
+     width: 15px;
      border: 1px solid rgb(51,54,57);
      border-radius: 25px;
      cursor: pointer;     
      margin-right: 3px;
      outline: none;
 }
+
 .form-radio:checked::before
 {
      position: absolute;
      font: 12px/1 'Open Sans', sans-serif;
-     left: 5px;
-     top: 1px;
+     left: 3px;
+     top: 0px;
      content: '\02143';
      transform: rotate(40deg);
 }

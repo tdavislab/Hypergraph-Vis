@@ -33,6 +33,11 @@ function init(){
                 data: JSON.stringify(current_config),
                 dataType:'text',
                 success: function (response) {
+                    reset_visual_encoding();
+                    if(current_config.variant === "clique_expansion"){
+                        d3.select("#hyperedge-glyph").property("checked", false);
+                        d3.select("#vertex-glyph").property("checked", true);
+                    }
                     load_data(JSON.parse(response), current_config);
                 },
                 error: function (error) {
@@ -71,6 +76,29 @@ function init(){
                 d3.selectAll(".convex_hull").style("visibility","visible");
             }
         });
+
+    // show / hide glyphs
+    d3.select("#hyperedge-glyph")
+        .on("change", ()=>{
+            if(d3.select("#hyperedge-glyph").property("checked")){
+                d3.selectAll(".pie-group").attr("visibility", "visible");
+            } else {
+                d3.selectAll(".pie-group").attr("visibility", "hidden");
+            }
+        })
+
+    d3.select("#vertex-glyph")
+        .on("change", ()=>{
+            if(d3.select("#vertex-glyph").property("checked")){
+                d3.selectAll(".ring-group").attr("visibility", "visible");
+                d3.selectAll(".vertex_node").classed("vertex_node-container", true);
+                d3.selectAll(".line_node-container").attr("stroke","black").style("stroke-width", 2);
+            } else {
+                d3.selectAll(".ring-group").attr("visibility", "hidden");
+                d3.selectAll(".vertex_node").classed("vertex_node-container", false);
+                d3.selectAll(".line_node-container").attr("stroke", d=>d.color).style("stroke-width", 4);
+            }
+        })
 
     // block control
     let coll  = document.getElementsByClassName("block_title");
@@ -144,12 +172,6 @@ function load_data(data, config) {
                 })
                 d3.select("#barcode"+i).classed("hover-light", true);
                 barcode.expanded_bars.push(i)
-
-                // d3.selectAll(".barcode-rect-dim0").classed("hover-light", false);
-                // barcode.click_id = i;
-                // this.expanded_bars.forEach(idx=>{
-                    
-                // })
                 console.log(barcode.cc_dict)
                 // expanding
                 $.ajax({
@@ -329,6 +351,7 @@ function initialize_graphs(hyper_data, line_data, barcode_data, config, color_di
 }
 
 function read_hgraph_text(text_data){
+    reset_visual_encoding();
     reset_config();
     let current_config = get_current_config();
     $.ajax({
@@ -470,14 +493,22 @@ function get_current_config() {
     return {'hgraph_type':hgraph_type, 's':s, 'singleton_type':singleton_type, 'variant':variant, 'weight_type':weight_type};
 }
 
-function reset_config() {
+function reset_visual_encoding() {
+    // Reset "Visual Encoding Control"
     //  1. reset "show label"
-    // d3.select("#hgraph-labels").property("checked", false);
+    d3.select("#hgraph-labels").property("checked", false);
     //  2. reset hypergraph visual encoding
-    // d3.select("#convex").property("checked", true);
-    //  3. reset hypergraph vis type
+    d3.select("#convex").property("checked", true);
+    // 3. reset glyph
+    d3.select("#hyperedge-glyph").property("checked", true);
+    d3.select("#vertex-glyph").property("checked", false);
+}
+
+function reset_config() {
+    // Reset "Parameter Control"
+    //  1. reset hypergraph vis type
     d3.select("#hgraph-type").property("checked", true)
-    //  4. reset s-value & how to turn off singletons
+    //  2. reset s-value & how to turn off singletons
     d3.select("#s-walk_input").property("value", 1);
     d3.select("#s-walk_label").html("1");
     d3.select("#s-walk_input").property("max", 10);
@@ -485,9 +516,9 @@ function reset_config() {
     document.getElementById("s-range-container-inner").style.maxHeight = null;
 
     d3.select("#grey_out").property("checked", true);
-    //  5. reset line graph variant
+    //  3. reset line graph variant
     d3.select("#line_graph").property("checked", true);
-    //  6. reset weight type
+    //  4. reset weight type
     d3.select("#jaccard_index").property("checked", true);
 }
 
