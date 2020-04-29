@@ -283,9 +283,10 @@ function load_data(data, config) {
     }
     function dragged() {
         let trans_dist = clamp(d3.event.x, barcode.svg_margin.left, barcode.width_scale.range()[1])-barcode.svg_margin.left;
-        d3.select("#barcode-line").attr("x1",trans_dist);
-        d3.select("#barcode-line").attr("x2",trans_dist);
-        d3.select("#barcode-slider").attr("x",trans_dist);
+        d3.select("#barcode-line").attr("x1",trans_dist)
+            .attr("x2",trans_dist)
+            .attr("y1", Math.max(0,d3.event.y));
+        d3.select("#barcode-slider").attr("x",trans_dist).attr("y", Math.max(0,d3.event.y));
         
     }
     function clamp(d, min, max) {

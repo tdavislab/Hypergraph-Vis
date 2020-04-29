@@ -10,19 +10,21 @@ class Barcode{
         this.container_height = parseFloat(d3.select(".container-fluid").node().offsetHeight)-50;
         this.svg_margin = {'left':12, 'right':20, 'top':10, 'bottom':10};
         this.svg
-            // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
-            .attr("width", this.svg_width);
+            
+            .attr("width", this.svg_width)
+            ;
+        this.svg_g = this.svg.append("g").attr("width", this.svg_width);
 
         d3.select("#vis-barcode")
             // .style("height", d3.select("#vis-hypergraph").style("height"));
             .style("height", parseInt(this.container_height-200)+"px");
 
 
-        this.barcode_group = this.svg.append("g")
+        this.barcode_group = this.svg_g.append("g")
             .attr("id", "barcode_group");
-        this.xAxis_group = this.svg.append('g')
+        this.xAxis_group = this.svg_g.append('g')
             .attr('id','xAxis_group');
-        this.slider_group = this.svg.append('g')
+        this.slider_group = this.svg_g.append('g')
             .attr('id', 'slider_group');
         this.slider = this.slider_group.append('rect');
         this.slider_line = this.slider_group.append('line');
@@ -53,7 +55,9 @@ class Barcode{
 
         let barcode_height = 10;
         this.svg_height = barcode_height * (this.barcode.length+1) + 2*this.svg_margin.top + this.svg_margin.bottom;
-        this.svg.attr("height", this.svg_height);
+        this.svg.attr("height", this.svg_height)
+        // .attr("viewBox", [0, 0, this.svg_width, this.container_height]);
+        this.svg_g.attr("height", this.svg_height);
 
         if(this.svg_height < this.container_height){
             this.svg.attr("transform", "translate(0,"+(this.container_height-this.svg_height)/3+")");
@@ -110,7 +114,8 @@ class Barcode{
             // .attr("x", 0)
             // .attr("y",1)
             .attr("class", "slider hover-darken")
-            .attr("id", "barcode-slider")
+            .attr("id", "barcode-slider");
+
 
         this.slider_line
             .attr("x1",0)
@@ -120,6 +125,24 @@ class Barcode{
             .attr("stroke","grey")
             .attr("stroke-width",1)
             .attr("id", "barcode-line")
+
+        const zoom_handler = d3.zoom()
+            .on("zoom", zoom_actions);
+        zoom_handler(this.svg_g);
+
+        let that = this;
+        function zoom_actions() {
+            console.log(d3.event)
+            that.svg_g.attr("transform", d3.event.transform);
+        }
+
+        function dragstarted(d) {
+            that.dragStarted = true;
+        }
+
+        function dragged(d) {
+            d3.select("#barcode-slider").attr()
+        }
     }
 
     extract_edgeid(threshold){
