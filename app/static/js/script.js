@@ -207,8 +207,8 @@ function load_data(data, config) {
 
                         console.log(cc_id)
 
-                        d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[,]/g,"")).classed("clicked", true);
-                        d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[,]/g,"")).classed("clicked", true);
+                        d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[,]/g,"").replace(/[|]/g,"")).classed("clicked", true);
+                        d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[,]/g,"").replace(/[|]/g,"")).classed("clicked", true);
                     },
                     error: function (error) {
                         console.log("error",error);
