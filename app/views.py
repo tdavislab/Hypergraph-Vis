@@ -41,29 +41,30 @@ def process_hypergraph(hyper_data: str):
         line = line.rstrip().rsplit(',')
 
         hyperedge, vertices = line[0], line[1:]
-        if hyperedge not in label2id.keys():
-            hyperedge_label = re.sub('[\'\s]+', '', hyperedge)
-            new_id = 'he'+str(he_id)
-            he_id += 1
-            label2id[hyperedge_label] = new_id
-            hyperedge = new_id
-        vertices_new = []
-        for v in vertices:
-            v_label = re.sub('[\'\s]+', '', v)
-            if v_label != "":
-                if v_label not in label2id.keys():
-                    new_id = 'v'+str(v_id)
-                    v_id += 1
-                    label2id[v_label] = new_id
-                    vertices_new.append(new_id)
-                else:
-                    vertices_new.append(label2id[v_label])
-        vertices = vertices_new
+        if hyperedge != "":
+            if hyperedge not in label2id.keys():
+                hyperedge_label = re.sub('[\'\s]+', '', hyperedge)
+                new_id = 'he'+str(he_id)
+                he_id += 1
+                label2id[hyperedge_label] = new_id
+                hyperedge = new_id
+            vertices_new = []
+            for v in vertices:
+                v_label = re.sub('[\'\s]+', '', v)
+                if v_label != "":
+                    if v_label not in label2id.keys():
+                        new_id = 'v'+str(v_id)
+                        v_id += 1
+                        label2id[v_label] = new_id
+                        vertices_new.append(new_id)
+                    else:
+                        vertices_new.append(label2id[v_label])
+            vertices = vertices_new
 
-        if hyperedge not in hgraph.keys():
-            hgraph[hyperedge] = vertices
-        else:
-            hgraph[hyperedge] += vertices
+            if hyperedge not in hgraph.keys():
+                hgraph[hyperedge] = vertices
+            else:
+                hgraph[hyperedge] += vertices
     label_map = {ID:label for label, ID in label2id.items()}
 
     return hnx.Hypergraph(hgraph), label_map
@@ -440,6 +441,8 @@ def hgraph_expansion():
             break
     
     hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
+    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
     hgraph = hnx.Hypergraph(hgraph_dict)
@@ -481,6 +484,8 @@ def undo_hgraph_expansion():
     del cc_dict[cc2_id]
     
     hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
+    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
     hgraph = hnx.Hypergraph(hgraph_dict)
@@ -496,7 +501,6 @@ def undo_hgraph_expansion():
 @app.route('/simplified_hgraph', methods=['POST', 'GET'])
 def compute_simplified_hgraph():
     jsdata = json.loads(request.get_data())
-    print(jsdata)
     variant = jsdata['config']['variant']
     s = int(jsdata['config']['s'])
     singleton_type = jsdata['config']['singleton_type']
@@ -505,6 +509,9 @@ def compute_simplified_hgraph():
     cc_dict = jsdata['cc_dict']
     
     hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
+
+    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
     hgraph = hnx.Hypergraph(hgraph_dict)
@@ -536,6 +543,33 @@ def recover_linegraph(hgraph_dict, singletons, s=1):
     line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
     return line_graph
 
+def write_output_hypergraph(hgraph_dict, output_path):
+    with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
+        label_map = json.load(f)
+
+    with open(output_path, 'w') as f:
+        for he in hgraph_dict:
+            line = ""
+
+            he_label = ""
+            he_list = he.split("|")
+            for he_i in he_list:
+                if he_i in label_map:
+                    he_label += "(" + label_map[he_i] + ")"
+
+            line += he_label + ","
+            for v in hgraph_dict[he]:
+                v_label = ""
+                v_list = v.split("|")
+                for v_i in v_list:
+                    if v_i in label_map:
+                        v_label += "(" + label_map[v_i] + ")"
+
+                line += v_label + ","
+            line = line[:-1]
+            line += "\n"
+            f.write(line)
+
 
 
 @app.route('/id2color', methods=['POST', 'GET'])
@@ -543,5 +577,22 @@ def save_id2color():
     jsdata = json.loads(request.get_data())
     write_json_file(jsdata, path.join(APP_STATIC,"uploads/current_id2color.json"))
     return 'saved'
+
+@app.route('/export', methods=['POST', 'GET'])
+def export():
+    jsdata = request.form.get('javascript_data')
+    print(jsdata)
+    if jsdata == "\"\"":
+        filepath = path.join(APP_STATIC,"downloads/output.txt")
+    else:
+        filepath = path.join(APP_STATIC,"downloads/"+jsdata+".txt")
+    print(filepath)
+    if path.exists(path.join(APP_STATIC,"uploads/current_output.txt")):
+        print("cp "+path.join(APP_STATIC,"uploads/current_output.txt")+" "+filepath)
+        os.system("pwd")
+        os.system("cp "+path.join(APP_STATIC,"uploads/current_output.txt")+" "+filepath)
+    else:
+        os.system("cp "+path.join(APP_STATIC,"uploads/current_hypergraph.txt")+" "+filepath)
+    return "0"
 
 

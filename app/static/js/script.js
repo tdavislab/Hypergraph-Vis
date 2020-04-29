@@ -20,6 +20,16 @@ function init(){
             fileReader.readAsText(files, "UTF-8");
         })
 
+    d3.select("#export")
+        .on("click", ()=>{
+            let v = $("#exFilename").val();
+            $.post( "/export", {
+                javascript_data: JSON.stringify(v)
+            });
+           
+            alert("Output saved");
+        })
+
     d3.select("#reset_config")
         .on("click", ()=>{
             reset_config()});

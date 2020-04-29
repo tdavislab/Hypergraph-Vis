@@ -24,8 +24,8 @@ html, body {
     background-color: #FFF;
     display:inline-block;
     padding-left: 20px;
+    width:48%;
 }
-
 
 .container-fluid {
     background-color: rgb(249,249,249);
@@ -111,8 +111,8 @@ html, body {
   }
 
   .block-inner-group {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     border-bottom: dotted 2px rgb(224,224,224);
   }
 
@@ -159,12 +159,30 @@ html, body {
     /* padding-bottom: 15px; */
   }
 
-  /* .import-group {
-    display: inline-block;
-    width: 40%;
-  }
+/* .import-group { */
+    /* display: inline-block; */
+    /* width: 30%; */
+    /* padding-right: 10px; */
+    /* padding-left:15px; */
+    /* padding-bottom: 6px; */
+    /* padding-top:0px;vertical-align: top; */
+  /* } */
 
-  .export-group {
+/* .export-group { */
+    /* display: inline-block; */
+    /* width: 55%; */
+    /* padding-right: 10px; */
+    /* padding-bottom: 5px; */
+    /* padding-top:0px;vertical-align: top; */
+  /* } */
+
+  /* #export  {
     display: inline-block;
-    width: 55%;
+    width: 52%;
+    text-align: center;
   } */
+
+  #exFilename{
+    height: 26px;
+    font-size: 10px;
+}
