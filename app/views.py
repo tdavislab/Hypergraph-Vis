@@ -50,13 +50,14 @@ def process_hypergraph(hyper_data: str):
         vertices_new = []
         for v in vertices:
             v_label = re.sub('[\'\s]+', '', v)
-            if v_label not in label2id.keys():
-                new_id = 'v'+str(v_id)
-                v_id += 1
-                label2id[v_label] = new_id
-                vertices_new.append(new_id)
-            else:
-                vertices_new.append(label2id[v_label])
+            if v_label != "":
+                if v_label not in label2id.keys():
+                    new_id = 'v'+str(v_id)
+                    v_id += 1
+                    label2id[v_label] = new_id
+                    vertices_new.append(new_id)
+                else:
+                    vertices_new.append(label2id[v_label])
         vertices = vertices_new
 
         if hyperedge not in hgraph.keys():

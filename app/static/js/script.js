@@ -100,6 +100,16 @@ function init(){
             }
         })
 
+    // hide hyperedge node
+    d3.select("#hide-hyperedge-node")
+        .on("change", ()=>{
+            if(d3.select("#hide-hyperedge-node").property("checked")){
+                d3.selectAll(".he-group").attr("opacity",0);
+            } else {
+                d3.selectAll(".he-group").attr("opacity",1);
+            }
+        })
+
     // block control
     let coll  = document.getElementsByClassName("block_title");
     for(let i=0; i<coll.length; i++){
@@ -285,8 +295,8 @@ function load_data(data, config) {
         let trans_dist = clamp(d3.event.x, barcode.svg_margin.left, barcode.width_scale.range()[1])-barcode.svg_margin.left;
         d3.select("#barcode-line").attr("x1",trans_dist)
             .attr("x2",trans_dist)
-            .attr("y1", Math.max(0,d3.event.y));
-        d3.select("#barcode-slider").attr("x",trans_dist).attr("y", Math.max(0,d3.event.y));
+            .attr("y1", Math.min(Math.max(0,d3.event.y), barcode.svg_height-20));
+        d3.select("#barcode-slider").attr("x",trans_dist).attr("y", Math.min(Math.max(0,d3.event.y), barcode.svg_height-20));
         
     }
     function clamp(d, min, max) {

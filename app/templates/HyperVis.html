@@ -18,7 +18,7 @@
 <div class="header-group">
     <div id="main_title">
         <h4>Hypergraph Visualization:</h4>
-        <h4>Multiscale Simplification and Multimodal Curation</h4>
+        <h4>Multimodal Curation and Multiscale Simplification</h4>
     </div>
     <div id="files_group">
         <div class="import-group">
@@ -27,6 +27,10 @@
                 <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="import" value="Import A Dataset">
             </form>
         </div>
+        <!-- <div class="export-group">
+            <input class="form-control" type="text" placeholder="Input file name" id="exFilename">
+            <input style="position: relative; top:0px" type="button" class="btn btn-outline-dark btn-block ui-form-button" id="export" value="Export Simplified Hypergraph">
+        </div> -->
     </div>
 </div>
 
@@ -84,14 +88,15 @@
                 <div class="block_body" style="max-height: 1000px">
                     <div class="block_body-inner">
                         <div class="block-inner-group">
-                            <div class="row">
-                                <div class="col-1">
+                            <!-- <div class="row"> -->
+                                <div>
                                     <input type="checkbox" id="hgraph-labels">
+                                    <label>Show <a class="group-title">labels</a></label>
                                 </div>
-                                <div class="col-10">
-                                    Show <a class="group-title">labels</a>
+                                <div>
+                                    <input type="checkbox" id="hide-hyperedge-node">
+                                    <label>Hide hyperedge node</label>
                                 </div>
-                            </div>                                
                         </div>
                         <div class="block-inner-group">
                             <div class="group-title">Hypergraph visualization</div>
