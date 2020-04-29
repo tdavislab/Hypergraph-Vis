@@ -105,8 +105,10 @@ function init(){
         .on("change", ()=>{
             if(d3.select("#hide-hyperedge-node").property("checked")){
                 d3.selectAll(".he-group").attr("opacity",0);
+                d3.selectAll(".hyper_edge").attr("opacity",0);
             } else {
                 d3.selectAll(".he-group").attr("opacity",1);
+                d3.selectAll(".hyper_edge").attr("opacity",0.5);
             }
         })
 
