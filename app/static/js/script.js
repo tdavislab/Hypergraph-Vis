@@ -90,13 +90,48 @@ function init(){
     d3.select("#vertex-glyph")
         .on("change", ()=>{
             if(d3.select("#vertex-glyph").property("checked")){
-                d3.selectAll(".ring-group").attr("visibility", "visible");
-                d3.selectAll(".vertex_node").classed("vertex_node-container", true);
-                d3.selectAll(".line_node-container").attr("stroke","black").style("stroke-width", 2);
+                d3.selectAll(".ring-group").attr("visibility", (d)=>{
+                    if(d.id.split("|").length === 1){
+                        return "hidden";
+                    } else{
+                        return "visible";
+                    }
+                });
+                d3.selectAll(".vertex_node")
+                    .attr("fill", (d)=>{
+                        if(d.id.split("|").length === 1){
+                            return "black";
+                        } else {
+                            return "white";
+                        }
+                    })
+                    .attr("stroke", (d)=>{
+                        if(d.id.split("|").length === 1){
+                            return "whitesmoke";
+                        } else {
+                            return "black";
+                        }
+                    })
+                // .classed("vertex_node-container", (d)=>{
+                //     if(d.id.split("|").length === 1){
+                //         return "false";
+                //     } else{
+                //         return "true";
+                //     }
+                // });
+                d3.selectAll(".line_node-container").attr("stroke", (d)=>{
+                    if(d.id.split("|").length === 1){
+                        return d.color;
+                    } else {
+                        return "black";
+                    }
+                })
             } else {
                 d3.selectAll(".ring-group").attr("visibility", "hidden");
-                d3.selectAll(".vertex_node").classed("vertex_node-container", false);
-                d3.selectAll(".line_node-container").attr("stroke", d=>d.color).style("stroke-width", 4);
+                d3.selectAll(".vertex_node")
+                    .attr("fill", "black")
+                    .attr("stroke", "whitesmoke");
+                d3.selectAll(".line_node-container").attr("stroke", d=>d.color)
             }
         })
 

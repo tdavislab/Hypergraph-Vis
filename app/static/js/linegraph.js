@@ -161,6 +161,13 @@ class Linegraph{
                     return d.color;
                 }
             })
+            .attr("stroke-width", d => {
+                if(this.variant === "line_graph"){
+                    return 4;
+                } else { // variant === "clique_expansion"
+                    return 4;
+                }
+            })
             .attr("id", d => this.svg_id+"-node-"+d.id.replace(/[|]/g,""))
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y)
@@ -198,21 +205,30 @@ class Linegraph{
         } else { // this.variant === "clique_expansion"
             d3.selectAll(".line_node").classed("line_node-container", true);
             if(this.if_vertex_glyph){
-                d3.selectAll(".line_node-container").attr("stroke","black").style("stroke-width", 2);
+                d3.selectAll(".line_node-container").attr("stroke",(d)=>{
+                    if(d.id.split("|").length === 1){
+                        return d.color;
+                    } else {
+                        return "";
+                    }
+                })
             }
             let pg = ng.append("g")
                 .attr("class", "ring-group")
                 .attr("id", d => this.svg_id+"-ring-"+d.id.replace(/[|]/g,""))
                 .attr("transform",d => "translate("+d.x+","+d.y+")")
-                .attr("visibility", ()=>{
-                    if(this.if_vertex_glyph){ return "visible"; }
+                .attr("visibility", (d)=>{
+                    if(d.id.split("|").length === 1){
+                        return "hidden";
+                    }
+                    else if(this.if_vertex_glyph){ return "visible"; }
                     else { return "hidden"; }
                 });
             pg.selectAll("circle").data(d => prepare_ring_data(d))
                 .enter().append("circle")
-                .attr("r", (d,i) => Math.max(d.r-2*i-2.5, 0))
+                .attr("r", (d,i) => Math.max(d.r-3*i, 0))
                 .attr("stroke", d=>d.color)
-                .attr("stroke-width", 1)
+                .attr("stroke-width", 3)
                 .attr("fill", "#fff");
         }
         

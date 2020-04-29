@@ -248,29 +248,58 @@ class Hypergraph{
                 } else { return false; }
             });
 
-        this.svg.selectAll(".vertex_node").classed("vertex_node-container", ()=>{
-            if(this.if_vertex_glyph){
-                return true;
-            } else {
-                return false;
-            }
-        });
+        // this.svg.selectAll(".vertex_node").classed("vertex_node-container", (d)=>{
+        //     if(d.id.split("|").length === 1){
+        //         return false;
+        //     }
+        //     if(this.if_vertex_glyph){
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // });
+        this.svg.selectAll(".vertex_node")
+            .attr("fill", d => {
+                if(d.id.split("|").length === 1){
+                    return "black";
+                }
+                if(this.if_vertex_glyph){
+                    return "white";
+                } else {
+                    return "black";
+                }
+            })
+            .attr("stroke", d=>{
+                if(d.id.split("|").length === 1){
+                    return "whitesmoke";
+                }
+                if(this.if_vertex_glyph){
+                    return "black";
+                } else {
+                    return "whitesmoke";
+                }
+            });
+
         let rg = vg.append("g")
             .attr("class", "ring-group")
             .attr("id", d => this.svg_id+"-ring-"+d.id.replace(/[|]/g,""))
             .attr("transform",d => "translate("+d.x+","+d.y+")")
-            .attr("visibility", ()=>{
-                if(this.if_vertex_glyph){
+            .attr("visibility", (d)=>{
+                if(d.id.split("|").length === 1){
+                    return "hidden"
+                }
+                else if(this.if_vertex_glyph){
                     return "visible";
-                } else { 
+                }
+                else { 
                     return "hidden";
                 }
             });
         rg.selectAll("circle").data(d => prepare_ring_data(d))
             .enter().append("circle")
-            .attr("r", (d,i) => Math.max(d.r-2*i-3, 0))
+            .attr("r", (d,i) => Math.max(d.r-2*i-2, 0))
             .attr("stroke", d=>d.color)
-            .attr("stroke-width", 1)
+            .attr("stroke-width", 2)
             .attr("fill", "#fff")
             .classed("grey_out", d=>{
                 if(singleton_type === "grey_out" && d.if_singleton){

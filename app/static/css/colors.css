@@ -50,7 +50,7 @@ h4 {
 
 .line_node {
     /* stroke: whitesmoke; */
-    stroke-width: 4px;
+    /* stroke-width: 4px; */
     opacity: 1;
 }
 
@@ -94,7 +94,7 @@ h4 {
 }
 
 .vertex_node {
-    stroke: lightgrey;
+    /* stroke: lightgrey; */
     stroke-width: 2px;
     opacity: 1px;
 }
