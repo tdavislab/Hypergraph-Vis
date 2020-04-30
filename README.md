@@ -53,4 +53,6 @@ hyperedge_i, vertex_i1, vertex_i2, ...
 ```
 
 ## Exporting An Output
-When exporting a simplified hypergraph, input the file name and click on the button "Export An Output". You can find the output file in the folder `⁨Hypergraph-Vis⁩/⁨app⁩/⁨static/downloads/`.
+To export a simplified hypergraph, input the file name and click on the button "Export An Output". 
+
+You can find the output file in the folder `⁨Hypergraph-Vis⁩/⁨app⁩/⁨static/downloads/`.
