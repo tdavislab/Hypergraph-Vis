@@ -9,7 +9,7 @@ import hypernetx as hnx
 import re
 import matplotlib.pyplot as plt
 import networkx as nx
-from tqdm import tqdm
+# from tqdm import tqdm
 from os import path
 import os
 import copy
@@ -222,10 +222,57 @@ def compute_barcode(graph_data, weight_col='intersection_size'):
         barcode.append({'birth': 0, 'death': -1, 'edge': 'undefined'})
     return barcode
 
+def recover_linegraph(hgraph_dict, singletons, s=1):
+    line_graph = nx.Graph()
+    [line_graph.add_node(edge, vertices=list(vertices)) for edge, vertices in hgraph_dict.items()]
+
+    node_list = list(hgraph_dict.keys())
+    
+    for node_idx_1, node1 in enumerate(node_list):
+        for node_idx_2, node2 in enumerate(node_list[node_idx_1 + 1:]):
+            if node1.replace("|", "") not in singletons and node2.replace("|", "") not in singletons:
+                vertices1 = hgraph_dict[node1]
+                vertices2 = hgraph_dict[node2]
+                if len(vertices1) > 0 or len(vertices2) > 0:
+                    intersection_size = len(set(vertices1) & set(vertices2))
+                    union_size = len(set(vertices1) | set(vertices2))
+                    jaccard_index = intersection_size / union_size
+                    if intersection_size >= s:
+                        line_graph.add_edge(node1, node2, intersection_size={'value':str(intersection_size)}, jaccard_index={'value':str(jaccard_index)})
+    line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
+    return line_graph
+
+def write_output_hypergraph(hgraph_dict, output_path):
+    with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
+        label_map = json.load(f)
+
+    with open(output_path, 'w') as f:
+        for he in hgraph_dict:
+            line = ""
+
+            he_label = ""
+            he_list = he.split("|")
+            for he_i in he_list:
+                if he_i in label_map:
+                    he_label += "(" + label_map[he_i] + ")"
+
+            line += he_label + ","
+            for v in hgraph_dict[he]:
+                v_label = ""
+                v_list = v.split("|")
+                for v_i in v_list:
+                    if v_i in label_map:
+                        v_label += "(" + label_map[v_i] + ")"
+
+                line += v_label + ","
+            line = line[:-1]
+            line += "\n"
+            f.write(line)
+
 def write_json_file(json_dict, path):
     # Write to a json file
     with open(path, 'w') as f:
-        f.write(json.dumps(json_dict, indent=4))
+        f.write(json.dumps(json_dict, indent=4))   
 
 def load_graphs(config):
     hgraph_type = config['hgraph_type']
@@ -522,53 +569,6 @@ def compute_simplified_hgraph():
     if singleton_type == "grey_out":
         assign_hgraph_singletons(chgraph, singletons)
     return jsonify(hyper_data=chgraph, line_data=lgraph)
-
-def recover_linegraph(hgraph_dict, singletons, s=1):
-    line_graph = nx.Graph()
-    [line_graph.add_node(edge, vertices=list(vertices)) for edge, vertices in hgraph_dict.items()]
-
-    node_list = list(hgraph_dict.keys())
-    
-    for node_idx_1, node1 in enumerate(node_list):
-        for node_idx_2, node2 in enumerate(node_list[node_idx_1 + 1:]):
-            if node1.replace("|", "") not in singletons and node2.replace("|", "") not in singletons:
-                vertices1 = hgraph_dict[node1]
-                vertices2 = hgraph_dict[node2]
-                if len(vertices1) > 0 or len(vertices2) > 0:
-                    intersection_size = len(set(vertices1) & set(vertices2))
-                    union_size = len(set(vertices1) | set(vertices2))
-                    jaccard_index = intersection_size / union_size
-                    if intersection_size >= s:
-                        line_graph.add_edge(node1, node2, intersection_size={'value':str(intersection_size)}, jaccard_index={'value':str(jaccard_index)})
-    line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
-    return line_graph
-
-def write_output_hypergraph(hgraph_dict, output_path):
-    with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
-        label_map = json.load(f)
-
-    with open(output_path, 'w') as f:
-        for he in hgraph_dict:
-            line = ""
-
-            he_label = ""
-            he_list = he.split("|")
-            for he_i in he_list:
-                if he_i in label_map:
-                    he_label += "(" + label_map[he_i] + ")"
-
-            line += he_label + ","
-            for v in hgraph_dict[he]:
-                v_label = ""
-                v_list = v.split("|")
-                for v_i in v_list:
-                    if v_i in label_map:
-                        v_label += "(" + label_map[v_i] + ")"
-
-                line += v_label + ","
-            line = line[:-1]
-            line += "\n"
-            f.write(line)
 
 
 
