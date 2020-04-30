@@ -1,7 +1,7 @@
 # Hypergraph Visualization via a Metric Space Viewpoint: Multimodal Curation and Multiscale Simplification
 
 ## Overview
-This is the code repository for "Hypergraph visualization, multiscale simplification, multimodal curation, topology in visualization"
+This is the code repository for "Hypergraph Visualization via a Metric Space Viewpoint: Multimodal Curation and Multiscale Simplification"
 
 ![Screenshot of demo](app/static/assets/interface.png)
 
