@@ -27,7 +27,7 @@ function init(){
                 javascript_data: JSON.stringify(v)
             });
            
-            alert("Output saved");
+            alert("Output has been saved at: Hypergraph-Vis⁩/⁨app⁩/⁨static/downloads/");
         })
 
     d3.select("#reset_config")
