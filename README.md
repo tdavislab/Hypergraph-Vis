@@ -5,12 +5,12 @@ This is the code repository for "Hypergraph Visualization via a Metric Space Vie
 
 ![Screenshot of demo](app/static/assets/interface.png)
 
+Our system runs on most modern web browsers. We tested it on Firefox and Chrome.
+
 ## Live Demo
 To see a live demo, go to: 
 
 https://vis-hypergraph.herokuapp.com/
-
-It runs on most modern web browsers. We suggest you use Google Chrome.
 
 ## Running Locally
 Download or clone this repository:
