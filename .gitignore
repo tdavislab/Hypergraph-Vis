@@ -105,3 +105,6 @@ venv.bak/
 
 # Pycharm configuration files
 .idea/
+
+# Skip files in the uploads
+app/static/uploads/*
