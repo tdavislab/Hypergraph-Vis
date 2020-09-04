@@ -29,6 +29,21 @@ function init() {
             alert("Output has been saved at: Hypergraph-Vis⁩/⁨app⁩/⁨static/downloads/");
         })
 
+    d3.select("#add-edge-modality")
+        .on("click", () => {
+            $.ajax({
+                type: "POST",
+                url: "/add_edge_modality",
+                success: function (response) {
+                    d3.select('#modality-container').append('br')
+                    let new_modality = d3.select('#modality-container').append('div').attr('class', 'row').html(response);
+                    new_modality.attr('style', 'border-top: 1px dashed gray;padding-top: 1em;')
+                },
+                error: function (error) {
+                    console.log("error", error);
+                }
+            })
+        })
     d3.select("#reset_config")
         .on("click", () => {
             reset_config()
@@ -221,7 +236,6 @@ function load_data(data, config) {
 
     function click_bar(d, i) {
         console.log(d)
-        // if(i != barcode.click_id){
         if (barcode.expanded_bars.indexOf(i) === -1) {
             if (d.death > 0 && (d.death - d.birth) <= barcode.threshold) {
                 barcode.expanded_bars.forEach(idx => {
