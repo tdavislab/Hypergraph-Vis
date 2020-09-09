@@ -618,6 +618,8 @@ def export():
     return "0"
 
 
-@app.route("/add_edge_modality", methods=['POST', 'GET'])
+@app.route("/add_edge_modality", methods=['POST'])
 def add_edge_modality():
-    return render_template("modality.html")
+    modality_counter = request.form['modality_counter']
+    print(modality_counter, 'chakuchaku')
+    return render_template("modality.html", modalindex=modality_counter)
