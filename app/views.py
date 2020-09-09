@@ -621,5 +621,53 @@ def export():
 @app.route("/add_edge_modality", methods=['POST'])
 def add_edge_modality():
     modality_counter = request.form['modality_counter']
-    print(modality_counter, 'chakuchaku')
     return render_template("modality.html", modalindex=modality_counter)
+
+
+@app.route("/modality_load_hgraph", methods=['POST'])
+def modality_load_hgraph():
+    filepath = path.join(APP_STATIC, "uploads/current_output.txt")
+
+    with open(filepath, 'r') as f:
+        jsdata = f.read()
+
+    hgraph, label_map = process_hypergraph(jsdata)
+    chgraph = collapse_hypergraph(hgraph)
+    lgraph = convert_to_line_graph(chgraph.incidence_dict)
+    dual_lgraph = compute_dual_line_graph(chgraph)
+    hgraph_dict = {hkey: list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
+    chgraph_dict = {hkey: list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
+
+    write_json_file(hgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph_original.json"))
+    write_json_file(chgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph.json"))
+
+    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    barcode_is = compute_barcode(lgraph)  # is: weight = 1/intersection_size
+    dual_barcode_is = compute_barcode(dual_lgraph)
+
+    write_json_file(barcode_is, path.join(APP_STATIC, "uploads/current_barcode_is.json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC, "uploads/current_dual_barcode_is.json"))
+
+    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index")  # ji: weight = 1/jaccard_index
+    dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
+    assign_hgraph_singletons(chgraph, lgraph['singletons'])
+
+    current_config = {'hgraph_type': 'collapsed_version', 's': 1, 'singleton_type': 'grey_out', 'variant': 'line_graph',
+                      'weight_type': 'jaccard_index'}
+
+    write_json_file(lgraph, path.join(APP_STATIC, "uploads/current_linegraph.json"))
+    write_json_file(dual_lgraph, path.join(APP_STATIC, "uploads/current_dual_linegraph.json"))
+
+    write_json_file(barcode_ji, path.join(APP_STATIC, "uploads/current_barcode_ji.json"))
+    write_json_file(dual_barcode_ji, path.join(APP_STATIC, "uploads/current_dual_barcode_ji.json"))
+    write_json_file(label_map, path.join(APP_STATIC, "uploads/current_label_map.json"))
+    write_json_file(current_config, path.join(APP_STATIC, "uploads/current_config.json"))
+
+    with open(path.join(APP_STATIC, "uploads/current_label_map.json")) as f:
+        label_map = json.load(f)
+
+    with open(path.join(APP_STATIC, "uploads/current_id2color.json")) as f:
+        id2color = json.load(f)
+
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, id2color=id2color)
