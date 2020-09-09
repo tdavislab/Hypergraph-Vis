@@ -93,7 +93,6 @@ function init() {
         })
     let s_range = document.getElementById("s-range")
     s_range.oninput = function () {
-        console.log(this.value)
         d3.select("#s-walk_input").property("max", this.value)
     }
 
@@ -208,7 +207,6 @@ function setup_modality(modality_counter) {
         type: "POST",
         url: "modality_load_hgraph",
         success: function (response) {
-            console.log(response);
             let config = get_current_config();
             modality_load_data(response, config, modality_counter);
         },
@@ -226,8 +224,6 @@ function modality_load_data(data, config, modality_counter) {
         d3.select("#vis-linegraph-title").html("Clique expansion")
         d3.select("#vis-simplified-linegraph-title").html("Simplified clique expansion")
     }
-    console.log(data)
-    console.log(config)
 
     let labels = data.labels;
     let singletons = data.line_data.singletons;
@@ -249,7 +245,6 @@ function modality_load_data(data, config, modality_counter) {
     assign_hyperedge_labels(data.hyper_data, data.line_data, labels);
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
-    console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = modality_initialize_graphs(data.hyper_data, data.line_data,
         data.barcode_data, config, color_dict, labels, modality_counter);
 
@@ -266,7 +261,6 @@ function modality_load_data(data, config, modality_counter) {
         .on("click", (d, i) => click_bar(d, i));
 
     function click_bar(d, i) {
-        console.log(d)
         if (barcode.expanded_bars.indexOf(i) === -1) {
             if (d.death > 0 && (d.death - d.birth) <= barcode.threshold) {
                 barcode.expanded_bars.forEach(idx => {
@@ -274,7 +268,6 @@ function modality_load_data(data, config, modality_counter) {
                 })
                 d3.select("#barcode" + i).classed("hover-light", true);
                 barcode.expanded_bars.push(i)
-                console.log(barcode.cc_dict)
                 // expanding
                 $.ajax({
                     type: "POST",
@@ -313,8 +306,6 @@ function modality_load_data(data, config, modality_counter) {
                         simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, hypergraph);
                         simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph,
                             "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
-
-                        console.log(cc_id)
 
                         d3.select("#simplified-hypergraph-node-" + cc_id[0].replace(/[,]/g, "").replace(/[|]/g, "")).classed("clicked", true);
                         d3.select("#simplified-hypergraph-node-" + cc_id[1].replace(/[,]/g, "").replace(/[|]/g, "")).classed("clicked", true);
@@ -421,8 +412,6 @@ function modality_load_data(data, config, modality_counter) {
         d3.select("#barcode-threshold").html("Current threshold: " + Math.round(threshold * 1000) / 1000);
         d3.selectAll(".barcode-rect-dim0").classed("hover-light", false).classed("unclickable", false);
         let cc_dict = linegraph.get_cc_dict(edgeid);
-        console.log("cc_dict", cc_dict)
-        // console.log(linegraph.singletons)
         barcode.cc_dict = cc_dict;
         hypergraph.cancel_faded();
         $.ajax({
@@ -432,7 +421,6 @@ function modality_load_data(data, config, modality_counter) {
             dataType: 'text',
             success: function (response) {
                 response = JSON.parse(response);
-                console.log(response)
                 let hgraph = response.hyper_data;
                 let lgraph = response.line_data;
                 // assign colors
@@ -467,8 +455,6 @@ function load_data(data, config) {
         d3.select("#vis-linegraph-title").html("Clique expansion")
         d3.select("#vis-simplified-linegraph-title").html("Simplified clique expansion")
     }
-    console.log(data)
-    console.log(config)
 
     let labels = data.labels;
     let singletons = data.line_data.singletons;
@@ -490,7 +476,6 @@ function load_data(data, config) {
     assign_hyperedge_labels(data.hyper_data, data.line_data, labels);
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
-    console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data,
         data.barcode_data, config, color_dict, labels);
 
@@ -507,7 +492,6 @@ function load_data(data, config) {
         .on("click", (d, i) => click_bar(d, i));
 
     function click_bar(d, i) {
-        console.log(d)
         if (barcode.expanded_bars.indexOf(i) === -1) {
             if (d.death > 0 && (d.death - d.birth) <= barcode.threshold) {
                 barcode.expanded_bars.forEach(idx => {
@@ -515,7 +499,6 @@ function load_data(data, config) {
                 })
                 d3.select("#barcode" + i).classed("hover-light", true);
                 barcode.expanded_bars.push(i)
-                console.log(barcode.cc_dict)
                 // expanding
                 $.ajax({
                     type: "POST",
@@ -555,7 +538,6 @@ function load_data(data, config) {
                         simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph,
                             "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
 
-                        console.log(cc_id)
 
                         d3.select("#simplified-hypergraph-node-" + cc_id[0].replace(/[,]/g, "").replace(/[|]/g, "")).classed("clicked", true);
                         d3.select("#simplified-hypergraph-node-" + cc_id[1].replace(/[,]/g, "").replace(/[|]/g, "")).classed("clicked", true);
@@ -662,7 +644,6 @@ function load_data(data, config) {
         d3.select("#barcode-threshold").html("Current threshold: " + Math.round(threshold * 1000) / 1000);
         d3.selectAll(".barcode-rect-dim0").classed("hover-light", false).classed("unclickable", false);
         let cc_dict = linegraph.get_cc_dict(edgeid);
-        console.log("cc_dict", cc_dict)
         // console.log(linegraph.singletons)
         barcode.cc_dict = cc_dict;
         hypergraph.cancel_faded();
@@ -673,7 +654,6 @@ function load_data(data, config) {
             dataType: 'text',
             success: function (response) {
                 response = JSON.parse(response);
-                console.log(response)
                 let hgraph = response.hyper_data;
                 let lgraph = response.line_data;
                 // assign colors
@@ -705,6 +685,7 @@ function modality_initialize_graphs(hyper_data, line_data, barcode_data, config,
     // clear_canvas();
     console.log('In mod init');
     let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph"+modality_counter, config, color_dict, labels);
+    console.log(hypergraph);
     let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph"+modality_counter, config.variant, config.weight_type, color_dict, labels);
     let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph"+modality_counter, config, color_dict, labels, hypergraph);
     let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph"+modality_counter, config.variant, config.weight_type, color_dict, labels);

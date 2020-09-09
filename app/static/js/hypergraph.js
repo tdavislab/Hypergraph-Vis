@@ -30,7 +30,7 @@ class Hypergraph {
         let svg_selector = "#" + svg_id + "-svg";
         if (!isNaN(svg_id.charAt(svg_id.length - 1))) {
             let insert_pos = svg_id.length - 1;
-            svg_selector = svg_id.substring(0, insert_pos) + "-svg" + svg_id.substring(insert_pos);
+            svg_selector = '#' + svg_id.substring(0, insert_pos) + "-svg" + svg_id.substring(insert_pos);
         }
 
         console.log(svg_selector);
@@ -38,6 +38,7 @@ class Hypergraph {
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width)
             .attr("height", this.svg_height);
+        console.log('This.svg', this.svg);
         this.svg_g = this.svg.append("g");
 
         this.links_group = this.svg_g.append("g")
