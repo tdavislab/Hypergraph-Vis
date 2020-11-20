@@ -2,6 +2,7 @@ class Barcode {
     constructor(barcode_data, linegraph, modality_counter = '') {
         this.barcode = barcode_data;
         this.linegraph = linegraph;
+        this.modality_counter = modality_counter;
 
         this.svg = d3.select("#barcode-svg" + modality_counter);
         this.svg_width = parseFloat(d3.select("#vis-barcode" + modality_counter).style("width"));
@@ -110,7 +111,7 @@ class Barcode {
             // .attr("x", 0)
             // .attr("y",1)
             .attr("class", "slider hover-darken")
-            .attr("id", "barcode-slider");
+            .attr("id", "barcode-slider" + this.modality_counter);
 
 
         this.slider_line
@@ -120,7 +121,7 @@ class Barcode {
             .attr("y2", this.svg_height - this.svg_margin.bottom * 2)
             .attr("stroke", "grey")
             .attr("stroke-width", 1)
-            .attr("id", "barcode-line")
+            .attr("id", "barcode-line" + this.modality_counter);
 
         const zoom_handler = d3.zoom()
             .on("zoom", zoom_actions);
@@ -138,7 +139,7 @@ class Barcode {
         }
 
         function dragged(d) {
-            d3.select("#barcode-slider").attr()
+            d3.select("#barcode-slider" + this.modality_counter).attr()
         }
     }
 

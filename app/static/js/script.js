@@ -392,10 +392,10 @@ function modality_load_data(data, config, modality_counter) {
 
     function dragged() {
         let trans_dist = clamp(d3.event.x, barcode.svg_margin.left, barcode.width_scale.range()[1]) - barcode.svg_margin.left;
-        d3.select("#barcode-line").attr("x1", trans_dist)
+        d3.select("#barcode-line" + modality_counter).attr("x1", trans_dist)
             .attr("x2", trans_dist)
             .attr("y1", Math.min(Math.max(0, d3.event.y), barcode.svg_height - 20));
-        d3.select("#barcode-slider").attr("x", trans_dist).attr("y", Math.min(Math.max(0, d3.event.y), barcode.svg_height - 20));
+        d3.select("#barcode-slider" + modality_counter).attr("x", trans_dist).attr("y", Math.min(Math.max(0, d3.event.y), barcode.svg_height - 20));
 
     }
 
