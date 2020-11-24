@@ -8,10 +8,6 @@ class Hypergraph{
         this.color_dict = color_dict;
         this.labels = labels;
 
-        console.log("links",this.links)
-        console.log("nodes",this.nodes)
-        console.log(color_dict)
-
         this.nodes_dict = {};
         this.nodes.forEach(node=>{
             node.links_idx = {"source":[], "target":[]}; 
@@ -95,7 +91,6 @@ class Hypergraph{
             .rollup(d => d.map(node => [node.target.x, node.target.y]))
             .entries(this.links_new)
         let groups_dict = Object.assign({}, ...groups.map(s => ({[s.key]: s.value})));
-        console.log(groups_dict)
         this.svg.selectAll(".convex_hull").attr("d", d=>this.groupPath(groups_dict[d.key]));
     }
 
@@ -486,7 +481,6 @@ class Hypergraph{
 
         function click(key) {
             let he_list = key.split("|");
-            // console.log(key)
             d3.select("#hypergraph-svg").selectAll(".convex_hull").classed("faded", d => {
                 if(he_list.indexOf(d.key.split("|")[0]) != -1){
                     return false;
@@ -643,7 +637,6 @@ class Hypergraph{
                     } else { return true; }
                 })
                 d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded", d=>{
-                    // console.log(d)
                     if(d.id.split("|").indexOf(v_list[0])!=-1){
                         return false;
                     } else { return true; }

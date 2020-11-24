@@ -1,5 +1,7 @@
 init();
 
+let MODALITY_COUNTER = 1;
+
 function init(){
     // Initialization 
     read_hgraph_text("hypergraph_samples");
@@ -7,6 +9,25 @@ function init(){
     $("#import").click(function(){
         $("#files").click();
     });
+
+    d3.select("#add-modality")
+        .on("click", () => {
+            $.ajax({
+                type: "POST",
+                url: "/add_modality",
+                data: {'modality_counter': MODALITY_COUNTER},
+                success: function (response) {
+                    d3.select('#modality-container').append('br')
+                    let new_modality = d3.select('#modality-container').append('div').attr('class', 'row').html(response);
+                    new_modality.attr('style', 'border-top: 1px dashed gray;padding-top: 1em;');
+                    // setup_modality(MODALITY_COUNTER);
+                    MODALITY_COUNTER += 1;
+                },
+                error: function (error) {
+                    console.log("error", error);
+                }
+            });
+        });
 
     d3.select("#files")
         .on("change", ()=>{
@@ -71,7 +92,6 @@ function init(){
         })
     let s_range = document.getElementById("s-range")
     s_range.oninput = function(){
-        console.log(this.value)
         d3.select("#s-walk_input").property("max", this.value)
     }
 
@@ -180,8 +200,6 @@ function load_data(data, config) {
         d3.select("#vis-linegraph-title").html("Clique expansion")
         d3.select("#vis-simplified-linegraph-title").html("Simplified clique expansion")
     }
-    console.log(data)
-    console.log(config)
 
     let labels = data.labels;
     let singletons = data.line_data.singletons;
@@ -203,7 +221,6 @@ function load_data(data, config) {
     assign_hyperedge_labels(data.hyper_data, data.line_data, labels);
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
-    console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels);
 
     d3.select("#visual-encoding-switch")
@@ -236,8 +253,6 @@ function load_data(data, config) {
         .on("click", (d,i)=>click_bar(d,i));
 
     function click_bar(d,i){
-        console.log(d)
-        // if(i != barcode.click_id){
         if(barcode.expanded_bars.indexOf(i) === -1){
             if(d.death > 0 && (d.death-d.birth)<=barcode.threshold){
                 barcode.expanded_bars.forEach(idx => {
@@ -245,7 +260,6 @@ function load_data(data, config) {
                 })
                 d3.select("#barcode"+i).classed("hover-light", true);
                 barcode.expanded_bars.push(i)
-                console.log(barcode.cc_dict)
                 // expanding
                 $.ajax({
                     type: "POST",
@@ -278,7 +292,6 @@ function load_data(data, config) {
                         simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, hypergraph); 
                         simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
 
-                        console.log(cc_id)
 
                         d3.select("#simplified-hypergraph-node-"+cc_id[0].replace(/[,]/g,"").replace(/[|]/g,"")).classed("clicked", true);
                         d3.select("#simplified-hypergraph-node-"+cc_id[1].replace(/[,]/g,"").replace(/[|]/g,"")).classed("clicked", true);
@@ -374,8 +387,6 @@ function load_data(data, config) {
         d3.select("#barcode-threshold").html("Current threshold: "+Math.round(threshold*1000)/1000);
         d3.selectAll(".barcode-rect-dim0").classed("hover-light", false).classed("unclickable", false);
         let cc_dict = linegraph.get_cc_dict(edgeid);
-        console.log("cc_dict", cc_dict)
-        // console.log(linegraph.singletons)
         barcode.cc_dict = cc_dict;
         hypergraph.cancel_faded();
         $.ajax({
@@ -385,7 +396,6 @@ function load_data(data, config) {
             dataType:'text',
             success: function (response) {
                 response = JSON.parse(response);
-                console.log(response)
                 let hgraph = response.hyper_data;
                 let lgraph = response.line_data;
                 // assign colors
@@ -627,4 +637,3 @@ function clear_graphs(){
     $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
     $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
 }
-    

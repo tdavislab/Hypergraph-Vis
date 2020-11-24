@@ -29,6 +29,7 @@ def process_graph_edges(edge_str: str):
     converted_edge_str = edge_str[1:-1].replace('{', '[').replace('}', ']')
     return json.loads('{' + converted_edge_str + '}')
 
+
 def process_hypergraph(hyper_data: str):
     """
     Returns hgraph, label dict
@@ -44,7 +45,7 @@ def process_hypergraph(hyper_data: str):
         if hyperedge != "":
             if hyperedge not in label2id.keys():
                 hyperedge_label = re.sub('[\'\s]+', '', hyperedge)
-                new_id = 'he'+str(he_id)
+                new_id = 'he' + str(he_id)
                 he_id += 1
                 label2id[hyperedge_label] = new_id
                 hyperedge = new_id
@@ -53,7 +54,7 @@ def process_hypergraph(hyper_data: str):
                 v_label = re.sub('[\'\s]+', '', v)
                 if v_label != "":
                     if v_label not in label2id.keys():
-                        new_id = 'v'+str(v_id)
+                        new_id = 'v' + str(v_id)
                         v_id += 1
                         label2id[v_label] = new_id
                         vertices_new.append(new_id)
@@ -65,9 +66,10 @@ def process_hypergraph(hyper_data: str):
                 hgraph[hyperedge] = vertices
             else:
                 hgraph[hyperedge] += vertices
-    label_map = {ID:label for label, ID in label2id.items()}
+    label_map = {ID: label for label, ID in label2id.items()}
 
     return hnx.Hypergraph(hgraph), label_map
+
 
 def collapse_hypergraph(hgraph):
     chgraph = hgraph.collapse_edges()
@@ -80,7 +82,7 @@ def collapse_hypergraph(hgraph):
         for he in hedges:
             hkey_new += he + "|"
         hkey_new = hkey_new[:-1]
-        vertices = [list(v) for  v in chgraph[hkey]]
+        vertices = [list(v) for v in chgraph[hkey]]
         vertices_new = []
         for v_list in vertices:
             v_new = ""
@@ -90,7 +92,8 @@ def collapse_hypergraph(hgraph):
             vertices_new.append(v_new)
         chgraph_new[hkey_new] = vertices_new
     return hnx.Hypergraph(chgraph_new)
-    
+
+
 def process_hypergraph_from_csv(graph_file: str):
     hgraph = {}
 
@@ -104,6 +107,7 @@ def process_hypergraph_from_csv(graph_file: str):
             else:
                 hgraph[hyperedge] += vertices
     return hgraph
+
 
 def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
     # Line-graph is a NetworkX graph
@@ -133,7 +137,8 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
                 union_size = len(set(vertices1) | set(vertices2))
                 jaccard_index = intersection_size / union_size
                 if intersection_size >= s:
-                    line_graph.add_edge(node1, node2, intersection_size={'value':str(intersection_size)}, jaccard_index={'value':str(jaccard_index)})
+                    line_graph.add_edge(node1, node2, intersection_size={'value': str(intersection_size)},
+                                        jaccard_index={'value': str(jaccard_index)})
                     non_singletons.append(node1)
                     non_singletons.append(node2)
                     non_singletons += (list(set(vertices1)) + list(set(vertices2)))
@@ -146,10 +151,12 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
         delete_lingraph_singletons(line_graph)
     return line_graph
 
+
 def compute_dual_line_graph(hypergraph, s=1, singleton_type="grey_out"):
     dual_hgraph = hypergraph.dual()
     dual_line_graph = convert_to_line_graph(dual_hgraph.incidence_dict, s, singleton_type)
     return dual_line_graph
+
 
 def assign_hgraph_singletons(hgraph, singletons, singleton_type="grey_out"):
     if singleton_type == "grey_out":
@@ -158,13 +165,15 @@ def assign_hgraph_singletons(hgraph, singletons, singleton_type="grey_out"):
                 node['if_singleton'] = True
             else:
                 node['if_singleton'] = False
-    else: # singleton_type == "filtering"
+    else:  # singleton_type == "filtering"
         # 1. delete singleton nodes
         nodes_new = [node for node in hgraph['nodes'] if node['id'].replace("|", "") not in singletons]
         hgraph['nodes'] = nodes_new
         # 2. delete singleton edges
-        links_new = [link for link in hgraph['links'] if (link['source'].replace("|", "") not in singletons and link['target'].replace("|", "") not in singletons)]
+        links_new = [link for link in hgraph['links'] if
+                     (link['source'].replace("|", "") not in singletons and link['target'].replace("|", "") not in singletons)]
         hgraph['links'] = links_new
+
 
 def delete_lingraph_singletons(lgraph):
     # 1. delete singleton nodes
@@ -175,7 +184,8 @@ def delete_lingraph_singletons(lgraph):
         node['vertices'] = vertices_new
     lgraph['nodes'] = nodes_new
     # 3. delete singleton edges
-    links_new = [link for link in lgraph['links'] if (link['source'].replace("|", "") not in lgraph['singletons'] and link['target'].replace("|", "") not in lgraph['singletons'])]
+    links_new = [link for link in lgraph['links'] if
+                 (link['source'].replace("|", "") not in lgraph['singletons'] and link['target'].replace("|", "") not in lgraph['singletons'])]
     lgraph['links'] = links_new
 
 
@@ -183,6 +193,7 @@ def find_cc_index(components, vertex_id):
     for i in range(len(components)):
         if vertex_id in components[i]:
             return i
+
 
 def compute_barcode(graph_data, weight_col='intersection_size'):
     """
@@ -218,16 +229,17 @@ def compute_barcode(graph_data, weight_col='intersection_size'):
             link[weight_col]['cc_list'] = components.copy()
             barcode.append({'birth': 0, 'death': weight, 'edge': link})
     # In the end, there might be more than one independent connected components with death=Infinite 
-    for cc in components: 
+    for cc in components:
         barcode.append({'birth': 0, 'death': -1, 'edge': 'undefined'})
     return barcode
+
 
 def recover_linegraph(hgraph_dict, singletons, s=1):
     line_graph = nx.Graph()
     [line_graph.add_node(edge, vertices=list(vertices)) for edge, vertices in hgraph_dict.items()]
 
     node_list = list(hgraph_dict.keys())
-    
+
     for node_idx_1, node1 in enumerate(node_list):
         for node_idx_2, node2 in enumerate(node_list[node_idx_1 + 1:]):
             if node1.replace("|", "") not in singletons and node2.replace("|", "") not in singletons:
@@ -238,12 +250,14 @@ def recover_linegraph(hgraph_dict, singletons, s=1):
                     union_size = len(set(vertices1) | set(vertices2))
                     jaccard_index = intersection_size / union_size
                     if intersection_size >= s:
-                        line_graph.add_edge(node1, node2, intersection_size={'value':str(intersection_size)}, jaccard_index={'value':str(jaccard_index)})
+                        line_graph.add_edge(node1, node2, intersection_size={'value': str(intersection_size)},
+                                            jaccard_index={'value': str(jaccard_index)})
     line_graph = nx.readwrite.json_graph.node_link_data(line_graph)
     return line_graph
 
+
 def write_output_hypergraph(hgraph_dict, output_path):
-    with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
+    with open(path.join(APP_STATIC, "uploads/current_label_map.json")) as f:
         label_map = json.load(f)
 
     with open(output_path, 'w') as f:
@@ -269,10 +283,12 @@ def write_output_hypergraph(hgraph_dict, output_path):
             line += "\n"
             f.write(line)
 
+
 def write_json_file(json_dict, path):
     # Write to a json file
     with open(path, 'w') as f:
-        f.write(json.dumps(json_dict, indent=4))   
+        f.write(json.dumps(json_dict, indent=4))
+
 
 def load_graphs(config):
     hgraph_type = config['hgraph_type']
@@ -280,25 +296,26 @@ def load_graphs(config):
     weight_type = config['weight_type']
     if hgraph_type == "collapsed_version":
         f_hgraph = ""
-    else: #hgraph_type == "original_version"
+    else:  # hgraph_type == "original_version"
         f_hgraph = "_original"
     if variant == "line_graph":
         f_variant = ""
-    else: # variant == "clique_expansion"
+    else:  # variant == "clique_expansion"
         f_variant = "_dual"
     if weight_type == "intersection_size":
         f_weight = "_is"
-    else: # weight_type == "jaccard_index"
+    else:  # weight_type == "jaccard_index"
         f_weight = "_ji"
-    with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
+    with open(path.join(APP_STATIC, "uploads/current_hypergraph" + f_hgraph + ".json")) as f:
         hgraph = json.load(f)
-    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_linegraph"+f_hgraph+".json")) as f:
+    with open(path.join(APP_STATIC, "uploads/current" + f_variant + "_linegraph" + f_hgraph + ".json")) as f:
         lgraph = json.load(f)
-    with open(path.join(APP_STATIC,"uploads/current"+f_variant+"_barcode"+f_weight+f_hgraph+".json")) as f:
+    with open(path.join(APP_STATIC, "uploads/current" + f_variant + "_barcode" + f_weight + f_hgraph + ".json")) as f:
         barcode = json.load(f)
     hgraph = nx.readwrite.json_graph.node_link_data(hnx.Hypergraph(hgraph).bipartite())
     assign_hgraph_singletons(hgraph, lgraph['singletons'])
     return hgraph, lgraph, barcode
+
 
 def compute_graphs(config):
     hgraph_type = config['hgraph_type']
@@ -311,7 +328,7 @@ def compute_graphs(config):
     elif hgraph_type == "original_version":
         f_hgraph = "_original"
     # 1. load hgraph
-    with open(path.join(APP_STATIC,"uploads/current_hypergraph"+f_hgraph+".json")) as f:
+    with open(path.join(APP_STATIC, "uploads/current_hypergraph" + f_hgraph + ".json")) as f:
         hgraph = json.load(f)
     hgraph = hnx.Hypergraph(hgraph)
     lgraph = convert_to_line_graph(hgraph.incidence_dict, s=s, singleton_type=singleton_type)
@@ -320,36 +337,36 @@ def compute_graphs(config):
 
     barcode_is = compute_barcode(lgraph)
     dual_barcode_is = compute_barcode(dual_lgraph)
-    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is"+f_hgraph+".json"))
-    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is"+f_hgraph+".json"))
+    write_json_file(barcode_is, path.join(APP_STATIC, "uploads/current_barcode_is" + f_hgraph + ".json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC, "uploads/current_dual_barcode_is" + f_hgraph + ".json"))
 
-    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index") # ji: weight = 1/jaccard_index
+    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index")  # ji: weight = 1/jaccard_index
     dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
 
-    write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph"+f_hgraph+".json"))
-    write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph"+f_hgraph+".json"))
+    write_json_file(lgraph, path.join(APP_STATIC, "uploads/current_linegraph" + f_hgraph + ".json"))
+    write_json_file(dual_lgraph, path.join(APP_STATIC, "uploads/current_dual_linegraph" + f_hgraph + ".json"))
 
-    
-    write_json_file(barcode_ji, path.join(APP_STATIC,"uploads/current_barcode_ji"+f_hgraph+".json"))
-    write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji"+f_hgraph+".json"))
+    write_json_file(barcode_ji, path.join(APP_STATIC, "uploads/current_barcode_ji" + f_hgraph + ".json"))
+    write_json_file(dual_barcode_ji, path.join(APP_STATIC, "uploads/current_dual_barcode_ji" + f_hgraph + ".json"))
     if variant == "clique_expansion":
         lgraph = dual_lgraph
         if weight_type == "intersection_size":
-            with open(path.join(APP_STATIC,"uploads/current_dual_barcode_is"+f_hgraph+".json")) as f:
+            with open(path.join(APP_STATIC, "uploads/current_dual_barcode_is" + f_hgraph + ".json")) as f:
                 barcode = json.load(f)
         elif weight_type == "jaccard_index":
-            with open(path.join(APP_STATIC,"uploads/current_dual_barcode_ji"+f_hgraph+".json")) as f:
+            with open(path.join(APP_STATIC, "uploads/current_dual_barcode_ji" + f_hgraph + ".json")) as f:
                 barcode = json.load(f)
     else:
         if weight_type == "intersection_size":
-            with open(path.join(APP_STATIC,"uploads/current_barcode_is"+f_hgraph+".json")) as f:
+            with open(path.join(APP_STATIC, "uploads/current_barcode_is" + f_hgraph + ".json")) as f:
                 barcode = json.load(f)
         elif weight_type == "jaccard_index":
-            with open(path.join(APP_STATIC,"uploads/current_barcode_ji"+f_hgraph+".json")) as f:
+            with open(path.join(APP_STATIC, "uploads/current_barcode_ji" + f_hgraph + ".json")) as f:
                 barcode = json.load(f)
     assign_hgraph_singletons(hgraph, lgraph['singletons'], singleton_type=singleton_type)
 
     return hgraph, lgraph, barcode
+
 
 @app.route('/')
 @app.route('/Hypergraph-Vis-app')
@@ -363,7 +380,7 @@ def import_file():
     for f in os.listdir(path.join(APP_STATIC, "uploads/")):
         if f.startswith('current'):
             os.remove(path.join(APP_STATIC, "uploads", f))
-    
+
     jsdata = request.get_data().decode('utf-8')
     if jsdata == "hypergraph_samples":
         with open(path.join(APP_STATIC, "uploads/DNS_hypergraph_samples_new.txt"), 'r') as f:
@@ -376,34 +393,36 @@ def import_file():
     lgraph = convert_to_line_graph(chgraph.incidence_dict)
     dual_lgraph = compute_dual_line_graph(chgraph)
 
-    hgraph_dict = {hkey:list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
-    chgraph_dict = {hkey:list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
-    write_json_file(hgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph_original.json"))
-    write_json_file(chgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph.json"))
+    hgraph_dict = {hkey: list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
+    chgraph_dict = {hkey: list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
+    write_json_file(hgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph_original.json"))
+    write_json_file(chgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph.json"))
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
-    
-    barcode_is = compute_barcode(lgraph) # is: weight = 1/intersection_size
-    dual_barcode_is = compute_barcode(dual_lgraph)
-    write_json_file(barcode_is, path.join(APP_STATIC,"uploads/current_barcode_is.json"))
-    write_json_file(dual_barcode_is, path.join(APP_STATIC,"uploads/current_dual_barcode_is.json"))
 
-    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index") # ji: weight = 1/jaccard_index
+    barcode_is = compute_barcode(lgraph)  # is: weight = 1/intersection_size
+    dual_barcode_is = compute_barcode(dual_lgraph)
+    write_json_file(barcode_is, path.join(APP_STATIC, "uploads/current_barcode_is.json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC, "uploads/current_dual_barcode_is.json"))
+
+    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index")  # ji: weight = 1/jaccard_index
     dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
 
     assign_hgraph_singletons(chgraph, lgraph['singletons'])
 
-    current_config = {'hgraph_type':'collapsed_version', 's':1, 'singleton_type':'grey_out', 'variant':'line_graph', 'weight_type':'jaccard_index'}
+    current_config = {'hgraph_type': 'collapsed_version', 's': 1, 'singleton_type': 'grey_out', 'variant': 'line_graph',
+                      'weight_type': 'jaccard_index'}
 
-    write_json_file(lgraph, path.join(APP_STATIC,"uploads/current_linegraph.json"))
-    write_json_file(dual_lgraph, path.join(APP_STATIC,"uploads/current_dual_linegraph.json"))
-    
-    write_json_file(barcode_ji, path.join(APP_STATIC,"uploads/current_barcode_ji.json"))
-    write_json_file(dual_barcode_ji, path.join(APP_STATIC,"uploads/current_dual_barcode_ji.json"))
-    write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
-    write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
+    write_json_file(lgraph, path.join(APP_STATIC, "uploads/current_linegraph.json"))
+    write_json_file(dual_lgraph, path.join(APP_STATIC, "uploads/current_dual_linegraph.json"))
+
+    write_json_file(barcode_ji, path.join(APP_STATIC, "uploads/current_barcode_ji.json"))
+    write_json_file(dual_barcode_ji, path.join(APP_STATIC, "uploads/current_dual_barcode_ji.json"))
+    write_json_file(label_map, path.join(APP_STATIC, "uploads/current_label_map.json"))
+    write_json_file(current_config, path.join(APP_STATIC, "uploads/current_config.json"))
 
     return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map)
+
 
 @app.route('/reload_graphs', methods=['POST', 'GET'])
 def reload_graphs():
@@ -411,8 +430,8 @@ def reload_graphs():
     Reload graphs and barcode according to the current configuration
     """
     current_config = json.loads(request.get_data())
-    with open(path.join(APP_STATIC,"uploads/current_config.json")) as f:
-            previous_config = json.load(f)
+    with open(path.join(APP_STATIC, "uploads/current_config.json")) as f:
+        previous_config = json.load(f)
     current_s = int(current_config['s'])
     current_singleton_type = current_config['singleton_type']
     previous_s = int(previous_config['s'])
@@ -422,25 +441,26 @@ def reload_graphs():
     if current_s == previous_s and current_singleton_type == previous_singleton_type:
         if hgraph_type == 'collapsed_version':
             hgraph, lgraph, barcode = load_graphs(current_config)
-        else: # hgraph_type == 'original_version'
-            if path.exists(path.join(APP_STATIC,"uploads/current_linegraph_original.json")):
+        else:  # hgraph_type == 'original_version'
+            if path.exists(path.join(APP_STATIC, "uploads/current_linegraph_original.json")):
                 hgraph, lgraph, barcode = load_graphs(current_config)
             else:
                 hgraph, lgraph, barcode = compute_graphs(current_config)
-    
+
     # else, recompute graphs and barcodes
     else:
         hgraph, lgraph, barcode = compute_graphs(current_config)
 
-    write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
+    write_json_file(current_config, path.join(APP_STATIC, "uploads/current_config.json"))
 
-    with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
+    with open(path.join(APP_STATIC, "uploads/current_label_map.json")) as f:
         label_map = json.load(f)
 
-    with open(path.join(APP_STATIC,"uploads/current_id2color.json")) as f:
+    with open(path.join(APP_STATIC, "uploads/current_id2color.json")) as f:
         id2color = json.load(f)
     return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id2color=id2color)
-    
+
+
 @app.route('/hgraph_expansion', methods=['POST', 'GET'])
 def hgraph_expansion():
     jsdata = json.loads(request.get_data())
@@ -457,15 +477,16 @@ def hgraph_expansion():
 
     for cc_key in cc_dict:
         hyperedge_keys = cc_key.split(",")
-        if len(set(hyperedge_keys) & set(source_cc)) > 0 and len(set(hyperedge_keys) & set(target_cc))>0:
-        # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
+        if len(set(hyperedge_keys) & set(source_cc)) > 0 and len(set(hyperedge_keys) & set(target_cc)) > 0:
+            # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
             print(hyperedge_keys, source_cc, target_cc)
             cc1_id_list = []
             cc2_id_list = []
             for he in hyperedge_keys:
                 if he in source_cc:
                     cc1_id_list.append(he)
-                else: cc2_id_list.append(he)
+                else:
+                    cc2_id_list.append(he)
             cc1_id = ""
             cc2_id = ""
             cc1 = []
@@ -486,9 +507,9 @@ def hgraph_expansion():
             cc_dict[cc1_id] = cc1
             cc_dict[cc2_id] = cc2
             break
-    
-    hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
-    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+
+    hgraph_dict = {he.replace(",", "|"): v_list for he, v_list in cc_dict.items()}
+    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC, "uploads/current_output.txt"))
 
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
@@ -503,6 +524,7 @@ def hgraph_expansion():
     # cc2_id = cc2_id.replace(",","|")
     cc_removed = cc_key
     return jsonify(hyper_data=chgraph, cc_dict=cc_dict, line_data=lgraph, cc_id=[cc1_id, cc2_id, cc_removed])
+
 
 @app.route('/undo_hgraph_expansion', methods=['POST', 'GET'])
 def undo_hgraph_expansion():
@@ -526,12 +548,12 @@ def undo_hgraph_expansion():
         for v in hyperedges2vertices[he]:
             if v not in cc_list:
                 cc_list.append(v)
-    cc_dict [cc_id] = cc_list
-    del cc_dict [cc1_id]
+    cc_dict[cc_id] = cc_list
+    del cc_dict[cc1_id]
     del cc_dict[cc2_id]
-    
-    hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
-    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+
+    hgraph_dict = {he.replace(",", "|"): v_list for he, v_list in cc_dict.items()}
+    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC, "uploads/current_output.txt"))
 
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
@@ -542,7 +564,7 @@ def undo_hgraph_expansion():
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
     if singleton_type == "grey_out":
         assign_hgraph_singletons(chgraph, singletons)
-    return jsonify(hyper_data=chgraph, cc_dict=cc_dict, line_data=lgraph)    
+    return jsonify(hyper_data=chgraph, cc_dict=cc_dict, line_data=lgraph)
 
 
 @app.route('/simplified_hgraph', methods=['POST', 'GET'])
@@ -554,10 +576,10 @@ def compute_simplified_hgraph():
 
     singletons = jsdata['singletons']
     cc_dict = jsdata['cc_dict']
-    
-    hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
 
-    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+    hgraph_dict = {he.replace(",", "|"): v_list for he, v_list in cc_dict.items()}
+
+    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC, "uploads/current_output.txt"))
 
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
@@ -571,28 +593,32 @@ def compute_simplified_hgraph():
     return jsonify(hyper_data=chgraph, line_data=lgraph)
 
 
-
 @app.route('/id2color', methods=['POST', 'GET'])
 def save_id2color():
     jsdata = json.loads(request.get_data())
-    write_json_file(jsdata, path.join(APP_STATIC,"uploads/current_id2color.json"))
+    write_json_file(jsdata, path.join(APP_STATIC, "uploads/current_id2color.json"))
     return 'saved'
+
 
 @app.route('/export', methods=['POST', 'GET'])
 def export():
     jsdata = request.form.get('javascript_data')
     print(jsdata)
     if jsdata == "\"\"":
-        filepath = path.join(APP_STATIC,"downloads/output.txt")
+        filepath = path.join(APP_STATIC, "downloads/output.txt")
     else:
-        filepath = path.join(APP_STATIC,"downloads/"+jsdata+".txt")
+        filepath = path.join(APP_STATIC, "downloads/" + jsdata + ".txt")
     print(filepath)
-    if path.exists(path.join(APP_STATIC,"uploads/current_output.txt")):
-        print("cp "+path.join(APP_STATIC,"uploads/current_output.txt")+" "+filepath)
+    if path.exists(path.join(APP_STATIC, "uploads/current_output.txt")):
+        print("cp " + path.join(APP_STATIC, "uploads/current_output.txt") + " " + filepath)
         os.system("pwd")
-        os.system("cp "+path.join(APP_STATIC,"uploads/current_output.txt")+" "+filepath)
+        os.system("cp " + path.join(APP_STATIC, "uploads/current_output.txt") + " " + filepath)
     else:
-        os.system("cp "+path.join(APP_STATIC,"uploads/current_hypergraph.txt")+" "+filepath)
+        os.system("cp " + path.join(APP_STATIC, "uploads/current_hypergraph.txt") + " " + filepath)
     return "0"
 
 
+@app.route('/add_modality', methods=['POST', 'GET'])
+def add_modality():
+    modality_counter = request.form['modality_counter']
+    return render_template("modality.html", modal_index=modality_counter)

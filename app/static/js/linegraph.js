@@ -7,7 +7,6 @@ class Linegraph{
         this.variant = variant;
         this.color_dict = color_dict;
         this.labels = labels;
-        console.log(this.nodes, this.links)
 
         this.nodes_dict = {};
         this.nodes.forEach(n=>{
@@ -22,9 +21,7 @@ class Linegraph{
             this.nodes_dict[l.source].links_idx.source.push(i);
             this.nodes_dict[l.target].links_idx.target.push(i);
         }
-        console.log(this.nodes_dict, this.links_dict)
 
-        // console.log(this.links, this.nodes);
 
         this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'));
         let window_height = window.innerHeight;
@@ -40,7 +37,6 @@ class Linegraph{
         this.svg_g = this.svg.append("g");
 
         this.weight = weight;
-        console.log(this.weight)
         this.edge_scale = d3.scaleLinear()
             .domain(d3.extent(this.links.map(d => parseFloat(d[this.weight].value))))
             .range([1, 10]);
@@ -293,7 +289,6 @@ class Linegraph{
         }
 
         function dragged(d) {
-            // console.log(d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")))
             d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
             d3.select("#"+that.svg_id+"-ring-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
             d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).attr("cx", d3.event.x).attr("cy", d3.event.y);
@@ -584,8 +579,6 @@ class Linegraph{
         let node_id_width = 1/8*cell_width;
         let he_width = 7/8*cell_width / this.links.length;
 
-        console.log(this.links)
-
         let bg = this.border_group.selectAll("line").data(this.nodes.concat(["bottom"]));
         bg = bg.enter().append("line").merge(bg)
             .attr("class", "matrix_border")
@@ -709,11 +702,9 @@ class Linegraph{
 
     graph_expansion(bar){
         let edge_id = bar.edge.source+"-"+bar.edge.target;
-        console.log(edge_id)
         let persistence = bar.death - bar.birth;
         let source_cc = this.links_dict[edge_id][this.weight].nodes_subsets.source_cc;
         let target_cc = this.links_dict[edge_id][this.weight].nodes_subsets.target_cc;
-        console.log(source_cc, target_cc)
         source_cc.forEach(snode=>{
             target_cc.forEach(tnode=>{
                 let eid1 = snode+"-"+tnode;

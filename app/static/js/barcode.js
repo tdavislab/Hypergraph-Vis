@@ -2,7 +2,6 @@ class Barcode{
     constructor(barcode_data, linegraph){
         this.barcode = barcode_data;
         this.linegraph = linegraph;
-        console.log(this.barcode)
 
         this.svg = d3.select("#barcode-svg");
         this.svg_width = parseFloat(d3.select("#vis-barcode").style("width"));
@@ -41,8 +40,6 @@ class Barcode{
         this.cc_dict = this.linegraph.get_cc_dict(undefined);
         this.expanded_bars = [];
         this.expanded_bars_dict = {};
-        // console.log(this.connected_components)
-        // this.linegraph.compute_simplified_hypergraph(connected_components);
     }
 
     draw_barcode(){
@@ -89,14 +86,6 @@ class Barcode{
                     d3.select("#barcode"+i).classed("hover-light", false);
                 }
             })
-            // .classed("hover-darken", true)
-            // .on("click", d=>{
-            //     console.log(d)
-            //     // let edge_id = d.edge.source+"-"+d.edge.target;
-            //     if(d.death > 0){
-            //         // this.linegraph.graph_expansion(d);
-            //     }
-            // });
 
         let xAxis = d3.axisBottom(this.width_scale).ticks(5);
         this.xAxis_group
@@ -132,7 +121,6 @@ class Barcode{
 
         let that = this;
         function zoom_actions() {
-            console.log(d3.event)
             that.svg_g.attr("transform", d3.event.transform);
         }
 
