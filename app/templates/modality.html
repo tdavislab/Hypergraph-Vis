@@ -1,6 +1,6 @@
 <div id=modality-container{{ modal_index }} class="container-fluid">
     <div class="row">
-        <div id="barcode-area{{ modal_index }}" class="col-sm-2 barcode-container" >
+        <div id="barcode-area{{ modal_index }}" class="col-sm-2 barcode-container">
             <div class="group-title">Barcode</div>
             <div id="barcode-threshold{{ modal_index }}">
                 Current threshold: 0
@@ -64,32 +64,33 @@
                         <div class="block-inner-group">
                             <div class="toggle-group">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="visual-encoding-switch{{ modal_index }}" checked>
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"
+                                           id="visual-encoding-switch{{ modal_index }}" checked>
                                     <label class="onoffswitch-label" for="visual-encoding-switch{{ modal_index }}">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
                                     </label>
                                 </div>
-                                <div class="toggle-label" id="visual-encoding-switch-label{{ modal_index }}"> Graph encoding </div>
+                                <div class="toggle-label" id="visual-encoding-switch-label{{ modal_index }}"> Graph encoding</div>
                             </div>
                         </div>
                         <div class="block-inner-group">
-                                <div class="row">
-                                    <div class="col-1">
-                                        <input type="checkbox" id="hgraph-labels{{ modal_index }}" class="customCheckBox">
-                                    </div>
-                                    <div class="col-10">
-                                        <label>Show <a class="group-title">labels</a></label>
-                                    </div>
+                            <div class="row">
+                                <div class="col-1">
+                                    <input type="checkbox" id="hgraph-labels{{ modal_index }}" class="customCheckBox">
                                 </div>
-                                <div class="row">
-                                    <div class="col-1">
-                                        <input type="checkbox" id="hide-hyperedge-node{{ modal_index }}" class="customCheckBox">
-                                    </div>
-                                    <div class="col-10">
-                                        <label>Hide hyperedge nodes</label>
-                                    </div>
+                                <div class="col-10">
+                                    <label>Show <a class="group-title">labels</a></label>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                    <input type="checkbox" id="hide-hyperedge-node{{ modal_index }}" class="customCheckBox">
+                                </div>
+                                <div class="col-10">
+                                    <label>Hide hyperedge nodes</label>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="block-inner-group">
@@ -99,7 +100,8 @@
                                     <form id="visual-encoding-form{{ modal_index }}">
                                         <div class="radio-container row">
                                             <div class="col-2">
-                                                <input type="radio" class="form-radio inline" name="visual-type" value="bipartite" id="bipartite{{ modal_index }}">
+                                                <input type="radio" class="form-radio inline" name="visual-type" value="bipartite"
+                                                       id="bipartite{{ modal_index }}">
                                             </div>
                                             <div class="col-9">
                                                 <label for="bipartite{{ modal_index }}" class="radio_label">
@@ -109,7 +111,8 @@
                                         </div>
                                         <div class="radio-container row">
                                             <div class="col-2">
-                                                <input type="radio" class="form-radio inline" name="visual-type" value="convex" id="convex{{ modal_index }}" checked="checked">
+                                                <input type="radio" class="form-radio inline" name="visual-type" value="convex"
+                                                       id="convex{{ modal_index }}" checked="checked">
                                             </div>
                                             <div class="col-9">
                                                 <label for="convex{{ modal_index }}" class="radio_label">Convex hulls</label>
@@ -119,7 +122,7 @@
                                 </div>
                                 <div class="col-6" style=" padding-left: 5px; padding-right: 2px;">
                                     <div class="row">
-                                        <div class="col-1" >
+                                        <div class="col-1">
                                             <input type="checkbox" id="hyperedge-glyph{{ modal_index }}" class="customCheckBox" checked="true">
                                         </div>
                                         <div class="col-9" style="padding-left: 10px;">
@@ -127,7 +130,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-1" >
+                                        <div class="col-1">
                                             <input type="checkbox" id="vertex-glyph{{ modal_index }}" class="customCheckBox">
                                         </div>
                                         <div class="col-9" style="padding-left: 10px;">
@@ -138,7 +141,8 @@
                             </div>
                         </div>
                         <div class="block-inner-group" style="border-bottom: none;">
-                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="revert_graph{{ modal_index }}" value="Revert Graphs" style="height:20px;">
+                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="revert_graph{{ modal_index }}"
+                                   value="Revert Graphs" style="height:20px;">
                         </div>
                     </div>
                 </div>
@@ -162,11 +166,13 @@
                             <div class="group-title">Graph representation</div>
                             <form id="variant-type-form{{ modal_index }}">
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="variant-type" value="line_graph" id="line_graph{{ modal_index }}" checked="checked">
+                                    <input type="radio" class="form-radio" name="variant-type" value="line_graph" id="line_graph{{ modal_index }}"
+                                           checked="checked">
                                     <label for="line_graph{{ modal_index }}" class="radio_label">Edge simplification</label>
                                 </div>
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="variant-type" value="clique_expansion" id="clique_expansion{{ modal_index }}">
+                                    <input type="radio" class="form-radio" name="variant-type" value="clique_expansion"
+                                           id="clique_expansion{{ modal_index }}">
                                     <label for="clique_expansion{{ modal_index }}" class="radio_label">Vertex simplification</label>
                                 </div>
                             </form>
@@ -180,15 +186,18 @@
                                 <span class="ui-form-range__value" id="s-walk_label{{ modal_index }}">1</span>
                                 <div id="s-range-container{{ modal_index }}">
                                     <div id="s-range-container-inner{{ modal_index }}" style="padding:0px;">
-                                      <span id="s-range-span{{ modal_index }}"><input type="number" id="s-range{{ modal_index }}" min="1" value="10"></span>
+                                        <span id="s-range-span{{ modal_index }}"><input type="number" id="s-range{{ modal_index }}" min="1"
+                                                                                        value="10"></span>
                                     </div>
                                 </div>
-                                <input class="ui-form-range__input" id="s-walk_input{{ modal_index }}" name="s-walk" type="range" value="1" max="10" min="1" step="1">
+                                <input class="ui-form-range__input" id="s-walk_input{{ modal_index }}" name="s-walk" type="range" value="1" max="10"
+                                       min="1" step="1">
                             </div>
                             <br>
                             <form id="singleton-type-form{{ modal_index }}">
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="singleton-type" value="grey_out" id="grey_out{{ modal_index }}" checked="checked">
+                                    <input type="radio" class="form-radio" name="singleton-type" value="grey_out" id="grey_out{{ modal_index }}"
+                                           checked="checked">
                                     <label for="grey_out{{ modal_index }}" class="radio_label">Grey out singletons</label>
                                 </div>
                                 <div class="radio-container">
@@ -197,22 +206,26 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="block-inner-group" >
+                        <div class="block-inner-group">
                             <div class="group-title">Weight type</div>
                             <form id="weight-type-form{{ modal_index }}">
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="weight-type" value="jaccard_index" id="jaccard_index{{ modal_index }}" checked="checked">
+                                    <input type="radio" class="form-radio" name="weight-type" value="jaccard_index"
+                                           id="jaccard_index{{ modal_index }}" checked="checked">
                                     <label for="jaccard_index{{ modal_index }}" class="radio_label">Jaccard index</label>
                                 </div>
                                 <div class="radio-container">
-                                    <input type="radio" class="form-radio" name="weight-type" value="intersection_size" id="intersection_size{{ modal_index }}">
+                                    <input type="radio" class="form-radio" name="weight-type" value="intersection_size"
+                                           id="intersection_size{{ modal_index }}">
                                     <label for="weight{{ modal_index }}" class="radio_label">Overlap size</label>
                                 </div>
                             </form>
                         </div>
                         <div class="button-container">
-                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader{{ modal_index }}" value="Compute Barcode">
-                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config{{ modal_index }}" value="Reset Configuration">
+                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="graph_loader{{ modal_index }}"
+                                   value="Compute Barcode">
+                            <input type="button" class="btn btn-outline-dark btn-block ui-form-button" id="reset_config{{ modal_index }}"
+                                   value="Reset Configuration">
                         </div>
                     </div>
                 </div>

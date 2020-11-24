@@ -7,10 +7,10 @@
     <title>Hypergraph Visualization</title>
 
     {% assets "js" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
+        <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
     {% endassets %}
     {% assets "css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        <link rel="stylesheet" href="{{ ASSET_URL }}"/>
     {% endassets %}
 </head>
 
@@ -23,7 +23,7 @@
     <div id="files_group">
         <div class="row">
             <div class="import-group col-3" style="padding-right:0px;">
-                <form method="post" id="upload" enctype="multipart/form-data" action="" >
+                <form method="post" id="upload" enctype="multipart/form-data" action="">
                     <input type="file" style="display:none" id="files" name="files">
                     <input type="button" class="btn btn-outline-dark ui-form-button" id="import" value="Import A Dataset">
                 </form>
@@ -34,16 +34,17 @@
                         <input class="form-control" type="text" placeholder="Output file name" id="exFilename">
                     </div>
                     <div class="col-4" style="padding-left:5px;">
-                        <input style="position: relative; top:0px" type="button" class="btn btn-outline-dark ui-form-button" id="export" value="Export An Output">
+                        <input style="position: relative; top:0px" type="button" class="btn btn-outline-dark ui-form-button" id="export"
+                               value="Export An Output">
                     </div>
                     <div class="modality-btn-group" class="col-4">
                         <button class="btn btn-outline-dark ui-form-button" id="add-modality">Add modality</button>
                     </div>
                 </div>
-                
+
             </div>
         </div>
-        
+
     </div>
 </div>
 
