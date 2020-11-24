@@ -627,4 +627,3 @@ function clear_graphs(){
     $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
     $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
 }
-    
