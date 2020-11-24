@@ -17,7 +17,7 @@ class Barcode{
 
         d3.select("#vis-barcode")
             // .style("height", d3.select("#vis-hypergraph").style("height"));
-            .style("height", parseInt(this.container_height-200)+"px");
+            .style("height", parseInt(this.container_height-250)+"px");
 
 
         this.barcode_group = this.svg_g.append("g")

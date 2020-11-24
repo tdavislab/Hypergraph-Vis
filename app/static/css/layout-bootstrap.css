@@ -70,6 +70,10 @@ html, body {
     padding-top: 10px;
 }
 
+#history-button-container {
+  padding-top: 10px;
+}
+
 /*Override some Bootstrap defaults*/
 .jumbotron {
     padding: 1rem 1rem;
@@ -97,6 +101,25 @@ html, body {
   .block_title.collapsed {
     border-bottom: none;
     background-image: url("icons/unfold.svg");
+  }
+
+  .block_title2 {
+    font-weight: bold;
+    /* float: right; */
+    text-align: right;
+    border-bottom: 1px solid #D3DBE2;
+    padding: 5px 10px;
+    background: transparent url("icons/minus-solid.svg") 3% center no-repeat;
+    background-size: 10px;
+    cursor: pointer;
+  }
+  .block_title2.collapsed {
+    border-bottom: none;
+    background-image: url("icons/plus-solid.svg");
+  }
+
+  .block_title2_text {
+    float: right;
   }
   
   .block_body {

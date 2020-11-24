@@ -335,6 +335,10 @@ h6 {
     font-weight: bold;
 }
 
+#history-button {
+    /* font-size: 10px; */
+}
+
 /* checkbox */
 
 .customCheckBox[type="checkbox"]:after{
@@ -386,4 +390,75 @@ h6 {
     top: -22px;
     width: 14px;
     height: 14px;
+}
+
+/* Toggle Switch */
+.toggle-group {
+    padding-right:10px;
+    padding-top:3px;
+    /* height: 25%; */
+}
+
+.toggle-label {
+    display: inline-block;
+    position:relative;
+    padding-right:5px;
+    font-size:12px;
+    text-align: left;
+    vertical-align: top;
+    padding-top:6px;
+}
+
+.onoffswitch {
+    display: inline-block;
+    /* width:40%; */
+    height:100%;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    padding-top:5px;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border-radius: 34px; width: 40px; height:20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 22px;
+    font-size: 10px; color: white; font-family: Trebuchet, Arial, sans-serif;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "";
+    padding-left: 8px;
+    /* background-color: rgb(110,123,196);  */
+    background-color: rgb(170,209,245);
+    color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "";
+    padding-right: 6px;
+    /* background-color: #ccc;  */
+    background-color: rgb(249, 167, 167);
+    color: rgb(58, 58, 58);
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 14px; height: 14px; margin: 2.5px;
+    background: #FFFFFF;
+    position: relative; top: 0; bottom: 0;
+    right: -1px;
+    border-radius: 34px;
+    transition: all 0.3s ease-in 0s; 
+    /* z-index:999; */
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: -21px; 
 }

@@ -8,7 +8,9 @@ class Hypergraph{
         this.color_dict = color_dict;
         this.labels = labels;
 
-        console.log(this.links, this.nodes)
+        console.log("links",this.links)
+        console.log("nodes",this.nodes)
+        console.log(color_dict)
 
         this.nodes_dict = {};
         this.nodes.forEach(node=>{
@@ -34,13 +36,7 @@ class Hypergraph{
             .attr("width", this.svg_width)
             .attr("height", this.svg_height);
         this.svg_g = this.svg.append("g");
-
-        this.links_group = this.svg_g.append("g")
-            .attr("id", "hyper_links_group");
-        this.nodes_group = this.svg_g.append("g")
-            .attr("id", "hyper_nodes_group");
-        this.vertices_group = this.svg_g.append("g")
-            .attr("id", "hyper_vertices_group");
+        
         
         this.radius_scale = d3.scaleLinear().domain([1, 8]).range([8,15]);
 
@@ -104,6 +100,15 @@ class Hypergraph{
     }
 
     draw_hypergraph(){
+        this.svg_g.remove();
+        this.svg_g = this.svg.append("g");
+        this.links_group = this.svg_g.append("g")
+            .attr("id", "hyper_links_group");
+        this.nodes_group = this.svg_g.append("g")
+            .attr("id", "hyper_nodes_group");
+        this.vertices_group = this.svg_g.append("g")
+            .attr("id", "hyper_vertices_group");
+
         let that = this;
 
         let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
@@ -660,6 +665,93 @@ class Hypergraph{
         function zoom_actions() {
             that.svg_g.attr("transform", d3.event.transform);
         }
+    }
+
+    draw_hypergraph2(){
+        this.svg_g = this.svg_g.remove();
+        this.svg_g = this.svg.append("g");
+        this.border_group = this.svg_g.append("g")
+            .attr("id", "hyper_border_group");
+        this.nodes_id_group = this.svg_g.append("g")
+            .attr("id", "hyper_nodes_id_group");
+        this.rect_group = this.svg_g.append("g")
+            .attr("id", "hyper_rect_group");
+        this.line_group = this.svg_g.append("g")
+            .attr("id", "hyper_line_group");
+
+        let vertices_list = this.nodes.filter(d => d.bipartite===0);
+        let he_list = this.nodes.filter(d => d.bipartite===1);
+
+        let vertices_id_list = [];
+        let he_id_list = [];
+        vertices_list.forEach(v=>{
+            vertices_id_list.push(v.id);
+        })
+        he_list.forEach(he=>{
+            he_id_list.push(he.id);
+        })
+
+        let he_vertices = {};
+        this.links.forEach(l=>{
+            if(Object.keys(he_vertices).indexOf(l.source.id)===-1){
+                he_vertices[l.source.id] = [vertices_id_list.indexOf(l.target.id)];
+            } else{
+                he_vertices[l.source.id].push(vertices_id_list.indexOf(l.target.id));
+            }
+        })
+
+        let he_vertices_id_list = []        
+        for(let he in he_vertices){
+            let min_idx = Math.min(...he_vertices[he]);
+            let max_idx = Math.max(...he_vertices[he]);
+            for(let i=min_idx; i<=max_idx; i++){
+                he_vertices_id_list.push([he, vertices_id_list[i]])
+            }
+        }
+        
+        let table_margins = {'left':10, 'right':10, 'top':20, 'bottom':10}
+        let cell_height = (this.svg_height-table_margins.top-table_margins.bottom)/(vertices_list.length+1);
+        let cell_width = this.svg_width - table_margins.left - table_margins.right;
+
+        let node_id_width = 1/3*cell_width;
+        let he_width = 2/3*cell_width / he_list.length;
+
+        // draw table lines 
+        let bg = this.border_group.selectAll("line").data(vertices_list.concat(["bottom"]));
+        bg = bg.enter().append("line").merge(bg)
+            .attr("class", "matrix_border")
+            .attr("x1", table_margins.left)
+            .attr("y1", (d,i)=>table_margins.top + i*cell_height)
+            .attr("x2", table_margins.left + cell_width)
+            .attr("y2", (d,i)=>table_margins.top + i*cell_height)
+            .attr("stroke", "grey")
+            .style("opacity", 0.3);
+
+        let tg = this.nodes_id_group.selectAll("text").data(vertices_list);
+        tg = tg.enter().append("text").merge(tg)
+            .attr("class", "matrix_node_id")
+            .attr("x",table_margins.left)
+            .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
+            .text(d=>d.id)
+            .style("opacity", 0.8);
+
+        let rg = this.rect_group.selectAll("rect").data(this.links);
+        rg = rg.enter().append("rect").merge(rg)
+            .attr("x", d=>table_margins.left + node_id_width + he_width * he_id_list.indexOf(d.source.id))
+            .attr("y", d=>table_margins.top + vertices_id_list.indexOf(d.target.id)*cell_height)
+            .attr("width", 2/3*he_width)
+            .attr("height", cell_height)
+            .attr("fill", d=>this.color_dict[d.source.id.split("|")[0]])
+            .style("opacity", 1);
+        
+        let lg = this.line_group.selectAll("line").data(he_vertices_id_list);
+        lg = lg.enter().append("line").merge(lg)
+            .attr("x1", d=>table_margins.left + node_id_width + he_width * he_id_list.indexOf(d[0])+he_width/3)
+            .attr("y1", d=>table_margins.top + vertices_id_list.indexOf(d[1])*cell_height)
+            .attr("x2", d=>table_margins.left + node_id_width + he_width * he_id_list.indexOf(d[0])+he_width/3)
+            .attr("y2", d=>table_margins.top + (vertices_id_list.indexOf(d[1])+1)*cell_height)
+            .attr("stroke", d=>this.color_dict[d[0].split("|")[0]])
+            .style("opacity", 0.5)
     }
 
     cancel_faded(){

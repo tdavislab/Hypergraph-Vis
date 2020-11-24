@@ -39,11 +39,6 @@ class Linegraph{
             .attr("height", this.svg_height);
         this.svg_g = this.svg.append("g");
 
-        this.links_group = this.svg_g.append("g")
-            .attr("id", "line_links_group");
-        this.nodes_group = this.svg_g.append("g")
-            .attr("id", "line_nodes_group");
-
         this.weight = weight;
         console.log(this.weight)
         this.edge_scale = d3.scaleLinear()
@@ -85,8 +80,15 @@ class Linegraph{
     }
 
     draw_linegraph(){
-        let that = this;
+        this.svg_g = this.svg_g.remove();
+        this.svg_g = this.svg.append("g");
 
+        this.links_group = this.svg_g.append("g")
+            .attr("id", "line_links_group");
+        this.nodes_group = this.svg_g.append("g")
+            .attr("id", "line_nodes_group");
+        
+        let that = this;
         this.simulation = d3.forceSimulation(this.nodes)
             .force("link", d3.forceLink(this.links).distance(d => d.distance).id(d => d.id))
             .force("charge", d3.forceManyBody(-200))
@@ -172,7 +174,6 @@ class Linegraph{
             .attr("cx", d=>d.x)
             .attr("cy",d=>d.y)
             .attr("class", "line_node");
-            
 
         if(this.variant === "line_graph"){
             let pie = d3.pie()
@@ -232,8 +233,6 @@ class Linegraph{
                 .attr("fill", "#fff");
         }
         
-        
-
         let lg = this.links_group.selectAll("line").data(this.links);
         lg.exit().remove();
         lg = lg.enter().append("line").merge(lg)
@@ -559,20 +558,79 @@ class Linegraph{
             //     return !(vertices_union_1.every(v => vertices_union.includes(v)))
             //     // return ();
             // })
-        }
+        }        
+    }
 
-        // this.simulation.on("tick", () => {
-        //     lg
-        //         .attr("x1", d => d.source.x)
-        //         .attr("y1", d => d.source.y)
-        //         .attr("x2", d => d.target.x)
-        //         .attr("y2", d => d.target.y);
+    draw_linegraph2(){
+        this.svg_g = this.svg_g.remove();
+        this.svg_g = this.svg.append("g");
 
-        //     ng
-        //         .attr("transform", function (d) {
-        //             return "translate(" + d.x + "," + d.y + ")";
-        //         });
-        // });
+        this.border_group = this.svg_g.append("g")
+            .attr("id", "line_border_group");
+        this.nodes_id_group = this.svg_g.append("g")
+            .attr("id", "line_nodes_id_group");
+        this.line_group = this.svg_g.append("g")
+            .attr("id", "hyper_line_group");
+        this.rect_group_source = this.svg_g.append("g")
+            .attr("id", "line_rect_group_source");
+        this.rect_group_target = this.svg_g.append("g")
+            .attr("id", "line_rect_group_target");
+        
+
+        let table_margins = {'left':10, 'right':10, 'top':20, 'bottom':10}
+        let cell_height = (this.svg_height-table_margins.top-table_margins.bottom)/(this.nodes.length+1);
+        let cell_width = this.svg_width - table_margins.left - table_margins.right;
+    
+        let node_id_width = 1/8*cell_width;
+        let he_width = 7/8*cell_width / this.links.length;
+
+        console.log(this.links)
+
+        let bg = this.border_group.selectAll("line").data(this.nodes.concat(["bottom"]));
+        bg = bg.enter().append("line").merge(bg)
+            .attr("class", "matrix_border")
+            .attr("x1", table_margins.left)
+            .attr("y1", (d,i)=>table_margins.top + i*cell_height)
+            .attr("x2", table_margins.left + cell_width)
+            .attr("y2", (d,i)=>table_margins.top + i*cell_height)
+            .attr("stroke", "grey")
+            .style("opacity", 0.3);
+            
+        let tg = this.nodes_id_group.selectAll("text").data(this.nodes);
+        tg = tg.enter().append("text").merge(tg)
+            .attr("class", "matrix_node_id")
+            .attr("x",table_margins.left)
+            .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
+            .text(d=>d.id)
+            .style("opacity", 0.8);
+    
+        let rg1 = this.rect_group_source.selectAll("rect").data(this.links);
+        rg1 = rg1.enter().append("rect").merge(rg1)
+            .attr("x", d=>table_margins.left + node_id_width + he_width * d.index)
+            .attr("y", d=>table_margins.top + d.source.index*cell_height)
+            .attr("width", 2/3*he_width)
+            .attr("height", cell_height)
+            .attr("fill", d=>this.color_dict[d.source.id.split("|")[0]])
+            .style("opacity", 1);
+
+        let rg2 = this.rect_group_target.selectAll("rect").data(this.links);
+        rg2 = rg2.enter().append("rect").merge(rg2)
+            .attr("x", d=>table_margins.left + node_id_width + he_width * d.index)
+            .attr("y", d=>table_margins.top + d.target.index*cell_height)
+            .attr("width", 2/3*he_width)
+            .attr("height", cell_height)
+            .attr("fill", d=>this.color_dict[d.target.id.split("|")[0]])
+            .style("opacity", 1);
+            
+        let lg = this.line_group.selectAll("line").data(this.links);
+        lg = lg.enter().append("line").merge(lg)
+            .attr("x1", d=>table_margins.left + node_id_width + he_width * d.index + he_width/3)
+            .attr("y1", d=>table_margins.top + d.source.index*cell_height)
+            .attr("x2", d=>table_margins.left + node_id_width + he_width * d.index + he_width/3)
+            .attr("y2", d=>table_margins.top + d.target.index*cell_height)
+            // .attr("stroke", d=>this.color_dict[d[0].split("|")[0]])
+            .attr("stroke", "grey")
+            .style("opacity", 0.5)
         
     }
 

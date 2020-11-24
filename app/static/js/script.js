@@ -3,7 +3,6 @@ init();
 function init(){
     // Initialization 
     read_hgraph_text("hypergraph_samples");
-
     
     $("#import").click(function(){
         $("#files").click();
@@ -206,6 +205,23 @@ function load_data(data, config) {
 
     console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels);
+
+    d3.select("#visual-encoding-switch")
+        .on("change", ()=>{
+            if(d3.select("#visual-encoding-switch").property("checked")){
+                d3.select("#visual-encoding-switch-label").html("Graph encoding");
+                hypergraph.draw_hypergraph();
+                simplified_hypergraph.draw_hypergraph();
+                linegraph.draw_linegraph();
+                simplified_linegraph.draw_linegraph();
+            } else{
+                d3.select("#visual-encoding-switch-label").html("Matrix encoding");
+                hypergraph.draw_hypergraph2();
+                simplified_hypergraph.draw_hypergraph2();
+                linegraph.draw_linegraph2();
+                simplified_linegraph.draw_linegraph2();
+            }
+        })
 
     d3.select("#revert_graph")
         .on("click", ()=>{
@@ -611,20 +627,4 @@ function clear_graphs(){
     $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
     $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
 }
-
-
-
-// d3.select("#singleton-type-form")
-    //         .on("change", ()=>{
-    //             // hypergraph.draw_hypergraph();
-    //             // simplified_hypergraph.draw_hypergraph();
-    //             // let singleton_type = d3.select('input[name="visual-type"]:checked').node().value;
-    //             // if(singleton_type === "bipartite"){
-    //             //     d3.select("#hull-group").style("visibility","hidden");
-    //             //     d3.select("#simplified-hull-group").style("visibility","hidden");
-    //             // } else if(encoding_type === "convex"){
-    //             //     d3.select("#hull-group").style("visibility","visible");
-    //             //     d3.select("#simplified-hull-group").style("visibility","visible");
-    //             // }
-    //         })
     

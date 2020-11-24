@@ -54,9 +54,35 @@
             <div id="vis-barcode" class="svg-container" style="overflow: scroll">
                 <svg id="barcode-svg"></svg>
             </div>
-            <div class="help-tip" id="help-tip">
+            <!-- <div id="history-button-container" class="row">
+                <div class="col-5">
+                    <input type="button" class="btn btn-outline-dark ui-form-button" id="history-button" value="Save Threshold">
+                </div>
+                <div class="col-5">
+                    <input type="button" class="btn btn-outline-dark ui-form-button" id="history-button" value="Save Threshold">
+                </div>
+                
+            </div> -->
+            <!-- <div class="help-tip" id="help-tip">
                 <h6>Selected Hyperedges</h6>
+            </div> -->
+            <!-- <div class="block" id="history-container" style="margin-top:10px;">
+                <div class="block_title2 collapsed">Threshold History</div>
+                <div class="block-body"></div>
+            </div> -->
+            <div class="block" id="persistence-graph-container" style="margin-top:5px;">
+                <div class="block_title2 collapsed">Persistence Graph</div>
+                <div class="block-body"></div>
             </div>
+            <div class="block" id="barcode-merge-tree-container" style="margin-top:5px;">
+                <div class="block_title2 collapsed">Barcode Merge Tree</div>
+                <div class="block-body"></div>
+            </div>
+            <div class="block" id="selected-elements-container" style="margin-top:5px;">
+                <div class="block_title2 collapsed">Selected Hyperedges/Vertices</div>
+                <div class="block-body"></div>
+            </div>
+            
         </div>
         <div id="vis-area" class="col-sm-8" style="padding-bottom:3px;">
             <div class="row">
@@ -98,6 +124,18 @@
                 <div class="block_body" style="max-height: 1000px">
                     <div class="block_body-inner">
                         <div class="block-inner-group">
+                            <div class="toggle-group">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="visual-encoding-switch" checked>
+                                    <label class="onoffswitch-label" for="visual-encoding-switch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-label" id="visual-encoding-switch-label"> Graph encoding </div>
+                            </div>
+                        </div>
+                        <div class="block-inner-group">
                                 <div class="row">
                                     <div class="col-1">
                                         <input type="checkbox" id="hgraph-labels" class="customCheckBox"> 
@@ -115,6 +153,7 @@
                                     </div>
                                 </div>
                         </div>
+                        
                         <div class="block-inner-group">
                             <div class="group-title">Hypergraph visualization</div>
                             <div class="row" style="padding-top: 5px;">
@@ -158,7 +197,6 @@
                                         </div>                               
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="block-inner-group" style="border-bottom: none;">
