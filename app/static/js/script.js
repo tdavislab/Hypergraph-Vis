@@ -366,6 +366,12 @@ function load_data(data, config) {
             .on("drag", dragged)
             .on("end", dragended));
 
+    d3.select("#tree_slider_group")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
     function dragstarted() {
         d3.select(this).raise();
     }

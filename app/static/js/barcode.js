@@ -330,8 +330,10 @@ class Barcode{
 
 
         let xScale = d3.scaleLinear()
-            .domain([0, Math.max(...root.descendants().slice(1).map(x=>x.data.val))])
-            .range([tree_margins.left, Math.max(...root.descendants().slice(1).map(x=>x.y))])
+            // .domain([0, Math.max(...root.descendants().slice(1).map(x=>x.data.val))])
+            .domain([0, this.max_death*1.1])
+            // .range([tree_margins.left, Math.max(...root.descendants().slice(1).map(x=>x.y))])
+            .range([tree_margins.left, this.svg_width-this.svg_margin.right]).nice();
 
         let lgh = tree_edges_group_h.selectAll('line').data(root.descendants().slice(1));
         lgh.exit().remove();
