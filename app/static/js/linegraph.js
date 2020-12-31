@@ -10,14 +10,18 @@ class Linegraph{
         console.log(this.nodes, this.links)
 
         this.nodes_dict = {};
-        this.nodes.forEach(n=>{
+
+        for(let i=0; i<this.nodes.length; i++){
+            let n = this.nodes[i];
+            n.index = i;
             n.links_idx = {"source":[], "target":[]}; // for dragging
             this.nodes_dict[n.id] = n;
-        })
+        }
 
         this.links_dict = {};
         for (let i=0; i<this.links.length; i++){
             let l = this.links[i];
+            l.index = i;
             this.links_dict[l.source+"-"+l.target] = l;
             this.nodes_dict[l.source].links_idx.source.push(i);
             this.nodes_dict[l.target].links_idx.target.push(i);
@@ -612,27 +616,64 @@ class Linegraph{
         let rg1 = this.rect_group_source.selectAll("rect").data(this.links);
         rg1 = rg1.enter().append("rect").merge(rg1)
             .attr("x", d=>table_margins.left + node_id_width + he_width * d.index)
-            .attr("y", d=>table_margins.top + d.source.index*cell_height)
+            .attr("y", d=>{
+                if(d.source.id){
+                    return table_margins.top + d.source.index*cell_height;
+                } else {
+                    return table_margins.top + this.nodes_dict[d.source].index*cell_height
+                }
+            })
             .attr("width", 2/3*he_width)
             .attr("height", cell_height)
-            .attr("fill", d=>this.color_dict[d.source.id.split("|")[0]])
+            .attr("fill", d=>{
+                if(d.source.id){
+                    return this.color_dict[d.source.id.split("|")[0]];
+                } else {
+                    return this.color_dict[this.nodes_dict[d.source].id.split("|")[0]];
+                }
+            })
             .style("opacity", 1);
 
         let rg2 = this.rect_group_target.selectAll("rect").data(this.links);
         rg2 = rg2.enter().append("rect").merge(rg2)
             .attr("x", d=>table_margins.left + node_id_width + he_width * d.index)
-            .attr("y", d=>table_margins.top + d.target.index*cell_height)
+            .attr("y", d=>{
+                if(d.source.id){
+                    return table_margins.top + d.target.index*cell_height;
+                } else {
+                    return table_margins.top + this.nodes_dict[d.target].index*cell_height;
+                }
+                
+            })
             .attr("width", 2/3*he_width)
             .attr("height", cell_height)
-            .attr("fill", d=>this.color_dict[d.target.id.split("|")[0]])
+            .attr("fill", d=>{
+                if(d.source.id){
+                    return this.color_dict[d.target.id.split("|")[0]];
+                } else {
+                    return this.color_dict[this.nodes_dict[d.target].id.split("|")[0]];
+                }
+            })
             .style("opacity", 1);
             
         let lg = this.line_group.selectAll("line").data(this.links);
         lg = lg.enter().append("line").merge(lg)
             .attr("x1", d=>table_margins.left + node_id_width + he_width * d.index + he_width/3)
-            .attr("y1", d=>table_margins.top + d.source.index*cell_height)
+            .attr("y1", d=>{
+                if(d.source.id){
+                    return table_margins.top + d.source.index*cell_height;
+                } else {
+                    return table_margins.top + this.nodes_dict[d.source].index*cell_height
+                }
+            })
             .attr("x2", d=>table_margins.left + node_id_width + he_width * d.index + he_width/3)
-            .attr("y2", d=>table_margins.top + d.target.index*cell_height)
+            .attr("y2", d=>{
+                if(d.source.id){
+                    return table_margins.top + d.target.index*cell_height;
+                } else {
+                    return table_margins.top + this.nodes_dict[d.target].index*cell_height;
+                }
+            })
             // .attr("stroke", d=>this.color_dict[d[0].split("|")[0]])
             .attr("stroke", "grey")
             .style("opacity", 0.5)

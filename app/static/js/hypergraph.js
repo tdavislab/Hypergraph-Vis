@@ -230,6 +230,9 @@ class Hypergraph{
             .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
             .text(d => d.label);
 
+        this.update_labels();
+
+
         let pie = d3.pie()
             .value(d => d.value)
             .sort(null);
@@ -812,21 +815,23 @@ class Hypergraph{
 
     toggle_hgraph_labels(){
         try {
-            // Set show-labels to true at beginning
-            // d3.select("#hgraph-labels").property("checked", true);
-            update_labels();
-            d3.select("#hgraph-labels").on("change", update_labels);
+            // Set show-labels to false at beginning
+            this.update_labels();
+            d3.select("#hgraph-labels").on("change", this.update_labels);
     
-            function update_labels() {
-                if (d3.select("#hgraph-labels").property("checked")) {
-                    d3.selectAll(".node-label").attr("visibility", "visible");
-    
-                } else {
-                    d3.selectAll(".node-label").attr("visibility", "hidden");
-                }
-            }
         } catch (e) {
             console.log(e);
         }                       
+    }
+
+    update_labels() {
+        console.log(this.svg_id)
+        console.log("toggle", d3.select("#hgraph-labels").property("checked"))
+        if (d3.select("#hgraph-labels").property("checked")) {
+            d3.selectAll(".node-label").attr("visibility", "visible");
+
+        } else {
+            d3.selectAll(".node-label").attr("visibility", "hidden");
+        }
     }
 }
