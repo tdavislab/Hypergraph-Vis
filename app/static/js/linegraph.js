@@ -59,7 +59,12 @@ class Linegraph{
         this.if_hyperedge_glyph = d3.select("#hyperedge-glyph").property("checked");
         this.if_vertex_glyph = d3.select("#vertex-glyph").property("checked");
 
-        this.draw_linegraph();
+        if(d3.select("#visual-encoding-switch").property("checked")){
+            this.draw_linegraph();
+
+        } else {
+            this.draw_linegraph2();
+        }
     }
 
     get_node_radius(node_id) {
@@ -577,7 +582,7 @@ class Linegraph{
             .attr("id", "line_rect_group_target");
         
 
-        let table_margins = {'left':10, 'right':10, 'top':20, 'bottom':10}
+        let table_margins = {'left':10, 'right':10, 'top':20, 'bottom':10};
         let cell_height = (this.svg_height-table_margins.top-table_margins.bottom)/(this.nodes.length+1);
         let cell_width = this.svg_width - table_margins.left - table_margins.right;
     

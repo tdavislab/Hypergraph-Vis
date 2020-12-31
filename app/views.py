@@ -564,7 +564,8 @@ def compute_simplified_hgraph():
     hgraph = hnx.Hypergraph(hgraph_dict)
     if variant == "clique_expansion":
         hgraph = hgraph.dual()
-    chgraph = collapse_hypergraph(hgraph)
+    # chgraph = collapse_hypergraph(hgraph)
+    chgraph = hgraph
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
     if singleton_type == "grey_out":
         assign_hgraph_singletons(chgraph, singletons)

@@ -40,6 +40,10 @@ class Hypergraph{
         
         this.radius_scale = d3.scaleLinear().domain([1, 8]).range([8,15]);
 
+        // let he_length = this.nodes.filter(d=>d.bipartite===1).length;
+        // let v_length = this.nodes.filter(d=>d.bipartite===1).length;
+        // this.radius_scale = d3.scaleLinear().domain([1, v_length]).range([5,15]);
+
         let distance_scale = d3.scaleLinear()
             .domain([1,10])
             .range([30,120])
@@ -60,7 +64,12 @@ class Hypergraph{
         this.if_hyperedge_glyph = d3.select("#hyperedge-glyph").property("checked");
         this.if_vertex_glyph = d3.select("#vertex-glyph").property("checked");
 
-        this.draw_hypergraph();
+        if(d3.select("#visual-encoding-switch").property("checked")){
+            this.draw_hypergraph();
+
+        } else {
+            this.draw_hypergraph2();
+        }
         this.toggle_hgraph_labels();  
     }
 
@@ -118,7 +127,7 @@ class Hypergraph{
             .force("charge", d3.forceManyBody(-500))
             .force("center", d3.forceCenter(this.svg_width/2, this.svg_height/2))
             .force("x", d3.forceX().strength(0.02))
-            .force("y", d3.forceY().strength(0.02))
+            .force("y", d3.forceY().strength(0.03))
             .stop();
         this.simulation.tick(300);
 
@@ -693,11 +702,20 @@ class Hypergraph{
 
         let he_vertices = {};
         this.links.forEach(l=>{
-            if(Object.keys(he_vertices).indexOf(l.source.id)===-1){
-                he_vertices[l.source.id] = [vertices_id_list.indexOf(l.target.id)];
-            } else{
-                he_vertices[l.source.id].push(vertices_id_list.indexOf(l.target.id));
+            if(l.source.id){
+                if(Object.keys(he_vertices).indexOf(l.source.id)===-1){
+                    he_vertices[l.source.id] = [vertices_id_list.indexOf(l.target.id)];
+                } else{
+                    he_vertices[l.source.id].push(vertices_id_list.indexOf(l.target.id));
+                }
+            } else {
+                if(Object.keys(he_vertices).indexOf(l.source)===-1){
+                    he_vertices[l.source] = [vertices_id_list.indexOf(l.target)];
+                } else{
+                    he_vertices[l.source].push(vertices_id_list.indexOf(l.target));
+                }
             }
+            
         })
 
         let he_vertices_id_list = []        
@@ -737,11 +755,29 @@ class Hypergraph{
 
         let rg = this.rect_group.selectAll("rect").data(this.links);
         rg = rg.enter().append("rect").merge(rg)
-            .attr("x", d=>table_margins.left + node_id_width + he_width * he_id_list.indexOf(d.source.id))
-            .attr("y", d=>table_margins.top + vertices_id_list.indexOf(d.target.id)*cell_height)
+            .attr("x", d=>{
+                if(d.source.id){
+                    return table_margins.left + node_id_width + he_width * he_id_list.indexOf(d.source.id);
+                } else {
+                    return table_margins.left + node_id_width + he_width * he_id_list.indexOf(d.source);
+                }
+            })
+            .attr("y", d=>{
+                if(d.target.id){
+                    return table_margins.top + vertices_id_list.indexOf(d.target.id)*cell_height;
+                } else {
+                    return table_margins.top + vertices_id_list.indexOf(d.target)*cell_height;
+                }
+            })
             .attr("width", 2/3*he_width)
             .attr("height", cell_height)
-            .attr("fill", d=>this.color_dict[d.source.id.split("|")[0]])
+            .attr("fill", d=>{
+                if(d.source.id){
+                    return this.color_dict[d.source.id.split("|")[0]];
+                } else {
+                    return this.color_dict[d.source.split("|")[0]];
+                }
+            })
             .style("opacity", 1);
         
         let lg = this.line_group.selectAll("line").data(he_vertices_id_list);

@@ -206,6 +206,21 @@ function load_data(data, config) {
     console.log(hyperedges2vertices)
     let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels);
 
+    let info_dropdown = document.getElementById("info_selection");
+    info_dropdown.onchange = function(){
+        let info_type = info_dropdown.options[info_dropdown.selectedIndex].text;
+        if(info_type === "Selected Hyperedges/Vertices") {
+            // add tooltip
+            barcode.draw_tooltip();
+        } else if (info_type === "Barcode Merge Tree"){
+            barcode.draw_merge_tree();
+        } else if (info_type === "Persistence Graph"){
+            barcode.draw_persistent_graph();
+        } else if (info_type === "Threshold History"){
+            barcode.draw_threshold_history();
+        }
+    }
+
     d3.select("#visual-encoding-switch")
         .on("change", ()=>{
             if(d3.select("#visual-encoding-switch").property("checked")){
@@ -360,6 +375,10 @@ function load_data(data, config) {
             .attr("x2",trans_dist)
             .attr("y1", Math.min(Math.max(0,d3.event.y), barcode.svg_height-20));
         d3.select("#barcode-slider").attr("x",trans_dist).attr("y", Math.min(Math.max(0,d3.event.y), barcode.svg_height-20));
+        d3.select("#tree-line").attr("x1",trans_dist)
+            .attr("x2", trans_dist);
+        d3.select("#tree-slider").attr("x",trans_dist);
+
         
     }
     function clamp(d, min, max) {
@@ -445,6 +464,8 @@ function read_hgraph_text(text_data){
 function assign_hyperedge_colors(data, color_dict=undefined){
     if(color_dict === undefined){
         color_dict = {};
+        // color_dict = {'he0':'#ff7f0e', 'he1':'#2ca02c', 'he2':'#1f77b4', 'he3':'#d62728', 'he4':'#8c564b', 'he5':'#9467bd', 'v0':'#7f7f7f', 'v1':'#e377c2', 'v2':'#bcbd22', 'v3':'#17becf', 'v4':'#613f75'}
+        // color_dict = {'he0':'#ff7f0e', 'he1':'#7f7f7f', 'he2':'#1f77b4', 'he3':'#e377c2', 'he4':'#2ca02c', 'he5':'#8c564b', 'he6':'#d62728', 'he7':'#17becf', 'he8':'#9467bd', 'he9':'#bcbd22'}
         let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
         let idx = 0;
         data.hyper_data.nodes.forEach(node=>{
@@ -603,12 +624,14 @@ function reset_config() {
 
 function clear_canvas(){
     $('#barcode-svg').remove();
+    $('#merge-tree-svg').remove();
     $('#hypergraph-svg').remove();
     $('#linegraph-svg').remove();
     $('#simplified-hypergraph-svg').remove();
     $('#simplified-linegraph-svg').remove();
     // $('#help-tip').remove();
     $('#vis-barcode').append('<svg id="barcode-svg"></svg>');
+    $('#vis-barcode2').append('<svg id="merge-tree-svg"></svg>');
     $('#vis-hypergraph').append('<svg id="hypergraph-svg"></svg>');
     $('#vis-linegraph').append('<svg id="linegraph-svg"></svg>');
     $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');

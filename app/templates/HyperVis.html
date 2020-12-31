@@ -17,8 +17,9 @@
 <body scroll="no" style="overflow: hidden">
 <div class="header-group">
     <div id="main_title">
-        <h4>Hypergraph Visualization:</h4>
-        <h4>Multimodal Curation and Multiscale Simplification</h4>
+        <!-- <h4>Hypergraph Visualization:</h4> -->
+        <!-- <h4>Multimodal Curation and Multiscale Simplification</h4> -->
+        <h4>Topological Simplifications of Hypergraphs</h4>
     </div>
     <div id="files_group">
         <div class="row">
@@ -53,6 +54,15 @@
             </div>
             <div id="vis-barcode" class="svg-container" style="overflow: scroll">
                 <svg id="barcode-svg"></svg>
+                <!-- <svg id="merge-tree-svg"></svg> -->
+            </div>
+            <div id="merge-tree-label">
+                <!-- Barcode Merge Tree -->
+                Dendrogram
+            </div>
+            <div id="vis-barcode2" class="svg-container" style="overflow: scroll">
+                <!-- <svg id="barcode-svg"></svg> -->
+                <svg id="merge-tree-svg"></svg>
             </div>
             <!-- <div id="history-button-container" class="row">
                 <div class="col-5">
@@ -63,14 +73,28 @@
                 </div>
                 
             </div> -->
-            <!-- <div class="help-tip" id="help-tip">
-                <h6>Selected Hyperedges</h6>
-            </div> -->
+            
             <!-- <div class="block" id="history-container" style="margin-top:10px;">
                 <div class="block_title2 collapsed">Threshold History</div>
                 <div class="block-body"></div>
             </div> -->
-            <div class="block" id="persistence-graph-container" style="margin-top:5px;">
+            <div class="custom-select-container">
+                <select name="info_selection" class="custom-select" id="info_selection">
+                    <option>Selected Hyperedges/Vertices</option>
+                    <option>Threshold History</option>
+                    <!-- <option>Barcode Merge Tree</option> -->
+                    <option>Persistence Graph</option>
+                </select>
+            </div>
+            <div class="custom-select-container" id="info_drawing_container">
+                <div class="help-tip" id="info_drawing">
+                    <h6>Selected Hyperedges</h6>
+                </div>
+            </div>
+
+
+            
+            <!-- <div class="block" id="persistence-graph-container" style="margin-top:5px;">
                 <div class="block_title2 collapsed">Persistence Graph</div>
                 <div class="block-body"></div>
             </div>
@@ -81,7 +105,7 @@
             <div class="block" id="selected-elements-container" style="margin-top:5px;">
                 <div class="block_title2 collapsed">Selected Hyperedges/Vertices</div>
                 <div class="block-body"></div>
-            </div>
+            </div> -->
             
         </div>
         <div id="vis-area" class="col-sm-8" style="padding-bottom:3px;">
