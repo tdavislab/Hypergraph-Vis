@@ -1,18 +1,15 @@
-from flask import render_template, request, url_for, jsonify, redirect, Response, send_from_directory
-from app import app
-from app import APP_STATIC
-from app import APP_ROOT
 import json
-import numpy as np
-import pandas as pd
-import hypernetx as hnx
-import re
-import matplotlib.pyplot as plt
-import networkx as nx
-# from tqdm import tqdm
-from os import path
 import os
-import copy
+import re
+from os import path
+
+import hypernetx as hnx
+import networkx as nx
+import numpy as np
+from flask import render_template, request, jsonify
+
+from app import APP_STATIC
+from app import app
 
 
 def process_graph_edges(edge_str: str):
@@ -171,7 +168,8 @@ def assign_hgraph_singletons(hgraph, singletons, singleton_type="grey_out"):
         hgraph['nodes'] = nodes_new
         # 2. delete singleton edges
         links_new = [link for link in hgraph['links'] if
-                     (link['source'].replace("|", "") not in singletons and link['target'].replace("|", "") not in singletons)]
+                     (link['source'].replace("|", "") not in singletons and link['target'].replace("|",
+                                                                                                   "") not in singletons)]
         hgraph['links'] = links_new
 
 
@@ -185,7 +183,8 @@ def delete_lingraph_singletons(lgraph):
     lgraph['nodes'] = nodes_new
     # 3. delete singleton edges
     links_new = [link for link in lgraph['links'] if
-                 (link['source'].replace("|", "") not in lgraph['singletons'] and link['target'].replace("|", "") not in lgraph['singletons'])]
+                 (link['source'].replace("|", "") not in lgraph['singletons'] and link['target'].replace("|", "") not in
+                  lgraph['singletons'])]
     lgraph['links'] = links_new
 
 
@@ -382,24 +381,34 @@ def import_file():
             os.remove(path.join(APP_STATIC, "uploads", f))
 
     jsdata = request.get_data().decode('utf-8')
+    # If preloaded dataset string
     if jsdata == "hypergraph_samples":
         with open(path.join(APP_STATIC, "uploads/DNS_hypergraph_samples_new.txt"), 'r') as f:
             jsdata = f.read()
+    # else write the uploaded file to current-hypergraph.txt
     with open(path.join(APP_STATIC, "uploads/current_hypergraph.txt"), 'w') as f:
         f.write(jsdata)
-    hgraph, label_map = process_hypergraph(jsdata)
-    chgraph = collapse_hypergraph(hgraph)
 
+    # Computer the hypergraph
+    hgraph, label_map = process_hypergraph(jsdata)
+    # Create the collapsed hypergraph
+    chgraph = collapse_hypergraph(hgraph)
+    # line graph from the collapsed hypergraph
     lgraph = convert_to_line_graph(chgraph.incidence_dict)
+    # dual line graph
     dual_lgraph = compute_dual_line_graph(chgraph)
 
+    # Convert to edge:vertex dictionary and save those dictionary to disk
     hgraph_dict = {hkey: list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
     chgraph_dict = {hkey: list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
     write_json_file(hgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph_original.json"))
     write_json_file(chgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph.json"))
+
+    # Get the bipartite representation of the graphs in json format
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
 
+    # Compute barcodes with intersection size and jaccard index and serialize to disk
     barcode_is = compute_barcode(lgraph)  # is: weight = 1/intersection_size
     dual_barcode_is = compute_barcode(dual_lgraph)
     write_json_file(barcode_is, path.join(APP_STATIC, "uploads/current_barcode_is.json"))
@@ -407,20 +416,20 @@ def import_file():
 
     barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index")  # ji: weight = 1/jaccard_index
     dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
+    write_json_file(barcode_ji, path.join(APP_STATIC, "uploads/current_barcode_ji.json"))
+    write_json_file(dual_barcode_ji, path.join(APP_STATIC, "uploads/current_dual_barcode_ji.json"))
 
     assign_hgraph_singletons(chgraph, lgraph['singletons'])
 
     current_config = {'hgraph_type': 'collapsed_version', 's': 1, 'singleton_type': 'grey_out', 'variant': 'line_graph',
                       'weight_type': 'jaccard_index'}
-
+    # Write the config, line-graph, dual-linegraph and label map to disk
+    write_json_file(current_config, path.join(APP_STATIC, "uploads/current_config.json"))
     write_json_file(lgraph, path.join(APP_STATIC, "uploads/current_linegraph.json"))
     write_json_file(dual_lgraph, path.join(APP_STATIC, "uploads/current_dual_linegraph.json"))
-
-    write_json_file(barcode_ji, path.join(APP_STATIC, "uploads/current_barcode_ji.json"))
-    write_json_file(dual_barcode_ji, path.join(APP_STATIC, "uploads/current_dual_barcode_ji.json"))
     write_json_file(label_map, path.join(APP_STATIC, "uploads/current_label_map.json"))
-    write_json_file(current_config, path.join(APP_STATIC, "uploads/current_config.json"))
 
+    # return collapsed hypergraph, line-graph, barcode and label map to front end
     return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map)
 
 
@@ -437,7 +446,7 @@ def reload_graphs():
     previous_s = int(previous_config['s'])
     previous_singleton_type = previous_config['singleton_type']
     hgraph_type = current_config['hgraph_type']
-    # If s value dose not change, just reload the graphs and barcode
+    # If s does not change, just reload the graphs and barcode
     if current_s == previous_s and current_singleton_type == previous_singleton_type:
         if hgraph_type == 'collapsed_version':
             hgraph, lgraph, barcode = load_graphs(current_config)
@@ -478,7 +487,8 @@ def hgraph_expansion():
     for cc_key in cc_dict:
         hyperedge_keys = cc_key.split(",")
         if len(set(hyperedge_keys) & set(source_cc)) > 0 and len(set(hyperedge_keys) & set(target_cc)) > 0:
-            # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
+            # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc):
+            # if source_cc and target_cc are combined
             print(hyperedge_keys, source_cc, target_cc)
             cc1_id_list = []
             cc2_id_list = []

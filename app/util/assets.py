@@ -8,7 +8,7 @@ bundles = {
         'js/jquery-3.4.1.min.js',
         'js/bootstrap.min.js',
         'js/hypergraph.js',
-        'js/simplified_hypergraph.js',
+        # 'js/simplified_hypergraph.js',
         'js/linegraph.js',
         'js/barcode.js',
         'js/script.js',

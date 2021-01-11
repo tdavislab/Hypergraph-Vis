@@ -6,9 +6,10 @@ function init() {
     // Initialization 
     read_hgraph_text("hypergraph_samples");
 
-    $("#import").click(function () {
-        $("#files").click();
-    });
+    $("#import")
+        .click(function () {
+            $("#files").click();
+        });
 
     d3.select("#files")
         .on("change", () => {
@@ -19,7 +20,7 @@ function init() {
                 read_hgraph_text(textFromFileLoaded);
             }
             fileReader.readAsText(files, "UTF-8");
-        })
+        });
 
     d3.select("#export")
         .on("click", () => {
@@ -29,7 +30,7 @@ function init() {
             });
 
             alert("Output has been saved at: Hypergraph-Vis⁩/⁨app⁩/⁨static/downloads/");
-        })
+        });
 
     d3.select("#add-modality")
         .on("click", () => {
@@ -41,7 +42,7 @@ function init() {
                     d3.select('#modality-container').append('br')
                     let new_modality = d3.select('#modality-container').append('div').attr('class', 'row').html(response);
                     new_modality.attr('style', 'border-top: 1px dashed gray;padding-top: 1em;');
-                    // setup_modality(MODALITY_COUNTER);
+                    setup_modality(MODALITY_COUNTER);
                     MODALITY_COUNTER += 1;
                 },
                 error: function (error) {
@@ -178,19 +179,40 @@ function init() {
         })
 
     // block control
-    let coll = document.getElementsByClassName("block_title");
-    for (let i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
-            this.classList.toggle("collapsed")
-            let block_body = this.nextElementSibling;
-            if (block_body.style.maxHeight) {
-                block_body.style.maxHeight = null;
-            } else {
-                block_body.style.maxHeight = block_body.scrollHeight + "px";
-                // block_body.style.maxHeight = "1000px";
-            }
-        })
-    }
+    make_collapsible(document.getElementById('block-title-encoding'));
+    make_collapsible(document.getElementById('block-title-parameter'));
+}
+
+function make_collapsible(element) {
+    element.addEventListener("click", function () {
+        this.classList.toggle("collapsed")
+        let block_body = this.nextElementSibling;
+        if (block_body.style.maxHeight) {
+            block_body.style.maxHeight = null;
+        } else {
+            block_body.style.maxHeight = block_body.scrollHeight + "px";
+            // block_body.style.maxHeight = "1000px";
+        }
+    });
+}
+
+function setup_modality(m_counter) {
+    // Get simplified hypergraph - stored in current_output.txt
+    $.ajax({
+        type: "POST",
+        url: "modality_load_hgraph",
+        success: function (response) {
+            let config = get_current_config();
+            modality_load_data(response, config, modality_counter);
+        },
+        error: function (error) {
+            console.log("error", error);
+        }
+    })
+
+    // block control
+    make_collapsible(document.getElementById('block-title-encoding' + m_counter));
+    make_collapsible(document.getElementById('block-title-parameter' + m_counter));
 }
 
 function load_data(data, config) {
@@ -212,7 +234,7 @@ function load_data(data, config) {
         data: JSON.stringify(color_dict),
         dataType: 'text',
         success: function (response) {
-            console.log("success")
+            console.log("success");
         },
         error: function (error) {
             console.log("error", error);
@@ -392,7 +414,7 @@ function load_data(data, config) {
 
     function clamp(d, min, max) {
         return Math.min(Math.max(d, min), max);
-    };
+    }
 
     function dragended() {
         let threshold = barcode.width_scale.invert(d3.select("#barcode-line").attr("x1"));
@@ -587,10 +609,10 @@ function copy_line_data(line_data) {
     return {"nodes": line_nodes_new, "links": line_links_new};
 }
 
-function get_current_config() {
+function get_current_config(m_counter = '') {
     //  1. graph version
     let hgraph_type = "collapsed_version";
-    if (!d3.select("#collapse-input").property("checked")) {
+    if (!d3.select("#collapse-input" + m_counter).property("checked")) {
         hgraph_type = "original_version";
     }
     // let simplification_type = "collapsed_version";
@@ -598,13 +620,19 @@ function get_current_config() {
     //     simplification_type = "original_version";
     // }
     //  2. line graph variant
-    let variant = d3.select('input[name="variant-type"]:checked').node().value;
+    let variant = d3.select(`#variant-type-form${m_counter} > div > input[name="variant-type"]:checked`).node().value;
     //  3. s-value & turn off singletons
-    let s = d3.select("#s-walk_input").property("value");
-    let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;
+    let s = d3.select("#s-walk_input" + m_counter).property("value");
+    let singleton_type = d3.select(`#singleton-type-form${m_counter} > div > input[name="singleton-type"]:checked`).node().value;
     //  4. weigth type
-    let weight_type = d3.select('input[name="weight-type"]:checked').node().value;
-    return {'hgraph_type': hgraph_type, 's': s, 'singleton_type': singleton_type, 'variant': variant, 'weight_type': weight_type};
+    let weight_type = d3.select(`#weight-type-form${m_counter}  > div > input[name="weight-type"]:checked`).node().value;
+    return {
+        'hgraph_type': hgraph_type,
+        's': s,
+        'singleton_type': singleton_type,
+        'variant': variant,
+        'weight_type': weight_type
+    };
 }
 
 function reset_visual_encoding() {
