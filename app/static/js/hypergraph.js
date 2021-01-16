@@ -735,11 +735,11 @@ class Hypergraph{
         let cell_height = (this.svg_height-table_margins.top-table_margins.bottom)/(vertices_list.length+1);
         let cell_width = this.svg_width - table_margins.left - table_margins.right;
 
-        // let node_id_width = 1/3*cell_width;
-        // let he_width = 2/3*cell_width / he_list.length;
+        let node_id_width = 1/3*cell_width;
+        let he_width = 2/3*cell_width / he_list.length;
 
-        let node_id_width = 0;
-        let he_width = cell_width / he_list.length;
+        // let node_id_width = 0;
+        // let he_width = cell_width / he_list.length;
 
         // draw table lines 
         let bg = this.border_group.selectAll("line").data(vertices_list.concat(["bottom"]));
@@ -752,13 +752,13 @@ class Hypergraph{
             .attr("stroke", "grey")
             .style("opacity", 0.3);
 
-        // let tg = this.nodes_id_group.selectAll("text").data(vertices_list);
-        // tg = tg.enter().append("text").merge(tg)
-        //     .attr("class", "matrix_node_id")
-        //     .attr("x",table_margins.left)
-        //     .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
-        //     .text(d=>d.id)
-        //     .style("opacity", 0.8);
+        let tg = this.nodes_id_group.selectAll("text").data(vertices_list);
+        tg = tg.enter().append("text").merge(tg)
+            .attr("class", "matrix_node_id")
+            .attr("x",table_margins.left)
+            .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
+            .text(d=>d.id)
+            .style("opacity", 0.8);
 
         let rg = this.rect_group.selectAll("rect").data(this.links);
         rg = rg.enter().append("rect").merge(rg)
