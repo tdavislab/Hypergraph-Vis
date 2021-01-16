@@ -277,12 +277,24 @@ class Barcode{
         // console.log("draw merge tree")
         // d3.select("#info_drawing").remove();
         // d3.select("#info_drawing_container").append("div").attr("id", "info_drawing");
-
+        let that = this;
         let tree = this.construct_tree();
 
-        let tree_margins = {'left':12, 'right':20, 'top':30, 'bottom':10};
+        let tree_margins = {'left':12, 'right':20, 'top':20, 'bottom':10};
         let tree_width = parseFloat(d3.select("#info_drawing").style("width"));
-        let tree_height = this.container_height/3;
+
+        var cluster = d3.cluster()
+            .size([tree_width/1.5, tree_width - tree_margins.right]);
+         // Give the data to this cluster layout:
+         var root = d3.hierarchy(tree, function(d) {
+            return d.children;
+        });
+        cluster(root);
+        console.log(root.descendants().slice(1) )
+
+        let node_height = 10;
+        let tree_height = node_height * (root.descendants().slice(1).length+1) + tree_margins.top + tree_margins.bottom;
+        // let tree_height = this.container_height/3;
 
         // let tree_svg = d3.select("#info_drawing").append("svg")
         let tree_svg = d3.select("#merge-tree-svg")
@@ -317,23 +329,15 @@ class Barcode{
             .style("opacity", 0.5)
             .attr("id", "tree-line")
             // .style("stroke-dasharray","2,2")
-
-        var cluster = d3.cluster()
-            .size([tree_width/1.5, tree_width - tree_margins.right]);
-
-        // Give the data to this cluster layout:
-        var root = d3.hierarchy(tree, function(d) {
-            return d.children;
-        });
-        cluster(root);
-        console.log(root.descendants().slice(1) )
-
-
         let xScale = d3.scaleLinear()
             // .domain([0, Math.max(...root.descendants().slice(1).map(x=>x.data.val))])
             .domain([0, this.max_death*1.1])
             // .range([tree_margins.left, Math.max(...root.descendants().slice(1).map(x=>x.y))])
             .range([tree_margins.left, this.svg_width-this.svg_margin.right]).nice();
+
+        let yScale = d3.scaleLinear()
+            .domain([Math.min(...root.descendants().slice(1).map(d=>d.x)), Math.max(...root.descendants().slice(1).map(d=>d.x))])
+            .range([tree_margins.top, tree_height-tree_margins.top-tree_margins.bottom])
 
         let lgh = tree_edges_group_h.selectAll('line').data(root.descendants().slice(1));
         lgh.exit().remove();
@@ -345,18 +349,18 @@ class Barcode{
                     return xScale(0);
                 }
             })            
-            .attr("y1", d=>d.x*1.4+10)
+            .attr("y1", d=>yScale(d.x)+10)
             .attr("x2", d=>xScale(d.data.val))
-            .attr("y2", d=>d.x*1.4+10)
+            .attr("y2", d=>yScale(d.x)+10)
             .attr("stroke", 'grey');
         
         let lgv = tree_edges_group_v.selectAll('line').data(root.descendants().slice(1));
         lgv.exit().remove();
         lgv = lgv.enter().append('line').merge(lgv)
             .attr("x1", d=>xScale(d.data.val))
-            .attr("y1", d=>d.x*1.4+10)
+            .attr("y1", d=>yScale(d.x)+10)
             .attr("x2", d=>xScale(d.data.val))
-            .attr("y2", d=>d.parent.x*1.4+10)
+            .attr("y2", d=>yScale(d.parent.x)+10)
             .attr("stroke", 'grey');
 
         let nodes_new = [];
@@ -376,7 +380,7 @@ class Barcode{
                 }
             })  
 
-            .attr('cy', d=>d.x*1.4+10)
+            .attr('cy', d=>yScale(d.x)+10)
             .attr('r', 5)
             .attr('fill', d=>{
                 return this.linegraph.color_dict[d.data.name]
@@ -386,9 +390,15 @@ class Barcode{
             .on('mouseover', function(d){
                 d3.select(this).attr('r', 10);
                 tree_tooltip
-                    .attr('transform', 'translate('+(tree_width - d.y+25)+","+(d.x*1.3)+")")
+                    .attr('transform', 'translate('+(tree_width - d.y+25)+","+(yScale(d.x))+")")
                     .style('visibility', 'visible');
-                tree_tooltip.select('text').text(d.data.name)
+                let label_list = []
+                let tooltip_text = ''
+                d.data.name.split("|").forEach(n=>label_list.push(that.linegraph.labels[n]));
+                label_list.forEach(n=>tooltip_text+=n+'|')
+                tooltip_text = tooltip_text.slice(0,-1)
+                // tree_tooltip.select('text').text(d.data.name)
+                tree_tooltip.select('text').text(tooltip_text)
             })
             .on('mouseout', function(d){
                 d3.select(this).attr('r', 5);
@@ -403,7 +413,7 @@ class Barcode{
             .attr('height', 20)
             .attr('y', -15)
             .attr('x', -5)
-            .attr('fill', '#ccc')
+            .attr('fill', 'none')
             // .attr('stroke', 'grey')
             
         tree_tooltip.append('text')
