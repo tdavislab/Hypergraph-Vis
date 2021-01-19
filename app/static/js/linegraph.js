@@ -23,14 +23,14 @@ class Linegraph {
         }
 
 
-        this.container_width = parseFloat(d3.select('#vis-' + svg_id).style('width'));
+        this.container_width = parseFloat(d3.select('#vis-' + svg_id.replace('-svg', '')).style('width'));
         let window_height = window.innerHeight;
         let header_height = d3.select(".header-group").node().offsetHeight;
 
         this.svg_width = this.container_width;
         this.svg_height = (window_height - header_height) / 2 - 30;
 
-        this.svg = d3.select("#" + svg_id + "-svg")
+        this.svg = d3.select("#" + svg_id)
             // .attr("viewBox", [0, 0, this.svg_width, this.svg_height]);
             .attr("width", this.svg_width)
             .attr("height", this.svg_height);

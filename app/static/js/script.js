@@ -1,3 +1,5 @@
+'use strict';
+
 init();
 
 let MODALITY_COUNTER = 1;
@@ -200,10 +202,10 @@ function setup_modality(m_counter) {
     // Get simplified hypergraph - stored in current_output.txt
     $.ajax({
         type: "POST",
-        url: "modality_load_hgraph",
+        url: "/modality_load_hgraph",
         success: function (response) {
-            let config = get_current_config();
-            modality_load_data(response, config, modality_counter);
+            let config = get_current_config(m_counter);
+            modality_load_data(response, config, m_counter);
         },
         error: function (error) {
             console.log("error", error);
@@ -234,7 +236,7 @@ function load_data(data, config) {
         data: JSON.stringify(color_dict),
         dataType: 'text',
         success: function (response) {
-            console.log("success");
+            console.log("Succesfully loaded data from /id2color");
         },
         error: function (error) {
             console.log("error", error);
@@ -264,6 +266,252 @@ function load_data(data, config) {
         })
 
     d3.select("#revert_graph")
+        .on("click", () => {
+            // clear_graphs();
+            hypergraph.revert_force_directed_layout();
+            simplified_hypergraph.revert_force_directed_layout();
+            linegraph.revert_force_directed_layout();
+            simplified_linegraph.revert_force_directed_layout();
+        })
+
+    d3.selectAll(".barcode-rect-dim0")
+        .on("click", (d, i) => click_bar(d, i));
+
+    function click_bar(d, i) {
+        if (barcode.expanded_bars.indexOf(i) === -1) {
+            if (d.death > 0 && (d.death - d.birth) <= barcode.threshold) {
+                barcode.expanded_bars.forEach(idx => {
+                    d3.select("#barcode" + idx).classed("unclickable", true);
+                })
+                d3.select("#barcode" + i).classed("hover-light", true);
+                barcode.expanded_bars.push(i)
+                // expanding
+                $.ajax({
+                    type: "POST",
+                    url: "/hgraph_expansion",
+                    data: JSON.stringify({
+                        'cc_dict': barcode.cc_dict,
+                        'edge': d.edge,
+                        'hyperedges2vertices': hyperedges2vertices,
+                        'config': config,
+                        'singletons': singletons
+                    }),
+                    dataType: 'text',
+                    success: function (response) {
+                        response = JSON.parse(response);
+
+                        let hgraph = response.hyper_data;
+                        let lgraph = response.line_data;
+                        let cc_id = response.cc_id;
+                        barcode.cc_dict = response.cc_dict;
+                        barcode.expanded_bars_dict[i] = cc_id;
+
+                        // assign colors
+                        hgraph.nodes.forEach(n => {
+                            if (n.bipartite === 1) {
+                                n.color = color_dict[n.id.split("|")[0]]
+                            }
+                        })
+                        lgraph.nodes.forEach(n => {
+                            n.color = color_dict[n.id.split("|")[0]]
+                        })
+                        assign_hyperedge_labels(hgraph, lgraph, labels);
+                        $('#simplified-hypergraph-svg').remove();
+                        $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+                        $('#simplified-linegraph-svg').remove();
+                        $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
+                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph-svg", config, color_dict, labels, hypergraph);
+                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph-svg", config.variant, config.weight_type, color_dict, labels);
+
+
+                        d3.select("#simplified-hypergraph-node-" + cc_id[0].replace(/[,]/g, "").replace(/[|]/g, "")).classed("clicked", true);
+                        d3.select("#simplified-hypergraph-node-" + cc_id[1].replace(/[,]/g, "").replace(/[|]/g, "")).classed("clicked", true);
+                    },
+                    error: function (error) {
+                        console.log("error", error);
+                    }
+                });
+            }
+
+        } else {
+            // barcode.click_id = undefined;
+            if (i === barcode.expanded_bars[barcode.expanded_bars.length - 1]) {
+                d3.select("#barcode" + i).classed("hover-light", false);
+                barcode.expanded_bars.pop();
+                d3.select("#barcode" + barcode.expanded_bars[barcode.expanded_bars.length - 1]).classed("unclickable", false);
+                // undo expanding
+                $.ajax({
+                    type: "POST",
+                    url: "/undo_hgraph_expansion",
+                    data: JSON.stringify({
+                        'cc_dict': barcode.cc_dict,
+                        'cc_id': barcode.expanded_bars_dict[i],
+                        'hyperedges2vertices': hyperedges2vertices,
+                        'config': config,
+                        'singletons': singletons
+                    }),
+                    dataType: 'text',
+                    success: function (response) {
+                        response = JSON.parse(response);
+
+                        let hgraph = response.hyper_data;
+                        let lgraph = response.line_data;
+                        barcode.cc_dict = response.cc_dict;
+                        delete barcode.expanded_bars_dict[i]
+
+                        // assign colors
+                        hgraph.nodes.forEach(n => {
+                            if (n.bipartite === 1) {
+                                n.color = color_dict[n.id.split("|")[0]]
+                            }
+                        })
+                        lgraph.nodes.forEach(n => {
+                            n.color = color_dict[n.id.split("|")[0]]
+                        })
+                        assign_hyperedge_labels(hgraph, lgraph, labels);
+                        barcode.cc_dict = response.cc_dict;
+                        $('#simplified-hypergraph-svg').remove();
+                        $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+                        $('#simplified-linegraph-svg').remove();
+                        $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
+                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph-svg", config, color_dict, labels, hypergraph);
+                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph-svg", config.variant, config.weight_type, color_dict, labels);
+
+                        if (barcode.expanded_bars.length > 0) {
+                            let idx = barcode.expanded_bars[barcode.expanded_bars.length - 1];
+                            let cc_id = barcode.expanded_bars_dict[idx];
+                            d3.select("#simplified-hypergraph-node-" + cc_id[0].replace(/[,]/g, "")).classed("clicked", true);
+                            d3.select("#simplified-hypergraph-node-" + cc_id[1].replace(/[,]/g, "")).classed("clicked", true);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("error", error);
+                    }
+                });
+
+
+            }
+
+        }
+    }
+
+    d3.select("#slider_group")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+    function dragstarted() {
+        d3.select(this).raise();
+    }
+
+    function dragged() {
+        let trans_dist = clamp(d3.event.x, barcode.svg_margin.left, barcode.width_scale.range()[1]) - barcode.svg_margin.left;
+        d3.select("#barcode-line").attr("x1", trans_dist)
+            .attr("x2", trans_dist)
+            .attr("y1", Math.min(Math.max(0, d3.event.y), barcode.svg_height - 20));
+        d3.select("#barcode-slider").attr("x", trans_dist).attr("y", Math.min(Math.max(0, d3.event.y), barcode.svg_height - 20));
+
+    }
+
+    function clamp(d, min, max) {
+        return Math.min(Math.max(d, min), max);
+    }
+
+    function dragended() {
+        let threshold = barcode.width_scale.invert(d3.select("#barcode-line").attr("x1"));
+        let edgeid = barcode.extract_edgeid(threshold);
+        barcode.threshold = threshold;
+        barcode.expanded_bars = [];
+        barcode.expanded_bars_dict = {};
+        d3.select("#barcode-threshold").html("Current threshold: " + Math.round(threshold * 1000) / 1000);
+        d3.selectAll(".barcode-rect-dim0").classed("hover-light", false).classed("unclickable", false);
+        let cc_dict = linegraph.get_cc_dict(edgeid);
+        barcode.cc_dict = cc_dict;
+        hypergraph.cancel_faded();
+        $.ajax({
+            type: "POST",
+            url: "/simplified_hgraph",
+            data: JSON.stringify({'cc_dict': cc_dict, 'config': config, 'singletons': singletons}),
+            dataType: 'text',
+            success: function (response) {
+                response = JSON.parse(response);
+                let hgraph = response.hyper_data;
+                let lgraph = response.line_data;
+                // assign colors
+                hgraph.nodes.forEach(n => {
+                    if (n.bipartite === 1) {
+                        n.color = color_dict[n.id.split("|")[0]]
+                    }
+                })
+                lgraph.nodes.forEach(n => {
+                    n.color = color_dict[n.id.split("|")[0]]
+                })
+                assign_hyperedge_labels(hgraph, lgraph, labels);
+                $('#simplified-hypergraph-svg').remove();
+                $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
+                $('#simplified-linegraph-svg').remove();
+                $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
+                simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph-svg", config, color_dict, labels, hypergraph);
+                simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph-svg", config.variant, config.weight_type, color_dict, labels);
+            },
+            error: function (error) {
+                console.log("error", error);
+            }
+        });
+    }
+
+}
+
+function modality_load_data(data, config, m_counter) {
+    if (config.variant === "line_graph") {
+        d3.select("#vis-linegraph-title" + m_counter).html("Line graph")
+        d3.select("#vis-simplified-linegraph-title" + m_counter).html("Simplified line graph")
+    } else { // config.variant === "clique_expansion"
+        d3.select("#vis-linegraph-title" + m_counter).html("Clique expansion")
+        d3.select("#vis-simplified-linegraph-title" + m_counter).html("Simplified clique expansion")
+    }
+
+    let labels = data.labels;
+    let singletons = data.line_data.singletons;
+    let color_dict = assign_hyperedge_colors(data, data.id2color);
+
+    $.ajax({
+        type: "POST",
+        url: "/id2color",
+        data: JSON.stringify(color_dict),
+        dataType: 'text',
+        success: function (response) {
+            console.log("Succesfully loaded data from /id2color");
+        },
+        error: function (error) {
+            console.log("error", error);
+        }
+    });
+
+    assign_hyperedge_labels(data.hyper_data, data.line_data, labels);
+    let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
+
+    let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels, m_counter);
+
+    d3.select("#visual-encoding-switch" + m_counter)
+        .on("change", () => {
+            if (d3.select("#visual-encoding-switch" + m_counter).property("checked")) {
+                d3.select("#visual-encoding-switch-label" + m_counter).html("Graph encoding");
+                hypergraph.draw_hypergraph();
+                simplified_hypergraph.draw_hypergraph();
+                linegraph.draw_linegraph();
+                simplified_linegraph.draw_linegraph();
+            } else {
+                d3.select("#visual-encoding-switch-label" + m_counter).html("Matrix encoding");
+                hypergraph.draw_hypergraph2();
+                simplified_hypergraph.draw_hypergraph2();
+                linegraph.draw_linegraph2();
+                simplified_linegraph.draw_linegraph2();
+            }
+        })
+
+    d3.select("#revert_graph" + m_counter)
         .on("click", () => {
             // clear_graphs();
             hypergraph.revert_force_directed_layout();
@@ -450,8 +698,8 @@ function load_data(data, config) {
                 $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
                 $('#simplified-linegraph-svg').remove();
                 $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-                simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, hypergraph);
-                simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
+                simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph-svg", config, color_dict, labels, hypergraph);
+                simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph-svg", config.variant, config.weight_type, color_dict, labels);
             },
             error: function (error) {
                 console.log("error", error);
@@ -461,13 +709,15 @@ function load_data(data, config) {
 
 }
 
-function initialize_graphs(hyper_data, line_data, barcode_data, config, color_dict, labels) {
-    clear_canvas();
-    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph", config, color_dict, labels);
-    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph", config.variant, config.weight_type, color_dict, labels);
-    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", config, color_dict, labels, hypergraph);
-    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
-    let barcode = new Barcode(barcode_data, simplified_linegraph);
+function initialize_graphs(hyper_data, line_data, barcode_data, config, color_dict, labels, m_counter='') {
+    if (m_counter === '') {
+        clear_canvas();
+    }
+    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph-svg" + m_counter, config, color_dict, labels);
+    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph-svg" + m_counter, config.variant, config.weight_type, color_dict, labels);
+    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph-svg" + m_counter, config, color_dict, labels, hypergraph);
+    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph-svg" + m_counter, config.variant, config.weight_type, color_dict, labels);
+    let barcode = new Barcode(barcode_data, simplified_linegraph, 'barcode-svg' + m_counter);
 
     return [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode];
 }

@@ -398,7 +398,7 @@ def import_file():
     # dual line graph
     dual_lgraph = compute_dual_line_graph(chgraph)
 
-    # Convert to edge:vertex dictionary and save those dictionary to disk
+    # Convert to edge:vertex dictionary and save those dictionaries to disk
     hgraph_dict = {hkey: list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
     chgraph_dict = {hkey: list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
     write_json_file(hgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph_original.json"))
@@ -632,3 +632,52 @@ def export():
 def add_modality():
     modality_counter = request.form['modality_counter']
     return render_template("modality.html", modal_index=modality_counter)
+
+
+@app.route('/modality_load_hgraph', methods=['POST', 'GET'])
+def modality_load_hgraph():
+    with open(path.join(APP_STATIC, "uploads/current_output.txt"), 'r') as f:
+        jsdata = f.read()
+
+    # Computer the hypergraph
+    hgraph, label_map = process_hypergraph(jsdata)
+    # Create the collapsed hypergraph
+    chgraph = collapse_hypergraph(hgraph)
+    # line graph from the collapsed hypergraph
+    lgraph = convert_to_line_graph(chgraph.incidence_dict)
+    # dual line graph
+    dual_lgraph = compute_dual_line_graph(chgraph)
+
+    # Convert to edge:vertex dictionary and save those dictionaries to disk
+    hgraph_dict = {hkey: list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
+    chgraph_dict = {hkey: list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
+    write_json_file(hgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph_original.json"))
+    write_json_file(chgraph_dict, path.join(APP_STATIC, "uploads/current_hypergraph.json"))
+
+    # Get the bipartite representation of the graphs in json format
+    hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
+    chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+
+    # Compute barcodes with intersection size and jaccard index and serialize to disk
+    barcode_is = compute_barcode(lgraph)  # is: weight = 1/intersection_size
+    dual_barcode_is = compute_barcode(dual_lgraph)
+    write_json_file(barcode_is, path.join(APP_STATIC, "uploads/current_barcode_is.json"))
+    write_json_file(dual_barcode_is, path.join(APP_STATIC, "uploads/current_dual_barcode_is.json"))
+
+    barcode_ji = compute_barcode(lgraph, weight_col="jaccard_index")  # ji: weight = 1/jaccard_index
+    dual_barcode_ji = compute_barcode(dual_lgraph, weight_col="jaccard_index")
+    write_json_file(barcode_ji, path.join(APP_STATIC, "uploads/current_barcode_ji.json"))
+    write_json_file(dual_barcode_ji, path.join(APP_STATIC, "uploads/current_dual_barcode_ji.json"))
+
+    assign_hgraph_singletons(chgraph, lgraph['singletons'])
+
+    current_config = {'hgraph_type': 'collapsed_version', 's': 1, 'singleton_type': 'grey_out', 'variant': 'line_graph',
+                      'weight_type': 'jaccard_index'}
+    # Write the config, line-graph, dual-linegraph and label map to disk
+    write_json_file(current_config, path.join(APP_STATIC, "uploads/current_config.json"))
+    write_json_file(lgraph, path.join(APP_STATIC, "uploads/current_linegraph.json"))
+    write_json_file(dual_lgraph, path.join(APP_STATIC, "uploads/current_dual_linegraph.json"))
+    write_json_file(label_map, path.join(APP_STATIC, "uploads/current_label_map.json"))
+
+    # return collapsed hypergraph, line-graph, barcode and label map to front end
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map)
