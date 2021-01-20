@@ -145,16 +145,16 @@ function init(){
         })
 
     // hide hyperedge node
-    d3.select("#hide-hyperedge-node")
-        .on("change", ()=>{
-            if(d3.select("#hide-hyperedge-node").property("checked")){
-                d3.selectAll(".he-group").attr("opacity",0);
-                d3.selectAll(".hyper_edge").attr("opacity",0);
-            } else {
-                d3.selectAll(".he-group").attr("opacity",1);
-                d3.selectAll(".hyper_edge").attr("opacity",0.5);
-            }
-        })
+    // d3.select("#hide-hyperedge-node")
+    //     .on("change", ()=>{
+    //         if(d3.select("#hide-hyperedge-node").property("checked")){
+    //             d3.selectAll(".he-group").attr("opacity",0);
+    //             d3.selectAll(".hyper_edge").attr("opacity",0);
+    //         } else {
+    //             d3.selectAll(".he-group").attr("opacity",1);
+    //             d3.selectAll(".hyper_edge").attr("opacity",0.5);
+    //         }
+    //     })
 
     // block control
     let coll  = document.getElementsByClassName("block_title");
@@ -604,7 +604,9 @@ function reset_visual_encoding() {
     d3.select("#hgraph-labels").property("checked", false);
     //  2. reset hypergraph visual encoding
     d3.select("#convex").property("checked", true);
-    // 3. reset glyph
+    //  3. reset "hide hyperedge nodes"
+    d3.select("#hide-hyperedge-node").property("checked", false);
+    //  4. reset glyph
     d3.select("#hyperedge-glyph").property("checked", true);
     d3.select("#vertex-glyph").property("checked", false);
 }

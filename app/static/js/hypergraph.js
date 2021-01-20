@@ -71,7 +71,8 @@ class Hypergraph{
         } else {
             this.draw_hypergraph2();
         }
-        this.toggle_hgraph_labels();  
+        this.toggle_hgraph_labels(); 
+        this.toggle_hgraph_nodes(); 
     }
 
     groupPath(vertices) {
@@ -473,10 +474,11 @@ class Hypergraph{
         }
 
         function mouseover(key) {
+            console.log(key)
             if(!that.click_id){
-                let label_list = that.nodes_dict[key].label.split("|")
+                let label_list = that.nodes_dict[key].label.split("|");
                 let div_text = '';
-                label_list.forEach(label=>{ div_text += label+"<br> "; })
+                label_list.forEach(label=>{ div_text += label+"<br> "; });
                 let div = d3.select("#help-tip")
                 div.classed("show", true);
                 if(that.nodes_dict[key].bipartite === 1){
@@ -735,11 +737,11 @@ class Hypergraph{
         let cell_height = (this.svg_height-table_margins.top-table_margins.bottom)/(vertices_list.length+1);
         let cell_width = this.svg_width - table_margins.left - table_margins.right;
 
-        let node_id_width = 1/3*cell_width;
-        let he_width = 2/3*cell_width / he_list.length;
+        // let node_id_width = 1/3*cell_width;
+        // let he_width = 2/3*cell_width / he_list.length;
 
-        // let node_id_width = 0;
-        // let he_width = cell_width / he_list.length;
+        let node_id_width = 0;
+        let he_width = cell_width / he_list.length;
 
         // draw table lines 
         let bg = this.border_group.selectAll("line").data(vertices_list.concat(["bottom"]));
@@ -752,13 +754,13 @@ class Hypergraph{
             .attr("stroke", "grey")
             .style("opacity", 0.3);
 
-        let tg = this.nodes_id_group.selectAll("text").data(vertices_list);
-        tg = tg.enter().append("text").merge(tg)
-            .attr("class", "matrix_node_id")
-            .attr("x",table_margins.left)
-            .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
-            .text(d=>d.id)
-            .style("opacity", 0.8);
+        // let tg = this.nodes_id_group.selectAll("text").data(vertices_list);
+        // tg = tg.enter().append("text").merge(tg)
+        //     .attr("class", "matrix_node_id")
+        //     .attr("x",table_margins.left)
+        //     .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
+        //     .text(d=>d.id)
+        //     .style("opacity", 0.8);
 
         let rg = this.rect_group.selectAll("rect").data(this.links);
         rg = rg.enter().append("rect").merge(rg)
@@ -785,7 +787,24 @@ class Hypergraph{
                     return this.color_dict[d.source.split("|")[0]];
                 }
             })
-            .style("opacity", 1);
+            .style("opacity", 1)
+            .on("mouseover", (d)=>{
+                console.log(d.target.id);
+                let hyperedge_labels = this.nodes_dict[d.source.id].label.split("|");
+                let hyperedge_text = '';
+                hyperedge_labels.forEach(l=>{ hyperedge_text += l + "<br> "; });
+                let vertex_labels = this.nodes_dict[d.target.id].label.split("|");
+                let vertex_text = '';
+                vertex_labels.forEach(v=>{ vertex_text += v + "<br> ";})
+                let div = d3.select("#help-tip");
+                div.classed("show", true);
+                // div.html("<h6>Selected Hyperedges</h6>" + hyperedge_text + "<br> <h6>Selected Vetices</h6>" + vertex_labels);
+                div.html("<h6>Selected Vetices</h6>" + vertex_labels);
+
+            })
+            .on("mouseout", (d)=>{
+                d3.select("#help-tip").classed("show", false);
+            });
         
         let lg = this.line_group.selectAll("line").data(he_vertices_id_list);
         lg = lg.enter().append("line").merge(lg)
@@ -816,6 +835,28 @@ class Hypergraph{
         d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", false);
         d3.select("#linegraph-svg").selectAll(".ring-group").classed("faded", false);
         d3.select("#simplified-linegraph-svg").selectAll(".ring-group").classed("faded", false);
+    }
+
+    toggle_hgraph_nodes(){
+        try {
+            // Set show-labels to false at beginning
+            this.update_hypernodes();
+            d3.select("#hide-hyperedge-node").on("change", this.update_hypernodes);
+    
+        } catch (e) {
+            console.log(e);
+        }     
+    }
+
+    update_hypernodes() {
+        if(d3.select("#hide-hyperedge-node").property("checked")){
+            d3.selectAll(".he-group").attr("opacity",0);
+            d3.selectAll(".hyper_edge").attr("opacity",0);
+        } else {
+            d3.selectAll(".he-group").attr("opacity",1);
+            d3.selectAll(".hyper_edge").attr("opacity",0.5);
+        }
+        
     }
 
     toggle_hgraph_labels(){
