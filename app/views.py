@@ -152,6 +152,10 @@ def compute_dual_line_graph(hypergraph, s=1, singleton_type="grey_out"):
     return dual_line_graph
 
 def assign_hgraph_singletons(hgraph, singletons, singleton_type="grey_out"):
+    """
+    grey_out: only grey out singletons in the original hypergraph. (even some hyperedge become a singleton after simplification, it will not be greyed out).
+    (Otherwise it will be inconsistent with "filtering")
+    """
     if singleton_type == "grey_out":
         for node in hgraph['nodes']:
             if node['id'].replace("|", "") in singletons:
