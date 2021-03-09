@@ -119,6 +119,9 @@ class Hypergraph{
             .attr("id", "hyper_nodes_group");
         this.vertices_group = this.svg_g.append("g")
             .attr("id", "hyper_vertices_group");
+        
+        this.annotate_group = this.svg_g.append("g")
+        .attr("id", "hyper_annotate_group");
 
         let that = this;
 
@@ -137,6 +140,30 @@ class Hypergraph{
             node.x0 = node.x;
             node.y0 = node.y;
         })
+
+        // save the bipartite graph
+        // let nodes2save = [];
+        // let links2save = [];
+
+        // this.nodes.forEach(node=>{
+        //     nodes2save.push({"x":node.x, "y":node.y});
+        // })
+        // this.links.forEach(link=>{
+        //     links2save.push({"source":link.source.index , "target":link.target.index});
+        // })
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/save_bipartite_graph",
+        //     data: JSON.stringify({'nodes':nodes2save, 'links':links2save, 'svg_id':this.svg_id}),
+        //     dataType:'text',
+        //     success: function (response) {
+        //         response = JSON.parse(response);
+        //     },
+        //     error: function (error) {
+        //         console.log("error",error);
+        //     }
+        // });
 
         let hg = this.nodes_group.selectAll("g").data(this.nodes.filter(d => d.bipartite===1));
         hg.exit().remove();
@@ -381,13 +408,16 @@ class Hypergraph{
                 }        
             });
 
+        // ========================= Path segments ============================
+        let intersection_num = this.compute_intersection_num(groups);
+        console.log(this.svg_id, "intersection_num", intersection_num);
+
         //add zoom capabilities
         const zoom_handler = d3.zoom()
             .on("zoom", zoom_actions);
 
         // drag_handler(ng);
         zoom_handler(this.svg);
-
 
         function prepare_pie_data (key) {
             let id_list = key.split("|");
@@ -680,6 +710,146 @@ class Hypergraph{
         function zoom_actions() {
             that.svg_g.attr("transform", d3.event.transform);
         }
+    }
+
+    compute_intersection_num(groups){
+        console.log("compute intersection num");
+        let paths = this.get_path_pieces(groups);
+        console.log(groups)
+        console.log(paths)
+        let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        // for(let i=0; i<paths.length; i++){
+        //     let path_i_g = this.annotate_group.append("g")
+        //     path_i_g.selectAll("circle").data(paths[i])
+        //         .enter().append("circle")
+        //         .attr("cx", d=>d.x)
+        //         .attr("cy", d=>d.y)
+        //         .attr("r", d=>{
+        //             if(d.type==="inner"){
+        //                 return "2"
+        //             } else{
+        //                 return "3"
+        //             }
+        //         })
+        //         .attr("fill", d=>{
+        //             if(d.type === "center"){
+        //                 return "grey";
+        //             } else{
+        //                 return colorScale(i);
+        //             }
+        //             })
+        // }
+        let intersection_num = 0;
+        for(let i=0; i<(paths.length-1); i++){
+            for(let j=(i+1); j<paths.length; j++){
+                intersection_num += this.ifPathIntersect(paths[i], paths[j]);
+                // if(this.ifPathIntersect(paths[i], paths[j])){
+                //     console.log("true")
+                //     intersection_num += 1;
+                // }
+            }
+        }
+        return intersection_num;
+    }
+
+    ifPathIntersect(p1, p2){
+        let intersection_num = 0;
+        for(let i=1; i<p1.length; i++){
+            for(let j=1; j<p2.length; j++){
+                let line1 = [p1[i-1], p1[i]];
+                let line2 = [p2[j-1], p2[j]];
+                if(this.ifLineIntersect(line1, line2)){
+                    intersection_num += 1;
+                }
+            }
+        }
+        return intersection_num;
+    }
+
+    ifLineIntersect(line1, line2){
+        let pt1 = line1[0];
+        let pt2 = line1[1];
+        let pt3 = line2[0];
+        let pt4 = line2[1];
+        let x;
+        let y;
+        if(pt1.x===pt2.x&&pt3.x===pt4.x) { // if two lines are both vertical
+            if(pt1.x===pt3.x) {
+                if((pt3.y<=Math.max(pt1.y,pt2.y) && pt3.y>=Math.min(pt1.y,pt2.y))||(pt4.y<=Math.max(pt1.y,pt2.y) && pt4.y>=Math.min(pt1.y,pt2.y))){
+                    return true;
+                } else{
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else if(pt1.x===pt2.x) { // if line1 is vertical
+            let a2 = (pt3.y-pt4.y)/(pt3.x-pt4.x);
+            let b2 = pt3.y - a2*pt3.x;
+            x = pt1.x;
+            y = a2*x+b2;
+        } else if(pt3.x===pt4.x) { // if line2 is vertical
+            let a1 = (pt1.y-pt2.y)/(pt1.x-pt2.x);
+            let b1 = pt1.y - a1*pt1.x;
+            x = pt3.x;
+            y = a1*x+b1;
+        } else {
+            let a1 = (pt1.y-pt2.y)/(pt1.x-pt2.x);
+            let b1 = pt1.y - a1*pt1.x;
+            let a2 = (pt3.y-pt4.y)/(pt3.x-pt4.x);
+            let b2 = pt3.y - a2*pt3.x;
+            if(a1===a2) {
+                if(b1 === b2){ // if two lines are identical
+                    if((pt3.y<=Math.max(pt1.y,pt2.y) && pt3.y>=Math.min(pt1.y,pt2.y))||(pt4.y<=Math.max(pt1.y,pt2.y) && pt4.y>=Math.min(pt1.y,pt2.y))){
+                        return true;
+                    } else{
+                        return false;
+                    }
+                } else { // parallel
+                    return false;
+                }
+            } else {
+                x = (b2-b1)/(a1-a2);
+                y = (a1*b2-a2*b1)/(a1-a2);
+            }
+        }
+        if((Math.min(pt1.x,pt2.x)<=x && x<=Math.max(pt1.x,pt2.x))&&(Math.min(pt1.y,pt2.y)<=y && y<=Math.max(pt1.y,pt2.y))&&(Math.min(pt3.x,pt4.x)<=x && x<=Math.max(pt3.x,pt4.x))&&(Math.min(pt3.y,pt4.y)<=y && y<=Math.max(pt3.y,pt4.y))){
+            return true;
+        } else { 
+            return false;
+        }
+    }
+
+    get_path_pieces(groups){
+        let num_pieces = 10;
+        let path_padding = 20;
+        let paths = [];
+        // let centers = [];
+        for(let g of groups){
+            if(g.value.length > 1){
+                let path = d3.select("#"+this.svg_id+"-hull-"+g.key.replace(/[|]/g,"")).node();
+                let pieces = [];
+                let path_length = path.getTotalLength();
+                let step_length = path_length / num_pieces;
+                // get the center of path
+                let cpt1 = path.getPointAtLength(1/2*path_length);
+                let cpt2 = path.getPointAtLength(0);
+                
+                let cx = (cpt1.x + cpt2.x)/2;
+                let cy = (cpt1.y + cpt2.y)/2;
+                // centers.push([{"x":cx, "y":cy}])
+                // get points on path
+                for(let i=0; i<num_pieces; i++){
+                    let pt = path.getPointAtLength(i*step_length);
+                    let d = Math.sqrt(Math.pow(cx-pt.x, 2)+Math.pow(cy-pt.y, 2));
+                    let x1 = (path_padding+d)/d * pt.x - path_padding/d * cx;
+                    let y1 = (path_padding+d)/d * pt.y - path_padding/d * cy;
+                    pieces.push({"x":x1, "y":y1});
+                }
+                paths.push(pieces);
+            }
+        }
+        return paths;
     }
 
     draw_hypergraph2(){

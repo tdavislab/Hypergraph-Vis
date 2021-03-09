@@ -600,4 +600,12 @@ def export():
         os.system("cp "+path.join(APP_STATIC,"uploads/current_hypergraph.txt")+" "+filepath)
     return "0"
 
+@app.route('/save_bipartite_graph', methods=['POST', 'GET'])
+def save_bipartite_graph():
+    jsdata = json.loads(request.get_data())
+    filename = jsdata['svg_id']
+    jsdata_new = {"nodes":jsdata['nodes'], "links":jsdata['links']}
+    write_json_file(jsdata_new, path.join(APP_STATIC,"uploads/"+filename+"_bipartite.json"))
+    return "0"
+
 
