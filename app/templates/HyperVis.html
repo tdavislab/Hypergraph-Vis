@@ -150,7 +150,32 @@
                 <div class="block_body" style="max-height: 1000px">
                     <div class="block_body-inner">
                         <div class="block-inner-group">
-                            <div class="toggle-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="padding-top:6px">Color scheme</label>
+                                </div>
+                                <div class="col-6" id="color-scheme-dropdown-container" style="padding-bottom:3px">
+                                    <select class="custom-select"  name="color-scheme-dropdown" id="color-scheme-dropdown">
+                                        <option value="top5">Top 5</option>
+                                        <option value="all">Color all</option>
+                                      </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-inner-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="padding-top:6px">Visual encoding</label>
+                                </div>
+                                <div class="col-6" id="set-vis-dropdown-container" style="padding-bottom:3px">
+                                    <select class="custom-select"  name="set-vis-dropdown" id="set-vis-dropdown">
+                                        <option value="graph">Graph-based</option>
+                                        <option value="matrix">Matrix-based</option>
+                                        <option value="bubblesets">Bubble sets</option>
+                                      </select>
+                                </div>
+                            </div>
+                            <!-- <div class="toggle-group">
                                 <div class="onoffswitch">
                                     <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="visual-encoding-switch" checked>
                                     <label class="onoffswitch-label" for="visual-encoding-switch">
@@ -159,6 +184,19 @@
                                     </label>
                                 </div>
                                 <div class="toggle-label" id="visual-encoding-switch-label"> Graph encoding </div>
+                            </div> -->
+                        </div>
+                        <div class="block-inner-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="padding-top:6px">Vertex shape</label>
+                                </div>
+                                <div class="col-6" id="vertex-shape-dropdown-container" style="padding-bottom:3px">
+                                    <select class="custom-select"  name="vertex-shape-dropdown" id="vertex-shape-dropdown">
+                                        <option value="circle">Circle</option>
+                                        <option value="rect">Square</option>
+                                      </select>
+                                </div>
                             </div>
                         </div>
                         <div class="block-inner-group">

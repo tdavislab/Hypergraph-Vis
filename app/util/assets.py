@@ -11,6 +11,7 @@ bundles = {
         'js/simplified_hypergraph.js',
         'js/linegraph.js',
         'js/barcode.js',
+        'js/bubblesets.js',
         'js/script.js',
         output='gen/script.js'
         ),

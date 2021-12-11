@@ -13,21 +13,7 @@ import networkx as nx
 from os import path
 import os
 import copy
-
-
-def process_graph_edges(edge_str: str):
-    """
-    Convert a string representation of the hypergraph into a python dictionary
-
-    :param edge_str: string representation of the hypergraph
-    :type edge_str: str
-    :return: dictionary representing the hypergraph
-    :rtype: dict
-    """
-
-    edge_str = edge_str.strip().replace('\'', '\"')
-    converted_edge_str = edge_str[1:-1].replace('{', '[').replace('}', ']')
-    return json.loads('{' + converted_edge_str + '}')
+import collections
 
 def process_hypergraph(hyper_data: str):
     """
@@ -35,6 +21,9 @@ def process_hypergraph(hyper_data: str):
     """
     hgraph = {}
     label2id = {}
+    vlabel2id = {}
+    # label2id = {"a":"h1|h2", "b": "h3|h4", "c":"h5|h6"}
+    # label2id = {'1':'v0', '2':'v1', '3':'v2', '4':'v3', '5':'v4'}
     he_id = 0
     v_id = 0
     for line in hyper_data.split("\n"):
@@ -44,21 +33,25 @@ def process_hypergraph(hyper_data: str):
         if hyperedge != "":
             if hyperedge not in label2id.keys():
                 hyperedge_label = re.sub('[\'\s]+', '', hyperedge)
+                hyperedge_label = hyperedge_label.replace("\"", "")
                 new_id = 'he'+str(he_id)
+                # new_id = hyperedge
                 he_id += 1
                 label2id[hyperedge_label] = new_id
                 hyperedge = new_id
             vertices_new = []
             for v in vertices:
                 v_label = re.sub('[\'\s]+', '', v)
+                v_label = v_label.replace("\"", "")
                 if v_label != "":
-                    if v_label not in label2id.keys():
+                    if v_label not in vlabel2id.keys():
                         new_id = 'v'+str(v_id)
+                        # new_id = v_label
                         v_id += 1
-                        label2id[v_label] = new_id
+                        vlabel2id[v_label] = new_id
                         vertices_new.append(new_id)
                     else:
-                        vertices_new.append(label2id[v_label])
+                        vertices_new.append(vlabel2id[v_label])
             vertices = vertices_new
 
             if hyperedge not in hgraph.keys():
@@ -66,8 +59,33 @@ def process_hypergraph(hyper_data: str):
             else:
                 hgraph[hyperedge] += vertices
     label_map = {ID:label for label, ID in label2id.items()}
+    for label, ID in vlabel2id.items():
+        label_map[ID] = label
 
     return hnx.Hypergraph(hgraph), label_map
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    '''
+    alist.sort(key=natural_keys) sorts in human order
+    http://nedbatchelder.com/blog/200712/human_sorting.html
+    (See Toothy's implementation in the comments)
+    '''
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
+
+def get_top5_hyperedges(hgraph_dict):    
+    he_list = list(hgraph_dict.keys())
+    he_list.sort(key=natural_keys)
+    he2len_sorted = collections.OrderedDict()
+    for he in he_list:
+        vertices = hgraph_dict[he]
+        he2len_sorted[he] = len(vertices)
+    print(he2len_sorted)
+    top5 = sorted(he2len_sorted, key=he2len_sorted.get, reverse=True)[:5]
+    print(top5)
+    return top5
 
 def collapse_hypergraph(hgraph):
     chgraph = hgraph.collapse_edges()
@@ -262,6 +280,7 @@ def write_output_hypergraph(hgraph_dict, output_path):
 
             line += he_label + ","
             for v in hgraph_dict[he]:
+                print(v)
                 v_label = ""
                 v_list = v.split("|")
                 for v_i in v_list:
@@ -382,6 +401,8 @@ def import_file():
 
     hgraph_dict = {hkey:list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
     chgraph_dict = {hkey:list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
+    hgraph_top5 = get_top5_hyperedges(hgraph_dict)
+    chgraph_top5 = get_top5_hyperedges(chgraph_dict)
     write_json_file(hgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph_original.json"))
     write_json_file(chgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph.json"))
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
@@ -407,7 +428,7 @@ def import_file():
     write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
     write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
 
-    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map)
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, top5_edges=chgraph_top5)
 
 @app.route('/reload_graphs', methods=['POST', 'GET'])
 def reload_graphs():
@@ -558,6 +579,7 @@ def compute_simplified_hgraph():
 
     singletons = jsdata['singletons']
     cc_dict = jsdata['cc_dict']
+    print(cc_dict)
     
     hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
 

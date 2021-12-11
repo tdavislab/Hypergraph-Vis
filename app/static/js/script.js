@@ -22,6 +22,7 @@ function init(){
     d3.select("#export")
         .on("click", ()=>{
             let v = $("#exFilename").val();
+            console.log(v)
             $.post( "/export", {
                 javascript_data: JSON.stringify(v)
             });
@@ -85,6 +86,31 @@ function init(){
                 d3.selectAll(".convex_hull").style("visibility","visible");
             }
         });
+    
+    // color scheme
+    let color_scheme_dropdown = document.getElementById("color-scheme-dropdown");
+    color_scheme_dropdown.onchange = function(){
+        let color_scheme = color_scheme_dropdown.options[color_scheme_dropdown.selectedIndex].value;
+        console.log(color_scheme)
+    }
+
+    // vertex shape
+    let vertex_shape_dropdown = document.getElementById("vertex-shape-dropdown");
+    let vertex_shape = vertex_shape_dropdown.options[vertex_shape_dropdown.selectedIndex].value;
+    vertex_shape_dropdown.onchange = function(){
+        vertex_shape = vertex_shape_dropdown.options[vertex_shape_dropdown.selectedIndex].value;
+        if(vertex_shape === "circle"){
+            d3.selectAll(".v-group").select("circle")
+                .attr("visibility", "visible");
+            d3.selectAll(".v-group").select("rect")
+                .attr("visibility", "hidden");
+        } else if(vertex_shape == "rect"){
+            d3.selectAll(".v-group").select("circle")
+                .attr("visibility", "hidden");
+            d3.selectAll(".v-group").select("rect")
+                .attr("visibility", "visible");
+        }       
+    }
 
     // show / hide glyphs
     d3.select("#hyperedge-glyph")
@@ -121,6 +147,14 @@ function init(){
                             return "black";
                         }
                     })
+
+                if(vertex_shape === "circle"){
+                    d3.selectAll(".ring-group").selectAll("rect")
+                        .attr("visibility", "hidden")
+                } else {
+                    d3.selectAll(".ring-group").selectAll("circle")
+                        .attr("visibility", "hidden")
+                }
                 // .classed("vertex_node-container", (d)=>{
                 //     if(d.id.split("|").length === 1){
                 //         return "false";
@@ -186,6 +220,7 @@ function load_data(data, config) {
     let labels = data.labels;
     let singletons = data.line_data.singletons;
     let color_dict = assign_hyperedge_colors(data, data.id2color);
+    let top5_edges = data.top5_edges;
 
     $.ajax({
         type: "POST",
@@ -204,7 +239,7 @@ function load_data(data, config) {
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
     console.log(hyperedges2vertices)
-    let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels);
+    let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels, top5_edges);
 
     let info_dropdown = document.getElementById("info_selection");
     info_dropdown.onchange = function(){
@@ -221,30 +256,56 @@ function load_data(data, config) {
         }
     }
 
-    d3.select("#visual-encoding-switch")
-        .on("change", ()=>{
-            if(d3.select("#visual-encoding-switch").property("checked")){
-                d3.select("#visual-encoding-switch-label").html("Graph encoding");
-                hypergraph.draw_hypergraph();
-                simplified_hypergraph.draw_hypergraph();
-                linegraph.draw_linegraph();
-                simplified_linegraph.draw_linegraph();
-            } else{
-                d3.select("#visual-encoding-switch-label").html("Matrix encoding");
-                hypergraph.draw_hypergraph2();
-                simplified_hypergraph.draw_hypergraph2();
-                linegraph.draw_linegraph2();
-                simplified_linegraph.draw_linegraph2();
-            }
-        })
+    let set_vis_dropdown = document.getElementById("set-vis-dropdown");
+    set_vis_dropdown.onchange = function(){
+        let set_vis_type = set_vis_dropdown.options[set_vis_dropdown.selectedIndex].value;
+        if(set_vis_type === "graph"){
+            hypergraph.draw_hypergraph();
+            simplified_hypergraph.draw_hypergraph();
+            linegraph.draw_linegraph();
+            simplified_linegraph.draw_linegraph();
+        } else if(set_vis_type === "matrix"){
+            hypergraph.draw_hypergraph_matrix();
+            simplified_hypergraph.draw_hypergraph_matrix();
+            linegraph.draw_linegraph_matrix();
+            simplified_linegraph.draw_linegraph_matrix();
+        } else { // set_vis_type === "bubblesets"
+            hypergraph.draw_hypergraph_bubblesets();
+            simplified_hypergraph.draw_hypergraph_bubblesets();
+            linegraph.draw_linegraph();
+            simplified_linegraph.draw_linegraph();
+
+        }
+    }
+
+
+    // d3.select("#visual-encoding-switch")
+    //     .on("change", ()=>{
+    //         if(d3.select("#visual-encoding-switch").property("checked")){
+    //             d3.select("#visual-encoding-switch-label").html("Graph encoding");
+    //             hypergraph.draw_hypergraph();
+    //             simplified_hypergraph.draw_hypergraph();
+    //             linegraph.draw_linegraph();
+    //             simplified_linegraph.draw_linegraph();
+    //         } else{
+    //             d3.select("#visual-encoding-switch-label").html("Matrix encoding");
+    //             hypergraph.draw_hypergraph2();
+    //             simplified_hypergraph.draw_hypergraph2();
+    //             linegraph.draw_linegraph2();
+    //             simplified_linegraph.draw_linegraph2();
+    //         }
+    //     })
 
     d3.select("#revert_graph")
         .on("click", ()=>{
             // clear_graphs();
-            hypergraph.revert_force_directed_layout();
-            simplified_hypergraph.revert_force_directed_layout();
-            linegraph.revert_force_directed_layout();
-            simplified_linegraph.revert_force_directed_layout();
+            // if(d3.select("#visual-encoding-switch").property("checked")){
+            if(set_vis_dropdown.options[set_vis_dropdown.selectedIndex].value === "graph"){
+                hypergraph.revert_force_directed_layout();
+                simplified_hypergraph.revert_force_directed_layout();
+                linegraph.revert_force_directed_layout();
+                simplified_linegraph.revert_force_directed_layout();
+            }
         })
 
     d3.selectAll(".barcode-rect-dim0")
@@ -438,9 +499,9 @@ function load_data(data, config) {
 
 }
 
-function initialize_graphs(hyper_data, line_data, barcode_data, config, color_dict, labels) {
+function initialize_graphs(hyper_data, line_data, barcode_data, config, color_dict, labels, top5_edges) {
     clear_canvas();
-    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph", config, color_dict, labels); 
+    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph", config, color_dict, labels, top5_edges=top5_edges); 
     let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph", config.variant, config.weight_type, color_dict, labels);
     let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", config, color_dict, labels, hypergraph);
     let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
@@ -467,21 +528,58 @@ function read_hgraph_text(text_data){
     })
 }
 
-function assign_hyperedge_colors(data, color_dict=undefined){
+function assign_hyperedge_colors(data, color_dict=undefined, color_scheme="top5"){
+    console.log(data)
     if(color_dict === undefined){
         color_dict = {};
-        // color_dict = {'he0':'#ff7f0e', 'he1':'#2ca02c', 'he2':'#1f77b4', 'he3':'#d62728', 'he4':'#8c564b', 'he5':'#9467bd', 'v0':'#7f7f7f', 'v1':'#e377c2', 'v2':'#bcbd22', 'v3':'#17becf', 'v4':'#613f75'}
-        // color_dict = {'he0':'#ff7f0e', 'he1':'#7f7f7f', 'he2':'#1f77b4', 'he3':'#e377c2', 'he4':'#2ca02c', 'he5':'#8c564b', 'he6':'#d62728', 'he7':'#17becf', 'he8':'#9467bd', 'he9':'#bcbd22'}
-        let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-        let idx = 0;
+        // color_dict = {"he1":"#ff7f0e", "he0":"#1f77b4", "he2":" #2ca02c", "he3":"#d62728", "he4":"#9467bd", "v0":"#8c564b", "v1":"#e377c2", "v2":"#7f7f7f", "v3":"#bcbd22", "v4":"#17becf"}
+        // color_dict = {'h1':'#ff7f0e', 'h2':'#d62728', 'h3':'#1f77b4', 'h4':'#9467bd', 'h5':'#d62728', 'h6':'#9467bd'} // hyperedge matching
+        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v0":"#8c564b","v1": "#2ca02c", "v2":"#e377c2", "v3":"#bcbd22", "v4":"#17becf"} // vertex matching 1 before
+        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v1":"#8c564b","v2": "#17becf", "v3":"#2ca02c", "v4":"#bcbd22", "v5":"#e377c2", "v6":"#bcbd22", "v7":"#e377c2", "v8":"#bcbd22", "v9":"#17becf"} // vertex matching 1 after
+
+        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v0":"#000000","v1": "#9467bd", "v2":"#bcbd22", "v3":"#e377c2", "v4":"#8c564b"} // vertex matching 2 before
+
+        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v1":"#000000", "v2": "#9467bd", "v3":"#9467bd", "v4":"#bcbd22", "v5":"#000000", "v6":"#e377c2", "v7":"#000000", "v8":"#8c564b", "v9":"#9467bd"} // vertex matching 2 after
+        let top5_edges = data.top5_edges;
+
+        let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        let node_list = [];
         data.hyper_data.nodes.forEach(node=>{
             let n_list = node.id.split("|");
             n_list.forEach(n=>{
-                if(Object.keys(color_dict).indexOf(n)===-1){
-                    color_dict[n] = colorScale(idx);
-                    idx += 1;
+                if(node_list.indexOf(n) === -1){
+                    node_list.push(n)
                 }
             })
+        })
+        node_list.sort((a,b)=>b-a) // sort the nodes so that each time with the same names the colors will be the same
+        if(color_scheme === "top5"){
+            let node_list_new = node_list.filter(n=> top5_edges.indexOf(n)!=-1)
+            let idx = 0;
+            node_list.forEach(n=>{
+                if(node_list_new.indexOf(n)!=-1){
+                    if(Object.keys(color_dict).indexOf(n)===-1){
+                        color_dict[n] = colorScale(idx);    
+                        idx += 1;
+                    }
+                } else{
+                    color_dict[n] = "gray"
+                }
+            })
+        } else {
+            let idx = 0;
+            node_list.forEach(n=>{
+                if(Object.keys(color_dict).indexOf(n)===-1){
+                    color_dict[n] = colorScale(idx);    
+                        idx += 1;
+                }
+            })
+        }
+        
+
+        
+        data.hyper_data.nodes.forEach(node=>{
+            let n_list = node.id.split("|");
             node.color = color_dict[n_list[0]];
         })
     } else {
@@ -500,6 +598,7 @@ function assign_hyperedge_colors(data, color_dict=undefined){
 
 function assign_hyperedge_labels(hyper_data, line_data, label_map) {
     hyper_data.nodes.forEach(node=>{
+        let tmp_list = [""]
         let label = "";
         let n_list = node.id.split("|");
         n_list.forEach(n=>{
@@ -508,7 +607,9 @@ function assign_hyperedge_labels(hyper_data, line_data, label_map) {
             }
         })
         label = label.substring(0, label.length - 1);
+
         node.label = label;
+        // node.label = label_map[node.id]
     })
     line_data.nodes.forEach(node=>{
         let label = "";
@@ -600,13 +701,20 @@ function get_current_config() {
 
 function reset_visual_encoding() {
     // Reset "Visual Encoding Control"
-    //  1. reset "show label"
+    //  1. reset "color scheme"
+    let color_scheme_dropdown = document.getElementById("color-scheme-dropdown");
+    color_scheme_dropdown.selectedIndex = 0;
+    //  2. reset "graph encoding"
+    // d3.select("#visual-encoding-switch").property("checked", true);
+    let set_vis_dropdown = document.getElementById("set-vis-dropdown");
+    set_vis_dropdown.selectedIndex = 0;
+    //  3. reset "show label"
     d3.select("#hgraph-labels").property("checked", false);
-    //  2. reset hypergraph visual encoding
+    //  4. reset hypergraph visual encoding
     d3.select("#convex").property("checked", true);
-    //  3. reset "hide hyperedge nodes"
+    //  5. reset "hide hyperedge nodes"
     d3.select("#hide-hyperedge-node").property("checked", false);
-    //  4. reset glyph
+    //  6. reset glyph
     d3.select("#hyperedge-glyph").property("checked", true);
     d3.select("#vertex-glyph").property("checked", false);
 }

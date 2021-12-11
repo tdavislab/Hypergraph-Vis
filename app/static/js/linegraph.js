@@ -8,6 +8,7 @@ class Linegraph{
         this.color_dict = color_dict;
         this.labels = labels;
         console.log(this.nodes, this.links)
+        console.log("linegraph", this.svg_id, "num_edges"+this.links.length)
 
         this.nodes_dict = {};
 
@@ -26,9 +27,6 @@ class Linegraph{
             this.nodes_dict[l.source].links_idx.source.push(i);
             this.nodes_dict[l.target].links_idx.target.push(i);
         }
-        console.log(this.nodes_dict, this.links_dict)
-
-        // console.log(this.links, this.nodes);
 
         this.container_width = parseFloat(d3.select('#vis-'+svg_id).style('width'));
         let window_height = window.innerHeight;
@@ -44,7 +42,6 @@ class Linegraph{
         this.svg_g = this.svg.append("g");
 
         this.weight = weight;
-        console.log(this.weight)
         this.edge_scale = d3.scaleLinear()
             .domain(d3.extent(this.links.map(d => parseFloat(d[this.weight].value))))
             .range([1, 10]);
@@ -63,12 +60,21 @@ class Linegraph{
         this.if_hyperedge_glyph = d3.select("#hyperedge-glyph").property("checked");
         this.if_vertex_glyph = d3.select("#vertex-glyph").property("checked");
 
-        if(d3.select("#visual-encoding-switch").property("checked")){
+        let set_vis_dropdown = document.getElementById("set-vis-dropdown");
+        let set_type = set_vis_dropdown.options[set_vis_dropdown.selectedIndex].value;
+        if(set_type === "graph"){
             this.draw_linegraph();
-
-        } else {
-            this.draw_linegraph2();
+        } else if(set_type === "matrix"){
+            this.draw_linegraph_matrix();
+        } else{ // set_type === "bubblesets"
+            this.draw_linegraph()
         }
+
+        // if(d3.select("#visual-encoding-switch").property("checked")){
+        //     this.draw_linegraph();
+        // } else {
+        //     this.draw_linegraph_matrix();
+        // }
     }
 
     get_node_radius(node_id) {
@@ -89,7 +95,7 @@ class Linegraph{
     }
 
     draw_linegraph(){
-        this.svg_g = this.svg_g.remove();
+        this.svg_g.remove();
         this.svg_g = this.svg.append("g");
 
         this.links_group = this.svg_g.append("g")
@@ -302,7 +308,6 @@ class Linegraph{
         }
 
         function dragged(d) {
-            // console.log(d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")))
             d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
             d3.select("#"+that.svg_id+"-ring-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
             d3.select("#"+that.svg_id+"-node-"+d.id.replace(/[|]/g,"")).attr("cx", d3.event.x).attr("cy", d3.event.y);
@@ -570,8 +575,8 @@ class Linegraph{
         }        
     }
 
-    draw_linegraph2(){
-        this.svg_g = this.svg_g.remove();
+    draw_linegraph_matrix(){
+        this.svg_g.remove();
         this.svg_g = this.svg.append("g");
 
         this.border_group = this.svg_g.append("g")
@@ -593,7 +598,6 @@ class Linegraph{
         let node_id_width = 1/8*cell_width;
         let he_width = 7/8*cell_width / this.links.length;
 
-        console.log(this.links)
 
         let bg = this.border_group.selectAll("line").data(this.nodes.concat(["bottom"]));
         bg = bg.enter().append("line").merge(bg)
@@ -759,7 +763,6 @@ class Linegraph{
         let persistence = bar.death - bar.birth;
         let source_cc = this.links_dict[edge_id][this.weight].nodes_subsets.source_cc;
         let target_cc = this.links_dict[edge_id][this.weight].nodes_subsets.target_cc;
-        console.log(source_cc, target_cc)
         source_cc.forEach(snode=>{
             target_cc.forEach(tnode=>{
                 let eid1 = snode+"-"+tnode;
