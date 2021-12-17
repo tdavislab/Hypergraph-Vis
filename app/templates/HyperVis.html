@@ -57,11 +57,19 @@
                 <!-- <svg id="merge-tree-svg"></svg> -->
             </div>
             <div id="merge-tree-label">
-                <!-- Barcode Merge Tree -->
-                Dendrogram
+                <div class="row" style="padding-top:10px; padding-bottom:3px;">
+                    <div class="col-6">
+                        Dendrogram
+                    </div>
+                    <div class="col-1" style="padding-top:2px; padding-bottom:0px; padding-left: 20px; padding-right:10px">
+                        <input type="checkbox" id="dendrogram-labels" class="customCheckBox"> 
+                    </div>
+                    <div class="col-3">
+                        labels
+                    </div>
+                </div>
             </div>
             <div id="vis-barcode2" class="svg-container" style="overflow: scroll">
-                <!-- <svg id="barcode-svg"></svg> -->
                 <svg id="merge-tree-svg"></svg>
             </div>
             <!-- <div id="history-button-container" class="row">
@@ -156,8 +164,8 @@
                                 </div>
                                 <div class="col-6" id="color-scheme-dropdown-container" style="padding-bottom:3px">
                                     <select class="custom-select"  name="color-scheme-dropdown" id="color-scheme-dropdown">
-                                        <option value="top5">Top 5</option>
                                         <option value="all">Color all</option>
+                                        <option value="top5">Top 5</option>
                                       </select>
                                 </div>
                             </div>
@@ -169,8 +177,8 @@
                                 </div>
                                 <div class="col-6" id="set-vis-dropdown-container" style="padding-bottom:3px">
                                     <select class="custom-select"  name="set-vis-dropdown" id="set-vis-dropdown">
-                                        <option value="graph">Graph-based</option>
-                                        <option value="matrix">Matrix-based</option>
+                                        <option value="graph">Euler diagram</option>
+                                        <option value="matrix">Rainbow box</option>
                                         <option value="bubblesets">Bubble sets</option>
                                       </select>
                                 </div>
@@ -197,6 +205,14 @@
                                         <option value="rect">Square</option>
                                       </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="block-inner-group">
+                            <div class="group-title">Edge color</div>
+                            <div class="ui-form-range" id="edge-color-container">
+                                <input class="ui-form-range__input" id="edge-color_input" name="edge-color" type="range" value="0.5" max="1" min="0" step="0.04">
+                                <svg id="edge-color-legend">
+                                </svg>
                             </div>
                         </div>
                         <div class="block-inner-group">

@@ -1,7 +1,8 @@
 class Barcode{
-    constructor(barcode_data, linegraph){
+    constructor(barcode_data, linegraph, config){
         this.barcode = barcode_data;
         this.linegraph = linegraph;
+        this.config = config;
 
         for(let i=0; i<this.barcode.length; i++){
             this.barcode[i].index = i;
@@ -55,6 +56,16 @@ class Barcode{
         this.history_recorder = []
         // console.log(this.connected_components)
         // this.linegraph.compute_simplified_hypergraph(connected_components);
+
+        // dendrogram labels
+        d3.select("#dendrogram-labels")
+            .on("change", ()=>{
+                    if(d3.select("#dendrogram-labels").property("checked")){
+                        this.draw_merge_tree(true);
+                    } else{
+                        this.draw_merge_tree(false);
+                    }
+            })
     }
 
     draw_barcode(){
@@ -275,10 +286,10 @@ class Barcode{
             .attr("stroke", 'black')
     }
 
-    draw_merge_tree(){
-        // console.log("draw merge tree")
-        // d3.select("#info_drawing").remove();
-        // d3.select("#info_drawing_container").append("div").attr("id", "info_drawing");
+    draw_merge_tree(is_show_labels=false){
+        d3.select("#merge-tree-svg").remove();
+        d3.select("#vis-barcode2").append("svg")
+            .attr("id", "merge-tree-svg")
         let that = this;
         let tree = this.construct_tree();
 
@@ -292,7 +303,32 @@ class Barcode{
             return d.children;
         });
         cluster(root);
-        console.log(root.descendants().slice(1) )
+        // console.log(root.descendants().slice(1) )
+
+        let nodes_new = [];
+        root.descendants().slice(1).forEach(node=>{
+            if(node.data.children===undefined){
+                nodes_new.push(node);
+            }
+        })
+
+        let max_len = 0;
+        if(is_show_labels){
+            nodes_new.forEach(node=>{
+                let label_list = []
+                let label = ''
+                node.data.name.split("|").forEach(n=>label_list.push(that.linegraph.labels[n]));
+                label_list.forEach(n=>label+=n+'|')
+                label = label.slice(0,-1)
+                node.label = label;
+                if(label.length > max_len){
+                    max_len = label.length;
+                }
+            });
+            max_len += 1;
+            max_len *= 8;
+        }
+        
 
         let node_height = 10;
         let tree_height = node_height * (root.descendants().slice(1).length+1) + tree_margins.top + tree_margins.bottom;
@@ -300,7 +336,7 @@ class Barcode{
 
         // let tree_svg = d3.select("#info_drawing").append("svg")
         let tree_svg = d3.select("#merge-tree-svg")
-            .attr('width', tree_width)
+            .attr('width', tree_width + max_len)
             .attr('height', tree_height);
 
         tree_svg.attr("transform", "translate(0,10)");
@@ -311,13 +347,13 @@ class Barcode{
         let tree_slider = tree_slider_group.append('rect');
         let tree_slider_line = tree_slider_group.append('line');
 
-        tree_slider_group.attr("transform", "translate("+(tree_margins.left)+",0)");
+        tree_slider_group.attr("transform", "translate("+(tree_margins.left+max_len)+",0)");
+        tree_edges_group_h.attr("transform", "translate("+(max_len)+",0)");
+        tree_edges_group_v.attr("transform", "translate("+(max_len)+",0)");
 
         tree_slider
             .attr("width", 15)
             .attr("height", 8)
-            // .attr("x", 0)
-            // .attr("y",1)
             .attr("class", "slider hover-darken")
             .attr("id", "tree-slider");
 
@@ -365,28 +401,31 @@ class Barcode{
             .attr("y2", d=>yScale(d.parent.x)+10)
             .attr("stroke", 'grey');
 
-        let nodes_new = [];
-        root.descendants().slice(1).forEach(node=>{
-            if(node.data.children===undefined){
-                nodes_new.push(node);
-            }
-        })
-        let ng = tree_nodes_group.selectAll('circle').data(nodes_new);
+        console.log(nodes_new)
+        let ng = tree_nodes_group.selectAll('g').data(nodes_new);
         ng.exit().remove();
-        ng = ng.enter().append('circle').merge(ng)
-            .attr("cx", d=>{
+        ng = ng.enter().append('g').merge(ng)
+            .classed("dendrogram-node-group", true)
+            .attr("transform", d=>{
                 if(d.children){
-                    return xScale(d.children[0].data.val);
-                } else{
-                    return xScale(0);
+                    return `translate(${xScale(d.children[0].data.val)}, ${yScale(d.x)+10})`
+                } else {
+                    return `translate(${xScale(0)}, ${yScale(d.x)+10})`
                 }
-            })  
+            })
 
-            .attr('cy', d=>yScale(d.x)+10)
+        ng.append("text")
+            .classed("dendrogram-label", true)
+            .attr("y", 3)
+            .text(d=>d.label);
+
+        ng.append("circle")
             .attr('r', 5)
             .attr('fill', d=>{
                 return this.linegraph.color_dict[d.data.name]
             })
+            .classed("dendrogram-node", true)
+            .attr("transform", `translate(${max_len}, 0)`)
             .attr('stroke', 'white')
             .attr('strok-width', 2)
             .on('mouseover', function(d){
@@ -406,6 +445,143 @@ class Barcode{
                 d3.select(this).attr('r', 5);
                 tree_tooltip.style('visibility', 'hidden');
             })
+            .on("click", d=>{
+                if(this.click_id != d.data.name){
+                    this.click_id = d.data.name;
+                    click(d.data.name);
+                } else {
+                    this.click_id = undefined;
+                    this.cancel_faded();
+                }
+            })
+
+
+
+        function click(key) {
+            let he_list = key.split("|");
+            d3.selectAll(".dendrogram-node")
+                .classed("faded", d=>{
+                    if(d.data.name === key){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                })
+            d3.select("#hypergraph-svg").selectAll(".convex_hull").classed("faded", d => {
+                if(he_list.indexOf(d.key.split("|")[0]) != -1){
+                    return false;
+                } else { return true; }
+            });
+            d3.select("#hypergraph-svg").selectAll(".he-group").classed("faded", d => {
+                if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                    return false;
+                } else { return true; }
+            });
+            d3.select("#hypergraph-svg").selectAll(".v-group").classed("faded", true);
+            d3.select("#hypergraph-svg").selectAll("line").data().forEach(l=>{
+                if(he_list.indexOf(l.source.id.split("|")[0]) != -1){
+                    d3.select("#hypergraph-nodegroup-"+l.target.id.replace(/[|]/g,"")).classed("faded", false);
+                }
+            })
+            d3.select("#simplified-hypergraph-svg").selectAll(".convex_hull").classed("faded", d => {
+                if(d.key.split("|").indexOf(he_list[0]) != -1){
+                    return false;
+                } else { return true; }
+            });
+            d3.select("#simplified-hypergraph-svg").selectAll(".he-group").classed("faded", d => {
+                if(d.id.split("|").indexOf(he_list[0]) != -1){
+                    return false;
+                } else { return true; }
+            });
+            d3.select("#simplified-hypergraph-svg").selectAll(".v-group").classed("faded", true);
+            d3.select("#simplified-hypergraph-svg").selectAll("line").data().forEach(l=>{
+                if(l.source.id.split("|").indexOf(he_list[0]) != -1){
+                    d3.select("#simplified-hypergraph-nodegroup-"+l.target.id.replace(/[|]/g,"")).classed("faded", false);
+                }
+            })
+    
+            if(that.config.variant === "line_graph"){
+                d3.select("#linegraph-svg").selectAll(".line_node").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
+                    if((he_list.indexOf(d.source.id.split("|")[0]) != -1) && (he_list.indexOf(d.target.id.split("|")[0]) != -1)){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded",  d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", d => {
+                    if(he_list.indexOf(d.id.split("|")[0]) != -1){
+                        return false;
+                    } else { return true; }
+                });
+                // At most one node in simplified linegraph will be selected, so all edges will be faded
+                d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", true);
+            } else {
+                let v_list = [];
+                d3.select("#linegraph-svg").selectAll(".line_node").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+                d3.select("#linegraph-svg").selectAll(".ring-group").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+                d3.select("#linegraph-svg").selectAll("line").classed("faded", d => {
+                    if(v_list.indexOf(d.source.id)!=-1 && v_list.indexOf(d.target.id)!=-1){
+                        return false;
+                    }
+                    return true;
+                });
+                let s_v_list = [];
+                d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            s_v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+                d3.select("#simplified-linegraph-svg").selectAll(".ring-group").classed("faded", d => {
+                    for(let i=0; i<d.vertices.length; i++){
+                        if(he_list.indexOf(d.vertices[i])!=-1){
+                            s_v_list.push(d.id);
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+                d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", d => {
+                    if(s_v_list.indexOf(d.source.id)!=-1 && s_v_list.indexOf(d.target.id)!=-1){
+                        return false;
+                    }
+                    return true;
+                });
+            }
+            d3.select("#"+that.svg_id+"-hull-"+key.replace(/[|]/g,"")).classed("highlighted", false);
+        }
 
         let tree_tooltip = tree_svg.append('g')
             .style('visibility', 'hidden');
@@ -540,6 +716,27 @@ class Barcode{
             .attr("height", history_height);
 
 
+    }
+
+    cancel_faded(){
+        d3.selectAll(".dendrogram-node").classed("faded", false);
+        d3.select("#hypergraph-svg").selectAll(".convex_hull").classed("faded", false);
+        d3.select("#hypergraph-svg").selectAll(".he-group").classed("faded", false);
+        d3.select("#hypergraph-svg").selectAll(".v-group").classed("faded", false);
+
+        d3.select("#simplified-hypergraph-svg").selectAll(".convex_hull").classed("faded", false);
+        d3.select("#simplified-hypergraph-svg").selectAll(".he-group").classed("faded", false);
+        d3.select("#simplified-hypergraph-svg").selectAll(".v-group").classed("faded", false);
+
+        d3.select("#linegraph-svg").selectAll(".line_node").classed("faded", false);
+        d3.select("#simplified-linegraph-svg").selectAll(".line_node").classed("faded", false);
+        d3.select("#linegraph-svg").selectAll("line").classed("faded", false);
+        d3.select("#simplified-linegraph-svg").selectAll("line").classed("faded", false);
+
+        d3.select("#linegraph-svg").selectAll(".pie-group").classed("faded", false);
+        d3.select("#simplified-linegraph-svg").selectAll(".pie-group").classed("faded", false);
+        d3.select("#linegraph-svg").selectAll(".ring-group").classed("faded", false);
+        d3.select("#simplified-linegraph-svg").selectAll(".ring-group").classed("faded", false);
     }
     
 }

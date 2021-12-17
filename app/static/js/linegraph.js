@@ -1,5 +1,5 @@
 class Linegraph{
-    constructor(line_data, hypergraph, svg_id, variant, weight, color_dict, labels){
+    constructor(line_data, hypergraph, svg_id, variant, weight, color_dict, labels, top5_edges=undefined){
         this.nodes = [...line_data.nodes];
         this.links = [...line_data.links];
         this.hypergraph = hypergraph;
@@ -7,8 +7,8 @@ class Linegraph{
         this.variant = variant;
         this.color_dict = color_dict;
         this.labels = labels;
+        this.top_nodes = top5_edges;
         console.log(this.nodes, this.links)
-        console.log("linegraph", this.svg_id, "num_edges"+this.links.length)
 
         this.nodes_dict = {};
 
@@ -75,6 +75,57 @@ class Linegraph{
         // } else {
         //     this.draw_linegraph_matrix();
         // }
+    }
+
+    update_coloring(color_scheme){
+        if(color_scheme === "all"){
+            this.svg.selectAll(".line_node")
+                .attr("fill", d => {
+                    if(this.variant === "line_graph"){
+                        return d.color;
+                    } else { // variant === "clique_expansion"
+                        return "whitesmoke";
+                    }
+                })
+            if(this.variant === "line_graph"){
+                this.svg.selectAll(".pie-group").selectAll("path").attr("fill", d => d.data.color);
+
+            } else {
+                this.svg.selectAll(".ring-group").selectAll("circle").attr("stroke", d=>d.color)
+            }
+        } else {
+            this.svg.selectAll(".line_node")
+                .attr("fill", d => {
+                    if(this.variant === "line_graph"){
+                        if(this.top_nodes.indexOf(d.id)!=-1){
+                            return d.color;
+                        } else {
+                            return "gray"
+                        }
+                    } else { // variant === "clique_expansion"
+                        return "whitesmoke";
+                    }
+                })
+            if(this.variant === "line_graph"){
+                this.svg.selectAll(".pie-group").selectAll("path").attr("fill", d => {
+
+                    if(this.top_nodes.indexOf(d.data.child_id)!=-1){
+                        return d.data.color;
+                    } else {
+                        return "gray"
+                    }
+                });
+
+            } else {
+                this.svg.selectAll(".ring-group").selectAll("circle").attr("stroke", d=>{
+                    if(this.top_nodes.indexOf(d.id)!=-1){
+                        return d.color;
+                    } else {
+                        return "gray"
+                    }
+                })
+            }
+        }
     }
 
     get_node_radius(node_id) {
@@ -212,6 +263,7 @@ class Linegraph{
                 
             pg.selectAll("path").data(d => pie(prepare_pie_data(d.id)))
                 .enter().append("path")
+                .attr("id", d => this.svg_id+"-pie-child-"+d.data.child_id.replace(/[|]/g,""))
                 .attr("d", d => {
                     arc.outerRadius(this.get_node_radius(d.data.id));
                     return arc(d)})
@@ -254,6 +306,7 @@ class Linegraph{
             .attr("stroke-width", d => this.edge_scale(parseFloat(d[this.weight].value)))
             .attr("id", d => this.svg_id+"-edge-"+d.source.id.replace(/[|]/g,"")+"-"+d.target.id.replace(/[|]/g,""))
             .attr("class", "line_edge")
+            .attr("stroke", "#999")
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
@@ -340,6 +393,7 @@ class Linegraph{
                 p.value = 10;
                 p.color = that.color_dict[id];
                 p.id = key;
+                p.child_id = id;
                 pie_data.push(p);
             })
             return pie_data

@@ -1,6 +1,8 @@
 init();
 
 function init(){
+    draw_edge_color_legend();
+
     // Initialization 
     read_hgraph_text("hypergraph_samples");
     
@@ -87,12 +89,7 @@ function init(){
             }
         });
     
-    // color scheme
-    let color_scheme_dropdown = document.getElementById("color-scheme-dropdown");
-    color_scheme_dropdown.onchange = function(){
-        let color_scheme = color_scheme_dropdown.options[color_scheme_dropdown.selectedIndex].value;
-        console.log(color_scheme)
-    }
+    
 
     // vertex shape
     let vertex_shape_dropdown = document.getElementById("vertex-shape-dropdown");
@@ -104,11 +101,32 @@ function init(){
                 .attr("visibility", "visible");
             d3.selectAll(".v-group").select("rect")
                 .attr("visibility", "hidden");
+            if(d3.select("#vertex-glyph").property("checked")){
+                d3.selectAll(".ring-group").selectAll("circle").
+                    attr("visibility", (d)=>{
+                        if(d.parent_id.split("|").length === 1){
+                            return "hidden"
+                        } else {
+                            return "visible"
+                        }
+                    });
+                d3.selectAll(".ring-group").selectAll("rect").attr("visibility", "hidden");
+            }
         } else if(vertex_shape == "rect"){
             d3.selectAll(".v-group").select("circle")
                 .attr("visibility", "hidden");
             d3.selectAll(".v-group").select("rect")
                 .attr("visibility", "visible");
+            if(d3.select("#vertex-glyph").property("checked")){
+                d3.selectAll(".ring-group").selectAll("circle").attr("visibility", "hidden");
+                d3.selectAll(".ring-group").selectAll("rect").attr("visibility", (d)=>{
+                    if(d.parent_id.split("|").length === 1){
+                        return "hidden"
+                    } else {
+                        return "visible"
+                    }
+                });
+            }
         }       
     }
 
@@ -125,13 +143,6 @@ function init(){
     d3.select("#vertex-glyph")
         .on("change", ()=>{
             if(d3.select("#vertex-glyph").property("checked")){
-                d3.selectAll(".ring-group").attr("visibility", (d)=>{
-                    if(d.id.split("|").length === 1){
-                        return "hidden";
-                    } else{
-                        return "visible";
-                    }
-                });
                 d3.selectAll(".vertex_node")
                     .attr("fill", (d)=>{
                         if(d.id.split("|").length === 1){
@@ -150,10 +161,26 @@ function init(){
 
                 if(vertex_shape === "circle"){
                     d3.selectAll(".ring-group").selectAll("rect")
-                        .attr("visibility", "hidden")
+                        .attr("visibility", "hidden");
+                    d3.selectAll(".ring-group").selectAll("circle")
+                        .attr("visibility", (d)=>{
+                            if(d.parent_id.split("|").length === 1){
+                                return "hidden"
+                            } else {
+                                return "visible"
+                            }
+                        });
                 } else {
                     d3.selectAll(".ring-group").selectAll("circle")
-                        .attr("visibility", "hidden")
+                        .attr("visibility", "hidden");
+                    d3.selectAll(".ring-group").selectAll("rect")
+                        .attr("visibility", (d)=>{
+                            if(d.parent_id.split("|").length === 1){
+                                return "hidden"
+                            } else {
+                                return "visible"
+                            }
+                        });
                 }
                 // .classed("vertex_node-container", (d)=>{
                 //     if(d.id.split("|").length === 1){
@@ -170,7 +197,8 @@ function init(){
                     }
                 })
             } else {
-                d3.selectAll(".ring-group").attr("visibility", "hidden");
+                d3.selectAll(".ring-group").selectAll("circle").attr("visibility", "hidden");
+                d3.selectAll(".ring-group").selectAll("rect").attr("visibility", "hidden");
                 d3.selectAll(".vertex_node")
                     .attr("fill", "black")
                     .attr("stroke", "whitesmoke");
@@ -204,6 +232,18 @@ function init(){
             } 
         })
     }
+
+    // change edge color
+    let color_scale = d3.interpolateGreys;
+    let edge_color_slider = document.getElementById("edge-color_input");
+    edge_color_slider.oninput = function(){
+        // d3.select("#s-walk_label").html(this.value)
+        console.log(this.value)
+        d3.selectAll(".hyper_edge")
+        // d3.selectAll("line")
+            .attr("stroke", color_scale(this.value))
+    }
+
 }
 
 function load_data(data, config) {
@@ -278,23 +318,66 @@ function load_data(data, config) {
         }
     }
 
+    // color scheme
+    let color_scheme_dropdown = document.getElementById("color-scheme-dropdown");
+    let color_scheme = color_scheme_dropdown.options[color_scheme_dropdown.selectedIndex].value;
+    color_scheme_dropdown.onchange = function(){
+        color_scheme = color_scheme_dropdown.options[color_scheme_dropdown.selectedIndex].value;
+        console.log(color_scheme)
+        hypergraph.update_coloring(color_scheme);
+        simplified_hypergraph.update_coloring(color_scheme);
+        linegraph.update_coloring(color_scheme);
+        simplified_linegraph.update_coloring(color_scheme);
+    }
 
-    // d3.select("#visual-encoding-switch")
-    //     .on("change", ()=>{
-    //         if(d3.select("#visual-encoding-switch").property("checked")){
-    //             d3.select("#visual-encoding-switch-label").html("Graph encoding");
-    //             hypergraph.draw_hypergraph();
-    //             simplified_hypergraph.draw_hypergraph();
-    //             linegraph.draw_linegraph();
-    //             simplified_linegraph.draw_linegraph();
-    //         } else{
-    //             d3.select("#visual-encoding-switch-label").html("Matrix encoding");
-    //             hypergraph.draw_hypergraph2();
-    //             simplified_hypergraph.draw_hypergraph2();
-    //             linegraph.draw_linegraph2();
-    //             simplified_linegraph.draw_linegraph2();
-    //         }
-    //     })
+    d3.selectAll(".color_bars")
+        .on("click", (d)=>{
+            console.log(d)
+            let c = d;
+            if(hypergraph.rightclick_edge){
+                let rightclick_edge = hypergraph.rightclick_edge;
+                hypergraph.top_nodes.push(rightclick_edge);
+                hypergraph.nodes_dict[rightclick_edge].color = c;
+                hypergraph.color_dict[rightclick_edge] = c;
+                hypergraph.update_coloring(color_scheme);
+                d3.select("#hypergraph-pie-child-"+rightclick_edge).attr("fill", d=>{
+                    d.data.color = c;
+                    return c;
+                })
+                simplified_hypergraph.nodes.forEach(node=>{
+                    let id_list = node.id.split("|");
+                    if(id_list.indexOf(rightclick_edge)!=-1){
+                        simplified_hypergraph.nodes_dict[node.id].color = c;
+                        simplified_hypergraph.color_dict[node.id] = c;
+                        simplified_hypergraph.update_coloring(color_scheme);
+                        d3.select("#simplified-hypergraph-pie-child-"+rightclick_edge).attr("fill", d=>{
+                            d.data.color = c;
+                            return c;
+                        })
+                    } 
+                })
+                linegraph.top_nodes.push(rightclick_edge);
+                linegraph.nodes_dict[rightclick_edge].color = c;
+                linegraph.color_dict[rightclick_edge] = c;
+                // linegraph.update_coloring(color_scheme);
+                d3.select("#linegraph-pie-child-"+rightclick_edge).attr("fill", d=>{
+                    d.data.color = c;
+                    return c;
+                })
+                simplified_linegraph.nodes.forEach(node=>{
+                    let id_list = node.id.split("|");
+                    if(id_list.indexOf(rightclick_edge)!=-1){
+                        simplified_linegraph.nodes_dict[node.id].color = c;
+                        simplified_linegraph.color_dict[node.id] = c;
+                        // simplified_linegraph.update_coloring(color_scheme);
+                        d3.select("#simplified-linegraph-pie-child-"+rightclick_edge).attr("fill", d=>{
+                            d.data.color = c;
+                            return c;
+                        })
+                    } 
+                })
+            }
+        })
 
     d3.select("#revert_graph")
         .on("click", ()=>{
@@ -351,8 +434,10 @@ function load_data(data, config) {
                         $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
                         $('#simplified-linegraph-svg').remove();
                         $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, hypergraph); 
-                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
+                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges); 
+                        simplified_hypergraph.update_coloring(color_scheme);
+                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges);
+                        simplified_linegraph.update_coloring(color_scheme);
 
                         console.log(cc_id)
 
@@ -400,8 +485,10 @@ function load_data(data, config) {
                         $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
                         $('#simplified-linegraph-svg').remove();
                         $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, hypergraph); 
-                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
+                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges); 
+                        simplified_hypergraph.update_coloring(color_scheme);
+                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges);
+                        simplified_linegraph.update_coloring(color_scheme);
 
                         if(barcode.expanded_bars.length > 0){
                             let idx = barcode.expanded_bars[barcode.expanded_bars.length-1];
@@ -414,10 +501,7 @@ function load_data(data, config) {
                         console.log("error",error);
                     }
                 });
-
-
-            }
-            
+            }   
         }
     }
 
@@ -488,8 +572,10 @@ function load_data(data, config) {
                 $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
                 $('#simplified-linegraph-svg').remove();
                 $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-                simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, hypergraph); 
-                simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
+                simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges); 
+                simplified_hypergraph.update_coloring(color_scheme);
+                simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges);
+                simplified_linegraph.update_coloring(color_scheme);
             },
             error: function (error) {
                 console.log("error",error);
@@ -502,10 +588,10 @@ function load_data(data, config) {
 function initialize_graphs(hyper_data, line_data, barcode_data, config, color_dict, labels, top5_edges) {
     clear_canvas();
     let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph", config, color_dict, labels, top5_edges=top5_edges); 
-    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph", config.variant, config.weight_type, color_dict, labels);
-    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", config, color_dict, labels, hypergraph);
-    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels);
-    let barcode = new Barcode(barcode_data, simplified_linegraph);
+    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges=top5_edges);
+    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", config, color_dict, labels, top5_edges=top5_edges);
+    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges=top5_edges);
+    let barcode = new Barcode(barcode_data, simplified_linegraph, config);
     
     return [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode];
 }
@@ -528,10 +614,11 @@ function read_hgraph_text(text_data){
     })
 }
 
-function assign_hyperedge_colors(data, color_dict=undefined, color_scheme="top5"){
+function assign_hyperedge_colors(data, color_dict=undefined, color_scheme=undefined){
     console.log(data)
     if(color_dict === undefined){
-        color_dict = {};
+        color_dict = {}
+        // color_dict = {"he0":"#1f77b4", "he1":"#2ca02c", "he2":"#ff7f0e"};
         // color_dict = {"he1":"#ff7f0e", "he0":"#1f77b4", "he2":" #2ca02c", "he3":"#d62728", "he4":"#9467bd", "v0":"#8c564b", "v1":"#e377c2", "v2":"#7f7f7f", "v3":"#bcbd22", "v4":"#17becf"}
         // color_dict = {'h1':'#ff7f0e', 'h2':'#d62728', 'h3':'#1f77b4', 'h4':'#9467bd', 'h5':'#d62728', 'h6':'#9467bd'} // hyperedge matching
         // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v0":"#8c564b","v1": "#2ca02c", "v2":"#e377c2", "v3":"#bcbd22", "v4":"#17becf"} // vertex matching 1 before
@@ -574,10 +661,7 @@ function assign_hyperedge_colors(data, color_dict=undefined, color_scheme="top5"
                         idx += 1;
                 }
             })
-        }
-        
-
-        
+        } 
         data.hyper_data.nodes.forEach(node=>{
             let n_list = node.id.split("|");
             node.color = color_dict[n_list[0]];
@@ -765,5 +849,34 @@ function clear_graphs(){
     $('#vis-linegraph').append('<svg id="linegraph-svg"></svg>');
     $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
     $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
+}
+
+function draw_edge_color_legend(){
+    let color_scale = d3.interpolateGreys;
+
+    let width = $(d3.select("#edge-color-container").node()).width();
+    let height = 40;
+    let axisMargin = 3;
+    let colorTileNumber = 25;
+    let colorTileHeight = 20;
+    let colorTileWidth = (width - (axisMargin * 2)) / colorTileNumber;
+    // let axisDomain = color_scale.domain();
+    let axisDomain = [0, 1];
+
+    let svg = d3.select("#edge-color-legend").attr('width', width).attr('height', height);
+
+    let axisScale = d3.scaleLinear().domain(axisDomain).range([axisMargin, width - axisMargin*3]);
+
+    let legendGroup = svg.append("g")
+    let domainStep = (axisDomain[1] - axisDomain[0])/colorTileNumber;
+    let rects = d3.range(axisDomain[0], axisDomain[1], domainStep)
+    legendGroup.selectAll("rect").data(rects)
+        .enter().append("rect")
+        .attr('x', d=>axisScale(d))
+        .attr('y', 10)
+        .attr('width', colorTileWidth)
+        .attr('height',colorTileHeight)
+        .attr('fill', d=>color_scale(d));
+
 }
     

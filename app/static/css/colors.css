@@ -68,8 +68,8 @@ h4 {
 
 
 .line_edge {
-    stroke: #999;
-    stroke-opacity: 0.5;
+    /* stroke: #999; */
+    stroke-opacity: 0.8;
 }
 
 .line_edge.highlighted {
@@ -77,10 +77,10 @@ h4 {
 }
 
 .hyper_edge {
-    stroke: #999;
-    /* stroke: black; */
-    stroke-opacity: 0.5;
-    /* stroke-opacity: 1; */
+    /* stroke: #999; */
+    /* stroke: gray; */
+    stroke-opacity: 0.8;
+    /* stroke-width: 2px; */
 }
 
 .hyper_node {
@@ -182,9 +182,13 @@ path.filtering {
 
 .node-label {
     fill: #2b2b2b;
-    opacity: 0.5;
+    opacity: 0.8;
     background: #f0ffff;
-    font-size: 9px;
+    font-size: 14px;
+}
+
+.dendrogram-label{
+    font-size: 12px;
 }
 
 .ui-form-button {
