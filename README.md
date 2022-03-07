@@ -40,6 +40,7 @@ If you do not have these packages installed, please use the following command to
 pip install hypernetx
 pip install networkx
 pip install flask
+pip install flask_assets
 ```
 
 ## Importing A Hypergraph
