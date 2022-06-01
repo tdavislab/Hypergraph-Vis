@@ -1,7 +1,7 @@
 # Topological Simplifications of Hypergraphs
 
 ## Overview
-This is the code repository for "Hypergraph Visualization via a Metric Space Viewpoint: Multimodal Curation and Multiscale Simplification"
+This is the code repository for "Topological Simplifications of Hypergraphs"
 
 ![Screenshot of demo](app/static/assets/interface-new.png)
 
