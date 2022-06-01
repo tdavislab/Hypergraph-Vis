@@ -3,7 +3,7 @@
 ## Overview
 This is the code repository for "Hypergraph Visualization via a Metric Space Viewpoint: Multimodal Curation and Multiscale Simplification"
 
-![Screenshot of demo](app/static/assets/interface.png)
+![Screenshot of demo](app/static/assets/interface-new.png)
 
 Our system runs on most modern web browsers. We tested it on Firefox and Chrome.
 
