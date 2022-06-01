@@ -60,4 +60,9 @@ To export a simplified hypergraph, input the file name and click on the button "
 
 You can find the output file in the folder `⁨Hypergraph-Vis⁩/⁨app⁩/⁨static/downloads/`.
 
-
+## Cite
+Topological Simplifications of Hypergraphs.
+Youjia Zhou, Archit Rathore, Emilie Purvine, Bei Wang.\
+*IEEE Transactions on Visualization and Computer Graphics (TVCG)*, 2022.
+DOI: [10.1109/TVCG.2022.3153895](https://ieeexplore.ieee.org/document/9721603) (early access)
+[arXiv:2104.11214](https://arxiv.org/abs/2104.11214)
