@@ -29,7 +29,7 @@ function init(){
                 javascript_data: JSON.stringify(v)
             });
            
-            alert("Output has been saved at: Hypergraph-Vis⁩/⁨app⁩/⁨static/downloads/");
+            alert("Output has been saved at: Hypergraph-Vis/app/static/downloads/");
         })
 
     d3.select("#reset_config")
@@ -261,6 +261,8 @@ function load_data(data, config) {
     let singletons = data.line_data.singletons;
     let color_dict = assign_hyperedge_colors(data, data.id2color);
     let top5_edges = data.top5_edges;
+    let top5_vertices = data.top5_vertices;
+    
 
     $.ajax({
         type: "POST",
@@ -279,7 +281,7 @@ function load_data(data, config) {
     let hyperedges2vertices = Object.assign({}, ...data.line_data.nodes.map((x) => ({[x.id]: x.vertices})));
 
     console.log(hyperedges2vertices)
-    let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels, top5_edges);
+    let [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode] = initialize_graphs(data.hyper_data, data.line_data, data.barcode_data, config, color_dict, labels, top5_edges, top5_vertices);
 
     let info_dropdown = document.getElementById("info_selection");
     info_dropdown.onchange = function(){
@@ -336,7 +338,7 @@ function load_data(data, config) {
             let c = d;
             if(hypergraph.rightclick_edge){
                 let rightclick_edge = hypergraph.rightclick_edge;
-                hypergraph.top_nodes.push(rightclick_edge);
+                hypergraph.top_edges.push(rightclick_edge);
                 hypergraph.nodes_dict[rightclick_edge].color = c;
                 hypergraph.color_dict[rightclick_edge] = c;
                 hypergraph.update_coloring(color_scheme);
@@ -434,9 +436,9 @@ function load_data(data, config) {
                         $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
                         $('#simplified-linegraph-svg').remove();
                         $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges); 
+                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges, top5_vertices); 
                         simplified_hypergraph.update_coloring(color_scheme);
-                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges);
+                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges, top5_vertices);
                         simplified_linegraph.update_coloring(color_scheme);
 
                         console.log(cc_id)
@@ -485,9 +487,9 @@ function load_data(data, config) {
                         $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
                         $('#simplified-linegraph-svg').remove();
                         $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges); 
+                        simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges, top5_vertices); 
                         simplified_hypergraph.update_coloring(color_scheme);
-                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges);
+                        simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges, top5_vertices);
                         simplified_linegraph.update_coloring(color_scheme);
 
                         if(barcode.expanded_bars.length > 0){
@@ -504,6 +506,47 @@ function load_data(data, config) {
             }   
         }
     }
+
+    d3.select("#barcode-threshold-button")
+        .on("click", ()=>{
+            let threshold = d3.select("#barcode-threshold-value").node().value;
+            threshold = parseFloat(threshold);
+            if(threshold){
+                update_barcode(threshold);
+                let trans_dist = barcode.width_scale(threshold)
+                d3.select("#barcode-line").attr("x1",trans_dist)
+                    .attr("x2",trans_dist)
+                d3.select("#barcode-slider").attr("x",trans_dist);
+                d3.select("#tree-line").attr("x1",trans_dist)
+                    .attr("x2", trans_dist);
+                d3.select("#tree-slider").attr("x",trans_dist);
+            } else {
+                alert("Invalid input!")
+            }
+ 
+        })
+
+        d3.select("#barcode-step-button")
+        .on("click", ()=>{
+            let step = d3.select("#barcode-step-value").node().value;
+            step = parseInt(step);
+            if(step){
+                let threshold = barcode.get_threshold_by_step(step);
+                update_barcode(threshold);
+                if(threshold > 0){
+                    let trans_dist = barcode.width_scale(threshold)
+                    d3.select("#barcode-line").attr("x1",trans_dist)
+                        .attr("x2",trans_dist)
+                    d3.select("#barcode-slider").attr("x",trans_dist);
+                    d3.select("#tree-line").attr("x1",trans_dist)
+                        .attr("x2", trans_dist);
+                    d3.select("#tree-slider").attr("x",trans_dist);
+                }
+            } else {
+                alert("Invalid input!")
+            }
+ 
+        })
 
     d3.select("#slider_group")
         .call(d3.drag()
@@ -537,6 +580,11 @@ function load_data(data, config) {
     };
     function dragended() {
         let threshold = barcode.width_scale.invert(d3.select("#barcode-line").attr("x1"));
+        update_barcode(threshold);
+        
+    }
+
+    function update_barcode(threshold){
         let edgeid = barcode.extract_edgeid(threshold);
         barcode.threshold = threshold;
         barcode.expanded_bars = [];
@@ -559,11 +607,19 @@ function load_data(data, config) {
                 let hgraph = response.hyper_data;
                 let lgraph = response.line_data;
                 // assign colors
-                hgraph.nodes.forEach(n=>{
-                    if(n.bipartite === 1){
-                        n.color = color_dict[n.id.split("|")[0]]
+                hgraph.nodes.forEach(node=>{
+                    if(node.bipartite === 1){
+                        let n_list = node.id.split("|");
+                        let c = color_dict[n_list[0]]
+                        n_list.forEach(n=>{
+                            if(top5_edges.indexOf(n)!= -1 || top5_vertices.indexOf(n)!= -1){
+                                c = color_dict[n];
+                            }
+                        })
+                        node.color = c;
                     }
                 })
+                // TODO: update colors for linegraph
                 lgraph.nodes.forEach(n=>{
                     n.color = color_dict[n.id.split("|")[0]]
                 })
@@ -572,9 +628,9 @@ function load_data(data, config) {
                 $('#vis-simplified-hypergraph').append('<svg id="simplified-hypergraph-svg"></svg>');
                 $('#simplified-linegraph-svg').remove();
                 $('#vis-simplified-linegraph').append('<svg id="simplified-linegraph-svg"></svg>');
-                simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges); 
+                simplified_hypergraph = new Hypergraph(copy_hyper_data(hgraph), "simplified-hypergraph", config, color_dict, labels, top5_edges, top5_vertices); 
                 simplified_hypergraph.update_coloring(color_scheme);
-                simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges);
+                simplified_linegraph = new Linegraph(copy_line_data(lgraph), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges, top5_vertices);
                 simplified_linegraph.update_coloring(color_scheme);
             },
             error: function (error) {
@@ -585,12 +641,12 @@ function load_data(data, config) {
 
 }
 
-function initialize_graphs(hyper_data, line_data, barcode_data, config, color_dict, labels, top5_edges) {
+function initialize_graphs(hyper_data, line_data, barcode_data, config, color_dict, labels, top5_edges, top5_vertices) {
     clear_canvas();
-    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph", config, color_dict, labels, top5_edges=top5_edges); 
-    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges=top5_edges);
-    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", config, color_dict, labels, top5_edges=top5_edges);
-    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges=top5_edges);
+    let hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "hypergraph", config, color_dict, labels, top5_edges, top5_vertices); 
+    let linegraph = new Linegraph(copy_line_data(line_data), hypergraph, "linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges, top5_vertices);
+    let simplified_hypergraph = new Hypergraph(copy_hyper_data(hyper_data), "simplified-hypergraph", config, color_dict, labels, top5_edges, top5_vertices);
+    let simplified_linegraph = new Linegraph(copy_line_data(line_data), simplified_hypergraph, "simplified-linegraph", config.variant, config.weight_type, color_dict, labels, top5_edges, top5_vertices);
     let barcode = new Barcode(barcode_data, simplified_linegraph, config);
     
     return [hypergraph, linegraph, simplified_hypergraph, simplified_linegraph, barcode];
@@ -614,20 +670,16 @@ function read_hgraph_text(text_data){
     })
 }
 
-function assign_hyperedge_colors(data, color_dict=undefined, color_scheme=undefined){
+function assign_hyperedge_colors(data, color_dict=undefined){
     console.log(data)
     if(color_dict === undefined){
         color_dict = {}
-        // color_dict = {"he0":"#1f77b4", "he1":"#2ca02c", "he2":"#ff7f0e"};
-        // color_dict = {"he1":"#ff7f0e", "he0":"#1f77b4", "he2":" #2ca02c", "he3":"#d62728", "he4":"#9467bd", "v0":"#8c564b", "v1":"#e377c2", "v2":"#7f7f7f", "v3":"#bcbd22", "v4":"#17becf"}
-        // color_dict = {'h1':'#ff7f0e', 'h2':'#d62728', 'h3':'#1f77b4', 'h4':'#9467bd', 'h5':'#d62728', 'h6':'#9467bd'} // hyperedge matching
-        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v0":"#8c564b","v1": "#2ca02c", "v2":"#e377c2", "v3":"#bcbd22", "v4":"#17becf"} // vertex matching 1 before
-        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v1":"#8c564b","v2": "#17becf", "v3":"#2ca02c", "v4":"#bcbd22", "v5":"#e377c2", "v6":"#bcbd22", "v7":"#e377c2", "v8":"#bcbd22", "v9":"#17becf"} // vertex matching 1 after
-
-        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v0":"#000000","v1": "#9467bd", "v2":"#bcbd22", "v3":"#e377c2", "v4":"#8c564b"} // vertex matching 2 before
-
-        // color_dict = {"he0":" #7f7f7f", "he1":" #7f7f7f", "he2":" #7f7f7f", "he3":" #7f7f7f", "v1":"#000000", "v2": "#9467bd", "v3":"#9467bd", "v4":"#bcbd22", "v5":"#000000", "v6":"#e377c2", "v7":"#000000", "v8":"#8c564b", "v9":"#9467bd"} // vertex matching 2 after
+        // color_dict = {"he0":"#e377c2", "he1":"#8c564b", "he2":"#d62728", "he3": "#1f77b4", "he4":"#ff7f0e", "he5":"#2ca02c", "he6":"#17becf", "he7":"#bcbd22", "he8":"#9467bd", "he9":"#7f7f7f"}
         let top5_edges = data.top5_edges;
+        let top5_vertices = data.top5_vertices;
+
+        top5_edges.sort((a,b)=>b-a);
+        top5_vertices.sort((a,b)=>b-a)
 
         let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
         let node_list = [];
@@ -640,31 +692,32 @@ function assign_hyperedge_colors(data, color_dict=undefined, color_scheme=undefi
             })
         })
         node_list.sort((a,b)=>b-a) // sort the nodes so that each time with the same names the colors will be the same
-        if(color_scheme === "top5"){
-            let node_list_new = node_list.filter(n=> top5_edges.indexOf(n)!=-1)
-            let idx = 0;
-            node_list.forEach(n=>{
-                if(node_list_new.indexOf(n)!=-1){
-                    if(Object.keys(color_dict).indexOf(n)===-1){
-                        color_dict[n] = colorScale(idx);    
-                        idx += 1;
-                    }
-                } else{
-                    color_dict[n] = "gray"
-                }
-            })
-        } else {
-            let idx = 0;
-            node_list.forEach(n=>{
-                if(Object.keys(color_dict).indexOf(n)===-1){
-                    color_dict[n] = colorScale(idx);    
-                        idx += 1;
-                }
-            })
-        } 
+
+        let idx = 0;
+        // assign top5 edges/vertices first, so that they will get distinct colors
+        // top5_edges.forEach(he=>{
+        //     color_dict[he] = colorScale(idx);
+        //     idx += 1;
+        // });
+        // top5_vertices.forEach(v=>{
+        //     color_dict[v] = colorScale(idx);
+        //     idx += 1;
+        // })
+        node_list.forEach(n=>{
+            if(Object.keys(color_dict).indexOf(n)===-1){
+                color_dict[n] = colorScale(idx);
+                idx += 1;
+            }
+        })
         data.hyper_data.nodes.forEach(node=>{
             let n_list = node.id.split("|");
-            node.color = color_dict[n_list[0]];
+            let c = color_dict[n_list[0]]
+            n_list.forEach(n=>{
+                if(top5_edges.indexOf(n)!= -1 || top5_vertices.indexOf(n)!= -1){
+                    c = color_dict[n];
+                }
+            })
+            node.color = c;
         })
     } else {
         data.hyper_data.nodes.forEach(node=>{

@@ -68,6 +68,15 @@ class Barcode{
             })
     }
 
+    get_threshold_by_step(step){
+        console.log(this.barcode)
+        if(step < 0 || step >= this.barcode.length-1){
+            alert("Step out of range!");
+        } else {
+            return this.barcode[step].death;
+        }
+    }
+
     draw_barcode(){
         this.max_death = d3.max(this.barcode.map(d => d.death));
         this.width_scale = d3.scaleLinear()
@@ -303,10 +312,10 @@ class Barcode{
             return d.children;
         });
         cluster(root);
-        // console.log(root.descendants().slice(1) )
+        console.log("root", root.descendants().slice(1) )
 
         let nodes_new = [];
-        root.descendants().slice(1).forEach(node=>{
+        root.descendants().slice(2).forEach(node=>{
             if(node.data.children===undefined){
                 nodes_new.push(node);
             }
@@ -374,10 +383,10 @@ class Barcode{
             .range([tree_margins.left, this.svg_width-this.svg_margin.right]).nice();
 
         let yScale = d3.scaleLinear()
-            .domain([Math.min(...root.descendants().slice(1).map(d=>d.x)), Math.max(...root.descendants().slice(1).map(d=>d.x))])
+            .domain([Math.min(...root.descendants().slice(2).map(d=>d.x)), Math.max(...root.descendants().slice(2).map(d=>d.x))])
             .range([tree_margins.top, tree_height-tree_margins.top-tree_margins.bottom])
 
-        let lgh = tree_edges_group_h.selectAll('line').data(root.descendants().slice(1));
+        let lgh = tree_edges_group_h.selectAll('line').data(root.descendants().slice(2));
         lgh.exit().remove();
         lgh = lgh.enter().append('line').merge(lgh)
             .attr("x1", d=>{
@@ -392,7 +401,7 @@ class Barcode{
             .attr("y2", d=>yScale(d.x)+10)
             .attr("stroke", 'grey');
         
-        let lgv = tree_edges_group_v.selectAll('line').data(root.descendants().slice(1));
+        let lgv = tree_edges_group_v.selectAll('line').data(root.descendants().slice(2));
         lgv.exit().remove();
         lgv = lgv.enter().append('line').merge(lgv)
             .attr("x1", d=>xScale(d.data.val))
@@ -424,6 +433,7 @@ class Barcode{
             .attr('fill', d=>{
                 return this.linegraph.color_dict[d.data.name]
             })
+            // .attr("fill", "black")
             .classed("dendrogram-node", true)
             .attr("transform", `translate(${max_len}, 0)`)
             .attr('stroke', 'white')
@@ -660,6 +670,18 @@ class Barcode{
             }
 
         })
+        console.log("he2nodeid", he2nodeid)
+        console.log("nodes_dict", nodes_dict)
+        if(prev_death_val > 0){
+            nodes_dict[prev_death_val].forEach(llist => {
+                let node_id = 'node'+current_node_idx;
+                llist.forEach(he=>{
+                    he2nodeid[he] = node_id;
+                })
+                current_node_idx += 1;
+            })
+        }
+        
         let he2nodeid_reverse = {}
         for(let child in he2nodeid){
             let parent = he2nodeid[child];
@@ -668,6 +690,8 @@ class Barcode{
             }
             he2nodeid_reverse[parent].push(child);
         }
+
+        console.log("he2nodeid_reverse", he2nodeid_reverse)
 
         let nodes_values = {};
         for(let val in nodes_dict){
@@ -678,6 +702,7 @@ class Barcode{
             })
         }
         nodes_values['root'] = Math.max(...Object.values(nodes_values));
+        console.log("nodes_values", nodes_values)
 
         // recover tree structure
         let root_list = [];
@@ -686,6 +711,7 @@ class Barcode{
                 root_list.push(parent);
             }
         }
+        console.log("root_list", root_list)
         he2nodeid_reverse.root = root_list;
         let tree = this.recover_tree('root', undefined, 0, he2nodeid_reverse, nodes_values);
         return tree;   

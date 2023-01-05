@@ -1,13 +1,13 @@
 class Hypergraph{
-    constructor(hyper_data, svg_id, config, color_dict, labels, top5_edges=undefined){
+    constructor(hyper_data, svg_id, config, color_dict, labels, top5_edges=undefined, top5_vertices=undefined){
         this.nodes = hyper_data.nodes;
         this.links = hyper_data.links;
         this.svg_id = svg_id;
         this.config = config;
         this.color_dict = color_dict;
         this.labels = labels;
-        this.top_nodes = top5_edges;
-        console.log(this.top_nodes)
+        this.top_edges = top5_edges;
+        this.top_vertices = top5_vertices;
 
         let vertices_list = this.nodes.filter(d => d.bipartite===0);
         let he_list = this.nodes.filter(d => d.bipartite===1);
@@ -82,22 +82,43 @@ class Hypergraph{
         // }
         this.toggle_hgraph_labels(); 
         this.toggle_hgraph_nodes(); 
-        this.save_bipartite_graph();
+        // this.save_bipartite_graph();
     }
 
     update_coloring(color_scheme){
+        let set_vis_dropdown = document.getElementById("set-vis-dropdown");
+        let set_type = set_vis_dropdown.options[set_vis_dropdown.selectedIndex].value;
         if(color_scheme === "all"){
             this.svg.selectAll(".hyper_node")
                 .attr("fill", d => d.color);
             this.svg.selectAll(".convex_hull")
                 .attr("fill", d=> this.nodes_dict[d.key].color)
-                .attr("stroke", d => this.nodes_dict[d.key].color)
+                .attr("stroke", d => {
+                    if(set_type === "graph"){
+                        return this.nodes_dict[d.key].color;
+                    } else {
+                        return "";
+                    }
+                });
             this.svg.selectAll(".pie-group").selectAll("path")
-                .attr("fill", d=>d.data.color)
+                .attr("fill", d=>d.data.color);
+            this.svg.selectAll(".ring-group").selectAll("circle")
+                .attr("stroke", d=>d.color);
+            this.svg.selectAll(".ring-group").selectAll("rect")
+                .attr("stroke", d=>d.color);
+            this.svg.selectAll(".hyper-rect")
+                .attr("fill", d=>{
+                    if(d.source.id){
+                        return this.color_dict[d.source.id.split("|")[0]];
+                    } else {
+                        return this.color_dict[d.source.split("|")[0]];
+                    }
+                })
+
         } else if(color_scheme === "top5"){
             this.svg.selectAll(".hyper_node")
                 .attr("fill", d => {
-                    if(this.top_nodes.indexOf(d.id)!=-1){
+                    if(this.top_edges.indexOf(d.id)!=-1){
                         return d.color;
                     } else{
                         return "gray"
@@ -105,26 +126,73 @@ class Hypergraph{
                 });
             this.svg.selectAll(".convex_hull")
                 .attr("fill", d=> {
-                    if(this.top_nodes.indexOf(d.key)!=-1){
-                        return this.nodes_dict[d.key].color;
-                    } else{
-                        return "gray"
-                    }
+                    let id_list = d.key.split("|")
+                    let c = "gray";
+                    id_list.forEach(idx=>{
+                        if(this.top_edges.indexOf(idx)!=-1){
+                            c = this.nodes_dict[d.key].color;
+                        }
+                    })
+                    return c;
                 })
                 .attr("stroke", d => {
-                    if(this.top_nodes.indexOf(d.key)!=-1){
-                        return this.nodes_dict[d.key].color;
-                    } else{
-                        return "gray"
+                    if(set_type === "graph"){
+                        let id_list = d.key.split("|")
+                        let c = "gray";
+                        id_list.forEach(idx=>{
+                            if(this.top_edges.indexOf(idx)!=-1){
+                                c = this.nodes_dict[d.key].color;
+                            }
+                        })
+                        return c;
+                    } else {
+                        return "";
                     }
+                    
                 })
             this.svg.selectAll(".pie-group").selectAll("path")
                 .attr("fill", d=>{
-                    if(this.top_nodes.indexOf(d.data.child_id)!=-1){
+                    if(this.top_edges.indexOf(d.data.id)!=-1){
                         return d.data.color;
                     } else{
                         return "gray"
                     }
+                });
+            this.svg.selectAll(".ring-group").selectAll("circle")
+                .attr("stroke", d=>{
+                    if(this.top_vertices.indexOf(d.id)!=-1){
+                        return d.color;
+                    } else {
+                        return "gray"
+                    }
+                });
+            this.svg.selectAll(".ring-group").selectAll("rect")
+                .attr("stroke", d=>{
+                    if(this.top_vertices.indexOf(d.id)!=-1){
+                        return d.color;
+                    } else {
+                        return "gray"
+                    }
+                });
+            this.svg.selectAll(".hyper-rect")
+                .attr("fill", d=>{
+                    let node_id;
+                    if(d.source.id){
+                        node_id = d.source.id;
+                        // return this.color_dict[d.source.id.split("|")[0]];
+                    } else {
+                        node_id = d.source;
+                        // return this.color_dict[d.source.split("|")[0]];
+                    }
+                    let id_list = node_id.split("|");
+                    let c = "gray";
+                    id_list.forEach(id=>{
+                        if(this.top_edges.indexOf(id)!=-1){
+                            c = this.color_dict[id];
+                        }
+                    })
+                    return c;
+
                 })
         }
     }
@@ -247,15 +315,44 @@ class Hypergraph{
                 } else { return false; }
             });
 
-        hg.append("text")
+        hg.append("g")
+            .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
+            .selectAll("text").data(d=>prepare_text(d))
+            .enter().append("text")
+            .classed("node-label", true)
             .attr("dx", 12)
             .attr("dy", "0.35em")
             .attr("x", d=>d.x)
-            .attr("y", d=>d.y)
-            .attr("class", "node-label")
-            .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
-            .text(d => d.label);
+            .attr("y", (d, i)=>d.y+i*15)
+            .text(d => d.label_sub)
 
+        function prepare_text(d){
+            let t_list = []
+            let curr = '';
+            for(let c of d.label){
+                if(c === "|"){
+                    curr += ", "
+                } else {
+                    curr += c;
+                }
+                if(curr.length > 30 && c === "|"){
+                    t_list.push({"label_sub":curr, "x":d.x, "y":d.y});
+                    curr = '';
+                }
+            }
+            t_list.push({"label_sub":curr, "x":d.x, "y":d.y});
+            return t_list
+        }
+
+        // hg.append("text")
+        //     .attr("dx", 12)
+        //     .attr("dy", "0.35em")
+        //     .attr("x", d=>d.x)
+        //     .attr("y", d=>d.y)
+            
+        //     .text(d => d.label)
+
+        
         let vg = this.vertices_group.selectAll("g").data(this.nodes.filter(d => d.bipartite===0));
         vg.exit().remove();
         vg = vg.enter().append("g").merge(vg)
@@ -288,7 +385,7 @@ class Hypergraph{
             .attr("height", d => this.rect_scale * this.get_node_radius(d.id)*2)
             .attr("fill", "")
             // .style("fill", d => d.color)
-            .attr("id", d => this.svg_id+'-node2-'+d.id.replace(/[|]/g,""))
+            .attr("id", d => this.svg_id+'-node-rect-'+d.id.replace(/[|]/g,""))
             .attr("x", d=>d.x-this.rect_scale * this.get_node_radius(d.id))
             .attr("y", d=>d.y-this.rect_scale * this.get_node_radius(d.id))
             .classed("vertex_node", true)
@@ -304,15 +401,26 @@ class Hypergraph{
                     return "hidden";
                 }
             });
-                    
-        vg.append("text")
+
+        vg.append("g")
+            .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
+            .selectAll("text").data(d=>prepare_text(d))
+            .enter().append("text")
+            .classed("node-label", true)
             .attr("dx", 12)
             .attr("dy", "0.35em")
             .attr("x", d=>d.x)
-            .attr("y", d=>d.y)
-            .attr("class", "node-label")
-            .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
-            .text(d => d.label);
+            .attr("y", (d, i)=>d.y+i*15)
+            .text(d => d.label_sub)
+                    
+        // vg.append("text")
+        //     .attr("dx", 12)
+        //     .attr("dy", "0.35em")
+        //     .attr("x", d=>d.x)
+        //     .attr("y", d=>d.y)
+        //     .attr("class", "node-label")
+        //     .attr("id", d => this.svg_id+'-text-'+d.id.replace(/[|]/g,""))
+        //     .text(d => d.label);
 
         this.update_labels();
 
@@ -329,17 +437,17 @@ class Hypergraph{
                 }
             });
 
-        pg.selectAll("path").data(d => pie(this.prepare_pie_data(d.id)))
+        pg.selectAll("path").data(d => pie(prepare_pie_data(d.id)))
             .enter().append("path")
             .attr("d", d => {
-                arc.outerRadius(this.get_node_radius(d.data.id));
+                arc.outerRadius(this.get_node_radius(d.data.parent_id));
                 return arc(d)})
-            .attr("id", d => this.svg_id+"-pie-child-"+d.data.child_id.replace(/[|]/g,""))
+            .attr("id", d => this.svg_id+"-pie-child-"+d.data.id.replace(/[|]/g,""))
             .attr("fill", d => d.data.color)
             .attr("stroke", "whitesmoke")
             .attr("stroke-width", "2px")
             .classed("grey_out", d=>{
-                if(singleton_type === "grey_out" && that.nodes_dict[d.data.id].if_singleton){
+                if(singleton_type === "grey_out" && that.nodes_dict[d.data.parent_id].if_singleton){
                     return true;
                 } else { return false; }
             });
@@ -370,20 +478,10 @@ class Hypergraph{
             .attr("class", "ring-group")
             .attr("id", d => this.svg_id+"-ring-"+d.id.replace(/[|]/g,""))
             .attr("transform",d => "translate("+d.x+","+d.y+")")
-            // .attr("visibility", (d)=>{
-            //     if(d.id.split("|").length === 1){
-            //         return "hidden"
-            //     }
-            //     else if(this.if_vertex_glyph){
-            //         return "visible";
-            //     }
-            //     else { 
-            //         return "hidden";
-            //     }
-            // });
 
         rg.selectAll("circle").data(d => prepare_ring_data(d))
             .enter().append("circle")
+            .attr("id", d => this.svg_id+"-ring-child-"+d.id.replace(/[|]/g,""))
             .attr("r", (d,i) => Math.max(d.r-2*i-2, 0))
             .attr("stroke", d=>d.color)
             .attr("stroke-width", 2)
@@ -404,6 +502,7 @@ class Hypergraph{
 
         rg.selectAll("rect").data(d => prepare_ring_data(d))
             .enter().append("rect")
+            .attr("id", d => this.svg_id+"-ring-child-rect-"+d.id.replace(/[|]/g,""))
             .attr("width", (d,i) => this.rect_scale*Math.max(d.r-2*i-2, 0)*2)
             .attr("height", (d,i) => this.rect_scale*Math.max(d.r-2*i-2, 0)*2)
             .attr("transform", (d,i)=> "translate("+this.rect_scale*(-Math.max(d.r-2*i-2, 0))+","+this.rect_scale*(-Math.max(d.r-2*i-2, 0))+")")
@@ -435,7 +534,40 @@ class Hypergraph{
                 .attr("stroke", "gray")
                 .attr("id", d => this.svg_id+"-edge-"+d.source.id.replace(/[|]/g,"")+"-"+d.target.id.replace(/[|]/g,""))
 
-        
+        function prepare_pie_data(key) {
+            let id_list = key.split("|");
+            if(id_list.length > 8) {
+                let id_list_new = [];
+                id_list.forEach(id=>{
+                    if(that.top_edges.indexOf(id)!=-1){
+                        id_list_new.push(id);
+                    }
+                })
+                id_list.forEach(id=>{
+                    if(id_list_new.indexOf(id)===-1 && id_list_new.length < 8){
+                        id_list_new.push(id)
+                    }
+                })
+                id_list = id_list_new;
+            }
+            let pie_data = [];
+            id_list.forEach(id=>{
+                let p = {};
+                p.value = 10;
+                // ========== proportional pie chart ===========
+                // if(Object.keys(p2val).indexOf(key)!=-1){
+                //     p.value = p2val[key][id]
+                // } else{
+                //     p.value = 1
+                // }
+                // ========== proportional pie chart ===========
+                p.color = that.color_dict[id];
+                p.parent_id = key;
+                p.id = id; 
+                pie_data.push(p);
+            })
+            return pie_data
+        }
 
         function prepare_ring_data (d) {
                 let v_list = [];
@@ -444,42 +576,22 @@ class Hypergraph{
                     v_list.push({"r":r, "id":v, "color":that.color_dict[v], "if_singleton":d.if_singleton, "parent_id":d.id});
                 })
                 if(v_list.length>8){
-                    v_list = v_list.slice(0,8);
+                    let v_list_new = [];
+                    v_list.forEach(v=>{
+                        if(that.top_vertices.indexOf(v.id)!=-1){
+                            v_list_new.push(v);
+                        }
+                    })
+                    v_list.forEach(v=>{
+                        if(that.top_vertices.indexOf(v.id)===-1 && v_list_new.length < 8){
+                            v_list_new.push(v)
+                        }
+                    })
+                    v_list = v_list_new;
                 }
                 return v_list;
         }
     }
-
-    prepare_pie_data(key) {
-        // let p2val = {"h5|h6":{"h5":0.25, "h6":0.2}, "h1|h2":{"h1":0.15, "h2":0.11}, "h3|h4":{"h3":0.21, "h4":0.06}} // hyperedge matching 1
-
-        // let p2val = {"h1|h2":{"h2":0.096, "h1":0.273}, "h3|h4":{"h4":0.086, "h3":0.282}, "h5|h6":{"h6":0.036, "h5":0.227}} // hyperedge matching 2
-
-        // let p2val = {"v1|v2":{"v1":0.111, "v2":0.032}, "v3|v4":{"v3":0.111, "v4":0.032}, "v7|v8|v9":{"v7":0.079, "v8":0.026, "v9":0.190}} // vertex matching 1
-
-        // let p2val = {"v1|v2":{"v1":0.144, "v2":0.078}, "v4|v5":{"v4":0.1, "v5":0.021}, "v6|v7":{"v6":0.1, "v7":0.021}, "v8|v9":{"v8":0.1, "v9":0.021}} // vertex matching 2
-
-        let id_list = key.split("|");
-        if(id_list.length > 8) {
-            id_list = id_list.slice(0,8);
-        }
-        let pie_data = [];
-        id_list.forEach(id=>{
-            let p = {};
-            p.value = 10;
-            // if(Object.keys(p2val).indexOf(key)!=-1){
-            //     p.value = p2val[key][id]
-            // } else{
-            //     p.value = 1
-            // }
-            // console.log(key, id, p.value)
-            p.color = this.color_dict[id];
-            p.id = key;
-            p.child_id = id;
-            pie_data.push(p);
-        })
-        return pie_data
-}
 
     draw_hypergraph(){
         this.svg_g.remove();
@@ -560,29 +672,16 @@ class Hypergraph{
             .attr("width", 20)
             .attr("height", 20)
             .attr("fill", d => d)
-            .attr("stroke", "gray")
+            .attr("stroke", "white")
+            .attr("opacity", 0.8)
             .attr("stroke-width", 1)
             .on("mouseover", (d,i)=>{
                 d3.select("#"+this.svg_id+"-color-bars-"+i).attr("opacity", 0.5);
             })
             .on("mouseout", (d,i)=>{
-                d3.select("#"+this.svg_id+"-color-bars-"+i).attr("opacity", 1);
+                d3.select("#"+this.svg_id+"-color-bars-"+i).attr("opacity", 0.8);
             })
-            // .on("click", (d)=>{
-            //     if(this.rightclick_edge){
-            //         let c = d;
-            //         this.color_dict[this.rightclick_edge] = d;
-            //         d3.select("#"+this.svg_id+"-hull-"+this.rightclick_edge.replace(/[|]/g,""))
-            //             .attr("fill", c)
-            //             .attr("stroke",c)
-            //         d3.select("#"+this.svg_id+'-node-'+this.rightclick_edge.replace(/[|]/g,""))
-            //             .attr("fill", c)
-            //         d3.select("#"+this.svg_id+"-pie-"+this.rightclick_edge.replace(/[|]/g,""))
-            //             .selectAll("path")
-            //             .attr("fill", c)
 
-            //     }   
-            // })
 
         let that = this;
 
@@ -678,9 +777,9 @@ class Hypergraph{
             .on("contextmenu", d => rightclick(d.key));
 
         // ========================= Path segments ============================
-        // let paths = this.get_path_pieces(groups);
-        // let intersection_num = this.compute_intersection_num(paths);
-        // console.log(this.svg_id, "intersection_num", intersection_num);
+        let paths = this.get_path_pieces(groups);
+        let intersection_num = this.compute_intersection_num(paths);
+        console.log(this.svg_id, "intersection_num", intersection_num);
 
         //add zoom capabilities
         const zoom_handler = d3.zoom()
@@ -697,8 +796,8 @@ class Hypergraph{
             d3.select("#"+that.svg_id+"-pie-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
             d3.select("#"+that.svg_id+"-ring-"+d.id.replace(/[|]/g,"")).attr("transform","translate("+d3.event.x+","+d3.event.y+")");
             d3.select("#"+that.svg_id+'-node-'+d.id.replace(/[|]/g,"")).attr("cx", d3.event.x).attr("cy", d3.event.y);
-            d3.select("#"+that.svg_id+'-node2-'+d.id.replace(/[|]/g,"")).attr("x", d3.event.x-6).attr("y", d3.event.y-6);
-            d3.select("#"+that.svg_id+'-text-'+d.id.replace(/[|]/g,"")).attr("x", d3.event.x).attr("y", d3.event.y);
+            d3.select("#"+that.svg_id+'-node-rect-'+d.id.replace(/[|]/g,"")).attr("x", d3.event.x-that.rect_scale * that.get_node_radius(d.id)).attr("y", d3.event.y-that.rect_scale * that.get_node_radius(d.id));
+            d3.select("#"+that.svg_id+'-text-'+d.id.replace(/[|]/g,"")).selectAll("text").attr("x", d3.event.x).attr("y", (d,i)=>d3.event.y+i*15);
             
 
             d.links_idx.source.forEach(l_idx => {
@@ -1165,11 +1264,13 @@ class Hypergraph{
         let cell_height = (this.svg_height-table_margins.top-table_margins.bottom)/(vertices_list.length+1);
         let cell_width = this.svg_width - table_margins.left - table_margins.right;
 
-        // let node_id_width = 1/3*cell_width;
-        // let he_width = 2/3*cell_width / he_list.length;
+        // let node_id_width = 1/4*cell_width;
+        // let he_width = (cell_width-node_id_width) / he_list.length;
 
-        let node_id_width = 0;
-        let he_width = cell_width / he_list.length;
+        this.max_label = 0;
+
+        // let node_id_width = 0;
+        // let he_width = cell_width / he_list.length;
 
         // draw table lines 
         let bg = this.border_group.selectAll("line").data(vertices_list.concat(["bottom"]));
@@ -1182,16 +1283,33 @@ class Hypergraph{
             .attr("stroke", "grey")
             .style("opacity", 0.3);
 
-        // let tg = this.nodes_id_group.selectAll("text").data(vertices_list);
-        // tg = tg.enter().append("text").merge(tg)
-        //     .attr("class", "matrix_node_id")
-        //     .attr("x",table_margins.left)
-        //     .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
-        //     .text(d=>d.id)
-        //     .style("opacity", 0.8);
+        let tg = this.nodes_id_group.selectAll("text").data(vertices_list);
+        tg = tg.enter().append("text").merge(tg)
+            .attr("class", "matrix_node_id")
+            .attr("x",table_margins.left)
+            .attr("y",(d,i)=>table_margins.top + (i+0.8)*cell_height)
+            .text(d=>{
+                let label = "";
+                let id_list = d.id.split("|")
+                id_list.forEach(id=>{
+                    label += this.labels[id]+", "
+                })
+                label = label.substring(0, label.length - 2);
+
+                if(label.length > this.max_label){
+                    this.max_label = label.length;
+                }
+                return label
+            })
+            .style("opacity", 0.8);
+
+        console.log(this.max_label)
+        let node_id_width = this.max_label * 8;
+        let he_width = (cell_width-node_id_width) / he_list.length;
 
         let rg = this.rect_group.selectAll("rect").data(this.links);
         rg = rg.enter().append("rect").merge(rg)
+            .classed("hyper-rect", true)
             .attr("x", d=>{
                 if(d.source.id){
                     return table_margins.left + node_id_width + he_width * he_id_list.indexOf(d.source.id);
@@ -1269,22 +1387,41 @@ class Hypergraph{
 
         let he_list = this.nodes.filter(d => d.bipartite===1);
         let vertices_list = this.nodes.filter(d => d.bipartite===0);
-        let all_rects = vertices_list.map(v=>ixToRectangle(v)).concat(he_list.map(he=>ixToRectangle(he)));
-        // let all_rects = vertices_list.map(v=>ixToRectangle(v));
+        // let all_rects = vertices_list.map(v=>ixToRectangle(v)).concat(he_list.map(he=>ixToRectangle(he)));
+        let all_rects = vertices_list.map(v=>ixToRectangle(v));
+
+        let groups = [];
 
         he_list.forEach(he=>{
             let v_list = this.he2vertices[he.id];
-            v_list.push(he.id)
+            // v_list.push(he.id)
             let rects = all_rects.filter(v=>v_list.indexOf(v.id)!=-1);
             let others = all_rects.filter(v=>v_list.indexOf(v.id)===-1);
             let edges = getEdges(rects, this.links) 
-            doBubbles(rects, others, he.color, edges=edges);
-            // doBubbles(rects, others, he.color,);
+            // let outline = doBubbles(rects, others, he.color, edges=edges);
+            let outline = doBubbles(rects, others, he.color);
+            groups.push({"key":he.id, "outline":outline, "color":he.color})
 
         })
+
+        let singleton_type = d3.select('input[name="singleton-type"]:checked').node().value;  
+
+        hulls.selectAll("path").data(groups)
+            .enter().append("path")
+            .attr("d", d => d.outline)
+            .attr("fill", d => d.color)
+            .attr("stroke-width", "2px")
+            .attr("opacity", 0.5)
+            .classed("convex_hull", true)
+            .classed("bubbleset_grey_out", d=>{
+                if(singleton_type === "grey_out" && this.nodes_dict[d.key].if_singleton){
+                    return true;
+                } else { return false; }
+            })
+                // .attr("id", )
         // ======= Compute intersection numbers ======
-        // let intersection_num = this.compute_intersection_num(paths);
-        // console.log(this.svg_id, "bubble sets intersection_num", intersection_num);
+        let intersection_num = this.compute_intersection_num(paths);
+        console.log(this.svg_id, "bubble sets intersection_num", intersection_num);
 
         function ixToRectangle(node) {
             return {
@@ -1333,38 +1470,7 @@ class Hypergraph{
             paths.push(list.map(pt=>{
                 return {"x":pt[0], "y":pt[1]};
             }))
-            hulls.append("path")
-                .attr("d", outline.toString())
-                .attr("fill", color)
-                .attr("opacity", 0.5)
-          }
-          
-        function createRectangle(rect) {
-            // that.svg_g.append("rect")
-            //     .attr("x", rect["x"])
-            //     .attr("y", rect["y"])
-            //     .attr("width", rect["width"])
-            //     .attr("height", rect["height"])
-            //     .attr("fill", "silver")
-            //     .attr("stroke", "black");
-            if(rect.bipartite===0){
-                that.vertices_group.append("circle")
-                    .attr("cx", rect.x)
-                    .attr("cy", rect.y)
-                    .attr("r", that.get_node_radius(rect.id))
-                    .attr("fill", "")
-                    .attr("class", "vertex_node")
-                    .attr("stroke", "whitesmoke");
-            } else{
-                hg.append("circle")
-                    .attr("cx", rect.x)
-                    .attr("cy", rect.y)
-                    .attr("r", that.get_node_radius(rect.id))
-                    .attr("fill", rect.color)
-                    .attr("class", "hyper_node")
-                    // .attr("stroke", "whitesmoke");
-            }
-            
+            return outline.toString()
           }
     }
 

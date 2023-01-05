@@ -22,8 +22,9 @@ def process_hypergraph(hyper_data: str):
     hgraph = {}
     label2id = {}
     vlabel2id = {}
-    # label2id = {"a":"h1|h2", "b": "h3|h4", "c":"h5|h6"}
+    # label2id = { "HALLMARK_INTERFERON_ALPHA_RESPONSE": "he0","HALLMARK_MTORC1_SIGNALING":"he1","HALLMARK_INFLAMMATORY_RESPONSE":"he2","HALLMARK_TNFA_SIGNALING_VIA_NFKB": "he3","HALLMARK_INTERFERON_GAMMA_RESPONSE":"he4","HALLMARK_APOPTOSIS": "he5", "HALLMARK_ALLOGRAFT_REJECTION": "he6", "HALLMARK_HYPOXIA": "he7", "HALLMARK_P53_PATHWAY": "he8", "HALLMARK_GLYCOLYSIS": "he9"}
     # label2id = {'1':'v0', '2':'v1', '3':'v2', '4':'v3', '5':'v4'}
+
     he_id = 0
     v_id = 0
     for line in hyper_data.split("\n"):
@@ -75,30 +76,50 @@ def natural_keys(text):
     '''
     return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
-def get_top5_hyperedges(hgraph_dict):    
-    he_list = list(hgraph_dict.keys())
+def get_top5_hyperedges(hgraph): 
+    nodes = hgraph["nodes"]
+    he_list = [node['id'] for node in nodes if node['bipartite']==1]   
     he_list.sort(key=natural_keys)
+    he2v_sorted = collections.OrderedDict()
+    for he in he_list:
+        he2v_sorted[he] = []
+    for link in hgraph["links"]:
+        if link["target"] not in he2v_sorted[link["source"]]:
+            he2v_sorted[link["source"]].append(link["target"])
     he2len_sorted = collections.OrderedDict()
     for he in he_list:
-        vertices = hgraph_dict[he]
-        he2len_sorted[he] = len(vertices)
-    print(he2len_sorted)
+        he2len_sorted[he] = len(he2v_sorted[he])
     top5 = sorted(he2len_sorted, key=he2len_sorted.get, reverse=True)[:5]
-    print(top5)
+    return top5
+
+def get_top5_vertices(hgraph): 
+    nodes = hgraph["nodes"]
+    v_list = [node['id'] for node in nodes if node['bipartite']==0]   
+    v_list.sort(key=natural_keys)
+    v2he_sorted = collections.OrderedDict()
+    for v in v_list:
+        v2he_sorted[v] = []
+    for link in hgraph["links"]:
+        if link["source"] not in v2he_sorted[link["target"]]:
+            v2he_sorted[link["target"]].append(link["source"])
+    v2len_sorted = collections.OrderedDict()
+    for v in v_list:
+        v2len_sorted[v] = len(v2he_sorted[v])
+    top5 = sorted(v2len_sorted, key=v2len_sorted.get, reverse=True)[:5]
     return top5
 
 def collapse_hypergraph(hgraph):
-    chgraph = hgraph.collapse_edges()
-    chgraph = chgraph.collapse_nodes()
+    chgraph, nodes_frozenset, edges_frozenset = hgraph.collapse_nodes_and_edges(return_equivalence_classes=True)
     chgraph = chgraph.incidence_dict
+
     chgraph_new = {}
     for hkey in chgraph:
-        hedges = list(hkey)
+        hedges = list(edges_frozenset[hkey])
         hkey_new = ""
         for he in hedges:
             hkey_new += he + "|"
         hkey_new = hkey_new[:-1]
-        vertices = [list(v) for  v in chgraph[hkey]]
+        vertices = [list(nodes_frozenset[v]) for  v in chgraph[hkey]]
         vertices_new = []
         for v_list in vertices:
             v_new = ""
@@ -108,6 +129,26 @@ def collapse_hypergraph(hgraph):
             vertices_new.append(v_new)
         chgraph_new[hkey_new] = vertices_new
     return hnx.Hypergraph(chgraph_new)
+    # chgraph = hgraph.collapse_edges()
+    # chgraph = chgraph.collapse_nodes()
+    # chgraph = chgraph.incidence_dict
+    # chgraph_new = {}
+    # for hkey in chgraph:
+    #     hedges = list(hkey)
+    #     hkey_new = ""
+    #     for he in hedges:
+    #         hkey_new += he + "|"
+    #     hkey_new = hkey_new[:-1]
+    #     vertices = [list(v) for  v in chgraph[hkey]]
+    #     vertices_new = []
+    #     for v_list in vertices:
+    #         v_new = ""
+    #         for v in v_list:
+    #             v_new += v + "|"
+    #         v_new = v_new[:-1]
+    #         vertices_new.append(v_new)
+    #     chgraph_new[hkey_new] = vertices_new
+    # return hnx.Hypergraph(chgraph_new)
     
 def process_hypergraph_from_csv(graph_file: str):
     hgraph = {}
@@ -143,7 +184,6 @@ def convert_to_line_graph(hgraph_dict, s=1, singleton_type="grey_out"):
             vertices1 = hgraph_dict[node1]
             vertices2 = hgraph_dict[node2]
             if len(vertices1) > 0 or len(vertices2) > 0:
-                # print(vertices1)
                 vertices_list += (list(set(vertices1)) + list(set(vertices2)))
                 # Compute the intersection size
                 intersection_size = len(set(vertices1) & set(vertices2))
@@ -245,6 +285,7 @@ def compute_barcode(graph_data, weight_col='intersection_size'):
     return barcode
 
 def recover_linegraph(hgraph_dict, singletons, s=1):
+    # TODO: how to keep the original weights?
     line_graph = nx.Graph()
     [line_graph.add_node(edge, vertices=list(vertices)) for edge, vertices in hgraph_dict.items()]
 
@@ -280,7 +321,6 @@ def write_output_hypergraph(hgraph_dict, output_path):
 
             line += he_label + ","
             for v in hgraph_dict[he]:
-                print(v)
                 v_label = ""
                 v_list = v.split("|")
                 for v_i in v_list:
@@ -401,12 +441,15 @@ def import_file():
 
     hgraph_dict = {hkey:list(vertices) for hkey, vertices in hgraph.incidence_dict.items()}
     chgraph_dict = {hkey:list(vertices) for hkey, vertices in chgraph.incidence_dict.items()}
-    hgraph_top5 = get_top5_hyperedges(hgraph_dict)
-    chgraph_top5 = get_top5_hyperedges(chgraph_dict)
+    
     write_json_file(hgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph_original.json"))
     write_json_file(chgraph_dict, path.join(APP_STATIC,"uploads/current_hypergraph.json"))
     hgraph = nx.readwrite.json_graph.node_link_data(hgraph.bipartite())
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+
+    # hgraph_top5 = get_top5_hyperedges(hgraph)
+    top5_edges = get_top5_hyperedges(chgraph)
+    top5_vertices = get_top5_vertices(chgraph)
     
     barcode_is = compute_barcode(lgraph) # is: weight = 1/intersection_size
     dual_barcode_is = compute_barcode(dual_lgraph)
@@ -428,7 +471,7 @@ def import_file():
     write_json_file(label_map, path.join(APP_STATIC,"uploads/current_label_map.json"))
     write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
 
-    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, top5_edges=chgraph_top5)
+    return jsonify(hyper_data=chgraph, line_data=lgraph, barcode_data=barcode_ji, labels=label_map, top5_edges=top5_edges, top5_vertices=top5_vertices)
 
 @app.route('/reload_graphs', methods=['POST', 'GET'])
 def reload_graphs():
@@ -457,6 +500,9 @@ def reload_graphs():
     else:
         hgraph, lgraph, barcode = compute_graphs(current_config)
 
+    top5_edges = get_top5_hyperedges(hgraph)
+    top5_vertices = get_top5_vertices(hgraph)
+
     write_json_file(current_config, path.join(APP_STATIC,"uploads/current_config.json"))
 
     with open(path.join(APP_STATIC,"uploads/current_label_map.json")) as f:
@@ -464,7 +510,7 @@ def reload_graphs():
 
     with open(path.join(APP_STATIC,"uploads/current_id2color.json")) as f:
         id2color = json.load(f)
-    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id2color=id2color)
+    return jsonify(hyper_data=hgraph, line_data=lgraph, barcode_data=barcode, labels=label_map, id2color=id2color, top5_edges=top5_edges, top5_vertices=top5_vertices)
     
 @app.route('/hgraph_expansion', methods=['POST', 'GET'])
 def hgraph_expansion():
@@ -484,7 +530,6 @@ def hgraph_expansion():
         hyperedge_keys = cc_key.split(",")
         if len(set(hyperedge_keys) & set(source_cc)) > 0 and len(set(hyperedge_keys) & set(target_cc))>0:
         # if all(h1 in hyperedge_keys for h1 in source_cc) and all(h2 in hyperedge_keys for h2 in target_cc): # if source_cc and target_cc are combined
-            print(hyperedge_keys, source_cc, target_cc)
             cc1_id_list = []
             cc2_id_list = []
             for he in hyperedge_keys:
@@ -579,11 +624,10 @@ def compute_simplified_hgraph():
 
     singletons = jsdata['singletons']
     cc_dict = jsdata['cc_dict']
-    print(cc_dict)
     
     hgraph_dict = {he.replace(",","|"):v_list for he, v_list in cc_dict.items()}
 
-    write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+    # write_output_hypergraph(hgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
 
     # If variant is clique_expansion, recover_linegraph() will give dual line graph with hgraph_dict
     lgraph = recover_linegraph(hgraph_dict, singletons, s=s)
@@ -592,12 +636,14 @@ def compute_simplified_hgraph():
         hgraph = hgraph.dual()
     chgraph = collapse_hypergraph(hgraph)
     # chgraph = hgraph
+    chgraph_dict = {he.replace(",","|"):list(v_list) for he, v_list in chgraph.incidence_dict.items()}
+    write_output_hypergraph(chgraph_dict, path.join(APP_STATIC,"uploads/current_output.txt"))
+
     chgraph = nx.readwrite.json_graph.node_link_data(chgraph.bipartite())
+    
     if singleton_type == "grey_out":
         assign_hgraph_singletons(chgraph, singletons)
     return jsonify(hyper_data=chgraph, line_data=lgraph)
-
-
 
 @app.route('/id2color', methods=['POST', 'GET'])
 def save_id2color():
@@ -608,14 +654,11 @@ def save_id2color():
 @app.route('/export', methods=['POST', 'GET'])
 def export():
     jsdata = request.form.get('javascript_data')
-    print(jsdata)
     if jsdata == "\"\"":
         filepath = path.join(APP_STATIC,"downloads/output.txt")
     else:
         filepath = path.join(APP_STATIC,"downloads/"+jsdata+".txt")
-    print(filepath)
     if path.exists(path.join(APP_STATIC,"uploads/current_output.txt")):
-        print("cp "+path.join(APP_STATIC,"uploads/current_output.txt")+" "+filepath)
         os.system("pwd")
         os.system("cp "+path.join(APP_STATIC,"uploads/current_output.txt")+" "+filepath)
     else:

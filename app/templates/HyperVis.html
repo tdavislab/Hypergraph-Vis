@@ -52,6 +52,22 @@
             <div id="barcode-threshold">
                 Current threshold: 0
             </div>
+            <div id="input-threshold" class="row">
+                <div class="col-4">Threshold</div>
+                <div class="col-3 barcode-input-container" ><input type="text" id="barcode-threshold-value" class="barcode-input"></div>
+                <div class="col-3">
+                    <input type="button" class="btn btn-outline-dark ui-form-button" id="barcode-threshold-button" value="Update">
+                </div>
+
+            </div>
+            <div id="input-step-num" class="row">
+                <div class="col-4">Step</div>
+                <div class="col-3 barcode-input-container" ><input type="text" id="barcode-step-value" class="barcode-input"></div>
+                <div class="col-3">
+                    <input type="button" class="btn btn-outline-dark ui-form-button" id="barcode-step-button" value="Update">
+                </div>
+
+            </div>
             <div id="vis-barcode" class="svg-container" style="overflow: scroll">
                 <svg id="barcode-svg"></svg>
                 <!-- <svg id="merge-tree-svg"></svg> -->
