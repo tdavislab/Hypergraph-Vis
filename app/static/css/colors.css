@@ -10,6 +10,21 @@ h4 {
     font-weight: bold;
 }
 
+#input-threshold {
+    padding: 5px 0px;
+}
+
+.barcode-input-container{
+    padding: 0px 5px;
+
+}
+
+.barcode-input{
+    /* margin: 5px; */
+
+    width: 100%;
+}
+
 .barcode-rect-dim0 {
     fill: #87c8ea;
     stroke: grey;
@@ -176,19 +191,25 @@ path.grey_out {
     opacity: 0.2;
 }
 
+.bubbleset_grey_out {
+    stroke: "";
+    fill: lightgrey;
+    opacity: 0.2;
+}
+
 path.filtering {
     opacity: 0;
 }
 
 .node-label {
-    fill: #2b2b2b;
+    /* fill: #2b2b2b; */
     opacity: 0.8;
     background: #f0ffff;
     font-size: 14px;
 }
 
 .dendrogram-label{
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .ui-form-button {
