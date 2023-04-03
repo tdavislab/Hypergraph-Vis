@@ -7,11 +7,6 @@ This is the code repository for "Topological Simplifications of Hypergraphs"
 
 Our system runs on most modern web browsers. We tested it on Firefox and Chrome.
 
-## Live Demo
-To see a live demo, go to: 
-
-https://vis-hypergraph.herokuapp.com/
-
 ## Running Locally
 Download or clone this repository:
 
