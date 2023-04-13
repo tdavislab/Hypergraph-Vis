@@ -1,3 +1,7 @@
+jQuery.htmlPrefilter = function( html ) {
+	return html;
+};
+
 init();
 
 function init(){
@@ -675,6 +679,7 @@ function assign_hyperedge_colors(data, color_dict=undefined){
     if(color_dict === undefined){
         color_dict = {}
         // color_dict = {"he0":"#e377c2", "he1":"#8c564b", "he2":"#d62728", "he3": "#1f77b4", "he4":"#ff7f0e", "he5":"#2ca02c", "he6":"#17becf", "he7":"#bcbd22", "he8":"#9467bd", "he9":"#7f7f7f"}
+        color_dict = {"he0":"#1f77b4", "he1":"#ff7f0e", "he2":"#2ca02c"}
         let top5_edges = data.top5_edges;
         let top5_vertices = data.top5_vertices;
 
