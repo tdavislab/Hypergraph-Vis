@@ -5,10 +5,9 @@ from .. import app
 bundles = {
     'js': Bundle(
         'js/d3.v5.js',
-        'js/jquery-3.4.1.min.js',
+        'js/jquery-3.5.0.min.js',
         'js/bootstrap.min.js',
         'js/hypergraph.js',
-        'js/simplified_hypergraph.js',
         'js/linegraph.js',
         'js/barcode.js',
         'js/bubblesets.js',
