@@ -1,7 +1,7 @@
 Flask==2.3.2
 Flask-Assets==0.12
 Flask-Uploads==0.2.1
-gunicorn==19.9.0
+gunicorn==22.0.0
 numpy==1.22.0
 pandas==0.23.4
 gevent==23.9.1
